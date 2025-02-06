@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "skipLibCheck": true,
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "lib": ["ESNext"],
+        "noEmit": true,
+        "isolatedModules": true,
+        "noUnusedLocals": true
+    },
+    "include": ["./packages", "./apps"],
+    "exclude": ["./node_modules/*"]
+}
