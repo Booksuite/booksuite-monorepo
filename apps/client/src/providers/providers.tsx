@@ -5,22 +5,22 @@ import ChakraThemeProvider from "./chakraThemeProvider";
 import CssCacheProvider from "./cssCacheProvider";
 //import { QueryClientProvider } from "@tanstack/react-query";
 //import { CompanyProvider } from "./companyProvider";
-//import CartContextProvider from "@/contexts/cartContext";
+import CartContextProvider from "../common/contexts/cartContext";
 
 interface ProvidersProps {
   children: React.ReactNode;
 }
 
 export function Providers({ children }: ProvidersProps) {
-  /*return (
+  return (
     //<QueryClientProvider client={queryClient}>
-      //<CartContextProvider>
+      <CartContextProvider>
         <ChakraThemeProvider>
           <CssCacheProvider>
-            <CompanyProvider>{children}</CompanyProvider>
+            {/*<CompanyProvider>*/}{children}{/*</CompanyProvider>*/}
           </CssCacheProvider>
         </ChakraThemeProvider>
-      //</CartContextProvider>
+      </CartContextProvider>
     //</QueryClientProvider>
-  );*/
+  );
 }
