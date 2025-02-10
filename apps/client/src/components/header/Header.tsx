@@ -6,7 +6,7 @@ import { Stack } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 
 import { Icon } from "../icons/Index";
-// import { useCartContext } from "@/hooks/useCartContext";
+import { useCartContext } from "../../common/hooks/useCartContext";
 
 interface HeaderProps {
   variant?: "transparent" | "default";
@@ -50,7 +50,6 @@ interface MenuItemProps {
 }
 
 function MenuItem({ href, children, className }: MenuItemProps) {
-  // 3. Aqui, o usePathname já é seguro para ser usado
   const pathname = usePathname();
 
   return (
@@ -64,19 +63,19 @@ function MenuItem({ href, children, className }: MenuItemProps) {
 }
 
 function UserMenu() {
-  // const { cart } = useCartContext();
+  const { cart } = useCartContext();
 
   return (
     <Stack className="UserMenu" alignItems="center" gap={3} direction={"row"}>
       <div className="UserMenu__list">
-        {/* <Link className="relative" href={"/carrinho"}>
-          <Icons.Cart className="UserMenu__cartIcon" />
+        <Link className="relative" href={"/carrinho"}>
+          <Icon.Cart className="UserMenu__cartIcon" />
           {cart.length > 0 && (
             <div className="flex items-center justify-center text-white text-[0.625rem] leading-[1] absolute top-0 right-0 translate-x-[50%] translate-y-[-50%] w-[1rem] h-[1rem] bg-red rounded-full">
               {cart.length < 9 ? cart.length : "9+"}
             </div>
           )}
-        </Link> */}
+        </Link>
       </div>
 
       <div className="UserMenu__profile">

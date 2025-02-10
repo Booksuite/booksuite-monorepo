@@ -11,6 +11,7 @@ import type { Metadata } from "next";
 
 import { Inter } from "next/font/google";
 import { Providers } from "@/providers/providers";
+import CartContextProvider from "../common/contexts/cartContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,6 @@ export const metadata: Metadata = {
   title: "Booksuite",
   description: "",
 };
-
 
 export default async function RootLayout({
   children,
@@ -42,9 +42,11 @@ export default async function RootLayout({
       style={{ "--clr-primary": company.theme } as React.CSSProperties} // Apply dynamic theme color
     >
       <body className={inter.className}> 
-        <Header/>
-        {/*<Providers>*/}{children}{/*</Providers>*/} {/* Wrap children with global providers */}
-        <Footer/>
+        <CartContextProvider>
+          <Header />
+          {/*<Providers>*/}{children}{/*</Providers>*/} {/* Wrap children with global providers */}
+        </CartContextProvider>
+        <Footer />
       </body>
     </html>
   );
