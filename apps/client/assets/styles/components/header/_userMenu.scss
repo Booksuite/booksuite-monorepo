@@ -1,0 +1,27 @@
+.UserMenu {
+  background-color: #fff;
+  padding: 0.25rem;
+  border-radius: 100vw;
+
+  &__list {
+    padding-left: 10px;
+  }
+
+  &__cartIcon {
+    color: #000;
+  }
+
+  &__profile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px;
+    border-radius: 100%;
+    background-color: var(--clr-primary);
+
+    &__icon {
+      color: #fff;
+    }
+  }
+}

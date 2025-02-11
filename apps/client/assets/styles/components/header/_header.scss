@@ -1,0 +1,32 @@
+.Header {
+  --menu-text-color: #000;
+
+  width: 100%;
+  padding: 0.5rem 2rem;
+
+  border-bottom: 1px solid #eaeaea;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--menu-text-color);
+
+  &--transparent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    background-color: transparent;
+    border-bottom: 0;
+
+    --menu-text-color: #fff;
+  }
+
+  &__logo {
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+}

@@ -1,0 +1,21 @@
+.Experiencia {
+  font-size: 0.9375rem;
+  min-height: 18.75rem;
+
+  &__title {
+    font-size: 1.125rem;
+  }
+
+  &__includes {
+    font-size: 0.8125rem;
+    color: var(--clr-black);
+  }
+
+  &__body {
+    height: 100%;
+  }
+
+  &__footer {
+    margin-top: auto;
+  }
+}

@@ -1,0 +1,23 @@
+.InputCheckbox {
+  &--labelFirst.bg-opacity {
+    &::before {
+      visibility: hidden;
+      border-radius: 8px;
+    }
+
+    &[data-checked] {
+      color: var(--clr-primary);
+      font-weight: 500;
+
+      &::before {
+        visibility: visible;
+      }
+    }
+
+    &:hover {
+      &::before {
+        visibility: visible;
+      }
+    }
+  }
+}
