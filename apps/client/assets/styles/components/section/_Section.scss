@@ -1,0 +1,14 @@
+.Section {
+  --section-padding-y: 2.75rem;
+
+  padding-block: var(--section-padding-y);
+
+  &__header {
+    margin-bottom: 2.5rem;
+  }
+
+  &__subtitle {
+    font-size: 1.125rem;
+    font-weight: 400;
+  }
+}

@@ -1,0 +1,9 @@
+.chakra-react-select__single-value {
+  z-index: 1;
+}
+
+.chakra-accordion__item:has(button[aria-expanded="true"]) {
+  .chakra-collapse {
+    overflow: unset !important;
+  }
+}

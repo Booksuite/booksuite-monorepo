@@ -1,0 +1,42 @@
+.RadioItem {
+  position: relative;
+  border: 1px solid #eaeaea;
+  border-radius: 0.5rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.05;
+    background-color: transparent;
+  }
+
+  .chakra-radio {
+    width: 100%;
+
+    &__control {
+      width: 24px;
+      height: 24px;
+      margin-left: auto;
+    }
+  }
+
+  &:has(.chakra-radio[data-checked]) {
+    border-color: var(--clr-primary);
+
+    &::before {
+      background-color: var(--clr-primary);
+    }
+
+    .chakra-radio__control {
+      border-color: var(--clr-primary);
+      background-color: var(--clr-primary);
+    }
+  }
+
+  .chakra-radio__label {
+    width: 100%;
+    margin: 0;
+    padding-right: 1rem;
+  }
+}

@@ -1,0 +1,14 @@
+.InputBox {
+  input:focus-visible {
+    border-color: var(--clr-primary);
+    box-shadow: unset;
+  }
+
+  input {
+    color: var(--clr-black);
+  }
+
+  label {
+    color: var(--clr-gray-dark);
+  }
+}
