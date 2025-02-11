@@ -1,0 +1,50 @@
+.SideBar {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  background-color: var(--clr-primary);
+  color: #fff;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+
+    position: sticky;
+    top: 0;
+
+    min-height: 100dvh;
+
+    width: 100%;
+
+    padding: 70px 40px;
+  }
+
+  &__logo {
+    flex-shrink: 0;
+    margin-bottom: 6.25rem;
+  }
+
+  &__menu {
+    &--footer {
+      margin-top: auto;
+      padding-top: 1.875rem;
+    }
+
+    &__list {
+      padding: 0;
+      margin: 0;
+
+      display: flex;
+      flex-direction: column;
+
+      gap: 1.875rem;
+    }
+
+    a {
+      display: block;
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: inherit;
+    }
+  }
+}

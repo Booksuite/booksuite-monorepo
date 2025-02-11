@@ -1,0 +1,26 @@
+.DateRangeBox {
+  input {
+    cursor: pointer;
+  }
+
+  &__rightElement {
+    top: 50% !important;
+    transform: translateY(-50%);
+  }
+
+  &__DateRange {
+    .rdrStartEdge,
+    .rdrEndEdge,
+    .rdrInRange {
+      color: var(--clr-primary-400) !important;
+    }
+
+    .rdrDayToday .rdrDayNumber span:after {
+      background-color: var(--clr-primary-400);
+    }
+
+    .rdrMonth {
+      width: 100%;
+    }
+  }
+}

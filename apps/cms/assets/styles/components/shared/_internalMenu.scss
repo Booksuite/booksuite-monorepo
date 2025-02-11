@@ -1,0 +1,17 @@
+.InternalMenu {
+  color: var(--clr-tertiary);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  cursor: pointer;
+
+  a {
+    color: inherit;
+  }
+
+  &__Button {
+    padding: 1rem 0.75rem;
+    border-radius: 1rem;
+    background-color: var(--clr-tertiary-50);
+  }
+}

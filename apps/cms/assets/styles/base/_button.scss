@@ -1,0 +1,16 @@
+.btn {
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius);
+
+  &.btn-primary {
+    color: #fff;
+
+    background-color: var(--clr-primary);
+  }
+
+  &.btn-secondary {
+    color: #fff;
+
+    background-color: var(--clr-secondary);
+  }
+}
