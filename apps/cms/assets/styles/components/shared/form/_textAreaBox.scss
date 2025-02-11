@@ -1,0 +1,11 @@
+.TextAreaBox {
+  isolation: isolate;
+
+  &__counter {
+    position: absolute;
+    top: 0.625rem;
+    right: 0.625rem;
+    color: #89949f;
+    z-index: 2;
+  }
+}

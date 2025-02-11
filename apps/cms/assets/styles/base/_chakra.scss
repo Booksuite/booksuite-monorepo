@@ -1,0 +1,22 @@
+.chakra-button {
+  svg {
+    path {
+      stroke: currentColor;
+    }
+  }
+  &__icon {
+    svg {
+      width: 1.25rem;
+    }
+  }
+}
+
+.chakra-breadcrumb {
+  color: var(--clr-accent);
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.chakra-react-select__single-value {
+  z-index: 1;
+}

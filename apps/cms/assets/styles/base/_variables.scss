@@ -1,0 +1,88 @@
+:root {
+  --border-radius: 0.5rem;
+
+  --transition: 0.2s ease-in-out;
+
+  //colors
+  --clr-error: #ea4335;
+
+  --clr-text-disabled: #a1a1aa;
+  --clr-background-disabled: #f1f1f1;
+
+  --clr-success: #1d7f52;
+  --clr-alert: #d63841;
+  --clr-warning: #e0ae15;
+  --clr-inactive: #6b7279;
+
+  --clr-primary: var(--clr-primary-900);
+  --clr-primary-50: #e6f6ff;
+  --clr-primary-100: #bae3ff;
+  --clr-primary-200: #7cc4fa;
+  --clr-primary-300: #47a3f3;
+  --clr-primary-400: #2186eb;
+  --clr-primary-500: #0967d2;
+  --clr-primary-600: #0552b5;
+  --clr-primary-700: #03449e;
+  --clr-primary-800: #01337d;
+  --clr-primary-900: #002159;
+
+  --clr-primary-dark: #0f172a;
+  --clr-primary-light: #475569;
+
+  --clr-secondary: var(--clr-secondary-600);
+  --clr-secondary-50: #ffd0b5;
+  --clr-secondary-100: #ffe8d9;
+  --clr-secondary-200: #ffb088;
+  --clr-secondary-300: #ff9466;
+  --clr-secondary-400: #f9703e;
+  --clr-secondary-500: #f35627;
+  --clr-secondary-600: #de3a11;
+  --clr-secondary-700: #c52707;
+  --clr-secondary-800: #ad1d07;
+  --clr-secondary-900: #841003;
+
+  --clr-tertiary: var(--clr-tertiary-900);
+  --clr-tertiary-50: #f0f4f8;
+  --clr-tertiary-100: #d9e2ec;
+  --clr-tertiary-200: #bcccdc;
+  --clr-tertiary-300: #9fb3c8;
+  --clr-tertiary-400: #829ab1;
+  --clr-tertiary-500: #627d98;
+  --clr-tertiary-600: #486581;
+  --clr-tertiary-700: #334e68;
+  --clr-tertiary-800: #243b53;
+  --clr-tertiary-900: #102a43;
+
+  --chakra-colors-primary-50: var(--clr-primary-50) !important;
+  --chakra-colors-primary-100: var(--clr-primary-100) !important;
+  --chakra-colors-primary-200: var(--clr-primary-200) !important;
+  --chakra-colors-primary-300: var(--clr-primary-300) !important;
+  --chakra-colors-primary-400: var(--clr-primary-400) !important;
+  --chakra-colors-primary-500: var(--clr-primary-500) !important;
+  --chakra-colors-primary-600: var(--clr-primary-600) !important;
+  --chakra-colors-primary-700: var(--clr-primary-700) !important;
+  --chakra-colors-primary-800: var(--clr-primary-800) !important;
+  --chakra-colors-primary-900: var(--clr-primary-900) !important;
+
+  --chakra-colors-secondary-50: var(--clr-secondary-50) !important;
+  --chakra-colors-secondary-100: var(--clr-secondary-100) !important;
+  --chakra-colors-secondary-200: var(--clr-secondary-200) !important;
+  --chakra-colors-secondary-300: var(--clr-secondary-300) !important;
+  --chakra-colors-secondary-400: var(--clr-secondary-400) !important;
+  --chakra-colors-secondary-500: var(--clr-secondary-500) !important;
+  --chakra-colors-secondary-600: var(--clr-secondary-600) !important;
+  --chakra-colors-secondary-700: var(--clr-secondary-700) !important;
+  --chakra-colors-secondary-800: var(--clr-secondary-800) !important;
+  --chakra-colors-secondary-900: var(--clr-secondary-900) !important;
+
+  --chakra-colors-tertiary-50: var(--clr-tertiary-50) !important;
+  --chakra-colors-tertiary-100: var(--clr-tertiary-100) !important;
+  --chakra-colors-tertiary-200: var(--clr-tertiary-200) !important;
+  --chakra-colors-tertiary-300: var(--clr-tertiary-300) !important;
+  --chakra-colors-tertiary-400: var(--clr-tertiary-400) !important;
+  --chakra-colors-tertiary-500: var(--clr-tertiary-500) !important;
+  --chakra-colors-tertiary-600: var(--clr-tertiary-600) !important;
+  --chakra-colors-tertiary-700: var(--clr-tertiary-700) !important;
+  --chakra-colors-tertiary-800: var(--clr-tertiary-800) !important;
+  --chakra-colors-tertiary-900: var(--clr-tertiary-900) !important;
+}

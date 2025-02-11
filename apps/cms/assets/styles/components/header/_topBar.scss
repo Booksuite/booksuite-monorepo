@@ -1,0 +1,66 @@
+.TopBar {
+  position: sticky;
+  top: 0;
+
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  padding: 0.625rem 1.25rem;
+
+  background-color: #fff;
+  box-shadow: 0px 2px 3px 0px #00000026;
+  z-index: 9;
+
+  .menuHamburguer {
+    font-size: 1.875rem;
+  }
+
+  .searchBox {
+    width: 300px;
+    max-width: 100%;
+  }
+
+  .notifications {
+    position: relative;
+
+    &__icon {
+      font-size: 1.5rem;
+    }
+
+    &__number {
+      position: absolute;
+      top: 0;
+      right: 30%;
+
+      font-size: 0.5625rem;
+      line-height: 1.5;
+      color: #fff;
+      isolation: isolate;
+
+      transform: translateX(50%);
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+
+        display: block;
+        width: 12px;
+        height: 12px;
+        border-radius: 100vw;
+        background-color: var(--clr-secondary-400);
+
+        transform: translateX(-50%);
+        z-index: -1;
+      }
+    }
+  }
+
+  .external {
+    font-size: 1.25rem;
+  }
+}
