@@ -1,10 +1,10 @@
 'use client'
 
-import InputBox from '@/src/components/shared/form/InputBox'
-import SelectBox from '@/src/components/shared/form/SelectBox'
-import { SwitchBox } from '@/src/components/shared/form/SwitchBox'
-import { PageHeader } from '@/src/components/shared/PageHeader'
-import { Icons } from '@/src/components/svgs/icons'
+import InputBox from '@/components/shared/form/InputBox'
+import SelectBox from '@/components/shared/form/SelectBox'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { PageHeader } from '@/components/shared/PageHeader'
+import { Icons } from '@/components/svgs/icons'
 import { Alert, AlertDescription, Button, Flex, Stack } from '@chakra-ui/react'
 
 export default function FormasDePagamento() {

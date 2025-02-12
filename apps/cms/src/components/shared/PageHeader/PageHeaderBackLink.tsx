@@ -3,7 +3,7 @@
 import NextLink from 'next/link'
 import * as React from 'react'
 
-import ChevronRightIcon from '@/src/components/svgs/icons/ChevronRightIcon'
+import ChevronRightIcon from '@/components/svgs/icons/ChevronRightIcon'
 import { Link, LinkProps } from '@chakra-ui/react'
 
 export interface PageHeaderBackLinkProps extends LinkProps {

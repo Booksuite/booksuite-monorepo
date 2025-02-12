@@ -1,9 +1,9 @@
 'use client'
 
-import { List } from '@/src/components/shared/List'
-import { PageHeader } from '@/src/components/shared/PageHeader'
-import { SimpleFilter } from '@/src/components/shared/SimpleFilter/SimpleFilter'
-import { Icons } from '@/src/components/svgs/icons'
+import { List } from '@/components/shared/List'
+import { PageHeader } from '@/components/shared/PageHeader'
+import { SimpleFilter } from '@/components/shared/SimpleFilter/SimpleFilter'
+import { Icons } from '@/components/svgs/icons'
 import { Button, Flex, Link } from '@chakra-ui/react'
 
 interface RegrasDeTemporadaProps {}

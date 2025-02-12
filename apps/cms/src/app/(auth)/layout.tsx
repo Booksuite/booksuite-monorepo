@@ -1,10 +1,10 @@
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
 import SideBar from '@/components/header/SideBar'
 import { TopBar } from '@/components/header/TopBar'
 import { ValidateUserToken } from '@/components/validateUserToken'
-import { authOptions } from '@/src/app/api/auth/[...nextauth]/authOptions'
 
 interface AuthLayoutProps {
     children: React.ReactNode

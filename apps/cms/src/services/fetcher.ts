@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth'
 
-import { authOptions } from '@/src/app/api/auth/[...nextauth]/authOptions'
+import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
 interface FetcherOptions extends RequestInit {
     headers?: { [key: string]: string }
 }

@@ -1,11 +1,11 @@
 'use client'
 
-import { PageHeader } from '@/src/components/shared/PageHeader'
-import InputBox from '@/src/components/shared/form/InputBox'
-import InputNumberBox from '@/src/components/shared/form/InputNumberBox'
-import SelectBox from '@/src/components/shared/form/SelectBox'
-import { SwitchBox } from '@/src/components/shared/form/SwitchBox'
-import { Icons } from '@/src/components/svgs/icons'
+import { PageHeader } from '@/components/shared/PageHeader'
+import InputBox from '@/components/shared/form/InputBox'
+import InputNumberBox from '@/components/shared/form/InputNumberBox'
+import SelectBox from '@/components/shared/form/SelectBox'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { Icons } from '@/components/svgs/icons'
 import { Button, Flex, Stack } from '@chakra-ui/react'
 
 export default function PoliticaDeIdade() {

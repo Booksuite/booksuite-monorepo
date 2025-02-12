@@ -1,5 +1,6 @@
 'use client'
 
+import { useCompanyContext } from '@/app/providers/companyProvider'
 import { Gallery } from '@/components/shared/Gallery'
 import { PageHeader } from '@/components/shared/PageHeader'
 import InputBox from '@/components/shared/form/InputBox'
@@ -7,7 +8,6 @@ import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
 import { Icons } from '@/components/svgs/icons'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'
-import { useCompanyContext } from '@/src/app/providers/companyProvider'
 import type { UpdateCompanyDTO } from '@/types/Company'
 import {
     Alert,

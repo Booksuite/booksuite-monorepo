@@ -2,8 +2,8 @@
 
 import React from 'react'
 
+import { useCompanyContext } from '@/app/providers/companyProvider'
 import { useClient } from '@/hooks/useClient'
-import { useCompanyContext } from '@/src/app/providers/companyProvider'
 
 interface LayoutConfiguracoesProps {
     children: React.ReactNode

@@ -1,4 +1,4 @@
-import Logo from '@/src/components/svgs/Logo'
+import Logo from '@/components/svgs/Logo'
 
 export default function PublicLayout({ children }) {
     return (

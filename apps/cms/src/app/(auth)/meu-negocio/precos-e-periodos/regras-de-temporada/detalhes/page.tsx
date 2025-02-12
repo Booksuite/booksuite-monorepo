@@ -1,10 +1,10 @@
-import DateRangeBox from '@/src/components/shared/form/DateRangeBox'
-import InputBox from '@/src/components/shared/form/InputBox'
-import InputCheckboxBox from '@/src/components/shared/form/InputCheckboxBox'
-import InputNumberBox from '@/src/components/shared/form/InputNumberBox'
-import SelectBox from '@/src/components/shared/form/SelectBox'
-import { SwitchBox } from '@/src/components/shared/form/SwitchBox'
-import { PageHeader } from '@/src/components/shared/PageHeader'
+import DateRangeBox from '@/components/shared/form/DateRangeBox'
+import InputBox from '@/components/shared/form/InputBox'
+import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
+import InputNumberBox from '@/components/shared/form/InputNumberBox'
+import SelectBox from '@/components/shared/form/SelectBox'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { PageHeader } from '@/components/shared/PageHeader'
 import {
     Button,
     CheckboxGroup,

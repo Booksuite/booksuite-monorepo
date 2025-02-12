@@ -7,7 +7,7 @@ import moment from 'moment'
 import { useState } from 'react'
 import { Calendar, DateRange } from 'react-date-range'
 
-import CalendarIcon from '@/src/components/svgs/icons/CalendarIcon'
+import CalendarIcon from '@/components/svgs/icons/CalendarIcon'
 import {
     FormControl,
     FormLabel,

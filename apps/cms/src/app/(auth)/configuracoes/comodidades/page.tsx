@@ -1,8 +1,8 @@
 'use client'
 
-import { PageHeader } from '@/src/components/shared/PageHeader'
-import InputCheckboxBox from '@/src/components/shared/form/InputCheckboxBox'
-import { Icons } from '@/src/components/svgs/icons'
+import { PageHeader } from '@/components/shared/PageHeader'
+import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
+import { Icons } from '@/components/svgs/icons'
 import { Button, CheckboxGroup, Flex, Stack } from '@chakra-ui/react'
 
 export default function Comodidades() {
