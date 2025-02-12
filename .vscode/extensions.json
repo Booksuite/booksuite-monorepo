@@ -3,6 +3,8 @@
         "rvest.vs-code-prettier-eslint",
         "dbaeumer.vscode-eslint",
         "esbenp.prettier-vscode",
+        "eamodio.gitlens",
+        "donjayamanne.githistory",
         "EditorConfig.EditorConfig"
     ]
 }
