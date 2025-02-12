@@ -1,0 +1,32 @@
+import { InternalMenu } from '@/src/components/shared/InternalMenu'
+import { PageHeader } from '@/src/components/shared/PageHeader'
+import HomeIcon from '@/src/components/svgs/icons/HomeIcon'
+import { Stack } from '@chakra-ui/react'
+
+export default function Marketing() {
+    return (
+        <div className="Marketing">
+            <PageHeader.Root>
+                <PageHeader.BackLink href="/">Início</PageHeader.BackLink>
+
+                <PageHeader.Title>Marketing</PageHeader.Title>
+            </PageHeader.Root>
+
+            <Stack direction={'column'} gap={2}>
+                <InternalMenu.Root>
+                    <InternalMenu.Button href="/marketing/banners">
+                        <HomeIcon />
+                        Banners
+                    </InternalMenu.Button>
+                </InternalMenu.Root>
+
+                <InternalMenu.Root>
+                    <InternalMenu.Button href="/marketing/automacoes">
+                        <HomeIcon />
+                        Automações
+                    </InternalMenu.Button>
+                </InternalMenu.Root>
+            </Stack>
+        </div>
+    )
+}
