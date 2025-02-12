@@ -1,86 +1,107 @@
-"use client";
+'use client'
 
-import { PageHeader } from "@/src/components/shared/PageHeader";
-import { SwitchBox } from "@/src/components/shared/form/SwitchBox";
-import { Flex, Spinner } from "@chakra-ui/react";
-import { useEffect, useState, type FormEvent } from "react";
+import { PageHeader } from '@/components/shared/PageHeader'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { Flex, Spinner } from '@chakra-ui/react'
+import { useEffect, useState, type FormEvent } from 'react'
 
-import { ExperienciasForm } from "@/src/components/experiencias/ExperienciasForm";
-import { UpdateExperienceDTO } from "@/types/Experience";
+import { ExperienciasForm } from '@/components/experiencias/ExperienciasForm'
+import { UpdateExperienceDTO } from '@/types/Experience'
 
-import { toastGenericPatchMessages } from "@/contexts/constants/toastMessages";
-import { useToast } from "@chakra-ui/react";
+import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
+import { useToast } from '@chakra-ui/react'
 
-import { useGetExperience } from "@/src/hooks/experiences/useGetExperience";
-import { updateExperience } from "@/src/services/experience/updateExperience";
-import type { Status } from "@/types/Status";
+import { useGetExperience } from '@/hooks/experiences/useGetExperience'
+import { updateExperience } from '@/services/experience/updateExperience'
+import type { Status } from '@/types/Status'
 
-export default function DetalhesExperienciasPage({ params }: { params: { id: string } }) {
-  const { isLoading, experience, error } = useGetExperience(params.id);
+export default function DetalhesExperienciasPage({
+    params,
+}: {
+    params: { id: string }
+}) {
+    const { isLoading, experience, error } = useGetExperience(params.id)
 
-  const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [status, setStatus] = useState<Status>(experience?.status ?? "Inativo");
+    const [isSaving, setIsSaving] = useState<boolean>(false)
+    const [status, setStatus] = useState<Status>(
+        experience?.status ?? 'Inativo',
+    )
 
-  const toast = useToast();
+    const toast = useToast()
 
-  function saveExperience(e: FormEvent<HTMLFormElement>, formData: UpdateExperienceDTO) {
-    e.preventDefault();
+    function saveExperience(
+        e: FormEvent<HTMLFormElement>,
+        formData: UpdateExperienceDTO,
+    ) {
+        e.preventDefault()
 
-    if (isSaving) {
-      return;
+        if (isSaving) {
+            return
+        }
+
+        setIsSaving(true)
+
+        const payload = {
+            ...formData,
+            status: status,
+        } as UpdateExperienceDTO
+
+        const response = new Promise((resolve, reject) => {
+            resolve(updateExperience(params.id, payload))
+        }).finally(() => {
+            setIsSaving(false)
+        })
+
+        toast.promise(response, toastGenericPatchMessages)
     }
 
-    setIsSaving(true);
+    useEffect(() => {
+        if (experience) {
+            setStatus(experience.status)
+        }
+    }, [experience])
 
-    const payload = {
-      ...formData,
-      status: status,
-    } as UpdateExperienceDTO;
+    return (
+        <div className="DetalhesExperiencias">
+            <PageHeader.Root>
+                <Flex
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap={2}
+                >
+                    <PageHeader.BackLink href="/meu-negocio/experiencias">
+                        Experiências
+                    </PageHeader.BackLink>
 
-    const response = new Promise((resolve, reject) => {
-      resolve(updateExperience(params.id, payload));
-    }).finally(() => {
-      setIsSaving(false);
-    });
+                    {!isLoading && (
+                        <SwitchBox
+                            label="Ativa"
+                            id="status"
+                            name="status"
+                            onChange={() => {
+                                status === 'Ativo'
+                                    ? setStatus('Inativo')
+                                    : setStatus('Ativo')
+                            }}
+                            isChecked={status === 'Ativo'}
+                        />
+                    )}
+                </Flex>
 
-    toast.promise(response, toastGenericPatchMessages);
-  }
+                <PageHeader.Title>Detalhes da Experiência</PageHeader.Title>
+            </PageHeader.Root>
 
-  useEffect(() => {
-    if (experience) {
-      setStatus(experience.status);
-    }
-  }, [experience]);
-
-  return (
-    <div className="DetalhesExperiencias">
-      <PageHeader.Root>
-        <Flex alignItems="center" justifyContent="space-between" gap={2}>
-          <PageHeader.BackLink href="/meu-negocio/experiencias">Experiências</PageHeader.BackLink>
-
-          {!isLoading && (
-            <SwitchBox
-              label="Ativa"
-              id="status"
-              name="status"
-              onChange={() => {
-                status === "Ativo" ? setStatus("Inativo") : setStatus("Ativo");
-              }}
-              isChecked={status === "Ativo"}
-            />
-          )}
-        </Flex>
-
-        <PageHeader.Title>Detalhes da Experiência</PageHeader.Title>
-      </PageHeader.Root>
-
-      {isLoading ? (
-        <Spinner />
-      ) : error ? (
-        <p>{error}</p>
-      ) : (
-        <ExperienciasForm onSubmit={saveExperience} data={experience} isSaving={isSaving} />
-      )}
-    </div>
-  );
+            {isLoading ? (
+                <Spinner />
+            ) : error ? (
+                <p>{error}</p>
+            ) : (
+                <ExperienciasForm
+                    onSubmit={saveExperience}
+                    data={experience}
+                    isSaving={isSaving}
+                />
+            )}
+        </div>
+    )
 }

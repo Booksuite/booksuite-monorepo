@@ -1,11 +1,17 @@
 'use client'
 
-import { Gallery } from '@/src/components/shared/Gallery'
-import InputBox from '@/src/components/shared/form/InputBox'
-import InputCheckboxBox from '@/src/components/shared/form/InputCheckboxBox'
-import InputNumberBox from '@/src/components/shared/form/InputNumberBox'
-import { TextAreaBox } from '@/src/components/shared/form/TextAreaBox'
-import { Icons } from '@/src/components/svgs/icons'
+import { Gallery } from '@/components/shared/Gallery'
+import InputBox from '@/components/shared/form/InputBox'
+import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
+import InputNumberBox from '@/components/shared/form/InputNumberBox'
+import { PriceList } from '@/components/shared/form/PriceList'
+import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
+import { Icons } from '@/components/svgs/icons'
+import {
+    Acomodacao,
+    CreateAcomodacaoDTO,
+    UpdateAcomodacaoDTO,
+} from '@/types/Acomodacao'
 import {
     Button,
     CheckboxGroup,
@@ -14,13 +20,6 @@ import {
     Stack,
 } from '@chakra-ui/react'
 import { useState, type FormEvent } from 'react'
-
-import { PriceList } from '@/src/components/shared/form/PriceList'
-import {
-    Acomodacao,
-    CreateAcomodacaoDTO,
-    UpdateAcomodacaoDTO,
-} from '@/types/Acomodacao'
 
 interface AcomodacaoFormProps<
     T extends UpdateAcomodacaoDTO | CreateAcomodacaoDTO,

@@ -1,6 +1,6 @@
+import { useCompanyContext } from '@/app/providers/companyProvider'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'
-import { useCompanyContext } from '@/src/app/providers/companyProvider'
 import type { UpdateCompanyDTO } from '@/types/Company'
 import { useToast } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'

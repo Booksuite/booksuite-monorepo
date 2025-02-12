@@ -1,12 +1,12 @@
 'use client'
 
-import DateRangeBox from '@/src/components/shared/form/DateRangeBox'
-import InputCheckboxBox from '@/src/components/shared/form/InputCheckboxBox'
-import InputNumberBox from '@/src/components/shared/form/InputNumberBox'
-import SelectBox from '@/src/components/shared/form/SelectBox'
-import { SwitchBox } from '@/src/components/shared/form/SwitchBox'
-import { PageHeader } from '@/src/components/shared/PageHeader'
-import { Icons } from '@/src/components/svgs/icons'
+import DateRangeBox from '@/components/shared/form/DateRangeBox'
+import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
+import InputNumberBox from '@/components/shared/form/InputNumberBox'
+import SelectBox from '@/components/shared/form/SelectBox'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { PageHeader } from '@/components/shared/PageHeader'
+import { Icons } from '@/components/svgs/icons'
 import {
     Alert,
     AlertDescription,

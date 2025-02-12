@@ -1,6 +1,6 @@
 'use client'
 
-import { AddButton } from '@/src/components/shared/AddButton'
+import { AddButton } from '@/components/shared/AddButton'
 
 interface PriceListRootProps {
     children?: React.ReactNode

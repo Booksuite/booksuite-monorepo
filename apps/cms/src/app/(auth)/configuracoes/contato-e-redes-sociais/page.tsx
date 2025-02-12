@@ -1,8 +1,8 @@
 'use client'
 
-import { PageHeader } from '@/src/components/shared/PageHeader'
-import InputBox from '@/src/components/shared/form/InputBox'
-import { Icons } from '@/src/components/svgs/icons'
+import { PageHeader } from '@/components/shared/PageHeader'
+import InputBox from '@/components/shared/form/InputBox'
+import { Icons } from '@/components/svgs/icons'
 import { Button, Flex, Stack } from '@chakra-ui/react'
 
 export default function ContatoERedesSociais() {

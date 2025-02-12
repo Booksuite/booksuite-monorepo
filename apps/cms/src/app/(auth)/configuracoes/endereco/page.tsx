@@ -1,11 +1,11 @@
 'use client'
 
+import { useCompanyContext } from '@/app/providers/companyProvider'
+import { PageHeader } from '@/components/shared/PageHeader'
+import InputBox from '@/components/shared/form/InputBox'
+import SelectBox from '@/components/shared/form/SelectBox'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'
-import { useCompanyContext } from '@/src/app/providers/companyProvider'
-import { PageHeader } from '@/src/components/shared/PageHeader'
-import InputBox from '@/src/components/shared/form/InputBox'
-import SelectBox from '@/src/components/shared/form/SelectBox'
 import type { UpdateCompanyDTO } from '@/types/Company'
 import { Button, Flex, Stack, useToast } from '@chakra-ui/react'
 import {

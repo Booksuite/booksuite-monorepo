@@ -1,4 +1,4 @@
-import ChevronRightIcon from '@/src/components/svgs/icons/ChevronRightIcon'
+import ChevronRightIcon from '@/components/svgs/icons/ChevronRightIcon'
 
 export function InternalMenuAfter() {
     return (

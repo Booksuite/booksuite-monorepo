@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Icons } from '@/src/components/svgs/icons'
+import { Icons } from '@/components/svgs/icons'
 import { AspectRatio, Image, Stack } from '@chakra-ui/react'
 
 interface ListItemProps {

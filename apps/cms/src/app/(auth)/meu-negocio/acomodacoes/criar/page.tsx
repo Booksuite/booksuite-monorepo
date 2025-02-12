@@ -1,16 +1,16 @@
 'use client'
 
+import { AcomodacaoForm } from '@/components/acomodacoes/AcomodacaoForm'
+import { PageHeader } from '@/components/shared/PageHeader'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
-import { AcomodacaoForm } from '@/src/components/acomodacoes/AcomodacaoForm'
-import { PageHeader } from '@/src/components/shared/PageHeader'
-import { SwitchBox } from '@/src/components/shared/form/SwitchBox'
 import type { Status } from '@/types/Status'
 import { Flex, useToast } from '@chakra-ui/react'
 import { useState, type FormEvent } from 'react'
 
-import { createAcomodacao } from '@/src/services/acomodacao/createAcomodacao'
-import { slugify } from '@/src/utils/slugify'
+import { createAcomodacao } from '@/services/acomodacao/createAcomodacao'
 import { CreateAcomodacaoDTO } from '@/types/Acomodacao'
+import { slugify } from '@/utils/slugify'
 
 export default function PageCreateAcomodacao() {
     const [isSaving, setIsSaving] = useState<boolean>(false)

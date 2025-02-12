@@ -1,67 +1,78 @@
-"use client";
+'use client'
 
-import { PageHeader } from "@/src/components/shared/PageHeader";
-import { SwitchBox } from "@/src/components/shared/form/SwitchBox";
-import { Flex, useToast } from "@chakra-ui/react";
-import React, { useState, type FormEvent } from "react";
+import { PageHeader } from '@/components/shared/PageHeader'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { Flex, useToast } from '@chakra-ui/react'
+import { useState, type FormEvent } from 'react'
 
-import { ExperienciasForm } from "@/src/components/experiencias/ExperienciasForm";
-import type { CreateExperienceDTO } from "@/types/Experience";
-import type { Status } from "@/types/Status";
-import { createExperience } from "@/src/services/experience/createExperience";
-import { toastGenericPatchMessages } from "@/contexts/constants/toastMessages";
+import { ExperienciasForm } from '@/components/experiencias/ExperienciasForm'
+import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
+import { createExperience } from '@/services/experience/createExperience'
+import type { CreateExperienceDTO } from '@/types/Experience'
+import type { Status } from '@/types/Status'
 
 export default function CreateExperienciasPage() {
-  const [isSaving, setIsSaving] = useState<boolean>(false);
-  const [status, setStatus] = useState<Status>("Ativo");
+    const [isSaving, setIsSaving] = useState<boolean>(false)
+    const [status, setStatus] = useState<Status>('Ativo')
 
-  const toast = useToast();
+    const toast = useToast()
 
-  function saveExperience(e: FormEvent<HTMLFormElement>, formData: CreateExperienceDTO) {
-    e.preventDefault();
+    function saveExperience(
+        e: FormEvent<HTMLFormElement>,
+        formData: CreateExperienceDTO,
+    ) {
+        e.preventDefault()
 
-    if (isSaving) {
-      return;
+        if (isSaving) {
+            return
+        }
+
+        setIsSaving(true)
+
+        const payload = {
+            ...formData,
+            status: status,
+        } as CreateExperienceDTO
+
+        const response = new Promise((resolve, reject) => {
+            resolve(createExperience(payload))
+        }).finally(() => {
+            setIsSaving(false)
+        })
+
+        toast.promise(response, toastGenericPatchMessages)
     }
 
-    setIsSaving(true);
+    return (
+        <div className="CreateExperiencias">
+            <PageHeader.Root>
+                <Flex
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap={2}
+                >
+                    <PageHeader.BackLink href="/meu-negocio/experiencias">
+                        Experiências
+                    </PageHeader.BackLink>
 
-    const payload = {
-      ...formData,
-      status: status,
-    } as CreateExperienceDTO;
+                    <SwitchBox
+                        label="Ativa"
+                        id="status"
+                        name="status"
+                        defaultChecked
+                        onChange={() => {
+                            status === 'Ativo'
+                                ? setStatus('Inativo')
+                                : setStatus('Ativo')
+                        }}
+                        isChecked={status === 'Ativo'}
+                    />
+                </Flex>
 
-    const response = new Promise((resolve, reject) => {
-      resolve(createExperience(payload));
-    }).finally(() => {
-      setIsSaving(false);
-    });
+                <PageHeader.Title>Criar Experiência</PageHeader.Title>
+            </PageHeader.Root>
 
-    toast.promise(response, toastGenericPatchMessages);
-  }
-
-  return (
-    <div className="CreateExperiencias">
-      <PageHeader.Root>
-        <Flex alignItems="center" justifyContent="space-between" gap={2}>
-          <PageHeader.BackLink href="/meu-negocio/experiencias">Experiências</PageHeader.BackLink>
-
-          <SwitchBox
-            label="Ativa"
-            id="status"
-            name="status"
-            defaultChecked
-            onChange={() => {
-              status === "Ativo" ? setStatus("Inativo") : setStatus("Ativo");
-            }}
-            isChecked={status === "Ativo"}
-          />
-        </Flex>
-
-        <PageHeader.Title>Criar Experiência</PageHeader.Title>
-      </PageHeader.Root>
-
-      <ExperienciasForm onSubmit={saveExperience} isSaving={isSaving} />
-    </div>
-  );
+            <ExperienciasForm onSubmit={saveExperience} isSaving={isSaving} />
+        </div>
+    )
 }

@@ -1,10 +1,10 @@
-import { InternalMenu } from '@/src/components/shared/InternalMenu'
-import { PageHeader } from '@/src/components/shared/PageHeader'
-import BoxIcon from '@/src/components/svgs/icons/BoxIcon'
-import HomeIcon from '@/src/components/svgs/icons/HomeIcon'
-import MoneyIcon from '@/src/components/svgs/icons/MoneyIcon'
+import { InternalMenu } from '@/components/shared/InternalMenu'
+import { PageHeader } from '@/components/shared/PageHeader'
+import BoxIcon from '@/components/svgs/icons/BoxIcon'
+import HomeIcon from '@/components/svgs/icons/HomeIcon'
+import MoneyIcon from '@/components/svgs/icons/MoneyIcon'
 
-import { Icons } from '@/src/components/svgs/icons'
+import { Icons } from '@/components/svgs/icons'
 
 export default function Configuracoes() {
     const fatherPath = '/configuracoes'

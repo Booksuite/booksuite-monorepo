@@ -2,8 +2,8 @@
 
 import { useRef } from 'react'
 
-import MinusIcon from '@/src/components/svgs/icons/MinusIcon'
-import PlusIcon from '@/src/components/svgs/icons/PlusIcon'
+import MinusIcon from '@/components/svgs/icons/MinusIcon'
+import PlusIcon from '@/components/svgs/icons/PlusIcon'
 import {
     FormControl,
     FormLabel,

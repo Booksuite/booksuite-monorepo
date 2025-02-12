@@ -1,4 +1,4 @@
-import InputBox from '@/src/components/shared/form/InputBox'
+import InputBox from '@/components/shared/form/InputBox'
 import Link from 'next/link'
 
 export default function EsqueciMinhaSenha() {
