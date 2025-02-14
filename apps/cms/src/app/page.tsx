@@ -1,11 +1,11 @@
 'use client'
 
-import { HeaderLayout } from '@/components/templates/Header'
+import { DashboardLayout } from '@/components/templates/DashboardLayout'
 
 export default function Page() {
     return (
-        <HeaderLayout>
+        <DashboardLayout>
             <p>Welcome to the Dashboard!</p>
-        </HeaderLayout>
+        </DashboardLayout>
     )
 }

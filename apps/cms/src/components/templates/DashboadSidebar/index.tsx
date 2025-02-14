@@ -1,11 +1,11 @@
 import { Logo } from '@/components/atoms/Logo'
 import { NavMenu } from '@/components/molecules/NavMenu'
-import { LinkType } from '@/components/molecules/NavMenu/types'
+import { LinkItem } from '@/components/molecules/NavMenu/types'
 import { Box, VStack } from '@chakra-ui/react'
-import { SideBarProps } from './types'
+import { DashboadSidebarProps } from './types'
 
-export const SideBar = ({ isOpen }: SideBarProps) => {
-    const mainLinks: LinkType[] = [
+export const DashboadSidebar: React.FC<DashboadSidebarProps> = ({ isOpen }) => {
+    const mainLinks: LinkItem[] = [
         { href: '/', label: 'Início' },
         { href: '/mapa', label: 'Mapa' },
         { href: '/relatorios', label: 'Relatórios' },
@@ -13,7 +13,7 @@ export const SideBar = ({ isOpen }: SideBarProps) => {
         { href: '/marketing', label: 'Marketing' },
     ]
 
-    const footerLinks: LinkType[] = [
+    const footerLinks: LinkItem[] = [
         { href: '/configuracoes', label: 'Configurações' },
     ]
 
