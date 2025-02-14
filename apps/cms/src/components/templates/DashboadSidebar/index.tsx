@@ -1,7 +1,9 @@
+import { Box, VStack } from '@chakra-ui/react'
+
 import { Logo } from '@/components/atoms/Logo'
 import { NavMenu } from '@/components/molecules/NavMenu'
 import { LinkItem } from '@/components/molecules/NavMenu/types'
-import { Box, VStack } from '@chakra-ui/react'
+
 import { DashboadSidebarProps } from './types'
 
 export const DashboadSidebar: React.FC<DashboadSidebarProps> = ({ isOpen }) => {

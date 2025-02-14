@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { Flex, Spinner, useToast } from '@chakra-ui/react'
+import { type FormEvent,useState } from 'react'
 
 import { ExtraForm } from '@/components/extras/ExtraForm'
 import { SwitchBox } from '@/components/shared/form/SwitchBox'
@@ -9,7 +10,6 @@ import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { useGetExtra } from '@/hooks/extras/useGetExtra'
 import { updateExtra } from '@/services/extra/updateExtra'
 import { UpdateExtraDTO } from '@/types/Extra'
-import { Flex, Spinner, useToast } from '@chakra-ui/react'
 
 export default function DetalhesExtras({ params }: { params: { id: string } }) {
     const { isLoading, extra, error } = useGetExtra(params.id)

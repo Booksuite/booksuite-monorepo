@@ -1,8 +1,7 @@
 "use client";
 
-import React from "react";
-
 import { Flex, FlexProps, FormLabel, Switch, SwitchProps } from "@chakra-ui/react";
+import React from "react";
 
 interface SwitchBoxProps extends SwitchProps {
   label?: string;

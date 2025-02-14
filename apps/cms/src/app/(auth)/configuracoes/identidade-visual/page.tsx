@@ -1,13 +1,5 @@
 'use client'
 
-import { useCompanyContext } from '@/app/providers/companyProvider'
-import { PageHeader } from '@/components/shared/PageHeader'
-import InputBox from '@/components/shared/form/InputBox'
-import SelectBox from '@/components/shared/form/SelectBox'
-import { Icons } from '@/components/svgs/icons'
-import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
-import { updateCompany } from '@/services/company/updateCompany'
-import type { UpdateCompanyDTO } from '@/types/Company'
 import {
     AspectRatio,
     Box,
@@ -17,7 +9,16 @@ import {
     Stack,
     useToast,
 } from '@chakra-ui/react'
-import { useState, type FormEvent } from 'react'
+import { type FormEvent,useState } from 'react'
+
+import { useCompanyContext } from '@/app/providers/companyProvider'
+import InputBox from '@/components/shared/form/InputBox'
+import SelectBox from '@/components/shared/form/SelectBox'
+import { PageHeader } from '@/components/shared/PageHeader'
+import { Icons } from '@/components/svgs/icons'
+import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
+import { updateCompany } from '@/services/company/updateCompany'
+import type { UpdateCompanyDTO } from '@/types/Company'
 
 export default function IdentidadeVisual() {
     const [formData, setFormData] = useState<UpdateCompanyDTO>(null)

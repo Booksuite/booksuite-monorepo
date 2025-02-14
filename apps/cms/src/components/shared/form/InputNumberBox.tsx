@@ -1,9 +1,5 @@
 'use client'
 
-import { useRef } from 'react'
-
-import MinusIcon from '@/components/svgs/icons/MinusIcon'
-import PlusIcon from '@/components/svgs/icons/PlusIcon'
 import {
     FormControl,
     FormLabel,
@@ -14,6 +10,10 @@ import {
     NumberInputProps,
     NumberInputStepper,
 } from '@chakra-ui/react'
+import { useRef } from 'react'
+
+import MinusIcon from '@/components/svgs/icons/MinusIcon'
+import PlusIcon from '@/components/svgs/icons/PlusIcon'
 
 export interface InputNumberBoxProps extends NumberInputProps {
     label?: string | React.ReactNode

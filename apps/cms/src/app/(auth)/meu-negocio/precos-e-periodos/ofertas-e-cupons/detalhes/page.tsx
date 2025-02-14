@@ -1,3 +1,11 @@
+import {
+    Button,
+    CheckboxGroup,
+    Flex,
+    SimpleGrid,
+    Stack,
+} from '@chakra-ui/react'
+
 import DateRangeBox from '@/components/shared/form/DateRangeBox'
 import InputBox from '@/components/shared/form/InputBox'
 import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
@@ -7,13 +15,6 @@ import { SwitchBox } from '@/components/shared/form/SwitchBox'
 import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import {
-    Button,
-    CheckboxGroup,
-    Flex,
-    SimpleGrid,
-    Stack,
-} from '@chakra-ui/react'
 
 export default function DetalhesOfertasECupons() {
     return (

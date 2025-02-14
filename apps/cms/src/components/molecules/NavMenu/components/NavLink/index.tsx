@@ -1,5 +1,6 @@
 import { Link } from '@chakra-ui/react'
 import NextLink from 'next/link'
+
 import { NavLinkProps } from '../../types'
 
 export const NavLink = ({ href, children, isActive }: NavLinkProps) => (

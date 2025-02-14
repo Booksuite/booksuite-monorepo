@@ -1,5 +1,5 @@
-import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth'
 
 import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
 import SideBar from '@/components/header/SideBar'

@@ -1,17 +1,5 @@
 'use client'
 
-import { Gallery } from '@/components/shared/Gallery'
-import InputBox from '@/components/shared/form/InputBox'
-import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
-import InputNumberBox from '@/components/shared/form/InputNumberBox'
-import { PriceList } from '@/components/shared/form/PriceList'
-import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
-import { Icons } from '@/components/svgs/icons'
-import {
-    Acomodacao,
-    CreateAcomodacaoDTO,
-    UpdateAcomodacaoDTO,
-} from '@/types/Acomodacao'
 import {
     Button,
     CheckboxGroup,
@@ -19,7 +7,20 @@ import {
     SimpleGrid,
     Stack,
 } from '@chakra-ui/react'
-import { useState, type FormEvent } from 'react'
+import { type FormEvent,useState } from 'react'
+
+import InputBox from '@/components/shared/form/InputBox'
+import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
+import InputNumberBox from '@/components/shared/form/InputNumberBox'
+import { PriceList } from '@/components/shared/form/PriceList'
+import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
+import { Gallery } from '@/components/shared/Gallery'
+import { Icons } from '@/components/svgs/icons'
+import {
+    Acomodacao,
+    CreateAcomodacaoDTO,
+    UpdateAcomodacaoDTO,
+} from '@/types/Acomodacao'
 
 interface AcomodacaoFormProps<
     T extends UpdateAcomodacaoDTO | CreateAcomodacaoDTO,

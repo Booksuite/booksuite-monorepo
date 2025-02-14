@@ -1,6 +1,7 @@
+import { useEffect, useState } from 'react'
+
 import axiosInstance from '@/services/axios/axiosInstance'
 import type { Extra } from '@/types/Extra'
-import { useEffect, useState } from 'react'
 
 export function useGetExtra(id?: number | string) {
     const [error, setError] = useState<string | null>(null)

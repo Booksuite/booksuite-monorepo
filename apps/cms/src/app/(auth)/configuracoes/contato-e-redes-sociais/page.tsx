@@ -1,9 +1,10 @@
 'use client'
 
-import { PageHeader } from '@/components/shared/PageHeader'
-import InputBox from '@/components/shared/form/InputBox'
-import { Icons } from '@/components/svgs/icons'
 import { Button, Flex, Stack } from '@chakra-ui/react'
+
+import InputBox from '@/components/shared/form/InputBox'
+import { PageHeader } from '@/components/shared/PageHeader'
+import { Icons } from '@/components/svgs/icons'
 
 export default function ContatoERedesSociais() {
     function handleSubmit() {

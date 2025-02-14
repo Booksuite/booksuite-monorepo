@@ -1,16 +1,17 @@
 'use client'
 
-import axiosInstance from '@/services/axios/axiosInstance'
-import type { Company } from '@/types/Company'
 import { getCookie, setCookie } from 'cookies-next'
 import {
     createContext,
+    type Dispatch,
+    type SetStateAction,
     useContext,
     useEffect,
     useState,
-    type Dispatch,
-    type SetStateAction,
 } from 'react'
+
+import axiosInstance from '@/services/axios/axiosInstance'
+import type { Company } from '@/types/Company'
 
 interface CompanyProviderProps {
     children: React.ReactNode

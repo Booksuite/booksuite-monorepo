@@ -2,8 +2,10 @@
 
 import { Box, Flex } from '@chakra-ui/react'
 import { useState } from 'react'
+
 import { DashboadSidebar } from '../DashboadSidebar'
 import { DashboardHeader } from '../DashboardHeader'
+
 import { DashboardLayoutProps } from './types'
 
 const avatarUrl = '/profile-pic.png'

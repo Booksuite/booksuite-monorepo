@@ -1,11 +1,11 @@
 'use client'
 
-import { PageHeader } from '@/components/shared/PageHeader'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
 import { Flex, useToast } from '@chakra-ui/react'
-import { useState, type FormEvent } from 'react'
+import { type FormEvent,useState } from 'react'
 
 import { ExperienciasForm } from '@/components/experiencias/ExperienciasForm'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { PageHeader } from '@/components/shared/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { createExperience } from '@/services/experience/createExperience'
 import type { CreateExperienceDTO } from '@/types/Experience'

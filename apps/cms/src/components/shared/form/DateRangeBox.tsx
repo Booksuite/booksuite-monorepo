@@ -2,12 +2,6 @@
 
 import 'moment/locale/pt-br'
 
-import { ptBR } from 'date-fns/locale'
-import moment from 'moment'
-import { useState } from 'react'
-import { Calendar, DateRange } from 'react-date-range'
-
-import CalendarIcon from '@/components/svgs/icons/CalendarIcon'
 import {
     FormControl,
     FormLabel,
@@ -20,6 +14,12 @@ import {
     ModalOverlay,
     useDisclosure,
 } from '@chakra-ui/react'
+import { ptBR } from 'date-fns/locale'
+import moment from 'moment'
+import { useState } from 'react'
+import { Calendar, DateRange } from 'react-date-range'
+
+import CalendarIcon from '@/components/svgs/icons/CalendarIcon'
 
 interface DateProps {
     name?: string

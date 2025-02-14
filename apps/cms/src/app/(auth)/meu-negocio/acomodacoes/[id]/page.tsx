@@ -1,15 +1,13 @@
 'use client'
 
-import { PageHeader } from '@/components/shared/PageHeader'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
 import { Flex, Spinner } from '@chakra-ui/react'
-import { useState, type FormEvent } from 'react'
+import { useToast } from '@chakra-ui/react'
+import { type FormEvent,useState } from 'react'
 
 import { AcomodacaoForm } from '@/components/acomodacoes/AcomodacaoForm'
-
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { PageHeader } from '@/components/shared/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
-import { useToast } from '@chakra-ui/react'
-
 import { useGetData } from '@/hooks/useGetData'
 import { updateAcomodacao } from '@/services/acomodacao/updateAcomodacao'
 import type { Acomodacao, UpdateAcomodacaoDTO } from '@/types/Acomodacao'

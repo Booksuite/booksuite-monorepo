@@ -1,7 +1,7 @@
+import { AspectRatio, Image, Stack } from '@chakra-ui/react'
 import React from 'react'
 
 import { Icons } from '@/components/svgs/icons'
-import { AspectRatio, Image, Stack } from '@chakra-ui/react'
 
 interface ListItemProps {
     variant?: 'primary' | 'secondary'

@@ -1,10 +1,9 @@
 "use client";
 
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-
 import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
 
 interface LoginForm {
   email: string;

@@ -1,11 +1,10 @@
 "use client";
 
+import { Flex } from "@chakra-ui/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
 
-import { Flex } from "@chakra-ui/react";
-
 import { SimpleFilterItem } from "./SimpleFilterItem";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export interface SimpleFilterItemsType {
   label: string;

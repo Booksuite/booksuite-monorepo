@@ -1,14 +1,5 @@
 'use client'
 
-import { useCompanyContext } from '@/app/providers/companyProvider'
-import { Gallery } from '@/components/shared/Gallery'
-import { PageHeader } from '@/components/shared/PageHeader'
-import InputBox from '@/components/shared/form/InputBox'
-import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
-import { Icons } from '@/components/svgs/icons'
-import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
-import { updateCompany } from '@/services/company/updateCompany'
-import type { UpdateCompanyDTO } from '@/types/Company'
 import {
     Alert,
     AlertDescription,
@@ -17,7 +8,17 @@ import {
     Stack,
     useToast,
 } from '@chakra-ui/react'
-import { useState, type FormEvent } from 'react'
+import { type FormEvent,useState } from 'react'
+
+import { useCompanyContext } from '@/app/providers/companyProvider'
+import InputBox from '@/components/shared/form/InputBox'
+import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
+import { Gallery } from '@/components/shared/Gallery'
+import { PageHeader } from '@/components/shared/PageHeader'
+import { Icons } from '@/components/svgs/icons'
+import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
+import { updateCompany } from '@/services/company/updateCompany'
+import type { UpdateCompanyDTO } from '@/types/Company'
 
 export default function DescricaoDoNegocio() {
     const [formData, setFormData] = useState<UpdateCompanyDTO>(null)

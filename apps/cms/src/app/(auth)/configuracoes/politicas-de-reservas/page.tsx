@@ -1,13 +1,14 @@
 'use client'
 
+import { Button, Flex, Stack, useToast } from '@chakra-ui/react'
+import { type FormEvent,useState } from 'react'
+
 import { useCompanyContext } from '@/app/providers/companyProvider'
 import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'
 import type { UpdateCompanyDTO } from '@/types/Company'
-import { Button, Flex, Stack, useToast } from '@chakra-ui/react'
-import { useState, type FormEvent } from 'react'
 
 export default function PoliticasDeReservas() {
     const [formData, setFormData] = useState<UpdateCompanyDTO>(null)

@@ -1,12 +1,12 @@
 'use client'
 
+import { Image, Stack } from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 import { LuExternalLink } from 'react-icons/lu'
 
 import HamburgerButton from '@/components/header/utils/HamburgerButton'
 import ArrowDown from '@/components/svgs/icons/ArrowDown'
 import NotificationIcon from '@/components/svgs/icons/NotificationIcon'
-import { Image, Stack } from '@chakra-ui/react'
 
 import SearchBox from './utils/SearchBox'
 

@@ -1,6 +1,5 @@
-import NextLink from "next/link";
-
 import { Flex, Link, LinkProps } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 import { InternalMenu } from ".";
 
