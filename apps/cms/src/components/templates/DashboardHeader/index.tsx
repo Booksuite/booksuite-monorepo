@@ -20,13 +20,13 @@ import {
     MenuList,
     Text,
 } from '@chakra-ui/react'
-import { TopBarProps } from './types'
+import { DashboardHeaderProps } from './types'
 
-export const TopBar = ({
+export const DashboardHeader = ({
     onToggleSidebar,
     userName,
     userImageSrc,
-}: TopBarProps) => {
+}: DashboardHeaderProps) => {
     return (
         <Flex
             as="header"

@@ -1,9 +1,17 @@
-export interface LinkType {
-  href: string; 
-  label: string 
+import { ReactNode } from 'react'
+
+export interface LinkItem {
+    href: string
+    label: string
 }
 
 export interface NavMenuProps {
-  links: LinkType[]  
-  isFooter?: boolean
+    links: LinkItem[]
+    isFooter?: boolean
+}
+
+export interface NavLinkProps {
+    href: string
+    children: ReactNode
+    isActive?: boolean
 }

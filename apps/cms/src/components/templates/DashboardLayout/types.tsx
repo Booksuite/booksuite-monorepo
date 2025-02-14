@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
 
-export interface HeaderLayoutProps {
+export interface DashboardLayoutProps {
     children: ReactNode
 }

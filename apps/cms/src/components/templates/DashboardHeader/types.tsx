@@ -1,4 +1,4 @@
-export interface TopBarProps {
+export interface DashboardHeaderProps {
     onToggleSidebar: () => void
     userName: string
     userImageSrc: string
