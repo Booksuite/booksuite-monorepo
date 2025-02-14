@@ -1,14 +1,15 @@
 'use client'
 
+import { Flex, useToast } from '@chakra-ui/react'
+import { type FormEvent,useState } from 'react'
+
 import { ExtraForm } from '@/components/extras/ExtraForm'
-import { PageHeader } from '@/components/shared/PageHeader'
 import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { PageHeader } from '@/components/shared/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { createExtra } from '@/services/extra/createExtra'
 import type { CreateExtraDTO } from '@/types/Extra'
 import type { Status } from '@/types/Status'
-import { Flex, useToast } from '@chakra-ui/react'
-import { useState, type FormEvent } from 'react'
 
 export default function PageCreateExtra() {
     const [isSaving, setIsSaving] = useState<boolean>(false)

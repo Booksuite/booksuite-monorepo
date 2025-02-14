@@ -1,12 +1,13 @@
 'use client'
 
-import { PageHeader } from '@/components/shared/PageHeader'
+import { Button, Flex, Stack } from '@chakra-ui/react'
+
 import InputBox from '@/components/shared/form/InputBox'
 import InputNumberBox from '@/components/shared/form/InputNumberBox'
 import SelectBox from '@/components/shared/form/SelectBox'
 import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { PageHeader } from '@/components/shared/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { Button, Flex, Stack } from '@chakra-ui/react'
 
 export default function PoliticaDeIdade() {
     function handleSubmit() {

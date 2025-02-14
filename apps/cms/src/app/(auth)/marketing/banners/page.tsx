@@ -1,10 +1,11 @@
 'use client'
 
+import { Button, Link } from '@chakra-ui/react'
+
 import { List } from '@/components/shared/List'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { SimpleFilter } from '@/components/shared/SimpleFilter/SimpleFilter'
 import { Icons } from '@/components/svgs/icons'
-import { Button, Link } from '@chakra-ui/react'
 
 export interface BannersProps {}
 

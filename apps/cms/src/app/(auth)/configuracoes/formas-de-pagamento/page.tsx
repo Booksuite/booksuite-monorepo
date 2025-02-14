@@ -1,11 +1,12 @@
 'use client'
 
+import { Alert, AlertDescription, Button, Flex, Stack } from '@chakra-ui/react'
+
 import InputBox from '@/components/shared/form/InputBox'
 import SelectBox from '@/components/shared/form/SelectBox'
 import { SwitchBox } from '@/components/shared/form/SwitchBox'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { Alert, AlertDescription, Button, Flex, Stack } from '@chakra-ui/react'
 
 export default function FormasDePagamento() {
     function handleSubmit() {

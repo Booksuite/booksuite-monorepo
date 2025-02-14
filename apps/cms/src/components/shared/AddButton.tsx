@@ -1,5 +1,6 @@
-import PlusIcon from '@/components/svgs/icons/PlusIcon'
 import { Button, ButtonProps } from '@chakra-ui/react'
+
+import PlusIcon from '@/components/svgs/icons/PlusIcon'
 
 export function AddButton({ ...props }: ButtonProps) {
     return (

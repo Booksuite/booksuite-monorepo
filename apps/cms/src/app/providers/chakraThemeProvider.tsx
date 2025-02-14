@@ -1,11 +1,9 @@
 "use client";
 
-import React from "react";
-
-import { ChakraProvider, defineStyle, defineStyleConfig, extendTheme } from "@chakra-ui/react";
-
-import { AlertProps, createMultiStyleConfigHelpers } from "@chakra-ui/react";
 import { alertAnatomy } from "@chakra-ui/anatomy";
+import { ChakraProvider, defineStyle, defineStyleConfig, extendTheme } from "@chakra-ui/react";
+import { AlertProps, createMultiStyleConfigHelpers } from "@chakra-ui/react";
+import React from "react";
 
 const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(
   alertAnatomy.keys

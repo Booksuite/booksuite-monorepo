@@ -1,6 +1,7 @@
-import Logo from '@/components/svgs/Logo'
 import { Button } from '@chakra-ui/react'
 import Link from 'next/link'
+
+import Logo from '@/components/svgs/Logo'
 
 export default function Custom404() {
     return (

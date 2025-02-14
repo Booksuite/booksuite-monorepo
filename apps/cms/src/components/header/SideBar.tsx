@@ -1,10 +1,10 @@
 'use client'
 
-import { SidebarContext } from '@/app/providers/sidebarProvider'
+import Link from 'next/link'
 import { useContext } from 'react'
 
+import { SidebarContext } from '@/app/providers/sidebarProvider'
 import Logo from '@/components/svgs/Logo'
-import Link from 'next/link'
 
 export default function SideBar() {
     const { isOpen } = useContext(SidebarContext)

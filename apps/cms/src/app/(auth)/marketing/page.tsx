@@ -1,7 +1,8 @@
+import { Stack } from '@chakra-ui/react'
+
 import { InternalMenu } from '@/components/shared/InternalMenu'
 import { PageHeader } from '@/components/shared/PageHeader'
 import HomeIcon from '@/components/svgs/icons/HomeIcon'
-import { Stack } from '@chakra-ui/react'
 
 export default function Marketing() {
     return (

@@ -1,5 +1,6 @@
-import { Icons } from '@/components/svgs/icons'
 import { Image } from '@chakra-ui/react'
+
+import { Icons } from '@/components/svgs/icons'
 
 interface GalleryItemProps {
     src?: string

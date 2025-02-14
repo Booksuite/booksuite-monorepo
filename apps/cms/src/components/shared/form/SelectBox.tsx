@@ -1,8 +1,9 @@
 'use client'
 
-import { useClient } from '@/hooks/useClient'
 import { FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { Select } from 'chakra-react-select'
+
+import { useClient } from '@/hooks/useClient'
 
 export default function SelectBox({ ...props }) {
     const { isClient } = useClient()

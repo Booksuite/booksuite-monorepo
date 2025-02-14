@@ -1,9 +1,10 @@
 'use client'
 
-import axiosInstance from '@/services/axios/axiosInstance'
-import { signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 import React, { useEffect } from 'react'
+
+import axiosInstance from '@/services/axios/axiosInstance'
 
 interface ValidateUserTokenProps {
     children: React.ReactNode

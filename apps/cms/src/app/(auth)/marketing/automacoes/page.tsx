@@ -1,7 +1,3 @@
-import { PageHeader } from '@/components/shared/PageHeader'
-import SelectBox from '@/components/shared/form/SelectBox'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
-import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
 import {
     Accordion,
     AccordionButton,
@@ -12,6 +8,11 @@ import {
     Button,
     Stack,
 } from '@chakra-ui/react'
+
+import SelectBox from '@/components/shared/form/SelectBox'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
+import { PageHeader } from '@/components/shared/PageHeader'
 
 export default function AutomacoesPage() {
     return (

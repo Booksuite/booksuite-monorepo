@@ -1,12 +1,5 @@
 'use client'
 
-import DateRangeBox from '@/components/shared/form/DateRangeBox'
-import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
-import InputNumberBox from '@/components/shared/form/InputNumberBox'
-import SelectBox from '@/components/shared/form/SelectBox'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
-import { PageHeader } from '@/components/shared/PageHeader'
-import { Icons } from '@/components/svgs/icons'
 import {
     Alert,
     AlertDescription,
@@ -15,6 +8,14 @@ import {
     Flex,
     Stack,
 } from '@chakra-ui/react'
+
+import DateRangeBox from '@/components/shared/form/DateRangeBox'
+import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
+import InputNumberBox from '@/components/shared/form/InputNumberBox'
+import SelectBox from '@/components/shared/form/SelectBox'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { PageHeader } from '@/components/shared/PageHeader'
+import { Icons } from '@/components/svgs/icons'
 
 export default function RegrasDeHospedagem() {
     function handleSubmit() {

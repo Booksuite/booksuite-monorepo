@@ -1,6 +1,5 @@
-import axiosInstance from "../axios/axiosInstance";
-
 import { CreateCompanyDTO } from "@/types/Company";
+import axiosInstance from "../axios/axiosInstance";
 
 const createCompany = async (payload: CreateCompanyDTO) => {
   try {

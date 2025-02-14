@@ -1,10 +1,9 @@
 'use client'
 
+import { Button, Grid, GridItem, SimpleGrid } from '@chakra-ui/react'
 import { useState } from 'react'
 
 import { Icons } from '@/components/svgs/icons'
-import { Button, Grid, GridItem, SimpleGrid } from '@chakra-ui/react'
-
 import { Gallery } from '.'
 
 interface GalleryGalleryRootProps {

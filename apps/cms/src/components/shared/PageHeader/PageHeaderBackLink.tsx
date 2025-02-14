@@ -1,10 +1,10 @@
 'use client'
 
+import { Link, LinkProps } from '@chakra-ui/react'
 import NextLink from 'next/link'
 import * as React from 'react'
 
 import ChevronRightIcon from '@/components/svgs/icons/ChevronRightIcon'
-import { Link, LinkProps } from '@chakra-ui/react'
 
 export interface PageHeaderBackLinkProps extends LinkProps {
     children: React.ReactNode

@@ -1,8 +1,7 @@
 "use client";
 
-import * as React from "react";
-
 import { Flex } from "@chakra-ui/react";
+import * as React from "react";
 
 export interface PageHeaderRootProps {
   children: React.ReactNode;

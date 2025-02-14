@@ -1,10 +1,11 @@
-import { PageHeader } from '@/components/shared/PageHeader'
+import { Button, CheckboxGroup, Flex, Stack } from '@chakra-ui/react'
+
 import InputBox from '@/components/shared/form/InputBox'
 import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
 import SelectBox from '@/components/shared/form/SelectBox'
 import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { PageHeader } from '@/components/shared/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { Button, CheckboxGroup, Flex, Stack } from '@chakra-ui/react'
 
 export default function OpcoesDeTarifasPage() {
     return (

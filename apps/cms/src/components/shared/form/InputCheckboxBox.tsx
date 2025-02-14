@@ -1,6 +1,5 @@
-import React from 'react'
-
 import { Checkbox, CheckboxProps } from '@chakra-ui/react'
+import React from 'react'
 
 interface Props extends CheckboxProps {
     children?: React.ReactNode

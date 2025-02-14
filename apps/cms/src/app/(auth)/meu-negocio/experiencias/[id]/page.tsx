@@ -1,18 +1,16 @@
 'use client'
 
-import { PageHeader } from '@/components/shared/PageHeader'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
 import { Flex, Spinner } from '@chakra-ui/react'
-import { useEffect, useState, type FormEvent } from 'react'
+import { useToast } from '@chakra-ui/react'
+import { type FormEvent,useEffect, useState } from 'react'
 
 import { ExperienciasForm } from '@/components/experiencias/ExperienciasForm'
-import { UpdateExperienceDTO } from '@/types/Experience'
-
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { PageHeader } from '@/components/shared/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
-import { useToast } from '@chakra-ui/react'
-
 import { useGetExperience } from '@/hooks/experiences/useGetExperience'
 import { updateExperience } from '@/services/experience/updateExperience'
+import { UpdateExperienceDTO } from '@/types/Experience'
 import type { Status } from '@/types/Status'
 
 export default function DetalhesExperienciasPage({

@@ -1,7 +1,7 @@
+import { Button } from '@chakra-ui/react'
 import Link from 'next/link'
 
 import { PageHeader } from '@/components/shared/PageHeader'
-import { Button } from '@chakra-ui/react'
 
 export default function Mapa() {
     return (

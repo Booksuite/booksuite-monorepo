@@ -1,14 +1,5 @@
 'use client'
 
-import { Gallery } from '@/components/shared/Gallery'
-import DateRangeBox from '@/components/shared/form/DateRangeBox'
-import InputBox from '@/components/shared/form/InputBox'
-import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
-import InputNumberBox from '@/components/shared/form/InputNumberBox'
-import SelectBox from '@/components/shared/form/SelectBox'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
-import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
-import { Icons } from '@/components/svgs/icons'
 import {
     Button,
     CheckboxGroup,
@@ -16,8 +7,17 @@ import {
     SimpleGrid,
     Stack,
 } from '@chakra-ui/react'
-import { useState, type FormEvent } from 'react'
+import { type FormEvent,useState } from 'react'
 
+import DateRangeBox from '@/components/shared/form/DateRangeBox'
+import InputBox from '@/components/shared/form/InputBox'
+import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
+import InputNumberBox from '@/components/shared/form/InputNumberBox'
+import SelectBox from '@/components/shared/form/SelectBox'
+import { SwitchBox } from '@/components/shared/form/SwitchBox'
+import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
+import { Gallery } from '@/components/shared/Gallery'
+import { Icons } from '@/components/svgs/icons'
 import { CreateExtraDTO, Extra, UpdateExtraDTO } from '@/types/Extra'
 
 interface ExtraFormProps<T extends UpdateExtraDTO | CreateExtraDTO> {

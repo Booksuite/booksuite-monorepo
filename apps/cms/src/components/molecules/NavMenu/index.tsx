@@ -1,6 +1,8 @@
-import { NavLink } from '@/components/molecules/NavMenu/components/NavLink'
 import { VStack } from '@chakra-ui/react'
 import { usePathname } from 'next/navigation'
+
+import { NavLink } from '@/components/molecules/NavMenu/components/NavLink'
+
 import { NavMenuProps } from './types'
 
 export const NavMenu = ({ links, isFooter }: NavMenuProps) => {

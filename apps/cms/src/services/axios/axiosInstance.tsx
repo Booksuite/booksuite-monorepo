@@ -1,6 +1,5 @@
 import axios from "axios";
 import { getSession } from "next-auth/react";
-
 import { signOut } from "next-auth/react";
 
 const baseURL = process.env.API_URL;
