@@ -3,29 +3,27 @@
 @tailwind utilities;
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
+    .text-balance {
+        text-wrap: balance;
+    }
 }
 
-@import "base/variables";
-@import "base/base";
-@import "base/chakra";
-@import "base/button";
-@import "base/input";
+@import 'base/variables';
+@import 'base/base';
+@import 'base/chakra';
+@import 'base/button';
+@import 'base/input';
 
-@import "layouts/public";
-@import "layouts/auth";
+@import 'layouts/public';
+@import 'layouts/auth';
 
-@import "components/header/sideBar";
-@import "components/header/topBar";
-@import "components/shared/form/dateRangeBox";
-@import "components/shared/form/inputNumberBox";
-@import "components/shared/form/priceListBox";
-@import "components/shared/form/textAreaBox";
-@import "components/shared/Gallery/gallery";
-@import "components/shared/internalMenu";
-@import "components/shared/SimpleFilter/simpleFilter";
-@import "components/shared/List/list";
-
-@import "pages/login";
+@import 'components/header/sideBar';
+@import 'components/header/topBar';
+@import 'components/shared/form/dateRangeBox';
+@import 'components/shared/form/inputNumberBox';
+@import 'components/shared/form/priceListBox';
+@import 'components/shared/form/textAreaBox';
+@import 'components/shared/Gallery/gallery';
+@import 'components/shared/internalMenu';
+@import 'components/shared/SimpleFilter/simpleFilter';
+@import 'components/shared/List/list';
