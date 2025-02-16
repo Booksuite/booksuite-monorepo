@@ -3,13 +3,13 @@ import { usePathname } from 'next/navigation'
 
 import { NavLink } from '@/components/molecules/NavMenu/components/NavLink'
 
-import { NavMenuProps } from './types'
+import type { NavMenuProps } from './types'
 
-export const NavMenu = ({ links, isFooter }: NavMenuProps) => {
+export const NavMenu = ({ links }: NavMenuProps) => {
     const pathname = usePathname()
 
     return (
-        <VStack as="nav" spacing={6} align="stretch">
+        <VStack as="nav" spacing={1} align="stretch">
             {links.map((link) => (
                 <NavLink
                     key={link.href}
