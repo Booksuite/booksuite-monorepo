@@ -1,5 +1,3 @@
-import { NavMenu } from '@/components/molecules/NavMenu'
-import type { LinkItem } from '@/components/molecules/NavMenu/types'
 import { BellIcon, CloseIcon } from '@chakra-ui/icons'
 import {
     Avatar,
@@ -13,17 +11,19 @@ import {
     VStack,
 } from '@chakra-ui/react'
 import type React from 'react'
+import { NavMenu } from './components/NavMenu'
+import type { LinkItem } from './components/NavMenu/types'
 
 import { Logo } from '@/components/atoms/Logo'
-import type { DashboadSidebarProps } from './types'
+import type { DashboardSidebarProps } from './types'
 
-export const DashboadSidebar: React.FC<DashboadSidebarProps> = ({
+export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
     isOpen,
     onClose,
     userImageSrc,
 }) => {
     const mainLinks: LinkItem[] = [
-        { href: '/', label: 'Inicio' },
+        { href: '/', label: 'Início' },
         { href: '/mapa', label: 'Mapa' },
         { href: '/relatorios', label: 'Relatórios' },
         { href: '/meu-negocio', label: 'Meu Negócio' },

@@ -1,7 +1,7 @@
 import { VStack } from '@chakra-ui/react'
 import { usePathname } from 'next/navigation'
 
-import { NavLink } from '@/components/molecules/NavMenu/components/NavLink'
+import { NavLink } from './components/NavLink'
 
 import type { NavMenuProps } from './types'
 

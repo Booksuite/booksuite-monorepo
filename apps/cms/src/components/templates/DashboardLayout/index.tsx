@@ -4,8 +4,8 @@ import type React from 'react'
 
 import { Box, Flex, useDisclosure } from '@chakra-ui/react'
 
-import { DashboadSidebar } from '../DashboadSidebar'
 import { DashboardHeader } from '../DashboardHeader'
+import { DashboardSidebar } from '../DashboardSidebar'
 
 import type { DashboardLayoutProps } from './types'
 
@@ -18,7 +18,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
     return (
         <Flex h="100vh" flexDirection={{ base: 'column', md: 'row' }}>
-            <DashboadSidebar
+            <DashboardSidebar
                 isOpen={isOpen}
                 onClose={onToggle}
                 userImageSrc={''}
