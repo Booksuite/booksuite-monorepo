@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import type { LoginForm } from './types'
 
-export default function DashboardLogin() {
+export default function DashboadLoginForm() {
     const [form, setForm] = useState<LoginForm>({ email: '', password: '' })
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)
