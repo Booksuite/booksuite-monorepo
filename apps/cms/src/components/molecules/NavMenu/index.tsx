@@ -5,7 +5,7 @@ import { NavLink } from '@/components/molecules/NavMenu/components/NavLink'
 
 import type { NavMenuProps } from './types'
 
-export const NavMenu = ({ links }: NavMenuProps) => {
+export const NavMenu: React.FC<NavMenuProps> = ({ links }) => {
     const pathname = usePathname()
 
     return (
