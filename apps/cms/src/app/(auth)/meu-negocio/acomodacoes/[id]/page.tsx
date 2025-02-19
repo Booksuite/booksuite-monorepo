@@ -4,7 +4,7 @@ import { Flex, Spinner, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
 import { AcomodacaoForm } from '@/components/acomodacoes/AcomodacaoForm'
-import { SwitchBox } from '@/components/atoms/Input/SwitchBox'
+import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { useGetData } from '@/hooks/useGetData'

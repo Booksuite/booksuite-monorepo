@@ -12,7 +12,7 @@ import { type FormEvent, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
 import InputBox from '@/components/atoms/Input/InputBox'
-import { TextAreaBox } from '@/components/atoms/Input/TextAreaBox'
+import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { Gallery } from '@/components/organisms/Gallery'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'

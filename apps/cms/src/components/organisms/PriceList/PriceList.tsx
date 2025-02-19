@@ -1,6 +1,6 @@
 'use client'
 
-import { AddButton } from '@/components/atoms/Button/AddButton'
+import { AddButton } from '@/components/atoms/AddButton'
 import { PriceListRootProps } from './types'
 
 export default function PriceListRoot({

@@ -9,9 +9,9 @@ import {
     Stack,
 } from '@chakra-ui/react'
 
-import SelectBox from '@/components/atoms/Input/SelectBox'
-import { SwitchBox } from '@/components/atoms/Input/SwitchBox'
-import { TextAreaBox } from '@/components/atoms/Input/TextAreaBox'
+import SelectBox from '@/components/atoms/SelectBox'
+import { SwitchBox } from '@/components/atoms/SwitchBox'
+import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 export default function AutomacoesPage() {

@@ -3,7 +3,7 @@
 import { PageHeader } from '@/components/organisms/PageHeader'
 import InputBox from '@/components/atoms/Input/InputBox'
 import InputCheckboxBox from '@/components/atoms/Input/InputCheckboxBox'
-import SelectBox from '@/components/atoms/Input/SelectBox'
+import SelectBox from '@/components/atoms/SelectBox'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'
 import { useCompanyContext } from '@/app/providers/companyProvider'

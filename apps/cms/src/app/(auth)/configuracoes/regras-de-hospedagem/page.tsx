@@ -12,8 +12,8 @@ import {
 import DateRangeBox from '@/components/atoms/Input/DateRangeBox'
 import InputCheckboxBox from '@/components/atoms/Input/InputCheckboxBox'
 import InputNumberBox from '@/components/atoms/Input/InputNumberBox'
-import SelectBox from '@/components/atoms/Input/SelectBox'
-import { SwitchBox } from '@/components/atoms/Input/SwitchBox'
+import SelectBox from '@/components/atoms/SelectBox'
+import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 

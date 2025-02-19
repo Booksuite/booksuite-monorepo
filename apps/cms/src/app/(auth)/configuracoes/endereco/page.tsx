@@ -11,7 +11,7 @@ import React, { type FormEvent, useCallback, useRef, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
 import InputBox from '@/components/atoms/Input/InputBox'
-import SelectBox from '@/components/atoms/Input/SelectBox'
+import SelectBox from '@/components/atoms/SelectBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'

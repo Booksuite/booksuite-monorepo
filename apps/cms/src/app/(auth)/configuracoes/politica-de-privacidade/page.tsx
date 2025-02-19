@@ -2,7 +2,7 @@
 
 import { Button, Flex, Stack } from '@chakra-ui/react'
 
-import { TextAreaBox } from '@/components/atoms/Input/TextAreaBox'
+import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 export default function PoliticaDePrivacidade() {

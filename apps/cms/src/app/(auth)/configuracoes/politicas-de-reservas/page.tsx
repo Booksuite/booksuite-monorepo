@@ -4,7 +4,7 @@ import { Button, Flex, Stack, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
-import { TextAreaBox } from '@/components/atoms/Input/TextAreaBox'
+import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'

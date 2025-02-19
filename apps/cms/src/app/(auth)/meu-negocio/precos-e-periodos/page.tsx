@@ -1,5 +1,5 @@
 import { InternalMenu } from '@/components/organisms/InternalMenu'
-import { PageHeader } from '@/components/shared/PageHeader'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import CalendarIcon from '@/components/svgs/icons/CalendarIcon'
 import DiscountIcon from '@/components/svgs/icons/DiscountIcon'
 import GiftIcon from '@/components/svgs/icons/GiftIcon'

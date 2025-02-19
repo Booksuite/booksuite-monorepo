@@ -13,7 +13,7 @@ import { type FormEvent, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
 import InputBox from '@/components/atoms/Input/InputBox'
-import SelectBox from '@/components/atoms/Input/SelectBox'
+import SelectBox from '@/components/atoms/SelectBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'

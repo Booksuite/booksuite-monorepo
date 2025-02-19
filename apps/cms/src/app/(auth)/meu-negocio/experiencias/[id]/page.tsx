@@ -3,7 +3,7 @@
 import { Flex, Spinner, useToast } from '@chakra-ui/react'
 import { type FormEvent, useEffect, useState } from 'react'
 
-import { SwitchBox } from '@/components/atoms/Input/SwitchBox'
+import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { ExperienciasForm } from '@/components/experiencias/ExperienciasForm'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
