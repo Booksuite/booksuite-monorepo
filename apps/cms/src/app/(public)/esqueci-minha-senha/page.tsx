@@ -1,6 +1,6 @@
 import Link from 'next/link'
 
-import InputBox from '@/components/shared/form/InputBox'
+import InputBox from '@/components/atoms/Input/InputBox'
 
 export default function EsqueciMinhaSenha() {
     return (

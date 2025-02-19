@@ -1,11 +1,11 @@
 'use client'
 
 import { Flex, useToast } from '@chakra-ui/react'
-import { type FormEvent,useState } from 'react'
+import { type FormEvent, useState } from 'react'
 
+import { SwitchBox } from '@/components/atoms/Input/SwitchBox'
 import { ExtraForm } from '@/components/extras/ExtraForm'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
-import { PageHeader } from '@/components/shared/PageHeader'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { createExtra } from '@/services/extra/createExtra'
 import type { CreateExtraDTO } from '@/types/Extra'

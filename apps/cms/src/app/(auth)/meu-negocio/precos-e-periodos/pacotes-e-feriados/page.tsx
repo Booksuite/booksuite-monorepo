@@ -2,9 +2,9 @@
 
 import { Button, Link } from '@chakra-ui/react'
 
-import { List } from '@/components/shared/List'
+import { List } from '@/components/organisms/List'
+import { SimpleFilter } from '@/components/organisms/SimpleFilter/SimpleFilter'
 import { PageHeader } from '@/components/shared/PageHeader'
-import { SimpleFilter } from '@/components/shared/SimpleFilter/SimpleFilter'
 import { Icons } from '@/components/svgs/icons'
 
 export default function PacotesEFeriados() {

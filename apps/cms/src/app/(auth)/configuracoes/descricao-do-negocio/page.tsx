@@ -8,13 +8,13 @@ import {
     Stack,
     useToast,
 } from '@chakra-ui/react'
-import { type FormEvent,useState } from 'react'
+import { type FormEvent, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
-import InputBox from '@/components/shared/form/InputBox'
-import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
-import { Gallery } from '@/components/shared/Gallery'
-import { PageHeader } from '@/components/shared/PageHeader'
+import InputBox from '@/components/atoms/Input/InputBox'
+import { TextAreaBox } from '@/components/atoms/Input/TextAreaBox'
+import { Gallery } from '@/components/organisms/Gallery'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'

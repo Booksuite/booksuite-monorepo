@@ -2,12 +2,12 @@
 
 import { Button, CheckboxGroup, Flex, Stack, useToast } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
-import { type FormEvent,useContext, useState } from 'react'
+import { type FormEvent, useContext, useState } from 'react'
 
 import { CompanyContext } from '@/app/providers/companyProvider'
-import InputBox from '@/components/shared/form/InputBox'
-import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
-import SelectBox from '@/components/shared/form/SelectBox'
+import InputBox from '@/components/atoms/Input/InputBox'
+import InputCheckboxBox from '@/components/atoms/Input/InputCheckboxBox'
+import SelectBox from '@/components/atoms/Input/SelectBox'
 import { PageHeader } from '@/components/shared/PageHeader'
 import { toastGenericPostMessages } from '@/contexts/constants/toastMessages'
 import { createCompany } from '@/services/company/createCompany'

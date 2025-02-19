@@ -2,8 +2,8 @@
 
 import { Button, CheckboxGroup, Flex, Stack } from '@chakra-ui/react'
 
-import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
-import { PageHeader } from '@/components/shared/PageHeader'
+import InputCheckboxBox from '@/components/atoms/Input/InputCheckboxBox'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
 export default function Comodidades() {

@@ -9,12 +9,12 @@ import {
     Stack,
 } from '@chakra-ui/react'
 
-import DateRangeBox from '@/components/shared/form/DateRangeBox'
-import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
-import InputNumberBox from '@/components/shared/form/InputNumberBox'
-import SelectBox from '@/components/shared/form/SelectBox'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
-import { PageHeader } from '@/components/shared/PageHeader'
+import DateRangeBox from '@/components/atoms/Input/DateRangeBox'
+import InputCheckboxBox from '@/components/atoms/Input/InputCheckboxBox'
+import InputNumberBox from '@/components/atoms/Input/InputNumberBox'
+import SelectBox from '@/components/atoms/Input/SelectBox'
+import { SwitchBox } from '@/components/atoms/Input/SwitchBox'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
 export default function RegrasDeHospedagem() {

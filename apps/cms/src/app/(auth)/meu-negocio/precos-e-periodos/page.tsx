@@ -1,4 +1,4 @@
-import { InternalMenu } from '@/components/shared/InternalMenu'
+import { InternalMenu } from '@/components/organisms/InternalMenu'
 import { PageHeader } from '@/components/shared/PageHeader'
 import CalendarIcon from '@/components/svgs/icons/CalendarIcon'
 import DiscountIcon from '@/components/svgs/icons/DiscountIcon'

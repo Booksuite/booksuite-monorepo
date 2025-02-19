@@ -2,8 +2,8 @@
 
 import { Button, Flex, Stack } from '@chakra-ui/react'
 
-import InputBox from '@/components/shared/form/InputBox'
-import { PageHeader } from '@/components/shared/PageHeader'
+import InputBox from '@/components/atoms/Input/InputBox'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
 export default function ContatoERedesSociais() {

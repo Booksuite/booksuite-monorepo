@@ -1,11 +1,11 @@
 'use client'
 
 import { Button, Flex, Stack, useToast } from '@chakra-ui/react'
-import { type FormEvent,useState } from 'react'
+import { type FormEvent, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
-import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
-import { PageHeader } from '@/components/shared/PageHeader'
+import { TextAreaBox } from '@/components/atoms/Input/TextAreaBox'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'
 import type { UpdateCompanyDTO } from '@/types/Company'
