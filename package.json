@@ -3,7 +3,8 @@
     "packageManager": "yarn@4.6.0",
     "private": true,
     "scripts": {
-        "generate:sdk": "yarn workspace @booksuite/sdk generate"
+        "generate:sdk": "yarn workspace @booksuite/sdk generate",
+        "lint": "yarn workspaces foreach --all run lint"
     },
     "workspaces": [
         "apps/*",
