@@ -1,5 +1,6 @@
+import { Heading } from '@chakra-ui/react'
 import { PageHeaderTitleProps } from './types'
 
-export function PageHeaderTitle(props: PageHeaderTitleProps) {
-    return <h1>{props.children}</h1>
+export const PageHeaderTitle: React.FC<PageHeaderTitleProps> = (props) => {
+    return <Heading as="h1">{props.children}</Heading>
 }

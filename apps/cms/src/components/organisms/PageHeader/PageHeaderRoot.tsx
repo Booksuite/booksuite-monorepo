@@ -3,9 +3,9 @@
 import { Flex } from '@chakra-ui/react'
 import { PageHeaderRootProps } from './types'
 
-export function PageHeaderRoot(props: PageHeaderRootProps) {
+export const PageHeaderRoot: React.FC<PageHeaderRootProps> = (props) => {
     return (
-        <Flex className="PageHeader" direction="column" gap={2}>
+        <Flex direction="column" gap={2} {...props}>
             {props.children}
         </Flex>
     )

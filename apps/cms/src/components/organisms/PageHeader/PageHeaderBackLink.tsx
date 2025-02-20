@@ -6,15 +6,23 @@ import NextLink from 'next/link'
 import ChevronRightIcon from '@/components/svgs/icons/ChevronRightIcon'
 import { PageHeaderBackLinkProps } from './types'
 
-export function PageHeaderBackLink(props: PageHeaderBackLinkProps) {
+export const PageHeaderBackLink: React.FC<PageHeaderBackLinkProps> = (
+    props,
+) => {
     return (
         <Link
             as={NextLink}
+            href="#"
             variant="primary"
+            display="flex"
+            alignItems="center"
+            fontSize="0.8rem"
+            fontWeight="medium"
             {...props}
-            className={`BackLink flex items-center text-[0.8125rem] font-medium ${props.className}`}
         >
-            <ChevronRightIcon className="shrink-0 scale-[-1]" />
+            <ChevronRightIcon
+                style={{ flexShrink: 0, transform: 'scaleX(-1)' }}
+            />
             {props.children}
         </Link>
     )
