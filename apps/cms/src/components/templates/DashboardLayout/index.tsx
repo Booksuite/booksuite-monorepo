@@ -1,26 +1,31 @@
 'use client'
 
-import { Box, Flex } from '@chakra-ui/react'
-import { useState } from 'react'
+import type React from 'react'
 
-import { DashboadSidebar } from '../DashboadSidebar'
+import { Box, Flex, useDisclosure } from '@chakra-ui/react'
+
 import { DashboardHeader } from '../DashboardHeader'
+import { DashboardSidebar } from '../DashboardSidebar'
 
-import { DashboardLayoutProps } from './types'
+import type { DashboardLayoutProps } from './types'
 
 const avatarUrl = '/profile-pic.png'
 
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     children,
 }) => {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true)
+    const { isOpen, onToggle } = useDisclosure({ defaultIsOpen: true })
 
     return (
-        <Flex h="100vh">
-            <DashboadSidebar isOpen={isSidebarOpen} />
+        <Flex h="100vh" flexDirection={{ base: 'column', md: 'row' }}>
+            <DashboardSidebar
+                isOpen={isOpen}
+                onClose={onToggle}
+                userImageSrc={''}
+            />
             <Box flex={1} overflow="auto">
                 <DashboardHeader
-                    onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+                    onToggleSidebar={onToggle}
                     userName="Admin Booksuite"
                     userImageSrc={avatarUrl}
                 />

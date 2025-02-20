@@ -7,6 +7,7 @@ import {
 } from '@chakra-ui/icons'
 import {
     Avatar,
+    Box,
     Button,
     Center,
     Flex,
@@ -19,15 +20,62 @@ import {
     MenuItem,
     MenuList,
     Text,
+    useBreakpointValue,
 } from '@chakra-ui/react'
 
-import { DashboardHeaderProps } from './types'
+import type { DashboardHeaderProps } from './types'
 
 export const DashboardHeader = ({
     onToggleSidebar,
     userName,
     userImageSrc,
 }: DashboardHeaderProps) => {
+    const isMobile = useBreakpointValue({ base: true, md: false })
+
+    if (isMobile) {
+        return (
+            <Flex
+                as="header"
+                align="center"
+                justify="space-between"
+                h="64px"
+                px={4}
+                bg="primary.900"
+                color="white"
+            >
+                <IconButton
+                    icon={<HamburgerIcon boxSize={6} />}
+                    aria-label="Toggle Sidebar"
+                    onClick={onToggleSidebar}
+                    variant="ghost"
+                    color="white"
+                    _hover={{ bg: 'whiteAlpha.200' }}
+                />
+
+                <Box fontSize="2xl" fontWeight="regular" color="white">
+                    <strong>book</strong>suite
+                </Box>
+
+                <Flex gap={2}>
+                    <IconButton
+                        icon={<BellIcon boxSize={6} />}
+                        aria-label="Notifications"
+                        variant="ghost"
+                        color="white"
+                        _hover={{ bg: 'whiteAlpha.200' }}
+                    />
+                    <Avatar
+                        size="sm"
+                        bg="blue.900"
+                        color="white"
+                        src={userImageSrc}
+                        alignSelf="center"
+                    />
+                </Flex>
+            </Flex>
+        )
+    }
+
     return (
         <Flex
             as="header"
@@ -37,6 +85,7 @@ export const DashboardHeader = ({
             px={4}
             bg="white"
             boxShadow="sm"
+            flexWrap="wrap"
         >
             <Flex align="center" h="full">
                 <Center h="full">
@@ -75,7 +124,12 @@ export const DashboardHeader = ({
                         _hover={{ bg: 'transparent' }}
                         _active={{ bg: 'transparent' }}
                     >
-                        <Text fontWeight="medium">BookSuite Admin</Text>
+                        <Text
+                            fontWeight="medium"
+                            display={{ base: 'none', md: 'block' }}
+                        >
+                            BookSuite Admin
+                        </Text>
                     </MenuButton>
                     <MenuList>
                         <MenuItem>Perfil</MenuItem>
@@ -83,7 +137,12 @@ export const DashboardHeader = ({
                     </MenuList>
                 </Menu>
 
-                <Avatar size="sm" bg="blue.900" color="white" />
+                <Avatar
+                    size="sm"
+                    bg="blue.900"
+                    color="white"
+                    src={userImageSrc}
+                />
 
                 <IconButton
                     icon={<ExternalLinkIcon />}
