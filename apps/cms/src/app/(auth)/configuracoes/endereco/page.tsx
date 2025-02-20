@@ -7,12 +7,12 @@ import {
     Marker,
     useJsApiLoader,
 } from '@react-google-maps/api'
-import React, { type FormEvent,useCallback, useRef, useState } from 'react'
+import React, { type FormEvent, useCallback, useRef, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
-import InputBox from '@/components/shared/form/InputBox'
-import SelectBox from '@/components/shared/form/SelectBox'
-import { PageHeader } from '@/components/shared/PageHeader'
+import InputBox from '@/components/atoms/InputBox'
+import SelectBox from '@/components/atoms/SelectBox'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'
 import type { UpdateCompanyDTO } from '@/types/Company'

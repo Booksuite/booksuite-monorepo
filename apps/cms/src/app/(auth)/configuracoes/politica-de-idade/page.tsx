@@ -2,11 +2,11 @@
 
 import { Button, Flex, Stack } from '@chakra-ui/react'
 
-import InputBox from '@/components/shared/form/InputBox'
-import InputNumberBox from '@/components/shared/form/InputNumberBox'
-import SelectBox from '@/components/shared/form/SelectBox'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
-import { PageHeader } from '@/components/shared/PageHeader'
+import InputBox from '@/components/atoms/InputBox'
+import InputNumberBox from '@/components/atoms/InputNumberBox'
+import SelectBox from '@/components/atoms/SelectBox'
+import { SwitchBox } from '@/components/atoms/SwitchBox'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
 export default function PoliticaDeIdade() {

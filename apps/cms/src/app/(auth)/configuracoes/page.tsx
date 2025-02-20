@@ -1,5 +1,5 @@
-import { InternalMenu } from '@/components/shared/InternalMenu'
-import { PageHeader } from '@/components/shared/PageHeader'
+import { InternalMenu } from '@/components/organisms/InternalMenu'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 import BoxIcon from '@/components/svgs/icons/BoxIcon'
 import HomeIcon from '@/components/svgs/icons/HomeIcon'

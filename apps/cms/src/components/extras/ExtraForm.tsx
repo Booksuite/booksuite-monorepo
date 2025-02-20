@@ -7,16 +7,16 @@ import {
     SimpleGrid,
     Stack,
 } from '@chakra-ui/react'
-import { type FormEvent,useState } from 'react'
+import { type FormEvent, useState } from 'react'
 
-import DateRangeBox from '@/components/shared/form/DateRangeBox'
-import InputBox from '@/components/shared/form/InputBox'
-import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
-import InputNumberBox from '@/components/shared/form/InputNumberBox'
-import SelectBox from '@/components/shared/form/SelectBox'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
-import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
-import { Gallery } from '@/components/shared/Gallery'
+import DateRangeBox from '@/components/atoms/DateRangeBox'
+import InputBox from '@/components/atoms/InputBox'
+import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
+import InputNumberBox from '@/components/atoms/InputNumberBox'
+import SelectBox from '@/components/atoms/SelectBox'
+import { SwitchBox } from '@/components/atoms/SwitchBox'
+import { TextAreaBox } from '@/components/atoms/TextAreaBox'
+import { Gallery } from '@/components/organisms/Gallery'
 import { Icons } from '@/components/svgs/icons'
 import { CreateExtraDTO, Extra, UpdateExtraDTO } from '@/types/Extra'
 

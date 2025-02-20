@@ -1,13 +1,13 @@
 import { Button, SimpleGrid, Stack } from '@chakra-ui/react'
 
-import DateRangeBox from '@/components/shared/form/DateRangeBox'
-import InputBox from '@/components/shared/form/InputBox'
-import InputNumberBox from '@/components/shared/form/InputNumberBox'
-import LabelBadge from '@/components/shared/form/LabelBadge'
-import { PriceList } from '@/components/shared/form/PriceList'
-import SelectBox from '@/components/shared/form/SelectBox'
-import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
-import { PageHeader } from '@/components/shared/PageHeader'
+import DateRangeBox from '@/components/atoms/DateRangeBox'
+import InputBox from '@/components/atoms/InputBox'
+import InputNumberBox from '@/components/atoms/InputNumberBox'
+import LabelBadge from '@/components/atoms/LabelBadge'
+import SelectBox from '@/components/atoms/SelectBox'
+import { TextAreaBox } from '@/components/atoms/TextAreaBox'
+import { PageHeader } from '@/components/organisms/PageHeader'
+import { PriceList } from '@/components/organisms/PriceList'
 
 export default function NovaReserva() {
     async function submit(formData: FormData) {
