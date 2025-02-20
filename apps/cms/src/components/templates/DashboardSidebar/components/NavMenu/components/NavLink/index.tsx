@@ -1,25 +1,23 @@
 import { Link } from '@chakra-ui/react'
 import NextLink from 'next/link'
 
-import { NavLinkProps } from '../../types'
+import type { NavLinkProps } from '../../types'
 
 export const NavLink = ({ href, children, isActive }: NavLinkProps) => (
     <Link
         as={NextLink}
         href={href}
         display="block"
-        py={2}
+        py={3}
         px={4}
-        fontSize="md"
+        fontSize="lg"
         fontWeight="medium"
-        color="white"
-        borderRadius="md"
+        color={isActive ? 'orange.500' : 'white'}
         _hover={{
-            bg: 'whiteAlpha.200',
+            color: 'orange.500',
             transform: 'translateX(4px)',
             transition: 'all 0.2s',
         }}
-        bg={isActive ? 'whiteAlpha.200' : 'transparent'}
         transition="all 0.2s"
         textDecoration="none"
     >
