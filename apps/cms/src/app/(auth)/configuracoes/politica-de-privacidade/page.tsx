@@ -2,8 +2,8 @@
 
 import { Button, Flex, Stack } from '@chakra-ui/react'
 
-import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
-import { PageHeader } from '@/components/shared/PageHeader'
+import { TextAreaBox } from '@/components/atoms/TextAreaBox'
+import { PageHeader } from '@/components/organisms/PageHeader'
 
 export default function PoliticaDePrivacidade() {
     function handleSubmit() {

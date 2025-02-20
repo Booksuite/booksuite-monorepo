@@ -6,15 +6,15 @@ import {
     Stack,
 } from '@chakra-ui/react'
 
-import DateRangeBox from '@/components/shared/form/DateRangeBox'
-import InputBox from '@/components/shared/form/InputBox'
-import InputCheckboxBox from '@/components/shared/form/InputCheckboxBox'
-import InputNumberBox from '@/components/shared/form/InputNumberBox'
-import SelectBox from '@/components/shared/form/SelectBox'
-import { SwitchBox } from '@/components/shared/form/SwitchBox'
-import { TextAreaBox } from '@/components/shared/form/TextAreaBox'
-import { Gallery } from '@/components/shared/Gallery'
-import { PageHeader } from '@/components/shared/PageHeader'
+import DateRangeBox from '@/components/atoms/DateRangeBox'
+import InputBox from '@/components/atoms/InputBox'
+import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
+import InputNumberBox from '@/components/atoms/InputNumberBox'
+import SelectBox from '@/components/atoms/SelectBox'
+import { SwitchBox } from '@/components/atoms/SwitchBox'
+import { TextAreaBox } from '@/components/atoms/TextAreaBox'
+import { Gallery } from '@/components/organisms/Gallery'
+import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
 export default function DetalhesPacotesEFeriados() {
