@@ -2,7 +2,7 @@
 
 import { Alert, AlertDescription, Button, Flex, Stack } from '@chakra-ui/react'
 
-import InputBox from '@/components/atoms/Input/InputBox'
+import InputBox from '@/components/atoms/InputBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { PageHeader } from '@/components/organisms/PageHeader'

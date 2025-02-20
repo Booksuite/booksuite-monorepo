@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 import LabelBadge from '@/components/atoms/LabelBadge'
 
-import InputNumberBox from '@/components/atoms/Input/InputNumberBox'
+import InputNumberBox from '@/components/atoms/InputNumberBox'
 import { PriceListItemProps } from './types'
 
 export function PriceListItem(props: PriceListItemProps) {

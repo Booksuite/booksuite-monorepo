@@ -1,8 +1,8 @@
 'use client'
 
 import { PageHeader } from '@/components/organisms/PageHeader'
-import InputBox from '@/components/atoms/Input/InputBox'
-import InputCheckboxBox from '@/components/atoms/Input/InputCheckboxBox'
+import InputBox from '@/components/atoms/InputBox'
+import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'

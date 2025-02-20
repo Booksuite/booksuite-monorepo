@@ -9,9 +9,9 @@ import {
 } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
-import InputBox from '@/components/atoms/Input/InputBox'
-import InputCheckboxBox from '@/components/atoms/Input/InputCheckboxBox'
-import InputNumberBox from '@/components/atoms/Input/InputNumberBox'
+import InputBox from '@/components/atoms/InputBox'
+import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
+import InputNumberBox from '@/components/atoms/InputNumberBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { Gallery } from '@/components/organisms/Gallery'
 import { PriceList } from '@/components/organisms/PriceList'

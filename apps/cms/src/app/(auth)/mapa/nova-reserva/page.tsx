@@ -1,8 +1,8 @@
 import { Button, SimpleGrid, Stack } from '@chakra-ui/react'
 
-import DateRangeBox from '@/components/atoms/Input/DateRangeBox'
-import InputBox from '@/components/atoms/Input/InputBox'
-import InputNumberBox from '@/components/atoms/Input/InputNumberBox'
+import DateRangeBox from '@/components/atoms/DateRangeBox'
+import InputBox from '@/components/atoms/InputBox'
+import InputNumberBox from '@/components/atoms/InputNumberBox'
 import LabelBadge from '@/components/atoms/LabelBadge'
 import SelectBox from '@/components/atoms/SelectBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'

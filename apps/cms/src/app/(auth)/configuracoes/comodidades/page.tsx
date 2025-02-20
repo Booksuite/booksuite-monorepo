@@ -2,7 +2,7 @@
 
 import { Button, CheckboxGroup, Flex, Stack } from '@chakra-ui/react'
 
-import InputCheckboxBox from '@/components/atoms/Input/InputCheckboxBox'
+import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 

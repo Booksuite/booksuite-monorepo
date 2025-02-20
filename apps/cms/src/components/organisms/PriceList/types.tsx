@@ -1,4 +1,4 @@
-import { InputNumberBoxProps } from '@/components/atoms/Input/types'
+import { InputNumberBoxProps } from '@/components/atoms/types'
 
 export interface PriceListRootProps {
     children?: React.ReactNode

@@ -12,7 +12,7 @@ import {
 import { type FormEvent, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
-import InputBox from '@/components/atoms/Input/InputBox'
+import InputBox from '@/components/atoms/InputBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'

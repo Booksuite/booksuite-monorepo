@@ -2,7 +2,7 @@
 
 import { Button, Flex, Stack } from '@chakra-ui/react'
 
-import InputBox from '@/components/atoms/Input/InputBox'
+import InputBox from '@/components/atoms/InputBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
