@@ -36,7 +36,7 @@ export default function DashboadLoginForm() {
 
     return (
         <form onSubmit={handleSubmit}>
-            <FormControl>
+            <FormControl mb={2}>
                 <Input
                     type="email"
                     value={form.email}
@@ -48,7 +48,7 @@ export default function DashboadLoginForm() {
                 <FormLabel>Login</FormLabel>
             </FormControl>
 
-            <FormControl>
+            <FormControl mb={7}>
                 <Input
                     type="password"
                     value={form.password}
@@ -62,7 +62,9 @@ export default function DashboadLoginForm() {
 
             {error && <>Login incorreto</>}
 
-            <Button isLoading={isLoading}>Entrar</Button>
+            <Button mb={10} w={'350px'} isLoading={isLoading}>
+                Entrar
+            </Button>
         </form>
     )
 }
