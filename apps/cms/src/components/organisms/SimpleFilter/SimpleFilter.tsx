@@ -1,8 +1,7 @@
 'use client'
 
-import { Flex } from '@chakra-ui/react'
+import { Flex, RadioGroup } from '@chakra-ui/react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-
 import { SimpleFilterItem } from './SimpleFilterItem'
 import { SimpleFilterItemsType, SimpleFilterProps } from './types'
 
@@ -11,53 +10,36 @@ export function SimpleFilter({ ...props }: SimpleFilterProps) {
     const pathname = usePathname()
     const router = useRouter()
 
-    const params = new URLSearchParams(searchParams)
-    if (props.items.length > 0) {
-        params.set('filter', props.items.find((el) => el.checked).label)
-    } else {
-        params.delete('filter')
-    }
+    const defaultValue = props.items.find((el) => el.checked)?.label || ''
 
-    function handleChange(e: any) {
-        const inputs = document.querySelectorAll(
-            `.SimpleFilter input[name=${props.name}]:checked`,
-        )
-
-        let checkeds = []
-
-        if (inputs.length > 0) {
-            inputs.forEach((item: any) => {
-                checkeds.push(item.value)
-            })
-        }
-
+    function handleChange(value: string) {
         const params = new URLSearchParams(searchParams)
-        if (checkeds.length > 0) {
-            params.set('filter', checkeds[0])
+
+        if (value) {
+            params.set('filter', value)
         } else {
             params.delete('filter')
         }
+
         router.push(`${pathname}?${params.toString().toLowerCase()}`)
     }
 
     return (
-        <Flex
-            className={`SimpleFilter w-full overflow-x-auto no-scrollbar ${props.className}`}
-            direction="row"
-            gap={2}
-        >
-            {props.items.map((item: SimpleFilterItemsType, index: number) => (
-                <SimpleFilterItem
-                    key={`${props.name} - ${index}`}
-                    type={'radio'}
-                    labelFor={item.label}
-                    name={props.name}
-                    defaultChecked={item.checked}
-                    onChange={handleChange}
-                >
-                    {item.label}
-                </SimpleFilterItem>
-            ))}
-        </Flex>
+        <RadioGroup onChange={handleChange} defaultValue={defaultValue}>
+            <Flex direction="row" gap={2} overflowX="auto">
+                {props.items.map(
+                    (item: SimpleFilterItemsType, index: number) => (
+                        <SimpleFilterItem
+                            key={`${props.name} - ${index}`}
+                            labelFor={item.label}
+                            name={props.name}
+                            value={item.label}
+                        >
+                            {item.label}
+                        </SimpleFilterItem>
+                    ),
+                )}
+            </Flex>
+        </RadioGroup>
     )
 }

@@ -16,4 +16,5 @@ export interface SimpleFilterItemProps
     name?: string
     labelFor?: string
     type?: string
+    value?: string
 }
