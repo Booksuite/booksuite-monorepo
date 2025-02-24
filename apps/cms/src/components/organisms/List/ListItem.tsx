@@ -1,10 +1,11 @@
-import { AspectRatio, Image, Stack } from '@chakra-ui/react'
-import React from 'react'
-
 import { Icons } from '@/components/svgs/icons'
+import { AspectRatio, Button, Image, Stack, Text } from '@chakra-ui/react'
 import { ListItemProps } from './types'
 
-export function ListItem({ variant = 'primary', ...props }: ListItemProps) {
+const ListItem: React.FC<ListItemProps> = ({
+    variant = 'primary',
+    ...props
+}) => {
     function getStatusColor() {
         const colorMap = new Map([
             ['Ativa', 'var(--clr-success)'],
@@ -29,59 +30,63 @@ export function ListItem({ variant = 'primary', ...props }: ListItemProps) {
     return (
         <Stack
             direction="row"
-            alignItems="center"
-            spacing={3}
-            className={`ListItem ListItem--${variant}`}
+            align="center"
+            spacing={4}
+            w="100%"
+            minH="5rem"
+            p={4}
+            bg="white"
+            borderRadius="xl"
+            boxShadow="md"
+            position="relative"
         >
-            <button className="ListItem__dragButton ml-auto" type="button">
+            <Button
+                position="absolute"
+                left={-6}
+                transform="translateX(-100%)"
+                colorScheme="gray"
+                variant="ghost"
+            >
                 <Icons.Drag />
-            </button>
+            </Button>
 
             {variant === 'primary' && (
                 <AspectRatio
-                    className="shrink-0"
-                    w={'100%'}
-                    maxW={'4.5rem'}
+                    w="4.5rem"
                     ratio={1}
+                    borderRadius="md"
+                    overflow="hidden"
                 >
                     <Image
-                        className="ListItem__image"
-                        src="/imagem-exemplo.png"
+                        src={props.image || '/imagem-exemplo.png'}
                         objectFit="cover"
                     />
                 </AspectRatio>
             )}
 
-            <Stack direction="column" spacing={0} className="ListItem__content">
-                <h3 className="mb-0 ListItem__title text-ellipsis line-clamp-1">
+            <Stack direction="column" spacing={1} flex={1}>
+                <Text fontWeight="bold" fontSize="md" isTruncated>
                     {props.title}
-                </h3>
+                </Text>
 
-                <Stack
-                    direction={variant === 'primary' ? 'column' : 'row'}
-                    spacing={variant === 'primary' ? 0 : 2}
+                <Text color="gray.600" fontSize="sm">
+                    {props.subtitle}
+                </Text>
+
+                <Text
+                    fontWeight="semibold"
+                    fontSize="sm"
+                    color={getStatusColor()}
                 >
-                    <p className="mb-0 ListItem__subtitle">{props.subtitle}</p>
-
-                    <p
-                        className="mb-0 ListItem__status"
-                        style={
-                            {
-                                '--status-clr': getStatusColor(),
-                            } as React.CSSProperties
-                        }
-                    >
-                        {props.status}
-                    </p>
-                </Stack>
+                    {props.status}
+                </Text>
             </Stack>
 
-            <button
-                className="ListItem__optionsButton ml-auto shrink-0"
-                type="button"
-            >
+            <Button ml="auto" variant="ghost" minW="auto" p={2}>
                 <Icons.Options />
-            </button>
+            </Button>
         </Stack>
     )
 }
+
+export default ListItem
