@@ -1,8 +1,8 @@
-import { InputNumberBoxProps } from '@/components/atoms/types'
+import { InputNumberBoxProps } from '@/components/atoms/InputNumberBox/types'
 
 export interface PriceListRootProps {
     children?: React.ReactNode
-    onAdd?: Function
+    onAdd?: (event: React.MouseEvent<HTMLButtonElement>) => void
     notFoundText?: string
     showAddButton?: boolean
 }

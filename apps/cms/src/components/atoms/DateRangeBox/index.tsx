@@ -3,6 +3,7 @@
 import 'moment/locale/pt-br'
 
 import {
+    Box,
     FormControl,
     FormLabel,
     Input,
@@ -22,7 +23,7 @@ import DateRange from 'react-date-range/dist/components/DateRange'
 import CalendarIcon from '@/components/svgs/icons/CalendarIcon'
 import { DateRangeBoxProps } from './types'
 
-export default function DateRangeBox({
+export const DateRangeBox: React.FC<DateRangeBoxProps> = ({
     inputText,
     label,
     startDateProps,
@@ -30,7 +31,7 @@ export default function DateRangeBox({
     asSingleDate = false,
     singleDateValue,
     ...props
-}: DateRangeBoxProps) {
+}) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [inputValue, setInputValue] = useState(getInitialInputValue)
     const [dateRange, setDateRange] = useState([
@@ -48,18 +49,16 @@ export default function DateRangeBox({
         if (moment(date).isValid()) {
             return date
         }
-
         return null
     }
 
     function getInitialInputValue() {
         if (asSingleDate) {
-            return singleDateValue ? formatSingleDate(singleDateValue) : null
+            return singleDateValue ? formatSingleDate(singleDateValue) : ''
         }
-
         return startDateProps?.defaultValue || endDateProps?.defaultValue
             ? formatDate(startDateProps.defaultValue, endDateProps.defaultValue)
-            : undefined
+            : ''
     }
 
     function formatDate(start: string, end: string) {
@@ -72,11 +71,9 @@ export default function DateRangeBox({
 
     function handleChange(item) {
         setDateRange([item.selection])
-
         setInputValue(
             formatDate(item.selection.startDate, item.selection.endDate),
         )
-
         if (props.onChange) {
             props.onChange(item)
         }
@@ -85,25 +82,20 @@ export default function DateRangeBox({
     function handleChangeSingle(item) {
         setSingleDate(item)
         setInputValue(formatSingleDate(item))
-
         if (props.onChange) {
             props.onChange(item)
         }
     }
 
     return (
-        <FormControl className="DateRangeBox">
+        <FormControl>
             <input type="hidden" {...startDateProps} />
             <input type="hidden" {...endDateProps} />
 
-            <InputGroup className="searchBox" onClick={onOpen}>
-                <InputRightElement
-                    className="DateRangeBox__rightElement"
-                    pointerEvents="none"
-                >
+            <InputGroup onClick={onOpen} cursor="pointer">
+                <InputRightElement top="50%" transform="translateY(-50%)">
                     <CalendarIcon />
                 </InputRightElement>
-
                 <Input
                     type="text"
                     placeholder=" "
@@ -117,27 +109,27 @@ export default function DateRangeBox({
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
                 <ModalContent p={5}>
-                    {asSingleDate ? (
-                        <Calendar
-                            className="DateRangeBox__DateRange"
-                            locale={ptBR}
-                            onChange={handleChangeSingle}
-                            date={singleDate}
-                            dateDisplayFormat="ee/MMM/yyyy"
-                        />
-                    ) : (
-                        <DateRange
-                            className="DateRangeBox__DateRange"
-                            locale={ptBR}
-                            ranges={dateRange}
-                            editableDateInputs={true}
-                            moveRangeOnFirstSelection={false}
-                            onChange={handleChange}
-                            startDatePlaceholder="Início"
-                            endDatePlaceholder="Fim"
-                            dateDisplayFormat="ee/MMM/yyyy"
-                        />
-                    )}
+                    <Box w="100%">
+                        {asSingleDate ? (
+                            <Calendar
+                                locale={ptBR}
+                                onChange={handleChangeSingle}
+                                date={singleDate}
+                                dateDisplayFormat="ee/MMM/yyyy"
+                            />
+                        ) : (
+                            <DateRange
+                                locale={ptBR}
+                                ranges={dateRange}
+                                editableDateInputs={true}
+                                moveRangeOnFirstSelection={false}
+                                onChange={handleChange}
+                                startDatePlaceholder="Início"
+                                endDatePlaceholder="Fim"
+                                dateDisplayFormat="ee/MMM/yyyy"
+                            />
+                        )}
+                    </Box>
                 </ModalContent>
             </Modal>
         </FormControl>
