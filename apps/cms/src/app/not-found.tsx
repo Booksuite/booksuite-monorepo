@@ -1,20 +1,34 @@
-import { Button } from '@chakra-ui/react'
+import { Logo } from '@/components/atoms/Logo'
+import { Box, Button, Heading } from '@chakra-ui/react'
 import Link from 'next/link'
-
-import Logo from '@/components/svgs/Logo'
 
 export default function Custom404() {
     return (
-        <div className="PublicLayout">
-            <div className="container">
-                <Logo className="logo" />
-
-                <h1 className="text-white">Página não encontrada</h1>
-
-                <Button as={Link} href={'/'}>
+        <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            textAlign="center"
+            minHeight="100vh"
+            bg="primary.900"
+            color="white"
+            px={4}
+        >
+            <Box maxWidth="350px">
+                <Logo
+                    style={{
+                        marginInline: 'auto',
+                        marginLeft: '65px',
+                    }}
+                />
+                <Heading as="h1" size="md" color={'white'}>
+                    Página não encontrada
+                </Heading>
+                <Button as={Link} href="/" mt={6}>
                     Voltar
                 </Button>
-            </div>
-        </div>
+            </Box>
+        </Box>
     )
 }
