@@ -20,22 +20,13 @@ export default async function AuthLayout({ children }: AuthLayoutProps) {
     return (
         <DashboardLayout>
             <ValidateUserToken>
-                <Flex
-                    width="100%"
-                    minHeight="100vh"
-                    display="grid"
-                    gridTemplateColumns={{ base: '1fr', md: '18rem 1fr' }}
-                >
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        gridColumnStart={{ md: 2 }}
-                    >
+                <Box width="100%" minHeight="100vh">
+                    <Flex flexDirection="column" gridColumnStart={{ md: 2 }}>
                         <Box padding={{ base: '20px', md: '70px 100px' }}>
                             {children}
                         </Box>
-                    </Box>
-                </Flex>
+                    </Flex>
+                </Box>
             </ValidateUserToken>
         </DashboardLayout>
     )
