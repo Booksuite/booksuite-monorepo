@@ -4,7 +4,7 @@ import { Button, Flex, Link } from '@chakra-ui/react'
 
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { SimpleFilter } from '@/components/organisms/SimpleFilter/SimpleFilter'
+import { SimpleFilter } from '@/components/organisms/RadioGroup/RadioGroupFilter'
 import { Icons } from '@/components/svgs/icons'
 
 interface OpcoesDeTarifaProps {}

@@ -1,16 +1,23 @@
-import { Box, useRadio } from '@chakra-ui/react'
-import { SimpleFilterItemProps } from './types'
+import { Box, useCheckbox } from '@chakra-ui/react'
+import { RadioGroupItemProps } from './types'
 
-export function SimpleFilterItem(props: SimpleFilterItemProps) {
-    const { getInputProps, getRadioProps } = useRadio(props)
+export const RadioGroupItem: React.FC<RadioGroupItemProps> = ({
+    isChecked,
+    onChange,
+    children,
+}: RadioGroupItemProps) => {
+    const { getInputProps, getCheckboxProps } = useCheckbox({
+        isChecked,
+        onChange,
+    })
     const input = getInputProps()
-    const radio = getRadioProps()
+    const checkbox = getCheckboxProps()
 
     return (
         <Box as="label">
-            <input {...input} />
+            <input {...input} hidden />
             <Box
-                {...radio}
+                {...checkbox}
                 px={3}
                 py={2}
                 borderRadius="full"
@@ -28,7 +35,7 @@ export function SimpleFilterItem(props: SimpleFilterItemProps) {
                     borderColor: 'blue.50',
                 }}
             >
-                {props.children}
+                {children}
             </Box>
         </Box>
     )
