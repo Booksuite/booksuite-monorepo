@@ -11,25 +11,21 @@ import NextLink from 'next/link'
 
 export default function ForgotMyPassword() {
     return (
-        <Box
-            className="ForgotMyPassword"
-            textAlign="center"
-            maxW="sm"
-            mx="auto"
-            p={4}
-        >
-            <Text mb={6}>
+        <Box textAlign="center" maxW="sm" mx="auto">
+            <Text mb={6} fontWeight="semibold" fontSize={16}>
                 Digite seu e-mail que enviaremos um link para a recuperação de
                 sua senha.
             </Text>
 
             <form>
-                <FormControl mb={2}>
+                <FormControl mb={3}>
                     <FormLabel>E-mail</FormLabel>
                     <Input type="email" />
                 </FormControl>
 
-                <Button width="full">Enviar</Button>
+                <Button width="full" mb={10}>
+                    Enviar
+                </Button>
             </form>
 
             <Link
