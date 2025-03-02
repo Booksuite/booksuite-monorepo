@@ -2,12 +2,18 @@
 
 import { Button, Link } from '@chakra-ui/react'
 
+import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { SimpleFilter } from '@/components/organisms/RadioGroup/RadioGroupFilter'
 import { Icons } from '@/components/svgs/icons'
 
 export default function PacotesEFeriados() {
+    const chipItems = [
+        { key: '1', label: 'Ativas' },
+        { key: '2', label: 'Inativas' },
+        { key: '3', label: 'Todas' },
+    ]
+
     return (
         <div className="PacotesEFeriados">
             <PageHeader.Root>
@@ -19,18 +25,7 @@ export default function PacotesEFeriados() {
             </PageHeader.Root>
 
             <div>
-                <SimpleFilter
-                    className="mb-[1rem]"
-                    items={[
-                        { label: 'Ativas', checked: true },
-                        { label: 'Inativas' },
-                        { label: 'Todas' },
-                    ]}
-                    name="filtro"
-                    onChange={(values: Array<string>) => {
-                        console.log('Change Filter', values)
-                    }}
-                />
+                <ChipFilter items={chipItems} />
 
                 <List.Root>
                     <Link href="pacotes-e-feriados/detalhes">

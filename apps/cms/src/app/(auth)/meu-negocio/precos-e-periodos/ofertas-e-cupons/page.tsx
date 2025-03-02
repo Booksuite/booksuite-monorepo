@@ -2,12 +2,18 @@
 
 import { Button, Link } from '@chakra-ui/react'
 
+import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { SimpleFilter } from '@/components/organisms/RadioGroup/RadioGroupFilter'
 import { Icons } from '@/components/svgs/icons'
 
 export default function OfertasECupons() {
+    const chipItems = [
+        { key: '1', label: 'Ativas' },
+        { key: '2', label: 'Inativas' },
+        { key: '3', label: 'Todas' },
+    ]
+
     return (
         <div className="OfertasECupons">
             <PageHeader.Root>
@@ -19,18 +25,7 @@ export default function OfertasECupons() {
             </PageHeader.Root>
 
             <div>
-                <SimpleFilter
-                    className="mb-[1rem]"
-                    items={[
-                        { label: 'Ativas', checked: true },
-                        { label: 'Inativas' },
-                        { label: 'Todas' },
-                    ]}
-                    name="filtro"
-                    onChange={(values: Array<string>) => {
-                        console.log('Change Filter', values)
-                    }}
-                />
+                <ChipFilter items={chipItems} />
 
                 <List.Root>
                     <Link href="ofertas-e-cupons/detalhes">

@@ -1,17 +1,13 @@
 import { Button, Link } from '@chakra-ui/react'
 
+import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { SimpleFilter } from '@/components/organisms/RadioGroup/RadioGroupFilter'
 import { Icons } from '@/components/svgs/icons'
 import { fetcher } from '@/services/fetcher'
 import type { Acomodacao } from '@/types/Acomodacao'
 
-export default async function Acomodacoes({
-    searchParams,
-}: {
-    searchParams: { filter: string }
-}) {
+export default async function Acomodacoes() {
     const data = await fetcher(`/property`)
     const properties = data.properties
 
@@ -35,6 +31,12 @@ export default async function Acomodacoes({
         return `Até ${guests} ${slug}`
     }
 
+    const chipItems = [
+        { key: '1', label: 'Ativas' },
+        { key: '2', label: 'Inativas' },
+        { key: '3', label: 'Todas' },
+    ]
+
     return (
         <div className="Acomodacoes">
             <PageHeader.Root>
@@ -46,15 +48,7 @@ export default async function Acomodacoes({
             </PageHeader.Root>
 
             <div>
-                <SimpleFilter
-                    className="mb-[1rem]"
-                    items={[
-                        { label: 'Ativas', checked: true },
-                        { label: 'Inativas' },
-                        { label: 'Todas' },
-                    ]}
-                    name="filtro"
-                />
+                <ChipFilter items={chipItems} />
 
                 <List.Root>
                     {properties?.map((property: Acomodacao) => (

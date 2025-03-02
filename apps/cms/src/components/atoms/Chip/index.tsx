@@ -1,6 +1,6 @@
 import { Tag } from '@chakra-ui/react'
 
-type ChipProps = {
+export interface ChipProps {
     label: string
     isSelected?: boolean
     onClick: () => void

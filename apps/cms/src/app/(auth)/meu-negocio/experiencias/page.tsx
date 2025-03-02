@@ -1,17 +1,15 @@
+'use client'
+
 import { Button, Link } from '@chakra-ui/react'
 
+import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { SimpleFilter } from '@/components/organisms/RadioGroup/RadioGroupFilter'
 import { Icons } from '@/components/svgs/icons'
 import { fetcher } from '@/services/fetcher'
 import { Experience } from '@/types/Experience'
 
-export default async function Experiencias({
-    searchParams,
-}: {
-    searchParams: { filter: string }
-}) {
+export default async function Experiencias() {
     const data = await fetcher(`/experience`)
     const experiences = data.experiences
 
@@ -37,6 +35,12 @@ export default async function Experiencias({
         return salesStrings.join(' / ')
     }
 
+    const chipItems = [
+        { key: '1', label: 'Ativas' },
+        { key: '2', label: 'Inativas' },
+        { key: '3', label: 'Todas' },
+    ]
+
     return (
         <div className="Experiencias">
             <PageHeader.Root>
@@ -48,15 +52,7 @@ export default async function Experiencias({
             </PageHeader.Root>
 
             <div>
-                <SimpleFilter
-                    className="mb-[1rem]"
-                    items={[
-                        { label: 'Ativas', checked: true },
-                        { label: 'Inativas' },
-                        { label: 'Todas' },
-                    ]}
-                    name="filtro"
-                />
+                <ChipFilter items={chipItems} />
 
                 <List.Root>
                     {experiences &&
