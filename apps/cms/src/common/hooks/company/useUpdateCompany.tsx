@@ -2,9 +2,9 @@ import { useToast } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
-import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
+import type { UpdateCompanyDTO } from '@/common/types/Company'
+import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { updateCompany } from '@/services/company/updateCompany'
-import type { UpdateCompanyDTO } from '@/types/Company'
 
 export function useUpdateCompany(
     id?: number | string,

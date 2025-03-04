@@ -9,6 +9,11 @@ import {
 } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
+import {
+    Acomodacao,
+    CreateAcomodacaoDTO,
+    UpdateAcomodacaoDTO,
+} from '@/common/types/Acomodacao'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import InputNumberBox from '@/components/atoms/InputNumberBox'
@@ -16,11 +21,6 @@ import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { Gallery } from '@/components/organisms/Gallery'
 import { PriceList } from '@/components/organisms/PriceList'
 import { Icons } from '@/components/svgs/icons'
-import {
-    Acomodacao,
-    CreateAcomodacaoDTO,
-    UpdateAcomodacaoDTO,
-} from '@/types/Acomodacao'
 
 interface AcomodacaoFormProps<
     T extends UpdateAcomodacaoDTO | CreateAcomodacaoDTO,

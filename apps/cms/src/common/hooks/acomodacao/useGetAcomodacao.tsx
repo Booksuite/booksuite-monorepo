@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react'
 
+import { Acomodacao } from '@/common/types/Acomodacao'
 import axiosInstance from '@/services/axios/axiosInstance'
-import type { Experience } from '@/types/Experience'
 
-export function useGetExperience(id: number | string) {
+export function useGetAcomodacao(id?: number | string) {
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [experience, setExperience] = useState<Experience | null>(null)
+    const [acomodacao, setAcomodacao] = useState<Acomodacao | null>(null)
 
     useEffect(() => {
-        async function updateExperience() {
+        async function getAcomodacao() {
             setIsLoading(true)
 
             try {
-                const { data } = await axiosInstance.get(`/experience/${id}`)
+                const { data } = await axiosInstance.get(
+                    `/property${id ? '/' + id : ''}`,
+                )
 
                 if (data?.success) {
-                    setExperience(data.experience)
+                    setAcomodacao(id ? data.property : data.properties)
                 }
             } catch (error) {
                 if (error.response) {
@@ -35,14 +37,14 @@ export function useGetExperience(id: number | string) {
                     console.log('Error', error.message)
                 }
 
-                setError('errore')
+                setError('error')
                 console.log(error)
             } finally {
                 setIsLoading(false)
             }
         }
-        updateExperience()
+        getAcomodacao()
     }, [])
 
-    return { isLoading, error, experience }
+    return { isLoading, error, acomodacao }
 }

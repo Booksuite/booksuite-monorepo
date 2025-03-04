@@ -1,11 +1,11 @@
 import { Button, Link } from '@chakra-ui/react'
 
+import { Experience } from '@/common/types/Experience'
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { SimpleFilter } from '@/components/organisms/SimpleFilter/SimpleFilter'
 import { Icons } from '@/components/svgs/icons'
 import { fetcher } from '@/services/fetcher'
-import { Experience } from '@/types/Experience'
 
 export default async function Experiencias({
     searchParams,

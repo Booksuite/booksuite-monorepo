@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation'
 import { type FormEvent, useContext, useState } from 'react'
 
 import { CompanyContext } from '@/app/providers/companyProvider'
+import { CreateCompanyDTO } from '@/common/types/Company'
+import { slugify } from '@/common/utils/slugify'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import SelectBox from '@/components/atoms/SelectBox'
+import { toastGenericPostMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { toastGenericPostMessages } from '@/contexts/constants/toastMessages'
 import { createCompany } from '@/services/company/createCompany'
-import { CreateCompanyDTO } from '@/types/Company'
-import { slugify } from '@/utils/slugify'
 
 const initialCompanyData = {
     name: '',

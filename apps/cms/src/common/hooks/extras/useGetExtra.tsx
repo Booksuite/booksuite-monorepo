@@ -1,24 +1,24 @@
 import { useEffect, useState } from 'react'
 
+import type { Extra } from '@/common/types/Extra'
 import axiosInstance from '@/services/axios/axiosInstance'
-import { Acomodacao } from '@/types/Acomodacao'
 
-export function useGetAcomodacao(id?: number | string) {
+export function useGetExtra(id?: number | string) {
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [acomodacao, setAcomodacao] = useState<Acomodacao | null>(null)
+    const [extra, setExtra] = useState<Extra | null>(null)
 
     useEffect(() => {
-        async function getAcomodacao() {
+        async function getExtra() {
             setIsLoading(true)
 
             try {
                 const { data } = await axiosInstance.get(
-                    `/property${id ? '/' + id : ''}`,
+                    `/extra${id ? '/' + id : ''}`,
                 )
 
                 if (data?.success) {
-                    setAcomodacao(id ? data.property : data.properties)
+                    setExtra(id ? data.extra : data.extras)
                 }
             } catch (error) {
                 if (error.response) {
@@ -43,8 +43,8 @@ export function useGetAcomodacao(id?: number | string) {
                 setIsLoading(false)
             }
         }
-        getAcomodacao()
+        getExtra()
     }, [])
 
-    return { isLoading, error, acomodacao }
+    return { isLoading, error, extra: extra }
 }

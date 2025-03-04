@@ -4,14 +4,14 @@ import { Button, Flex, Stack, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
+import type { UpdateCompanyDTO } from '@/common/types/Company'
 import InputBox from '@/components/atoms/InputBox'
 import InputNumberBox from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
+import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
 import { updateCompany } from '@/services/company/updateCompany'
-import type { UpdateCompanyDTO } from '@/types/Company'
 
 export default function PoliticasDeCancelamento() {
     const [formData, setFormData] = useState<UpdateCompanyDTO>(null)
