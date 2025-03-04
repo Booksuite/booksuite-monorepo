@@ -10,7 +10,7 @@ import { AcomodacaoForm } from '@/components/acomodacoes/AcomodacaoForm'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { createAcomodacao } from '@/services/acomodacao/createAcomodacao'
+import { createAcomodacao } from '@/common/services/acomodacao/createAcomodacao'
 
 export default function PageCreateAcomodacao() {
     const [isSaving, setIsSaving] = useState<boolean>(false)

@@ -9,7 +9,7 @@ import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { ExtraForm } from '@/components/extras/ExtraForm'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { updateExtra } from '@/services/extra/updateExtra'
+import { updateExtra } from '@/common/services/extra/updateExtra'
 
 export default function DetalhesExtras({ params }: { params: { id: string } }) {
     const { isLoading, extra, error } = useGetExtra(params.id)

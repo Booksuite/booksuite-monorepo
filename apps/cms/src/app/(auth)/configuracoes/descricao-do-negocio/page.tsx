@@ -18,7 +18,7 @@ import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { Gallery } from '@/components/organisms/Gallery'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { updateCompany } from '@/services/company/updateCompany'
+import { updateCompany } from '@/common/services/company/updateCompany'
 
 export default function DescricaoDoNegocio() {
     const [formData, setFormData] = useState<UpdateCompanyDTO>(null)

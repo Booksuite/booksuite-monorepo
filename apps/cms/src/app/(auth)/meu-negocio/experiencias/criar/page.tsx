@@ -9,7 +9,7 @@ import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { ExperienciasForm } from '@/components/experiencias/ExperienciasForm'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { createExperience } from '@/services/experience/createExperience'
+import { createExperience } from '@/common/services/experience/createExperience'
 
 export default function CreateExperienciasPage() {
     const [isSaving, setIsSaving] = useState<boolean>(false)

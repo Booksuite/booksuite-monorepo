@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useCompanyContext } from '@/app/providers/companyProvider'
 import type { UpdateCompanyDTO } from '@/common/types/Company'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
-import { updateCompany } from '@/services/company/updateCompany'
+import { updateCompany } from '@/common/services/company/updateCompany'
 
 export function useUpdateCompany(
     id?: number | string,

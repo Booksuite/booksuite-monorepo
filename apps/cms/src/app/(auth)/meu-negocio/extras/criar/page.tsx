@@ -9,7 +9,7 @@ import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { ExtraForm } from '@/components/extras/ExtraForm'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { createExtra } from '@/services/extra/createExtra'
+import { createExtra } from '@/common/services/extra/createExtra'
 
 export default function PageCreateExtra() {
     const [isSaving, setIsSaving] = useState<boolean>(false)

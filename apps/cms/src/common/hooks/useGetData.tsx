@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import axiosInstance from '@/services/axios/axiosInstance'
+import axiosInstance from '@/common/services/axios/axiosInstance'
 
 export function useGetData(url: string) {
     const [error, setError] = useState<string | null>(null)

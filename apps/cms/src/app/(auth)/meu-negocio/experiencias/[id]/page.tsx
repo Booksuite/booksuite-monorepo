@@ -10,7 +10,7 @@ import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { ExperienciasForm } from '@/components/experiencias/ExperienciasForm'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { updateExperience } from '@/services/experience/updateExperience'
+import { updateExperience } from '@/common/services/experience/updateExperience'
 
 export default function DetalhesExperienciasPage({
     params,

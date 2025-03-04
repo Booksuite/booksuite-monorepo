@@ -15,7 +15,7 @@ import InputBox from '@/components/atoms/InputBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { updateCompany } from '@/services/company/updateCompany'
+import { updateCompany } from '@/common/services/company/updateCompany'
 
 const containerStyle = {
     width: '100%',

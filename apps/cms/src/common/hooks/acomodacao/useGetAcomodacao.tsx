@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import axiosInstance from '@/common/services/axios/axiosInstance'
 import { Acomodacao } from '@/common/types/Acomodacao'
-import axiosInstance from '@/services/axios/axiosInstance'
 
 export function useGetAcomodacao(id?: number | string) {
     const [error, setError] = useState<string | null>(null)

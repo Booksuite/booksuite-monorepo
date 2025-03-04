@@ -11,7 +11,7 @@ import {
 } from 'react'
 
 import type { Company } from '@/common/types/Company'
-import axiosInstance from '@/services/axios/axiosInstance'
+import axiosInstance from '@/common/services/axios/axiosInstance'
 
 interface CompanyProviderProps {
     children: React.ReactNode

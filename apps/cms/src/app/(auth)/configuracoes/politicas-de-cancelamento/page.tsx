@@ -11,7 +11,7 @@ import SelectBox from '@/components/atoms/SelectBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { updateCompany } from '@/services/company/updateCompany'
+import { updateCompany } from '@/common/services/company/updateCompany'
 
 export default function PoliticasDeCancelamento() {
     const [formData, setFormData] = useState<UpdateCompanyDTO>(null)

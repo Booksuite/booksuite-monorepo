@@ -12,7 +12,7 @@ import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { toastGenericPostMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { createCompany } from '@/services/company/createCompany'
+import { createCompany } from '@/common/services/company/createCompany'
 
 const initialCompanyData = {
     name: '',

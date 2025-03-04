@@ -9,7 +9,7 @@ import { AcomodacaoForm } from '@/components/acomodacoes/AcomodacaoForm'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { updateAcomodacao } from '@/services/acomodacao/updateAcomodacao'
+import { updateAcomodacao } from '@/common/services/acomodacao/updateAcomodacao'
 
 export default function DetalhesExperienciasPage({
     params,
