@@ -1,43 +1,36 @@
-import { Image } from '@chakra-ui/react'
+import { Box, Flex, IconButton, Image, Text } from '@chakra-ui/react'
 
 import { Icons } from '@/components/svgs/icons'
-import { GalleryItemProps } from './types'
 
-function GalleryItem(props: GalleryItemProps) {
+export const GalleryItem: React.FC<any> = ({ index, src, alt }) => {
     return (
-        <div
-            className={`Gallery__Item ${
-                props.selected ? 'Gallery__Item--selected' : ''
-            }`}
-        >
-            {props.selected && (
-                <div className="Gallery__Item__mask">
-                    <Icons.Drag />
-                </div>
-            )}
+        <Box position="relative" borderRadius="md" overflow="hidden">
+            <Image w="full" src={src} alt={alt} />
 
-            <Image
-                className="Gallery__Item__Image"
-                src={props.src}
-                alt={props.alt}
-            />
-
-            <div className="Gallery__Item__content">
-                {props.index && (
-                    <div className="Gallery__Item__title">
-                        {props.index + 1}{' '}
-                        {props.index === 0 && <span> - Capa</span>}
-                    </div>
+            <Flex
+                position="absolute"
+                top={0}
+                left={0}
+                w="full"
+                h="full"
+                p={1}
+                justifyContent="space-between"
+            >
+                {index !== undefined && (
+                    <Text fontSize="xs" fontWeight="bold" color="white" px={2}>
+                        {index + 1}
+                    </Text>
                 )}
 
-                {!props.selected && (
-                    <button type="button" className="Gallery__Item__options">
-                        <Icons.Options />
-                    </button>
-                )}
-            </div>
-        </div>
+                <IconButton
+                    aria-label="Opções"
+                    icon={<Icons.Options />}
+                    size="sm"
+                    bg="white"
+                    color={'blue.900'}
+                    borderBottomLeftRadius="md"
+                />
+            </Flex>
+        </Box>
     )
 }
-
-export default GalleryItem

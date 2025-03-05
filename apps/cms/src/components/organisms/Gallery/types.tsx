@@ -1,4 +1,4 @@
-export interface GalleryGalleryRootProps {
+export interface GalleryRootProps {
     items?: string[]
 }
 
