@@ -2,14 +2,20 @@
 
 import { Button, Link } from '@chakra-ui/react'
 
+import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { SimpleFilter } from '@/components/organisms/SimpleFilter/SimpleFilter'
 import { Icons } from '@/components/svgs/icons'
 
 export interface BannersProps {}
 
-export default function Banners(props: BannersProps) {
+export default function Banners() {
+    const chipItems = [
+        { key: '1', label: 'Ativas' },
+        { key: '2', label: 'Inativas' },
+        { key: '3', label: 'Todas' },
+    ]
+
     return (
         <div className="Banners">
             <PageHeader.Root>
@@ -21,18 +27,7 @@ export default function Banners(props: BannersProps) {
             </PageHeader.Root>
 
             <div>
-                <SimpleFilter
-                    className="mb-[1rem]"
-                    items={[
-                        { label: 'Ativas', checked: true },
-                        { label: 'Inativas' },
-                        { label: 'Todas' },
-                    ]}
-                    name="filtro"
-                    onChange={(values: Array<string>) => {
-                        console.log('Change Filter', values)
-                    }}
-                />
+                <ChipFilter items={chipItems} />
 
                 <section>
                     <h3>Página Inicial</h3>

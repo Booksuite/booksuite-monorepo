@@ -2,14 +2,20 @@
 
 import { Button, Flex, Link } from '@chakra-ui/react'
 
+import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { SimpleFilter } from '@/components/organisms/SimpleFilter/SimpleFilter'
 import { Icons } from '@/components/svgs/icons'
 
 interface RegrasDeTemporadaProps {}
 
 function RegrasDeTemporada({}: RegrasDeTemporadaProps) {
+    const chipItems = [
+        { key: '1', label: 'Ativas' },
+        { key: '2', label: 'Inativas' },
+        { key: '3', label: 'Todas' },
+    ]
+
     return (
         <div className="RegrasDeTemporada">
             <PageHeader.Root>
@@ -27,18 +33,7 @@ function RegrasDeTemporada({}: RegrasDeTemporadaProps) {
             </PageHeader.Root>
 
             <div>
-                <SimpleFilter
-                    className="mb-[1rem]"
-                    items={[
-                        { label: 'Ativas', checked: true },
-                        { label: 'Inativas' },
-                        { label: 'Todas' },
-                    ]}
-                    name="filtro"
-                    onChange={(values: Array<string>) => {
-                        console.log('Change Filter', values)
-                    }}
-                />
+                <ChipFilter items={chipItems} />
 
                 <List.Root>
                     <Link href="regras-de-temporada/detalhes">
