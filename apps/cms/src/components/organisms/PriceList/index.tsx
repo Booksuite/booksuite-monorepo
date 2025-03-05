@@ -1,7 +1,7 @@
-import PriceListRoot from "./PriceList";
-import { PriceListItem } from "./PriceListItem";
+import { PriceListItem } from './PriceListItem'
+import { PriceListRoot } from './PriceListRoot'
 
 export const PriceList = {
-  Root: PriceListRoot,
-  Item: PriceListItem,
-};
+    Root: PriceListRoot,
+    Item: PriceListItem,
+}

@@ -1,10 +1,10 @@
 'use client'
 
-import { FormControl, FormLabel, Textarea } from '@chakra-ui/react'
+import { FormControl, FormLabel, Text, Textarea } from '@chakra-ui/react'
 import React, { useState } from 'react'
 import { TextAreaBoxProps } from './types'
 
-export function TextAreaBox({ ...props }: TextAreaBoxProps) {
+export const TextAreaBox: React.FC<TextAreaBoxProps> = ({ ...props }) => {
     const [charCount, setCharCount] = useState(
         props.defaultValue?.toString().length ?? 0,
     )
@@ -18,14 +18,34 @@ export function TextAreaBox({ ...props }: TextAreaBoxProps) {
     }
 
     return (
-        <FormControl className={`TextAreaBox ${props.className}`}>
-            <Textarea placeholder=" " {...props} onChange={handleChange} />
+        <FormControl position="relative" width="100%" isolation="isolate">
             <FormLabel>{props.label}</FormLabel>
+            <Textarea
+                placeholder=" "
+                {...props}
+                onChange={handleChange}
+                resize="none"
+                border="1px solid"
+                borderColor="inherit"
+                borderRadius="md"
+                p={4}
+                _focus={{
+                    borderColor: 'blue.500',
+                    boxShadow: '0 0 0 1px #3182ce',
+                }}
+            />
 
             {props.maxLength && (
-                <div className="TextAreaBox__counter">
+                <Text
+                    position="absolute"
+                    top="0.625rem"
+                    right="0.625rem"
+                    color="#89949f"
+                    fontSize="sm"
+                    zIndex={2}
+                >
                     {charCount}/{props.maxLength}
-                </div>
+                </Text>
             )}
         </FormControl>
     )
