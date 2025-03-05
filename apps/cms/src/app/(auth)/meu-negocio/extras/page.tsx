@@ -1,15 +1,15 @@
+'use client'
+
 import { Button, Link } from '@chakra-ui/react'
 
+import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { SimpleFilter } from '@/components/organisms/SimpleFilter/SimpleFilter'
 import { Icons } from '@/components/svgs/icons'
 import { fetcher } from '@/services/fetcher'
 import type { Extra } from '@/types/Extra'
 
-export interface ExtrasProps {}
-
-export default async function Extras(props: ExtrasProps) {
+export default async function Extras() {
     const data = await fetcher(`/extra`)
     const extras = data.extras
 
@@ -35,6 +35,12 @@ export default async function Extras(props: ExtrasProps) {
         return salesStrings.join(' / ')
     }
 
+    const chipItems = [
+        { key: '1', label: 'Ativas' },
+        { key: '2', label: 'Inativas' },
+        { key: '3', label: 'Todas' },
+    ]
+
     return (
         <div className="Extras">
             <PageHeader.Root>
@@ -46,15 +52,7 @@ export default async function Extras(props: ExtrasProps) {
             </PageHeader.Root>
 
             <div>
-                <SimpleFilter
-                    className="mb-[1rem]"
-                    items={[
-                        { label: 'Ativas', checked: true },
-                        { label: 'Inativas' },
-                        { label: 'Todas' },
-                    ]}
-                    name="filtro"
-                />
+                <ChipFilter items={chipItems} />
 
                 <List.Root>
                     {extras?.map((extra: Extra, index: number) => (
