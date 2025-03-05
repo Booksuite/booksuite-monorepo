@@ -2,39 +2,12 @@
 
 import { Button, Link } from '@chakra-ui/react'
 
-import { Experience } from '@/common/types/Experience'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-import { List } from '@/components/organisms/List'
+//import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { fetcher } from '@/common/services/fetcher'
 
 export default async function Experiencias() {
-    const data = await fetcher(`/experience`)
-    const experiences = data.experiences
-
-    function getSales(data: Experience) {
-        if (!data) {
-            return ''
-        }
-
-        const salesStrings = []
-
-        if (data.onlineSale) {
-            salesStrings.push('Site')
-        }
-
-        if (data.panelSale) {
-            salesStrings.push('Painel')
-        }
-
-        if (data.seasonalSale) {
-            salesStrings.push('Período')
-        }
-
-        return salesStrings.join(' / ')
-    }
-
     const chipItems = [
         { key: '1', label: 'Ativas' },
         { key: '2', label: 'Inativas' },
@@ -54,7 +27,7 @@ export default async function Experiencias() {
             <div>
                 <ChipFilter items={chipItems} />
 
-                <List.Root>
+                {/*<List.Root>
                     {experiences &&
                         experiences.map((experience: Experience) => (
                             <Link
@@ -79,7 +52,7 @@ export default async function Experiencias() {
                                 />
                             </Link>
                         ))}
-                </List.Root>
+                </List.Root>*/}
 
                 <Button
                     as={Link}
