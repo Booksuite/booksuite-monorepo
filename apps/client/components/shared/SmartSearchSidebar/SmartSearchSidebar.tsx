@@ -1,7 +1,3 @@
-import Button from "@/components/buttons/Button";
-import { Icons } from "@/components/svgs/icons";
-import React, { useState, type MouseEventHandler } from "react";
-import InputNumberBox from "../form/InputNumberBox";
 import {
   Accordion,
   AccordionButton,
@@ -13,14 +9,18 @@ import {
   Grid,
   GridItem,
   RadioGroup,
-  SimpleGrid,
-  Stack,
+  Stack
 } from "@chakra-ui/react";
-import InputBox from "../form/InputBox";
-import SelectBox from "../form/SelectBox";
-import DateRangeBox from "../form/DateRangeBox";
-import { RadioItem } from "../form/RadioItem";
 import moment from "moment";
+import { useState } from "react";
+
+import Button from "@/components/buttons/Button";
+import { Icons } from "@/components/svgs/icons";
+import DateRangeBox from "../form/DateRangeBox";
+import InputNumberBox from "../form/InputNumberBox";
+import { RadioItem } from "../form/RadioItem";
+import SelectBox from "../form/SelectBox";
+
 import { TabButton } from "./TabButton";
 
 export interface SmartSearchSidebarFilter {

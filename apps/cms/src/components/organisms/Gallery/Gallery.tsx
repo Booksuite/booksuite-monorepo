@@ -1,27 +1,57 @@
 'use client'
 
-import { Button, Grid, GridItem, SimpleGrid } from '@chakra-ui/react'
+import {
+    Box,
+    Button,
+    Flex,
+    Grid,
+    GridItem,
+    SimpleGrid,
+    useToast,
+} from '@chakra-ui/react'
 import { useState } from 'react'
 
 import { Icons } from '@/components/svgs/icons'
 import { Gallery } from '.'
-import { GalleryGalleryRootProps } from './types'
 
-export function GalleryRoot(props: GalleryGalleryRootProps) {
+import { GalleryRootProps } from './types'
+
+export function GalleryRoot(props: GalleryRootProps) {
     const [items, setItems] = useState(props.items ?? [])
+    const toast = useToast()
 
-    function handleAddImage() {
-        setItems((prev) => [...prev, '/imagem-exemplo.png'])
+    function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const file = event.target.files?.[0]
+        if (file) {
+            const maxSizeInBytes = 5 * 1024 * 1024
+            if (file.size > maxSizeInBytes) {
+                toast({
+                    title: 'Erro',
+                    description: 'O tamanho da imagem não pode exceder 5 MB.',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                })
+                return
+            }
+
+            const reader = new FileReader()
+            reader.onload = (e) => {
+                const result = e.target?.result as string
+                setItems((prev) => [...prev, result])
+            }
+            reader.readAsDataURL(file)
+        }
     }
 
     return (
-        <div className="Gallery">
+        <Box w="full">
             {(!items || items.length === 0) && (
-                <button className="Gallery__notFound" onClick={handleAddImage}>
-                    <Icons.Image className="Gallery__notFound__icon mx-auto" />
-                    Nenhuma foto selecionada. <br />{' '}
-                    <b>Clique para selecionar</b>
-                </button>
+                <Flex
+                    onClick={() =>
+                        document.getElementById('fileInput')?.click()
+                    }
+                />
             )}
 
             {items && items.length > 0 && (
@@ -31,7 +61,7 @@ export function GalleryRoot(props: GalleryGalleryRootProps) {
                         gap={3}
                     >
                         {items.map((item: string, index) => (
-                            <GridItem w="100%" key={index}>
+                            <GridItem key={index} w="100%">
                                 <Gallery.Item
                                     index={index}
                                     src={item}
@@ -41,21 +71,27 @@ export function GalleryRoot(props: GalleryGalleryRootProps) {
                         ))}
                     </Grid>
 
-                    <SimpleGrid columns={2} gap={2} className="mt-[1.25rem]">
+                    <SimpleGrid columns={2} gap={2} mt={5}>
                         <Button
+                            as="label"
                             variant="outline"
                             leftIcon={<Icons.Plus />}
-                            onClick={handleAddImage}
+                            cursor={'pointer'}
                         >
                             Adicionar Foto
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileChange}
+                                style={{ display: 'none' }}
+                            />
                         </Button>
-
                         <Button variant="outline" leftIcon={<Icons.OrderBy />}>
                             Ordenar
                         </Button>
                     </SimpleGrid>
                 </>
             )}
-        </div>
+        </Box>
     )
 }
