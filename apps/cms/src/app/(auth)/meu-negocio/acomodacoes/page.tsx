@@ -1,11 +1,11 @@
 import { Button, Link } from '@chakra-ui/react'
 
+import type { Acomodacao } from '@/common/types/Acomodacao'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { fetcher } from '@/services/fetcher'
-import type { Acomodacao } from '@/types/Acomodacao'
+import { fetcher } from '@/common/services/fetcher'
 
 export default async function Acomodacoes() {
     const data = await fetcher(`/property`)

@@ -11,14 +11,14 @@ import {
 import { type FormEvent, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
+import type { UpdateCompanyDTO } from '@/common/types/Company'
 import InputBox from '@/components/atoms/InputBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
+import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { Gallery } from '@/components/organisms/Gallery'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
-import { updateCompany } from '@/services/company/updateCompany'
-import type { UpdateCompanyDTO } from '@/types/Company'
+import { updateCompany } from '@/common/services/company/updateCompany'
 
 export default function DescricaoDoNegocio() {
     const [formData, setFormData] = useState<UpdateCompanyDTO>(null)

@@ -2,12 +2,12 @@
 
 import { Button, Link } from '@chakra-ui/react'
 
+import { Experience } from '@/common/types/Experience'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { fetcher } from '@/services/fetcher'
-import { Experience } from '@/types/Experience'
+import { fetcher } from '@/common/services/fetcher'
 
 export default async function Experiencias() {
     const data = await fetcher(`/experience`)

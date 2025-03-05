@@ -11,6 +11,11 @@ import {
 } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
+import type { Experience } from '@/common/types/Experience'
+import {
+    CreateExperienceDTO,
+    UpdateExperienceDTO,
+} from '@/common/types/Experience'
 import DateRangeBox from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
@@ -21,8 +26,6 @@ import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { Gallery } from '@/components/organisms/Gallery'
 import { PriceList } from '@/components/organisms/PriceList'
 import { Icons } from '@/components/svgs/icons'
-import type { Experience } from '@/types/Experience'
-import { CreateExperienceDTO, UpdateExperienceDTO } from '@/types/Experience'
 
 interface ExperienciasFormProps<
     T extends UpdateExperienceDTO | CreateExperienceDTO,

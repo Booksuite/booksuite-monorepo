@@ -3,13 +3,13 @@
 import { Flex, Spinner, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
+import { useGetData } from '@/common/hooks/useGetData'
+import type { Acomodacao, UpdateAcomodacaoDTO } from '@/common/types/Acomodacao'
 import { AcomodacaoForm } from '@/components/acomodacoes/AcomodacaoForm'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
+import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
-import { useGetData } from '@/hooks/useGetData'
-import { updateAcomodacao } from '@/services/acomodacao/updateAcomodacao'
-import type { Acomodacao, UpdateAcomodacaoDTO } from '@/types/Acomodacao'
+import { updateAcomodacao } from '@/common/services/acomodacao/updateAcomodacao'
 
 export default function DetalhesExperienciasPage({
     params,

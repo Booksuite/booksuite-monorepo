@@ -1,23 +1,24 @@
 import { useEffect, useState } from 'react'
 
-import axiosInstance from '@/services/axios/axiosInstance'
+import type { Extra } from '@/common/types/Extra'
+import axiosInstance from '@/common/services/axios/axiosInstance'
 
-export function useGetData(url: string) {
+export function useGetExtra(id?: number | string) {
     const [error, setError] = useState<string | null>(null)
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [data, setData] = useState<any | null>(null)
+    const [extra, setExtra] = useState<Extra | null>(null)
 
     useEffect(() => {
-        async function getData() {
+        async function getExtra() {
             setIsLoading(true)
 
             try {
-                const response = await axiosInstance.get(url)
+                const { data } = await axiosInstance.get(
+                    `/extra${id ? '/' + id : ''}`,
+                )
 
-                if (response.data) {
-                    setData(response.data)
-                } else {
-                    setData(null)
+                if (data?.success) {
+                    setExtra(id ? data.extra : data.extras)
                 }
             } catch (error) {
                 if (error.response) {
@@ -42,8 +43,8 @@ export function useGetData(url: string) {
                 setIsLoading(false)
             }
         }
-        getData()
+        getExtra()
     }, [])
 
-    return { isLoading, error, data }
+    return { isLoading, error, extra: extra }
 }

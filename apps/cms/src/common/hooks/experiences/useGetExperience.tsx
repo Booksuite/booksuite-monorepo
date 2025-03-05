@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import axiosInstance from '@/services/axios/axiosInstance'
-import type { Experience } from '@/types/Experience'
+import axiosInstance from '@/common/services/axios/axiosInstance'
+import type { Experience } from '@/common/types/Experience'
 
 export function useGetExperience(id: number | string) {
     const [error, setError] = useState<string | null>(null)

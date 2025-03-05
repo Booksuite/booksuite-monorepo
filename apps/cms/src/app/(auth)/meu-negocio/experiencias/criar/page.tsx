@@ -3,13 +3,13 @@
 import { Flex, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
+import type { CreateExperienceDTO } from '@/common/types/Experience'
+import type { Status } from '@/common/types/Status'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { ExperienciasForm } from '@/components/experiencias/ExperienciasForm'
+import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
-import { createExperience } from '@/services/experience/createExperience'
-import type { CreateExperienceDTO } from '@/types/Experience'
-import type { Status } from '@/types/Status'
+import { createExperience } from '@/common/services/experience/createExperience'
 
 export default function CreateExperienciasPage() {
     const [isSaving, setIsSaving] = useState<boolean>(false)
