@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
+import { CreateExtraDTO, Extra, UpdateExtraDTO } from '@/common/types/Extra'
 import DateRangeBox from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
@@ -18,7 +19,6 @@ import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { Gallery } from '@/components/organisms/Gallery'
 import { Icons } from '@/components/svgs/icons'
-import { CreateExtraDTO, Extra, UpdateExtraDTO } from '@/types/Extra'
 
 interface ExtraFormProps<T extends UpdateExtraDTO | CreateExtraDTO> {
     action?: (data: FormData) => Promise<void>

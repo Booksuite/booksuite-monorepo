@@ -3,13 +3,13 @@
 import { Flex, Spinner, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
+import { useGetExtra } from '@/common/hooks/extras/useGetExtra'
+import { UpdateExtraDTO } from '@/common/types/Extra'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { ExtraForm } from '@/components/extras/ExtraForm'
+import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { toastGenericPatchMessages } from '@/contexts/constants/toastMessages'
-import { useGetExtra } from '@/hooks/extras/useGetExtra'
-import { updateExtra } from '@/services/extra/updateExtra'
-import { UpdateExtraDTO } from '@/types/Extra'
+import { updateExtra } from '@/common/services/extra/updateExtra'
 
 export default function DetalhesExtras({ params }: { params: { id: string } }) {
     const { isLoading, extra, error } = useGetExtra(params.id)

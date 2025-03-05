@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 import React, { useEffect } from 'react'
 
-import axiosInstance from '@/services/axios/axiosInstance'
+import axiosInstance from '@/common/services/axios/axiosInstance'
 
 interface ValidateUserTokenProps {
     children: React.ReactNode

@@ -3,7 +3,7 @@
 import React from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
-import { useClient } from '@/hooks/useClient'
+import { useClient } from '@/common/hooks/useClient'
 
 interface LayoutConfiguracoesProps {
     children: React.ReactNode

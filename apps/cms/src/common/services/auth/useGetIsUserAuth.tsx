@@ -1,4 +1,4 @@
-import axiosInstance from '@/services/axios/axiosInstance'
+import axiosInstance from '@/common/services/axios/axiosInstance'
 
 const useGetIsUserAuth = async () => {
     try {
