@@ -1,22 +1,13 @@
-import { getServerSession } from 'next-auth'
-import { redirect } from 'next/navigation'
+import { Box, Flex } from '@chakra-ui/react'
 
-import { authOptions } from '@/app/api/auth/[...nextauth]/authOptions'
 import { DashboardLayout } from '@/components/templates/DashboardLayout'
 import { ValidateUserToken } from '@/components/validateUserToken'
-import { Box, Flex } from '@chakra-ui/react'
 
 interface AuthLayoutProps {
     children: React.ReactNode
 }
 
 export default async function AuthLayout({ children }: AuthLayoutProps) {
-    const session = await getServerSession(authOptions)
-
-    if (!session) {
-        redirect('/login')
-    }
-
     return (
         <DashboardLayout>
             <ValidateUserToken>

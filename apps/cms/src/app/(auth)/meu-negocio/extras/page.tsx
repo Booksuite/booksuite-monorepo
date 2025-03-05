@@ -2,38 +2,12 @@
 
 import { Button, Link } from '@chakra-ui/react'
 
-import type { Extra } from '@/common/types/Extra'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-import { List } from '@/components/organisms/List'
+//import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { fetcher } from '@/common/services/fetcher'
 
 export default async function Extras() {
-    const data = await fetcher(`/extra`)
-    const extras = data.extras
-
-    function getSales(data: Extra) {
-        if (!data) {
-            return ''
-        }
-
-        const salesStrings = []
-
-        if (data.onlineSale) {
-            salesStrings.push('Site')
-        }
-
-        if (data.panelSale) {
-            salesStrings.push('Painel')
-        }
-
-        if (data.seasonalSale) {
-            salesStrings.push('Período')
-        }
-
-        return salesStrings.join(' / ')
-    }
 
     const chipItems = [
         { key: '1', label: 'Ativas' },
@@ -54,7 +28,7 @@ export default async function Extras() {
             <div>
                 <ChipFilter items={chipItems} />
 
-                <List.Root>
+                {/*<List.Root>
                     {extras?.map((extra: Extra, index: number) => (
                         <Link href={`extras/${extra.id}`} key={index}>
                             <List.Item
@@ -72,7 +46,7 @@ export default async function Extras() {
                             />
                         </Link>
                     ))}
-                </List.Root>
+                </List.Root>*/}
 
                 <Button
                     as={Link}
