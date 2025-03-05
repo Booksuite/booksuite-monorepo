@@ -1,36 +1,11 @@
 import { Button, Link } from '@chakra-ui/react'
 
-import type { Acomodacao } from '@/common/types/Acomodacao'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-import { List } from '@/components/organisms/List'
+//import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { fetcher } from '@/common/services/fetcher'
 
 export default async function Acomodacoes() {
-    const data = await fetcher(`/property`)
-    const properties = data.properties
-
-    function getTotalUnitsLabel(units: number) {
-        let slug = 'unidade'
-
-        if (units > 1) {
-            slug = 'unidades'
-        }
-
-        return `${units} ${slug}`
-    }
-
-    function getTotalGuestsLabel(guests: number) {
-        let slug = 'hóspede'
-
-        if (guests > 1) {
-            slug = 'hóspedes'
-        }
-
-        return `Até ${guests} ${slug}`
-    }
-
     const chipItems = [
         { key: '1', label: 'Ativas' },
         { key: '2', label: 'Inativas' },
@@ -50,7 +25,7 @@ export default async function Acomodacoes() {
             <div>
                 <ChipFilter items={chipItems} />
 
-                <List.Root>
+                {/*<List.Root>
                     {properties?.map((property: Acomodacao) => (
                         <Link
                             href={`acomodacoes/${property.id}`}
@@ -89,7 +64,7 @@ export default async function Acomodacoes() {
                             />
                         </Link>
                     ))}
-                </List.Root>
+                </List.Root>*/}
 
                 <Button
                     as={Link}
