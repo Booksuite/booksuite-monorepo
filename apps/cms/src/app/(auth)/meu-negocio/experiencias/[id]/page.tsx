@@ -10,7 +10,7 @@ import type { Status } from '@/common/types/Status'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { ExperienciasForm } from '@/components/templates/DashboardExperienceForm'
+import { DashboardExperienceForm } from '@/components/templates/DashboardExperienceForm'
 
 export default function DetalhesExperienciasPage({
     params,
@@ -93,7 +93,7 @@ export default function DetalhesExperienciasPage({
             ) : error ? (
                 <p>{error}</p>
             ) : (
-                <ExperienciasForm
+                <DashboardExperienceForm
                     onSubmit={saveExperience}
                     data={experience}
                     isSaving={isSaving}

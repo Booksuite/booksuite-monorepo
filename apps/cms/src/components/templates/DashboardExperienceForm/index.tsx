@@ -9,7 +9,7 @@ import {
     SimpleGrid,
     Stack,
 } from '@chakra-ui/react'
-import { FormEvent, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 
 import {
     CreateExperienceDTO,
@@ -28,10 +28,12 @@ import { Icons } from '@/components/svgs/icons'
 
 import { ExperienceFormProps } from './types'
 
-export function DashboardExperienceForm<
-    T extends UpdateExperienceDTO | CreateExperienceDTO,
->({ data, isSaving, onSubmit, ...props }: ExperienceFormProps<T>) {
-    const [formData, setFormData] = useState<T>(null)
+export const DashboardExperienceForm: React.FC<
+    ExperienceFormProps<UpdateExperienceDTO | CreateExperienceDTO>
+> = ({ data, isSaving, onSubmit, ...props }) => {
+    const [formData, setFormData] = useState<
+        UpdateExperienceDTO | CreateExperienceDTO
+    >(null)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -139,8 +141,11 @@ export function DashboardExperienceForm<
                             asSingleDate
                             label="Início do Períodos de Compras"
                             singleDateValue={data?.seasonStart ?? null}
-                            onChange={(value) => {
-                                setFormData({ ...formData, seasonStart: value })
+                            onChange={(event) => {
+                                setFormData({
+                                    ...formData,
+                                    seasonStart: event.target.value,
+                                })
                             }}
                         />
                         <DateRangeBox
@@ -148,7 +153,10 @@ export function DashboardExperienceForm<
                             label="Fim do Período de Compras"
                             singleDateValue={data?.seasonEnd ?? ''}
                             onChange={(value) => {
-                                setFormData({ ...formData, seasonEnd: value })
+                                setFormData({
+                                    ...formData,
+                                    seasonEnd: value.target.value,
+                                })
                             }}
                         />
                         <Button variant="outline" leftIcon={<Icons.Plus />}>
