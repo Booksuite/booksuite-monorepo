@@ -3,14 +3,14 @@
 import { Flex, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
+import { createAcomodacao } from '@/common/services/acomodacao/createAcomodacao'
 import { CreateAcomodacaoDTO } from '@/common/types/Acomodacao'
 import type { Status } from '@/common/types/Status'
 import { slugify } from '@/common/utils/slugify'
-import { AcomodacaoForm } from '@/components/acomodacoes/AcomodacaoForm'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { createAcomodacao } from '@/common/services/acomodacao/createAcomodacao'
+import { DahboardAccommodationForm } from '@/components/templates/DahboardAccommodationForm'
 
 export default function PageCreateAcomodacao() {
     const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -74,7 +74,10 @@ export default function PageCreateAcomodacao() {
                 <PageHeader.Title>Criar Acomodacao</PageHeader.Title>
             </PageHeader.Root>
 
-            <AcomodacaoForm onSubmit={saveAcomodacao} isSaving={isSaving} />
+            <DahboardAccommodationForm
+                onSubmit={saveAcomodacao}
+                isSaving={isSaving}
+            />
         </div>
     )
 }
