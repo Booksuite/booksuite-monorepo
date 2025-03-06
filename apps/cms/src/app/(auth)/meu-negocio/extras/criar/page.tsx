@@ -3,13 +3,13 @@
 import { Flex, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
+import { createExtra } from '@/common/services/extra/createExtra'
 import type { CreateExtraDTO } from '@/common/types/Extra'
 import type { Status } from '@/common/types/Status'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
-import { ExtraForm } from '@/components/extras/ExtraForm'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { createExtra } from '@/common/services/extra/createExtra'
+import { DashboardExtraForm } from '@/components/templates/DashboardExtraForm'
 
 export default function PageCreateExtra() {
     const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -72,7 +72,7 @@ export default function PageCreateExtra() {
                 <PageHeader.Title>Criar Extra</PageHeader.Title>
             </PageHeader.Root>
 
-            <ExtraForm onSubmit={saveExtra} isSaving={isSaving} />
+            <DashboardExtraForm onSubmit={saveExtra} isSaving={isSaving} />
         </div>
     )
 }
