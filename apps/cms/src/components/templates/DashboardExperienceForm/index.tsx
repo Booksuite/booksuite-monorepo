@@ -9,17 +9,16 @@ import {
     SimpleGrid,
     Stack,
 } from '@chakra-ui/react'
-import { type FormEvent, useState } from 'react'
+import { FormEvent, useState } from 'react'
 
-import type { Experience } from '@/common/types/Experience'
 import {
     CreateExperienceDTO,
     UpdateExperienceDTO,
 } from '@/common/types/Experience'
-import DateRangeBox from '@/components/atoms/DateRangeBox'
+import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
-import InputNumberBox from '@/components/atoms/InputNumberBox'
+import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
@@ -27,18 +26,11 @@ import { Gallery } from '@/components/organisms/Gallery'
 import { PriceList } from '@/components/organisms/PriceList'
 import { Icons } from '@/components/svgs/icons'
 
-interface ExperienciasFormProps<
-    T extends UpdateExperienceDTO | CreateExperienceDTO,
-> {
-    action?: (data: FormData) => Promise<void>
-    data?: Experience
-    isSaving?: boolean
-    onSubmit?: (e: FormEvent<HTMLFormElement>, data: T) => void
-}
+import { ExperienceFormProps } from './types'
 
-export function ExperienciasForm<
+export function DashboardExperienceForm<
     T extends UpdateExperienceDTO | CreateExperienceDTO,
->({ data, isSaving, onSubmit, ...props }: ExperienciasFormProps<T>) {
+>({ data, isSaving, onSubmit, ...props }: ExperienceFormProps<T>) {
     const [formData, setFormData] = useState<T>(null)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

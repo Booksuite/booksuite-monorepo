@@ -4,13 +4,13 @@ import { Flex, Spinner, useToast } from '@chakra-ui/react'
 import { type FormEvent, useEffect, useState } from 'react'
 
 import { useGetExperience } from '@/common/hooks/experiences/useGetExperience'
+import { updateExperience } from '@/common/services/experience/updateExperience'
 import { UpdateExperienceDTO } from '@/common/types/Experience'
 import type { Status } from '@/common/types/Status'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
-import { ExperienciasForm } from '@/components/experiencias/ExperienciasForm'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { updateExperience } from '@/common/services/experience/updateExperience'
+import { ExperienciasForm } from '@/components/templates/DashboardExperienceForm'
 
 export default function DetalhesExperienciasPage({
     params,
