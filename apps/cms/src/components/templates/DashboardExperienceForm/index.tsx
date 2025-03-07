@@ -9,17 +9,16 @@ import {
     SimpleGrid,
     Stack,
 } from '@chakra-ui/react'
-import { type FormEvent, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 
-import type { Experience } from '@/common/types/Experience'
 import {
     CreateExperienceDTO,
     UpdateExperienceDTO,
 } from '@/common/types/Experience'
-import DateRangeBox from '@/components/atoms/DateRangeBox'
+import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
-import InputNumberBox from '@/components/atoms/InputNumberBox'
+import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
@@ -27,19 +26,14 @@ import { Gallery } from '@/components/organisms/Gallery'
 import { PriceList } from '@/components/organisms/PriceList'
 import { Icons } from '@/components/svgs/icons'
 
-interface ExperienciasFormProps<
-    T extends UpdateExperienceDTO | CreateExperienceDTO,
-> {
-    action?: (data: FormData) => Promise<void>
-    data?: Experience
-    isSaving?: boolean
-    onSubmit?: (e: FormEvent<HTMLFormElement>, data: T) => void
-}
+import { ExperienceFormProps } from './types'
 
-export function ExperienciasForm<
-    T extends UpdateExperienceDTO | CreateExperienceDTO,
->({ data, isSaving, onSubmit, ...props }: ExperienciasFormProps<T>) {
-    const [formData, setFormData] = useState<T>(null)
+export const DashboardExperienceForm: React.FC<
+    ExperienceFormProps<UpdateExperienceDTO | CreateExperienceDTO>
+> = ({ data, isSaving, onSubmit, ...props }) => {
+    const [formData, setFormData] = useState<
+        UpdateExperienceDTO | CreateExperienceDTO
+    >(null)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -147,8 +141,11 @@ export function ExperienciasForm<
                             asSingleDate
                             label="Início do Períodos de Compras"
                             singleDateValue={data?.seasonStart ?? null}
-                            onChange={(value) => {
-                                setFormData({ ...formData, seasonStart: value })
+                            onChange={(event) => {
+                                setFormData({
+                                    ...formData,
+                                    seasonStart: event.target.value,
+                                })
                             }}
                         />
                         <DateRangeBox
@@ -156,7 +153,10 @@ export function ExperienciasForm<
                             label="Fim do Período de Compras"
                             singleDateValue={data?.seasonEnd ?? ''}
                             onChange={(value) => {
-                                setFormData({ ...formData, seasonEnd: value })
+                                setFormData({
+                                    ...formData,
+                                    seasonEnd: value.target.value,
+                                })
                             }}
                         />
                         <Button variant="outline" leftIcon={<Icons.Plus />}>

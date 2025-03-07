@@ -4,9 +4,10 @@ import { Button, FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+
 import type { LoginForm } from './types'
 
-export default function DashboadLoginForm() {
+export default function DashboardLoginForm() {
     const [form, setForm] = useState<LoginForm>({ email: '', password: '' })
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)

@@ -1,5 +1,3 @@
-'use client'
-
 import { Button, Link } from '@chakra-ui/react'
 
 import { ChipFilter } from '@/components/organisms/ChipFilter'
