@@ -4,12 +4,12 @@ import { Flex, Spinner, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
 import { useGetExtra } from '@/common/hooks/extras/useGetExtra'
+import { updateExtra } from '@/common/services/extra/updateExtra'
 import { UpdateExtraDTO } from '@/common/types/Extra'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
-import { ExtraForm } from '@/components/extras/ExtraForm'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { updateExtra } from '@/common/services/extra/updateExtra'
+import { DashboardExtraForm } from '@/components/templates/DashboardExtraForm'
 
 export default function DetalhesExtras({ params }: { params: { id: string } }) {
     const { isLoading, extra, error } = useGetExtra(params.id)
@@ -80,7 +80,7 @@ export default function DetalhesExtras({ params }: { params: { id: string } }) {
             ) : error ? (
                 <p>{error}</p>
             ) : (
-                <ExtraForm
+                <DashboardExtraForm
                     onSubmit={saveExtra}
                     data={extra}
                     isSaving={isSaving}
