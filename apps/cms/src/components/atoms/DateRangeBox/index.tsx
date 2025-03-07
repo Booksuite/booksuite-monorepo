@@ -21,10 +21,10 @@ import Calendar from 'react-date-range/dist/components/Calendar'
 import DateRange from 'react-date-range/dist/components/DateRange'
 
 import CalendarIcon from '@/components/svgs/icons/CalendarIcon'
+
 import { DateRangeBoxProps } from './types'
 
 export const DateRangeBox: React.FC<DateRangeBoxProps> = ({
-    inputText,
     label,
     startDateProps,
     endDateProps,

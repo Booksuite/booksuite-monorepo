@@ -13,6 +13,7 @@ import { useRef } from 'react'
 
 import MinusIcon from '@/components/svgs/icons/MinusIcon'
 import PlusIcon from '@/components/svgs/icons/PlusIcon'
+
 import { InputNumberBoxProps } from './types'
 
 export const InputNumberBox: React.FC<InputNumberBoxProps> = ({ ...props }) => {
