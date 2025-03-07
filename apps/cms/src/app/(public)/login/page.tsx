@@ -1,14 +1,12 @@
 import { Link } from '@chakra-ui/react'
 import NextLink from 'next/link'
 
-import DashboadLoginForm from '@/components/templates/DashboadLoginForm'
+import DashboardLoginForm from '@/components/templates/DashboardLoginForm'
 
 export default async function Login() {
-
-
     return (
         <div className="Login">
-            <DashboadLoginForm />
+            <DashboardLoginForm />
 
             <Link
                 as={NextLink}

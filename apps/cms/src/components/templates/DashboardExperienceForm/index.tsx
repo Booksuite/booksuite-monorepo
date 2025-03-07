@@ -1,43 +1,42 @@
 'use client'
 
 import {
+    Alert,
+    AlertDescription,
     Button,
     CheckboxGroup,
     Flex,
     SimpleGrid,
     Stack,
 } from '@chakra-ui/react'
-import { type FormEvent, useState } from 'react'
+import React, { FormEvent, useState } from 'react'
 
-import { CreateExtraDTO, Extra, UpdateExtraDTO } from '@/common/types/Extra'
-import DateRangeBox from '@/components/atoms/DateRangeBox'
+import {
+    CreateExperienceDTO,
+    UpdateExperienceDTO,
+} from '@/common/types/Experience'
+import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
-import InputNumberBox from '@/components/atoms/InputNumberBox'
+import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { Gallery } from '@/components/organisms/Gallery'
+import { PriceList } from '@/components/organisms/PriceList'
 import { Icons } from '@/components/svgs/icons'
 
-interface ExtraFormProps<T extends UpdateExtraDTO | CreateExtraDTO> {
-    action?: (data: FormData) => Promise<void>
-    data?: Extra
-    isSaving?: boolean
-    onSubmit?: (e: FormEvent<HTMLFormElement>, data: T) => void
-}
+import { ExperienceFormProps } from './types'
 
-export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
-    data,
-    isSaving,
-    onSubmit,
-    ...props
-}: ExtraFormProps<T>) {
-    const [formData, setFormData] = useState<T>(null)
+export const DashboardExperienceForm: React.FC<
+    ExperienceFormProps<UpdateExperienceDTO | CreateExperienceDTO>
+> = ({ data, isSaving, onSubmit, ...props }) => {
+    const [formData, setFormData] = useState<
+        UpdateExperienceDTO | CreateExperienceDTO
+    >(null)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-
         if (onSubmit) {
             onSubmit(e, formData)
         }
@@ -48,51 +47,19 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
             <Stack gap={8}>
                 <Flex direction="column" gap={2}>
                     <InputBox
-                        label="Nome do Extra"
-                        defaultValue={data?.name ?? ''}
+                        label="Nome da Experiência"
+                        name="name"
+                        defaultValue={data?.name}
                         onChange={(event) => {
                             setFormData({
                                 ...formData,
-                                name: event.target.value,
+                                [event.target.name]: event.target.value,
                             })
                         }}
                     />
 
-                    <SelectBox
-                        options={[
-                            {
-                                value: 'Por unidade',
-                                label: 'Por unidade',
-                            },
-                            { value: 'Nome Lorem', label: 'Nome Lorem' },
-                            { value: 'Lorem Ipsum', label: 'Lorem Ipsum' },
-                        ]}
-                        defaultValue={
-                            data?.billType
-                                ? [
-                                      {
-                                          value: data.billType,
-                                          label: data.billType,
-                                      },
-                                  ]
-                                : ''
-                        }
-                        label="Tipo de Cobrança"
-                        onChange={(e: { value: string; label: string }) => {
-                            setFormData({ ...formData, billType: e.value })
-                        }}
-                    />
-
-                    <InputBox
-                        label="Preço"
-                        type="currency"
-                        defaultValue={data?.price ?? ''}
-                        onValueChange={(value, name, values) => {
-                            setFormData({ ...formData, price: values.float })
-                        }}
-                    />
-
                     <InputNumberBox
+                        name="minDaily"
                         label="Mínimo de Diárias"
                         defaultValue={data?.minDaily ?? 0}
                         onChange={(
@@ -106,6 +73,7 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                         }}
                     />
                     <InputNumberBox
+                        name="minNotice"
                         label="Antecedência mínima"
                         defaultValue={data?.minNotice ?? 0}
                         onChange={(
@@ -125,8 +93,8 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                     <Stack spacing={2}>
                         <SwitchBox
                             label="Vende online no site"
-                            id="vende-online"
-                            name="vende-online"
+                            id="onlineSale"
+                            name="onlineSale"
                             flexProps={{ justifyContent: 'space-between' }}
                             defaultChecked={data?.onlineSale}
                             onChange={(event) => {
@@ -138,8 +106,8 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                         />
                         <SwitchBox
                             label="Vender no painel"
-                            id="vende-painel"
-                            name="vende-painel"
+                            id="panelSale"
+                            name="panelSale"
                             flexProps={{ justifyContent: 'space-between' }}
                             defaultChecked={data?.panelSale}
                             onChange={(event) => {
@@ -151,8 +119,8 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                         />
                         <SwitchBox
                             label="Vender em períodos específicos"
-                            id="vende-periodos"
-                            name="vende-periodos"
+                            id="seasonalSale"
+                            name="seasonalSale"
                             flexProps={{ justifyContent: 'space-between' }}
                             defaultChecked={data?.seasonalSale}
                             onChange={(event) => {
@@ -173,8 +141,11 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                             asSingleDate
                             label="Início do Períodos de Compras"
                             singleDateValue={data?.seasonStart ?? null}
-                            onChange={(value) => {
-                                setFormData({ ...formData, seasonStart: value })
+                            onChange={(event) => {
+                                setFormData({
+                                    ...formData,
+                                    seasonStart: event.target.value,
+                                })
                             }}
                         />
                         <DateRangeBox
@@ -182,7 +153,10 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                             label="Fim do Período de Compras"
                             singleDateValue={data?.seasonEnd ?? ''}
                             onChange={(value) => {
-                                setFormData({ ...formData, seasonEnd: value })
+                                setFormData({
+                                    ...formData,
+                                    seasonEnd: value.target.value,
+                                })
                             }}
                         />
                         <Button variant="outline" leftIcon={<Icons.Plus />}>
@@ -215,7 +189,7 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                             <DateRangeBox
                                 asSingleDate
                                 label="Início do Período de Estadia"
-                                singleDateValue="20/12/2024"
+                                singleDateValue="01/12/2024"
                             />
                             <DateRangeBox
                                 asSingleDate
@@ -241,7 +215,7 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                             <DateRangeBox
                                 asSingleDate
                                 label="Início do Período de Estadia"
-                                singleDateValue="20/12/2024"
+                                singleDateValue="01/12/2024"
                             />
                             <DateRangeBox
                                 asSingleDate
@@ -323,39 +297,50 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                 </section>
 
                 <section>
-                    <h2>Extras e experiências inclusas</h2>
+                    <h2>Fotos e vídeo</h2>
+                    <h4>Fotos de capa</h4>
 
-                    <CheckboxGroup>
-                        <Stack spacing={[2]} direction={['column']}>
-                            <InputCheckboxBox defaultChecked>
-                                Passeio de Veleiro
-                            </InputCheckboxBox>
-                            <InputCheckboxBox defaultChecked>
-                                Passeio de Balão
-                            </InputCheckboxBox>
-                            <InputCheckboxBox>
-                                Passeio de Stand-up
-                            </InputCheckboxBox>
-                        </Stack>
-                    </CheckboxGroup>
+                    <Gallery.Item src={'/imagem-exemplo.png'} />
 
                     <Button
                         className="mt-4 w-full"
-                        variant="outline"
-                        leftIcon={<Icons.Plus />}
+                        variant={'outline'}
+                        leftIcon={<Icons.Refresh className="!w-auto" />}
                     >
-                        Mostrar Mais
+                        Substituir Foto
                     </Button>
+
+                    <Alert className="mt-10" justifyContent={'center'} gap={2}>
+                        <Icons.Info className="!w-auto" />
+                        <AlertDescription>
+                            <b>Atenção:</b> as demais fotos da galeria são
+                            exibidas conforme as fotos adicionadas diretamente
+                            nos serviços extras inclusos nesta experiência.
+                        </AlertDescription>
+                    </Alert>
+
+                    <h4 className="mt-4">Vídeo</h4>
+
+                    <InputBox
+                        label="URL de Vídeo do Youtube (opcional)"
+                        defaultValue={data?.videoUrl}
+                        onChange={(e) =>
+                            setFormData({
+                                ...formData,
+                                videoUrl: e.target.value,
+                            })
+                        }
+                    />
                 </section>
 
                 <section>
-                    <h2>Informações</h2>
+                    <h2>Descrição e Informação</h2>
 
                     <SimpleGrid spacing={2}>
                         <TextAreaBox
                             label="Descrição"
                             maxLength={250}
-                            defaultValue={data?.description ?? ''}
+                            defaultValue={data?.description}
                             onChange={(e) => {
                                 setFormData({
                                     ...formData,
@@ -365,19 +350,8 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                         />
 
                         <TextAreaBox
-                            label="O que está incluso"
-                            defaultValue={data?.included ?? ''}
-                            onChange={(e) =>
-                                setFormData({
-                                    ...formData,
-                                    included: e.target.value,
-                                })
-                            }
-                        />
-
-                        <TextAreaBox
                             label="Informações gerais e observações"
-                            defaultValue={data?.notes ?? ''}
+                            defaultValue={data?.notes}
                             onChange={(e) =>
                                 setFormData({
                                     ...formData,
@@ -389,40 +363,131 @@ export function ExtraForm<T extends UpdateExtraDTO | CreateExtraDTO>({
                 </section>
 
                 <section>
-                    <h2>Fotos e vídeo</h2>
-                    <h4>Galeria</h4>
+                    <h2 className="mt-4">Tipo de cama</h2>
 
-                    <Gallery.Root
-                        items={[
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                        ]}
-                    />
+                    <PriceList.Root
+                        notFoundText="Nenhum Tipo de Cama Adicionado"
+                        showAddButton={false}
+                    >
+                        <PriceList.Item
+                            title="Cama de casal"
+                            defaultValue={1}
+                        />
+                        <PriceList.Item title="Cama de casal queen" />
+                        <PriceList.Item title="Cama de casal king" />
+                        <PriceList.Item title="Cama retrátil" />
+                        <PriceList.Item title="Sofá-cama" defaultValue={1} />
+                        <PriceList.Item title="Bicama" />
+                        <PriceList.Item title="Cama de solteiro" />
+                        <PriceList.Item title="Beliche duplo" />
+                        <PriceList.Item title="Colchão extra" />
+                        <PriceList.Item title="Colchão de água" />
+                        <PriceList.Item title="Cama tipo futon" />
+                        <PriceList.Item title="Berço" />
 
-                    <h4 className="mt-4">Vídeo</h4>
-
-                    <InputBox
-                        label="URL de Vídeo do Youtube (opcional)"
-                        defaultValue={data?.videoUrl ?? ''}
-                        onChange={(e) =>
-                            setFormData({
-                                ...formData,
-                                videoUrl: e.target.value,
-                            })
-                        }
-                    />
+                        <Button variant={'outline'} className="w-full">
+                            <Icons.Plus className="mr-2 w-5" />
+                            Mostrar mais
+                        </Button>
+                    </PriceList.Root>
                 </section>
 
-                <Button type="submit">Salvar</Button>
+                <section>
+                    <Stack direction={'column'} spacing={2}>
+                        <h2 className="mt-4">Preço</h2>
+
+                        <InputBox
+                            label="Soma dos Extras Selecionados"
+                            type="currency"
+                            defaultValue={data?.price}
+                            isDisabled
+                        />
+
+                        <SelectBox
+                            name="priceAdjustment"
+                            options={[
+                                {
+                                    value: 'Desconto percentual',
+                                    label: 'Desconto percentual',
+                                },
+                                { value: 'Nome Lorem', label: 'Nome Lorem' },
+                                { value: 'Lorem Ipsum', label: 'Lorem Ipsum' },
+                            ]}
+                            defaultValue={
+                                data?.priceAdjustment
+                                    ? [
+                                          {
+                                              value: data.priceAdjustment,
+                                              label: data.priceAdjustment,
+                                          },
+                                      ]
+                                    : ''
+                            }
+                            label="Ajuste de Preço"
+                            onChange={(e: { value: string; label: string }) => {
+                                setFormData({
+                                    ...formData,
+                                    priceAdjustment: e.value,
+                                })
+                            }}
+                        />
+
+                        <InputBox
+                            label="Valor incidente"
+                            type="number"
+                            defaultValue={data?.discount}
+                            onChange={(e) => {
+                                setFormData({
+                                    ...formData,
+                                    discount: parseFloat(e.target.value),
+                                })
+                            }}
+                        />
+
+                        <InputBox
+                            label="Preço Final da Experiência"
+                            type="currency"
+                            name="price"
+                            defaultValue={data?.price}
+                            onValueChange={(value, name, values) => {
+                                setFormData({
+                                    ...formData,
+                                    price: values.float,
+                                })
+                            }}
+                        />
+
+                        <SelectBox
+                            options={[
+                                {
+                                    value: 'Por unidade',
+                                    label: 'Por unidade',
+                                },
+                                { value: 'Nome Lorem', label: 'Nome Lorem' },
+                                { value: 'Lorem Ipsum', label: 'Lorem Ipsum' },
+                            ]}
+                            defaultValue={
+                                data?.billType
+                                    ? [
+                                          {
+                                              value: data.billType,
+                                              label: data.billType,
+                                          },
+                                      ]
+                                    : ''
+                            }
+                            label="Tipo de Cobrança"
+                            name="billType"
+                            onChange={(e: { value: string; label: string }) => {
+                                setFormData({ ...formData, billType: e.value })
+                            }}
+                        />
+                    </Stack>
+                </section>
+
+                <Button type="submit" isLoading={isSaving}>
+                    Salvar
+                </Button>
             </Stack>
         </form>
     )
