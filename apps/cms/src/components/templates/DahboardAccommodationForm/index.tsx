@@ -10,31 +10,31 @@ import {
 import { type FormEvent, useState } from 'react'
 
 import {
-    Acomodacao,
     CreateAcomodacaoDTO,
     UpdateAcomodacaoDTO,
 } from '@/common/types/Acomodacao'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
-import InputNumberBox from '@/components/atoms/InputNumberBox'
+import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { Gallery } from '@/components/organisms/Gallery'
 import { PriceList } from '@/components/organisms/PriceList'
 import { Icons } from '@/components/svgs/icons'
 
-interface AcomodacaoFormProps<
-    T extends UpdateAcomodacaoDTO | CreateAcomodacaoDTO,
-> {
-    action?: (data: FormData) => Promise<void>
-    data?: Acomodacao
-    isSaving?: boolean
-    onSubmit?: (e: FormEvent<HTMLFormElement>, data: T) => void
-}
+import { AccommodationFormProps } from './types'
 
-export function AcomodacaoForm<
-    T extends UpdateAcomodacaoDTO | CreateAcomodacaoDTO,
->({ data, isSaving, onSubmit, ...props }: AcomodacaoFormProps<T>) {
-    const [formData, setFormData] = useState<T>(null)
+export const DahboardAccommodationForm: React.FC<
+    AccommodationFormProps<UpdateAcomodacaoDTO | CreateAcomodacaoDTO>
+> = ({
+    data,
+    // eslint-disable-next-line no-unused-vars
+    isSaving,
+    onSubmit,
+    ...props
+}) => {
+    const [formData, setFormData] = useState<
+        UpdateAcomodacaoDTO | CreateAcomodacaoDTO | null
+    >(null)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
