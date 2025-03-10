@@ -6,9 +6,7 @@ import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 export default function PoliticaDePrivacidade() {
-    function handleSubmit() {
-        console.log('oi')
-    }
+    function handleSubmit() {}
 
     return (
         <div className="PoliticaDePrivacidade">

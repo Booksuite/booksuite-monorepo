@@ -4,14 +4,14 @@ import { Button, Flex, Stack, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
+import { updateCompany } from '@/common/services/company/updateCompany'
 import type { UpdateCompanyDTO } from '@/common/types/Company'
 import InputBox from '@/components/atoms/InputBox'
-import InputNumberBox from '@/components/atoms/InputNumberBox'
+import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { updateCompany } from '@/common/services/company/updateCompany'
 
 export default function PoliticasDeCancelamento() {
     const [formData, setFormData] = useState<UpdateCompanyDTO>(null)
@@ -30,7 +30,7 @@ export default function PoliticasDeCancelamento() {
 
         setIsSaving(true)
 
-        const response = new Promise((resolve, reject) => {
+        const response = new Promise((resolve) => {
             resolve(updateCompany(company.id, formData))
         })
             .then((resp: any) => {
@@ -199,7 +199,6 @@ export default function PoliticasDeCancelamento() {
                             label="Outras regras e observações"
                             defaultValue={company.cancelPolicy}
                             onChange={(e) => {
-                                console.log(e)
                                 setFormData({
                                     ...formData,
                                     cancelPolicy: e.target.value,

@@ -1,5 +1,6 @@
-import Logo from '@/components/svgs/Logo'
 import { Box, Flex } from '@chakra-ui/react'
+
+import Logo from '@/components/svgs/Logo'
 
 export default function PublicLayout({ children }) {
     return (
