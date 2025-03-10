@@ -6,6 +6,7 @@
         "module": "ESNext",
         "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
+        "noUncheckedIndexedAccess": true,
         "esModuleInterop": true,
         "lib": ["ESNext"],
         "noEmit": true,
