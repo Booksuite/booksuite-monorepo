@@ -1,9 +1,9 @@
-import ChevronRightIcon from '@/components/svgs/icons/ChevronRightIcon'
+import { ChevronRight } from 'lucide-react'
 
 export function InternalMenuAfter() {
     return (
         <div className="InternalMenu__Button__After">
-            <ChevronRightIcon />
+            <ChevronRight />
         </div>
     )
 }

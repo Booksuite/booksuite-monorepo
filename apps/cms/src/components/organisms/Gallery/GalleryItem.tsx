@@ -1,6 +1,5 @@
 import { Box, Flex, IconButton, Image, Text } from '@chakra-ui/react'
-
-import { Icons } from '@/components/svgs/icons'
+import { MoreVertical } from 'lucide-react'
 
 export const GalleryItem: React.FC<any> = ({ index, src, alt }) => {
     return (
@@ -24,7 +23,7 @@ export const GalleryItem: React.FC<any> = ({ index, src, alt }) => {
 
                 <IconButton
                     aria-label="Opções"
-                    icon={<Icons.Options />}
+                    icon={<MoreVertical />}
                     size="sm"
                     bg="white"
                     color={'blue.900'}

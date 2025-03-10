@@ -1,4 +1,3 @@
-import { BellIcon, CloseIcon } from '@chakra-ui/icons'
 import {
     Avatar,
     Box,
@@ -10,11 +9,13 @@ import {
     useBreakpointValue,
     VStack,
 } from '@chakra-ui/react'
+import { Bell, X } from 'lucide-react'
 import type React from 'react'
-import { NavMenu } from './components/NavMenu'
-import type { LinkItem } from './components/NavMenu/types'
 
 import { Logo } from '@/components/atoms/Logo'
+
+import { NavMenu } from './components/NavMenu'
+import type { LinkItem } from './components/NavMenu/types'
 import type { DashboardSidebarProps } from './types'
 
 export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
@@ -73,7 +74,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                                 color="white"
                             >
                                 <IconButton
-                                    icon={<CloseIcon />}
+                                    icon={<X />}
                                     onClick={onClose}
                                     variant="ghost"
                                     color="white"
@@ -94,7 +95,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 
                                 <Flex gap={2}>
                                     <IconButton
-                                        icon={<BellIcon boxSize={6} />}
+                                        icon={<Bell size={24} />}
                                         aria-label="Notifications"
                                         variant="ghost"
                                         color="white"

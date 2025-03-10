@@ -1,11 +1,4 @@
 import {
-    BellIcon,
-    ChevronDownIcon,
-    ExternalLinkIcon,
-    HamburgerIcon,
-    SearchIcon,
-} from '@chakra-ui/icons'
-import {
     Avatar,
     Box,
     Button,
@@ -22,6 +15,13 @@ import {
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react'
+import {
+    Bell,
+    ChevronDown,
+    ExternalLink,
+    Menu as MenuIcon,
+    Search,
+} from 'lucide-react'
 
 import type { DashboardHeaderProps } from './types'
 
@@ -44,7 +44,7 @@ export const DashboardHeader = ({
                 color="white"
             >
                 <IconButton
-                    icon={<HamburgerIcon boxSize={6} />}
+                    icon={<MenuIcon size={24} />}
                     aria-label="Toggle Sidebar"
                     onClick={onToggleSidebar}
                     variant="ghost"
@@ -58,7 +58,7 @@ export const DashboardHeader = ({
 
                 <Flex gap={2}>
                     <IconButton
-                        icon={<BellIcon boxSize={6} />}
+                        icon={<Bell size={24} />}
                         aria-label="Notifications"
                         variant="ghost"
                         color="white"
@@ -90,7 +90,7 @@ export const DashboardHeader = ({
             <Flex align="center" h="full">
                 <Center h="full">
                     <IconButton
-                        icon={<HamburgerIcon />}
+                        icon={<MenuIcon size={24} />}
                         aria-label="Toggle Sidebar"
                         onClick={onToggleSidebar}
                         variant="ghost"
@@ -100,7 +100,7 @@ export const DashboardHeader = ({
                 <Center h="full" ml={4}>
                     <InputGroup maxW="400px">
                         <InputLeftElement pointerEvents="none" h="40px">
-                            <SearchIcon color="gray.300" />
+                            <Search color="gray" size={20} />
                         </InputLeftElement>
                         <Input
                             type="text"
@@ -116,7 +116,7 @@ export const DashboardHeader = ({
                 <Menu>
                     <MenuButton
                         as={Button}
-                        rightIcon={<ChevronDownIcon />}
+                        rightIcon={<ChevronDown size={20} />}
                         variant="ghost"
                         h="40px"
                         display="flex"
@@ -145,14 +145,14 @@ export const DashboardHeader = ({
                 />
 
                 <IconButton
-                    icon={<ExternalLinkIcon />}
+                    icon={<ExternalLink size={20} />}
                     aria-label="External Link"
                     variant="ghost"
                     size="md"
                 />
 
                 <IconButton
-                    icon={<BellIcon />}
+                    icon={<Bell size={20} />}
                     aria-label="Notifications"
                     variant="ghost"
                     size="md"

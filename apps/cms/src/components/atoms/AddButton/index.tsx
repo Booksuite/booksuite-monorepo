@@ -1,13 +1,12 @@
 import { Button, ButtonProps } from '@chakra-ui/react'
-
-import PlusIcon from '@/components/svgs/icons/PlusIcon'
+import { CirclePlus } from 'lucide-react'
 
 export function AddButton({ ...props }: ButtonProps) {
     return (
         <Button
             variant="outline"
             colorScheme="outline"
-            leftIcon={<PlusIcon />}
+            leftIcon={<CirclePlus />}
             {...props}
             className={`w-full ${props.className}`}
         >

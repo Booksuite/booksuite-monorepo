@@ -9,9 +9,9 @@ import {
     SimpleGrid,
     useToast,
 } from '@chakra-ui/react'
+import { ArrowDownWideNarrow, CirclePlus } from 'lucide-react'
 import { useState } from 'react'
 
-import { Icons } from '@/components/svgs/icons'
 import { Gallery } from '.'
 
 import { GalleryRootProps } from './types'
@@ -75,7 +75,7 @@ export function GalleryRoot(props: GalleryRootProps) {
                         <Button
                             as="label"
                             variant="outline"
-                            leftIcon={<Icons.Plus />}
+                            leftIcon={<CirclePlus />}
                             cursor={'pointer'}
                         >
                             Adicionar Foto
@@ -86,7 +86,10 @@ export function GalleryRoot(props: GalleryRootProps) {
                                 style={{ display: 'none' }}
                             />
                         </Button>
-                        <Button variant="outline" leftIcon={<Icons.OrderBy />}>
+                        <Button
+                            variant="outline"
+                            leftIcon={<ArrowDownWideNarrow />}
+                        >
                             Ordenar
                         </Button>
                     </SimpleGrid>
