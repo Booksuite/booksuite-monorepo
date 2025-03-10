@@ -10,34 +10,34 @@ import {
 import React, { type FormEvent, useCallback, useRef, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
+import { updateCompany } from '@/common/services/company/updateCompany'
 import type { UpdateCompanyDTO } from '@/common/types/Company'
 import InputBox from '@/components/atoms/InputBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { updateCompany } from '@/common/services/company/updateCompany'
 
 const containerStyle = {
     width: '100%',
     height: '400px',
 }
 
-const getAdjustedPosition = (
-    position: { lat: number; lng: number },
-    offset: number,
-) => {
-    return {
-        lat: position.lat + offset, // Ajusta latitude para cima
-        lng: position.lng,
-    }
-}
+// const getAdjustedPosition = (
+//     position: { lat: number; lng: number },
+//     offset: number,
+// ) => {
+//     return {
+//         lat: position.lat + offset, // Ajusta latitude para cima
+//         lng: position.lng,
+//     }
+// }
 
 export default function Endereco() {
     const { company, setCompany } = useCompanyContext()
 
     const [map, setMap] = useState(null)
     const [center, setCenter] = useState({ lat: -3.745, lng: -38.523 })
-    const [mapUrl, setMapUrl] = useState('')
+    const [, setMapUrl] = useState('')
     const [infoOpen, setInfoOpen] = useState(false)
     const [formData, setFormData] = useState<UpdateCompanyDTO>(null)
     const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -55,7 +55,7 @@ export default function Endereco() {
 
         setIsSaving(true)
 
-        const response = new Promise((resolve, reject) => {
+        const response = new Promise((resolve) => {
             resolve(updateCompany(company.id, formData))
         })
             .then((resp: any) => {
@@ -85,14 +85,12 @@ export default function Endereco() {
         setMap(map)
     }, [])
 
-    const onUnmount = useCallback(function callback(map) {
+    const onUnmount = useCallback(function callback() {
         setMap(null)
     }, [])
 
     const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const coordinates = extractLatLngFromUrl(e.target.value)
-
-        console.log(coordinates)
 
         if (coordinates) {
             setCenter(coordinates)

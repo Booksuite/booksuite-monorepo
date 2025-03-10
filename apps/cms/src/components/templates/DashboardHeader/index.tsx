@@ -15,6 +15,7 @@ import {
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react'
+
 import {
     Bell,
     ChevronDown,
@@ -22,12 +23,10 @@ import {
     Menu as MenuIcon,
     Search,
 } from 'lucide-react'
-
 import type { DashboardHeaderProps } from './types'
 
 export const DashboardHeader = ({
     onToggleSidebar,
-    userName,
     userImageSrc,
 }: DashboardHeaderProps) => {
     const isMobile = useBreakpointValue({ base: true, md: false })

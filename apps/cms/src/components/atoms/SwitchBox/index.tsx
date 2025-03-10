@@ -1,6 +1,7 @@
 'use client'
 
 import { Flex, FormLabel, Switch } from '@chakra-ui/react'
+
 import { SwitchBoxProps } from './types'
 
 export function SwitchBox({ flexProps, ...props }: SwitchBoxProps) {

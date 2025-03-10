@@ -6,6 +6,7 @@ import GiftIcon from '@/components/svgs/icons/GiftIcon'
 
 export interface PrecosEPeriodosProps {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function PrecosEPeriodos(props: PrecosEPeriodosProps) {
     return (
         <div className="PrecosEPeriodos">

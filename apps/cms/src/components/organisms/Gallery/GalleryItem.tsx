@@ -1,6 +1,7 @@
 import { Box, Flex, IconButton, Image, Text } from '@chakra-ui/react'
 import { MoreVertical } from 'lucide-react'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const GalleryItem: React.FC<any> = ({ index, src, alt }) => {
     return (
         <Box position="relative" borderRadius="md" overflow="hidden">

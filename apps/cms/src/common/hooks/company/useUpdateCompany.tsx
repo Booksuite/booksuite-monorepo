@@ -2,9 +2,9 @@ import { useToast } from '@chakra-ui/react'
 import { useEffect, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
+import { updateCompany } from '@/common/services/company/updateCompany'
 import type { UpdateCompanyDTO } from '@/common/types/Company'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
-import { updateCompany } from '@/common/services/company/updateCompany'
 
 export function useUpdateCompany(
     id?: number | string,
@@ -22,9 +22,10 @@ export function useUpdateCompany(
 
         setIsSaving(true)
 
-        const response = new Promise((resolve, reject) => {
+        const response = new Promise((resolve) => {
             resolve(updateCompany(id, formData))
         })
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             .then((resp: any) => {
                 if (resp.success) {
                     if (resp.company) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useEffect, useState } from 'react'
 
 import axiosInstance from '@/common/services/axios/axiosInstance'

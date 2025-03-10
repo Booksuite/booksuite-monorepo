@@ -1,13 +1,18 @@
 {
-	"name": "booksuite-monorepo",
-	"packageManager": "yarn@4.6.0",
-	"private": true,
-	"workspaces": [
-		"apps/*",
-		"packages/*"
-	],
-	"devDependencies": {
-		"eslint-plugin-simple-import-sort": "^12.1.1",
-		"prettier": "^3.4.2"
-	}
+    "name": "booksuite-monorepo",
+    "packageManager": "yarn@4.6.0",
+    "private": true,
+    "scripts": {
+        "lint": "yarn workspaces foreach --all run lint"
+    },
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "devDependencies": {
+        "@typescript-eslint/parser": "^8.26.0",
+        "eslint-plugin-simple-import-sort": "^12.1.1",
+        "prettier": "^3.4.2",
+        "typescript-eslint": "^8.26.0"
+    }
 }
