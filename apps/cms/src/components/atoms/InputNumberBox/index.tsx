@@ -9,10 +9,8 @@ import {
     NumberInputField,
     NumberInputStepper,
 } from '@chakra-ui/react'
+import { CircleMinus, CirclePlus } from 'lucide-react'
 import { useRef } from 'react'
-
-import MinusIcon from '@/components/svgs/icons/MinusIcon'
-import PlusIcon from '@/components/svgs/icons/PlusIcon'
 
 import { InputNumberBoxProps } from './types'
 
@@ -65,18 +63,20 @@ export const InputNumberBox: React.FC<InputNumberBoxProps> = ({ ...props }) => {
                             pointerEvents: 'auto',
                             border: '0 !important',
                             _active: { backgroundColor: 'inherit' },
+                            color: 'blue.900',
                         }}
                     >
-                        <MinusIcon />
+                        <CircleMinus />
                     </NumberDecrementStepper>
                     <NumberIncrementStepper
                         sx={{
                             pointerEvents: 'auto',
                             border: '0 !important',
                             _active: { backgroundColor: 'inherit' },
+                            color: 'blue.900',
                         }}
                     >
-                        <PlusIcon />
+                        <CirclePlus />
                     </NumberIncrementStepper>
                 </NumberInputStepper>
             </NumberInput>
