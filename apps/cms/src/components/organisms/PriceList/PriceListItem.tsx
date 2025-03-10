@@ -1,9 +1,11 @@
 'use client'
 
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
-import LabelBadge from '@/components/atoms/LabelBadge'
 import { Flex } from '@chakra-ui/react'
 import { useState } from 'react'
+
+import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import LabelBadge from '@/components/atoms/LabelBadge'
+
 import { PriceListItemProps } from './types'
 
 export const PriceListItem: React.FC<PriceListItemProps> = (props) => {

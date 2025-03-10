@@ -12,13 +12,13 @@ import {
 import { type FormEvent, useState } from 'react'
 
 import { useCompanyContext } from '@/app/providers/companyProvider'
+import { updateCompany } from '@/common/services/company/updateCompany'
 import type { UpdateCompanyDTO } from '@/common/types/Company'
 import InputBox from '@/components/atoms/InputBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
-import { updateCompany } from '@/common/services/company/updateCompany'
 
 export default function IdentidadeVisual() {
     const [formData, setFormData] = useState<UpdateCompanyDTO>(null)
@@ -37,7 +37,7 @@ export default function IdentidadeVisual() {
 
         setIsSaving(true)
 
-        const response = new Promise((resolve, reject) => {
+        const response = new Promise((resolve) => {
             resolve(updateCompany(company.id, formData))
         })
             .then((resp: any) => {

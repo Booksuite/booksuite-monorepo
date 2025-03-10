@@ -7,9 +7,7 @@ import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
 export default function ContatoERedesSociais() {
-    function handleSubmit() {
-        console.log('oi')
-    }
+    function handleSubmit() {}
 
     return (
         <div className="ContatoERedesSociais">
