@@ -1,13 +1,21 @@
 {
-	"name": "booksuite-monorepo",
-	"packageManager": "yarn@4.6.0",
-	"private": true,
-	"workspaces": [
-		"apps/*",
-		"packages/*"
-	],
-	"devDependencies": {
-		"eslint-plugin-simple-import-sort": "^12.1.1",
-		"prettier": "^3.4.2"
-	}
+    "name": "booksuite-monorepo",
+    "packageManager": "yarn@4.6.0",
+    "private": true,
+    "scripts": {
+        "models:update": "yarn models:update:cms",
+        "models:update:cms": "npx openapi-typescript https://api.dev.booksuite.io/api-yaml -o ./apps/cms/src/common/db.schema.d.ts"
+    },
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "devDependencies": {
+        "eslint-plugin-simple-import-sort": "^12.1.1",
+        "prettier": "^3.4.2"
+    },
+    "dependencies": {
+        "openapi-fetch": "^0.13.4",
+        "openapi-react-query": "^0.3.0"
+    }
 }

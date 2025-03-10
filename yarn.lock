@@ -1995,7 +1995,7 @@ __metadata:
     eslint-config-next: "npm:14.2.4"
     framer-motion: "npm:^11.3.7"
     immer: "npm:^10.1.1"
-    lucide: "npm:^0.476.0"
+    lucide-react: "npm:^0.479.0"
     moment: "npm:^2.30.1"
     next: "npm:14.2.4"
     next-auth: "npm:^4.24.7"
@@ -2063,6 +2063,8 @@ __metadata:
   resolution: "booksuite-monorepo@workspace:."
   dependencies:
     eslint-plugin-simple-import-sort: "npm:^12.1.1"
+    openapi-fetch: "npm:^0.13.4"
+    openapi-react-query: "npm:^0.3.0"
     prettier: "npm:^3.4.2"
   languageName: unknown
   linkType: soft
@@ -4232,10 +4234,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide@npm:^0.476.0":
-  version: 0.476.0
-  resolution: "lucide@npm:0.476.0"
-  checksum: 10c0/58b592e34735fb5b550c214013807aee2ca4a45acf86cd949ad888a23d74afd0a62927bf3dad9e456bcffba7857ffa7c7c2d28bd7083f2ee2c46c8776e230231
+"lucide-react@npm:^0.479.0":
+  version: 0.479.0
+  resolution: "lucide-react@npm:0.479.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/a0a13aea535cfcd85a38f66bcc931110af28f232457334a6ed0cd1393f565be28139495864831d835c57bd071b5ddd3036b66eda3a2e8c5d401ece71ee29d970
   languageName: node
   linkType: hard
 
@@ -4795,6 +4799,34 @@ __metadata:
   dependencies:
     wrappy: "npm:1"
   checksum: 10c0/5d48aca287dfefabd756621c5dfce5c91a549a93e9fdb7b8246bc4c4790aa2ec17b34a260530474635147aeb631a2dcc8b32c613df0675f96041cbb8244517d0
+  languageName: node
+  linkType: hard
+
+"openapi-fetch@npm:^0.13.4":
+  version: 0.13.4
+  resolution: "openapi-fetch@npm:0.13.4"
+  dependencies:
+    openapi-typescript-helpers: "npm:^0.0.15"
+  checksum: 10c0/f291cb148e712466ba6cc90fda19f3ceab447560bd5ac87f77fde39a05b0d8330ccd1172c84f0b8fedcb90a0ca7956f0756d048038772b3df2542a9f1072d17b
+  languageName: node
+  linkType: hard
+
+"openapi-react-query@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "openapi-react-query@npm:0.3.0"
+  dependencies:
+    openapi-typescript-helpers: "npm:^0.0.15"
+  peerDependencies:
+    "@tanstack/react-query": ^5.25.0
+    openapi-fetch: ^0.13.4
+  checksum: 10c0/117ddecf198f11ecc185083631c370c6e9a7d7dd678790d5555870a0b7ed7fec5cd6aebdea7fe215957f64ba02a7e1f63379ff781b080b7157bfb9ca97f365a0
+  languageName: node
+  linkType: hard
+
+"openapi-typescript-helpers@npm:^0.0.15":
+  version: 0.0.15
+  resolution: "openapi-typescript-helpers@npm:0.0.15"
+  checksum: 10c0/5eb68d487b787e3e31266470b1a310726549dd45a1079655ab18066ab291b0b3c343fdf629991013706a2329b86964f8798d56ef0272b94b931fe6c19abd7a88
   languageName: node
   linkType: hard
 

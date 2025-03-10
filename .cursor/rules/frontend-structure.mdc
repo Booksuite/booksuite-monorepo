@@ -1,0 +1,67 @@
+---
+description: Structure
+globs: 
+alwaysApply: false
+---
+
+## Project Structure Rules
+
+### Core Principles
+
+- Always maintain a clear and consistent file organization
+- Follow atomic design principles for component organization
+- Separate concerns between different architectural layers
+
+### File Organization
+
+```
+src/
+  ├── components/
+  │   ├── atoms/
+  │   ├── molecules/
+  │   └── organisms/
+  ├── pages/
+  ├── services/
+  ├── utils/
+  └── styles/
+
+```
+
+### Component Rules
+
+- Create components following atomic design methodology
+- Keep components single-responsibility focused
+- Place shared components in appropriate atomic folders
+- Document component props using TypeScript interfaces
+
+### Code Style
+
+- Use TypeScript for type safety
+- Implement consistent naming conventions
+- Follow React best practices and hooks guidelines
+- Maintain clean code principles
+
+### File Naming Conventions
+
+- Components: PascalCase (e.g., ButtonComponent.tsx)
+- Utilities: camelCase (e.g., formatDate.ts)
+- Services: camelCase (e.g., apiService.ts)
+- Styles: same name as component with .styles suffix
+
+### Development Guidelines
+
+- Start with proper planning before implementation
+- Consider maintainability in component design
+- Keep code modular and reusable
+- Document complex logic with comments
+
+### Maintenance Rules
+
+- Regular code reviews to ensure pattern consistency
+- Update documentation when making structural changes
+- Remove unused code and dependencies
+- Keep dependencies updated
+
+<aside>
+Note: These rules are designed to maintain consistency and scalability across the project lifecycle.
+</aside>
