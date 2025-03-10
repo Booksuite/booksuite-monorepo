@@ -36,7 +36,7 @@ export default function PageCreateAcomodacao() {
             // status: status,
         } as CreateAcomodacaoDTO
 
-        const response = new Promise((resolve, reject) => {
+        const response = new Promise((resolve) => {
             resolve(createAcomodacao(payload))
         }).finally(() => {
             setIsSaving(false)
@@ -63,6 +63,7 @@ export default function PageCreateAcomodacao() {
                         name="status"
                         defaultChecked
                         onChange={() => {
+                            // eslint-disable-next-line @typescript-eslint/no-unused-expressions
                             status === 'Ativo'
                                 ? setStatus('Inativo')
                                 : setStatus('Ativo')

@@ -12,13 +12,7 @@ import { ExtraFormProps } from './types'
 
 export const DashboardExtraForm: React.FC<
     ExtraFormProps<UpdateExtraDTO | CreateExtraDTO>
-> = ({
-    data,
-    // eslint-disable-next-line no-unused-vars
-    isSaving,
-    onSubmit,
-    ...props
-}) => {
+> = ({ data, onSubmit, ...props }) => {
     const [formData, setFormData] = useState<UpdateExtraDTO | CreateExtraDTO>(
         data ?? {},
     )
