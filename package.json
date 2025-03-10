@@ -11,7 +11,9 @@
         "packages/*"
     ],
     "devDependencies": {
+        "@typescript-eslint/parser": "^8.26.0",
         "eslint-plugin-simple-import-sort": "^12.1.1",
-        "prettier": "^3.4.2"
+        "prettier": "^3.4.2",
+        "typescript-eslint": "^8.26.0"
     }
 }

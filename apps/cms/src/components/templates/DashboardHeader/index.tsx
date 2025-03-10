@@ -29,7 +29,6 @@ import type { DashboardHeaderProps } from './types'
 
 export const DashboardHeader = ({
     onToggleSidebar,
-    userName,
     userImageSrc,
 }: DashboardHeaderProps) => {
     const isMobile = useBreakpointValue({ base: true, md: false })
