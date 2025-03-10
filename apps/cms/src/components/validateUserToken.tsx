@@ -1,7 +1,7 @@
 'use client'
 
-import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import { usePathname } from 'next/navigation'
 import React, { useEffect } from 'react'
 
 import axiosInstance from '@/common/services/axios/axiosInstance'
@@ -16,11 +16,12 @@ export function ValidateUserToken({ children }: ValidateUserTokenProps) {
     useEffect(() => {
         async function main() {
             try {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const res: any = await axiosInstance.get('/auth/me')
                 if (!res.data?.success) {
                     signOut()
                 }
-            } catch (err) {
+            } catch {
                 signOut()
             }
         }

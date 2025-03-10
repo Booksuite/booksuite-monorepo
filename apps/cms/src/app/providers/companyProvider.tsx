@@ -10,8 +10,8 @@ import {
     useState,
 } from 'react'
 
-import type { Company } from '@/common/types/Company'
 import axiosInstance from '@/common/services/axios/axiosInstance'
+import type { Company } from '@/common/types/Company'
 
 interface CompanyProviderProps {
     children: React.ReactNode

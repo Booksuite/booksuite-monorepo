@@ -1,6 +1,7 @@
 'use client'
 
 import { Flex } from '@chakra-ui/react'
+
 import { PageHeaderRootProps } from './types'
 
 export const PageHeaderRoot: React.FC<PageHeaderRootProps> = (props) => {

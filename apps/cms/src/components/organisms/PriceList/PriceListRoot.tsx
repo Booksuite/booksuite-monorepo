@@ -1,7 +1,9 @@
 'use client'
 
-import { AddButton } from '@/components/atoms/AddButton'
 import { Box, Text } from '@chakra-ui/react'
+
+import { AddButton } from '@/components/atoms/AddButton'
+
 import { PriceListRootProps } from './types'
 
 export const PriceListRoot: React.FC<PriceListRootProps> = ({

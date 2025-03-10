@@ -1,8 +1,7 @@
 'use client'
 
-import type React from 'react'
-
 import { Box, Flex, useDisclosure } from '@chakra-ui/react'
+import type React from 'react'
 
 import { DashboardHeader } from '../DashboardHeader'
 import { DashboardSidebar } from '../DashboardSidebar'

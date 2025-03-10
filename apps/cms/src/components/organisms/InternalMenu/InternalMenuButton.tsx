@@ -2,6 +2,7 @@ import { Flex, Link } from '@chakra-ui/react'
 import NextLink from 'next/link'
 
 import { InternalMenu } from '.'
+
 import { InternalMenuButtonProps } from './types'
 
 export function InternalMenuButton(props: InternalMenuButtonProps) {

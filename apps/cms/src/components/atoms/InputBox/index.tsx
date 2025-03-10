@@ -4,6 +4,7 @@ import { FormControl, FormLabel, Input } from '@chakra-ui/react'
 import { ElementType, useState } from 'react'
 import CurrencyInput from 'react-currency-input-field'
 import InputMask from 'react-input-mask'
+
 import { InputBoxProps } from './types'
 
 function InputBox({ asText = false, onValueChange, ...props }: InputBoxProps) {
