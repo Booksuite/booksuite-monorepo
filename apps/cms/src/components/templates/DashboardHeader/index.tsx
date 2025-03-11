@@ -90,7 +90,7 @@ export const DashboardHeader = ({
             <Flex align="center" h="full">
                 <Center h="full">
                     <IconButton
-                        icon={<MenuIcon size={24} />}
+                        icon={<MenuIcon size={24} color="#002159" />}
                         aria-label="Toggle Sidebar"
                         onClick={onToggleSidebar}
                         variant="ghost"
@@ -100,7 +100,7 @@ export const DashboardHeader = ({
                 <Center h="full" ml={4}>
                     <InputGroup maxW="400px">
                         <InputLeftElement pointerEvents="none" h="40px">
-                            <Search color="gray" size={20} />
+                            <Search color="#002159" size={20} />
                         </InputLeftElement>
                         <Input
                             type="text"
