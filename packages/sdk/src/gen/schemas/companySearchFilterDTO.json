@@ -1,0 +1,1 @@
+{"type":"object","properties":{"published":{"type":"boolean","example":true},"userId":{"type":"string","example":"8e5a06a3-da2e-4edc-8a54-bea322cb10b1"}},"x-readme-ref-name":"CompanySearchFilterDTO"}

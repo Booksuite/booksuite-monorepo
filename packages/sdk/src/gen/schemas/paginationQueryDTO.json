@@ -1,0 +1,1 @@
+{"type":"object","properties":{"page":{"type":"number","description":"The page number","example":1},"itemsPerPage":{"type":"number","description":"The number of items per page","example":10}},"required":["page","itemsPerPage"],"x-readme-ref-name":"PaginationQueryDTO"}

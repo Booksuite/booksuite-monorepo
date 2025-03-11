@@ -1,0 +1,1 @@
+{"type":"object","properties":{"published":{"type":"boolean","example":true}},"required":["published"],"x-readme-ref-name":"HousingUnitTypeSearchFilterDTO"}

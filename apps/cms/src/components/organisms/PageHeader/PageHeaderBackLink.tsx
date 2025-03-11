@@ -1,24 +1,20 @@
-'use client'
-
-import { Link } from '@chakra-ui/react'
+import { Link, LinkProps } from '@chakra-ui/react'
 import { ChevronLeft } from 'lucide-react'
 import NextLink from 'next/link'
+import { PropsWithChildren } from 'react'
 
-import { PageHeaderBackLinkProps } from './types'
-
-export const PageHeaderBackLink: React.FC<PageHeaderBackLinkProps> = (
+export const PageHeaderBackLink: React.FC<PropsWithChildren<LinkProps>> = (
     props,
 ) => {
     return (
         <Link
+            {...props}
             as={NextLink}
-            href="#"
             variant="primary"
             display="flex"
             alignItems="center"
             fontSize="0.8rem"
             fontWeight="medium"
-            {...props}
         >
             <ChevronLeft style={{ flexShrink: 0 }} />
             {props.children}

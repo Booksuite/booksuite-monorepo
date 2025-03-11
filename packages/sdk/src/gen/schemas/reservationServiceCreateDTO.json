@@ -1,0 +1,1 @@
+{"type":"object","properties":{"totalPrice":{"type":"number","example":150},"serviceId":{"type":"string","example":"f47ac10b-58cc-4372-a567-0e02b2c3d479"}},"required":["totalPrice","serviceId"],"x-readme-ref-name":"ReservationServiceCreateDTO"}

@@ -1,0 +1,1 @@
+{"type":"object","properties":{"id":{"type":"string","example":"d68ffa59-0c42-49a6-b6d8-312569e33505"},"name":{"type":"string","example":"relaxing"}},"required":["id","name"],"x-readme-ref-name":"ServiceCategoryResponseDTO"}

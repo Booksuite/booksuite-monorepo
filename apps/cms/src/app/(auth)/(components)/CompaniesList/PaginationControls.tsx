@@ -6,7 +6,7 @@ interface PaginationControlsProps {
     page: number
     prevPage: number | null
     nextPage: number | null
-
+    totalPages: number
     totalItems: number
     onPageChange: (page: number) => void
 }
@@ -15,7 +15,7 @@ export function PaginationControls({
     page,
     prevPage,
     nextPage,
-
+    totalPages,
     totalItems,
     onPageChange,
 }: PaginationControlsProps) {
@@ -28,13 +28,13 @@ export function PaginationControls({
             <IconButton
                 variant="ghost"
                 aria-label="Previous"
-                onClick={() => handlePageChange(prevPage)}
+                onClick={() => prevPage && handlePageChange(prevPage)}
                 disabled={!prevPage}
             >
                 <ChevronLeft />
             </IconButton>
 
-            {Array.from({ length: totalItems }).map((_, index) => (
+            {Array.from({ length: totalPages }).map((_, index) => (
                 <Button
                     colorScheme="purple"
                     key={index}
@@ -47,7 +47,7 @@ export function PaginationControls({
             <IconButton
                 variant="ghost"
                 aria-label="Previous"
-                onClick={() => handlePageChange(nextPage)}
+                onClick={() => nextPage && handlePageChange(nextPage)}
                 disabled={!nextPage}
             >
                 <ChevronRight />

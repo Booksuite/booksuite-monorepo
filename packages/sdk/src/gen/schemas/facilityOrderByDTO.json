@@ -1,0 +1,1 @@
+{"type":"object","properties":{"orderBy":{"type":"string","enum":["name","createdAt","updatedAt"],"example":"name"},"order":{"type":"string","enum":["asc","desc"],"example":"asc"}},"required":["orderBy","order"],"x-readme-ref-name":"FacilityOrderByDTO"}
