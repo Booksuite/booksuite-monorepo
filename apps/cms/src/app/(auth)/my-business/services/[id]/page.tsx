@@ -1,10 +1,10 @@
 'use client'
 
+import { useGetServiceById } from '@booksuite/sdk'
 import { Flex, Spinner, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { $api } from '@/common/providers/client'
 import { updateExtra } from '@/common/services/extra/updateExtra'
 import { UpdateExtraDTO } from '@/common/types/Extra'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
@@ -22,9 +22,7 @@ export default function ExtraDetailPage({
         data: extra,
         isLoading,
         error,
-    } = $api.useQuery('get', '/company/{companyId}/service/{id}', {
-        params: { path: { companyId, id: params.id } },
-    })
+    } = useGetServiceById({ id: params.id, companyId })
 
     const [isSaving, setIsSaving] = useState<boolean>(false)
 

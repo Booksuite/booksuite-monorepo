@@ -1,0 +1,22 @@
+{
+    "name": "@booksuite/sdk",
+    "packageManager": "yarn@4.6.0",
+    "private": true,
+    "type": "module",
+    "main": "./src/index.ts",
+    "types": "./src/index.ts",
+    "files": [
+        "src"
+    ],
+    "scripts": {
+        "generate": "kubb generate"
+    },
+    "devDependencies": {
+        "@kubb/cli": "^3.6.2",
+        "@kubb/core": "^3.6.2",
+        "@kubb/plugin-client": "^3.6.2",
+        "@kubb/plugin-oas": "^3.6.2",
+        "@kubb/plugin-react-query": "patch:@kubb/plugin-react-query@npm%3A3.6.2#~/.yarn/patches/@kubb-plugin-react-query-npm-3.6.2-446610e46f.patch",
+        "@kubb/plugin-ts": "^3.6.2"
+    }
+}

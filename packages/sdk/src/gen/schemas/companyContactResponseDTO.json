@@ -1,0 +1,1 @@
+{"type":"object","properties":{"type":{"type":"string","enum":["phone","email","instagram","facebook","linkedin","x"],"example":"phone"},"value":{"type":"string","example":"00000000000"}},"required":["type","value"],"x-readme-ref-name":"CompanyContactResponseDTO"}

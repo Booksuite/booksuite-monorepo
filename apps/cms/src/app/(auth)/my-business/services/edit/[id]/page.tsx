@@ -1,10 +1,10 @@
 'use client'
 
+import { useGetServiceById } from '@booksuite/sdk'
 import { Flex, Spinner, useToast } from '@chakra-ui/react'
 import React, { type FormEvent, useEffect, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { $api } from '@/common/providers/client'
 import { updateExperience } from '@/common/services/experience/updateExperience'
 import { UpdateExperienceDTO } from '@/common/types/Experience'
 import type { Status } from '@/common/types/Status'
@@ -27,9 +27,7 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ params }) => {
         data: experience,
         isLoading,
         error,
-    } = $api.useQuery('get', '/company/{companyId}/service/{id}', {
-        params: { path: { companyId, id: params.id } },
-    })
+    } = useGetServiceById({ id: params.id, companyId })
 
     const [isSaving, setIsSaving] = useState<boolean>(false)
     const [status, setStatus] = useState<Status>('Inativo')

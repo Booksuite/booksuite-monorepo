@@ -1,22 +1,18 @@
 'use client'
 
+import { useGetCompanyById } from '@booksuite/sdk'
 import { Spinner } from '@chakra-ui/react'
 import { useEffect } from 'react'
 
 import { TEST_COMPANY, useCurrentCompanyStore } from '@/common/contexts/user'
-import { $api } from '@/common/providers/client'
 import { getErrorMessage } from '@/common/utils'
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { setCompany, company } = useCurrentCompanyStore()
 
-    const { isLoading, isFetching, data, error } = $api.useQuery(
-        'get',
-        '/company/{id}',
-        {
-            params: { path: { id: TEST_COMPANY } },
-        },
-    )
+    const { isLoading, isFetching, data, error } = useGetCompanyById({
+        id: TEST_COMPANY,
+    })
 
     useEffect(() => {
         if (data) setCompany(data)

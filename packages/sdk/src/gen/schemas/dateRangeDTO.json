@@ -1,0 +1,1 @@
+{"type":"object","properties":{"start":{"type":"string","format":"date","example":"2025-03-01T00:00:00Z"},"end":{"type":"string","format":"date","example":"2025-03-14T00:00:00Z"}},"required":["start","end"],"x-readme-ref-name":"DateRangeDTO"}

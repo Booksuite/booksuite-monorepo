@@ -1,0 +1,75 @@
+diff --git a/dist/chunk-DIM4VLBE.js b/dist/chunk-DIM4VLBE.js
+index 919a2d4ebad4f252be2c28038353f34c574fb45c..4b613a02a7077809d0b8cec0766049b1c5930634 100644
+--- a/dist/chunk-DIM4VLBE.js
++++ b/dist/chunk-DIM4VLBE.js
+@@ -325,7 +325,8 @@ var queryGenerator = createReactGenerator({
+       file: getFile(operation, { pluginKey: [pluginZodName] }),
+       schemas: getSchemas(operation, { pluginKey: [pluginZodName], type: "function" })
+     };
+-    if (!isQuery || isMutation) {
++	const forceInclude = options.query?.forceInclude?.(operation);
++    if (!forceInclude && (!isQuery || isMutation)) {
+       return null;
+     }
+     return /* @__PURE__ */ jsxs(
+@@ -434,7 +435,8 @@ var mutationGenerator = createReactGenerator({
+     } = useApp();
+     const oas = useOas();
+     const { getSchemas, getName, getFile } = useOperationManager();
+-    const isQuery = !!options.query && options.query?.methods.some((method) => operation.method === method);
++	const forceIncludeQuery = options.query?.forceInclude?.(operation);
++    const isQuery = forceIncludeQuery || (!!options.query && options.query?.methods.some((method) => operation.method === method));
+     const isMutation = !isQuery && difference(options.mutation ? options.mutation.methods : [], options.query ? options.query.methods : []).some((method) => operation.method === method);
+     const importPath = options.mutation ? options.mutation.importPath : "@tanstack/react-query";
+     const mutation = {
+@@ -465,7 +467,9 @@ var mutationGenerator = createReactGenerator({
+       name: getName(operation, { type: "const", suffix: "MutationKey" }),
+       typeName: getName(operation, { type: "type", suffix: "MutationKey" })
+     };
+-    if (!isMutation) {
++
++    const forceInclude = options.mutation?.forceInclude?.(operation);
++    if (!forceInclude && !isMutation) {
+       return null;
+     }
+     return /* @__PURE__ */ jsxs(
+diff --git a/dist/types-CQseu_km.d.cts b/dist/types-CQseu_km.d.cts
+index e26bd56f916ea61189914c6fac195320d0207468..495c061121a93743735a3a88400c013ce2ea26d7 100644
+--- a/dist/types-CQseu_km.d.cts
++++ b/dist/types-CQseu_km.d.cts
+@@ -124,6 +124,7 @@ type QueryKey = Transformer;
+  */
+ type MutationKey = Transformer;
+ type Query = {
++	forceInclude?: (operation: Operation) => boolean;
+     /**
+      * Define which HttpMethods can be used for queries
+      * @default ['get']
+@@ -139,6 +140,7 @@ type Query = {
+     importPath?: string;
+ };
+ type Mutation = {
++	forceInclude?: (operation: Operation) => boolean;
+     /**
+      * Define which HttpMethods can be used for mutations
+      * @default ['post', 'put', 'delete']
+diff --git a/dist/types-CQseu_km.d.ts b/dist/types-CQseu_km.d.ts
+index e26bd56f916ea61189914c6fac195320d0207468..495c061121a93743735a3a88400c013ce2ea26d7 100644
+--- a/dist/types-CQseu_km.d.ts
++++ b/dist/types-CQseu_km.d.ts
+@@ -124,6 +124,7 @@ type QueryKey = Transformer;
+  */
+ type MutationKey = Transformer;
+ type Query = {
++	forceInclude?: (operation: Operation) => boolean;
+     /**
+      * Define which HttpMethods can be used for queries
+      * @default ['get']
+@@ -139,6 +140,7 @@ type Query = {
+     importPath?: string;
+ };
+ type Mutation = {
++	forceInclude?: (operation: Operation) => boolean;
+     /**
+      * Define which HttpMethods can be used for mutations
+      * @default ['post', 'put', 'delete']

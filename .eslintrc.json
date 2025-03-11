@@ -1,5 +1,6 @@
 {
     "plugins": ["simple-import-sort"],
+    "ignorePatterns": ["./packages/sdk/**/*.ts"],
     "rules": {
         "no-console": "error",
         "simple-import-sort/imports": [

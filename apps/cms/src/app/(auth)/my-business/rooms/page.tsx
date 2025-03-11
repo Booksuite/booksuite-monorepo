@@ -1,10 +1,10 @@
 'use client'
 
+import { useSearchHousingUnitTypes } from '@booksuite/sdk'
 import { Box, Button, Link, Skeleton, Stack } from '@chakra-ui/react'
 import { useSearchParams } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { $api } from '@/common/providers/client'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 //import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
@@ -24,13 +24,9 @@ export default function Rooms() {
         : 10
 
     const companyId = useCurrentCompanyId()
-    const { data: housingUnitTypes, isLoading } = $api.useQuery(
-        'post',
-        '/company/{companyId}/housingUnitType/search',
-        {
-            params: { path: { companyId } },
-            body: { pagination: { page, itemsPerPage } },
-        },
+    const { data: housingUnitTypes, isLoading } = useSearchHousingUnitTypes(
+        { companyId },
+        { pagination: { page, itemsPerPage } },
     )
 
     return (

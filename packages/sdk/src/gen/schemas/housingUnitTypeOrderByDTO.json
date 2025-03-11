@@ -1,0 +1,1 @@
+{"type":"object","properties":{"orderBy":{"type":"string","enum":["name","description","shortDescription","housingUnits"]},"order":{"type":"string","enum":["asc","desc"]}},"required":["orderBy","order"],"x-readme-ref-name":"HousingUnitTypeOrderByDTO"}
