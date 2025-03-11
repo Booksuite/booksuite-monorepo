@@ -1,0 +1,1 @@
+{"type":"object","properties":{"mediaId":{"type":"string","example":"123e4567-e89b-12d3-a456-426614174000"},"order":{"type":"number","example":2}},"required":["mediaId"],"x-readme-ref-name":"BannerMediaDTO"}

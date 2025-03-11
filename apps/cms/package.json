@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@booksuite/sdk": "workspace:*",
         "@chakra-ui/icons": "^2.1.1",
         "@chakra-ui/next-js": "^2.2.0",
         "@chakra-ui/react": "^2.8.2",
@@ -32,7 +33,8 @@
         "react-date-range": "^2.0.1",
         "react-dom": "^18",
         "react-icons": "^5.2.1",
-        "react-input-mask": "^3.0.0-alpha.2"
+        "react-input-mask": "^3.0.0-alpha.2",
+        "zustand": "^5.0.3"
     },
     "devDependencies": {
         "@types/node": "20.14.10",

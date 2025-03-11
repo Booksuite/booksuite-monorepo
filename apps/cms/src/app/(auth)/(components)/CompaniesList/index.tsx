@@ -3,21 +3,17 @@
 import { Spinner, Table, Td, Th, Tr } from '@chakra-ui/react'
 import { useState } from 'react'
 
-import { $api } from '@/common/providers/client'
 import { getErrorMessage } from '@/common/utils'
 
+import { useSearchCompanies } from '@booksuite/sdk'
 import { PaginationControls } from './PaginationControls'
 
 export const CompaniesList: React.FC = () => {
     const [page, setPage] = useState<number>(1)
 
-    const { data, error, isLoading } = $api.useQuery(
-        'post',
-        '/company/search',
-        {
-            body: { pagination: { itemsPerPage: 10, page } },
-        },
-    )
+    const { data, error, isLoading } = useSearchCompanies({
+        pagination: { itemsPerPage: 10, page },
+    })
 
     if (!isLoading && (error || !data)) {
         return <div>{getErrorMessage(error, 'Erro ao carregar empresas')}</div>
@@ -57,6 +53,7 @@ export const CompaniesList: React.FC = () => {
                 prevPage={prevPage}
                 nextPage={nextPage}
                 totalItems={totalItems}
+                totalPages={totalPages}
             />
         </div>
     )

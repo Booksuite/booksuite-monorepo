@@ -27,7 +27,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
         { href: '/', label: 'Início' },
         { href: '/mapa', label: 'Mapa' },
         { href: '/relatorios', label: 'Relatórios' },
-        { href: '/meu-negocio', label: 'Meu Negócio' },
+        { href: '/my-business', label: 'Meu Negócio' },
         { href: '/marketing', label: 'Marketing' },
     ]
 

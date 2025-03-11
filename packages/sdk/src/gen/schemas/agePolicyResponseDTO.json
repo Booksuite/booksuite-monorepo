@@ -1,0 +1,1 @@
+{"type":"object","properties":{"id":{"type":"string","example":"bcd82497-2cc3-4998-b3d9-99db2f56b159"},"acceptChildren":{"type":"boolean","example":true},"adultMinAge":{"type":"number","example":12}},"required":["id","acceptChildren","adultMinAge"],"x-readme-ref-name":"AgePolicyResponseDTO"}

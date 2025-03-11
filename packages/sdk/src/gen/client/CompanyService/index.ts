@@ -1,0 +1,6 @@
+export { companyService } from './companyService.ts'
+export { getCreateCompanyUrl, createCompany } from './createCompany.ts'
+export { getDeleteCompanyUrl, deleteCompany } from './deleteCompany.ts'
+export { getGetCompanyByIdUrl, getCompanyById } from './getCompanyById.ts'
+export { getSearchCompaniesUrl, searchCompanies } from './searchCompanies.ts'
+export { getUpdateCompanyUrl, updateCompany } from './updateCompany.ts'

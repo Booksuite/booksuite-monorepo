@@ -1,0 +1,6 @@
+export { getCreateFacilityUrl, createFacility } from './createFacility.ts'
+export { getDeleteFacilityUrl, deleteFacility } from './deleteFacility.ts'
+export { facilityService } from './facilityService.ts'
+export { getGetFacilityByIdUrl, getFacilityById } from './getFacilityById.ts'
+export { getSearchFacilitiesUrl, searchFacilities } from './searchFacilities.ts'
+export { getUpdateFacilityUrl, updateFacility } from './updateFacility.ts'
