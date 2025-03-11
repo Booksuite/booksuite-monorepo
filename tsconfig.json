@@ -11,7 +11,8 @@
         "lib": ["ESNext"],
         "noEmit": true,
         "isolatedModules": true,
-        "noUnusedLocals": true
+        "noUnusedLocals": true,
+        "strictNullChecks": true
     },
     "include": ["./packages", "./apps"],
     "exclude": ["./node_modules/*"]

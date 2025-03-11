@@ -57,6 +57,7 @@ export const CompaniesList: React.FC = () => {
                 prevPage={prevPage}
                 nextPage={nextPage}
                 totalItems={totalItems}
+                totalPages={totalPages}
             />
         </div>
     )

@@ -6,20 +6,22 @@
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
-        "strict": false,
         "noEmit": true,
         "incremental": true,
         "module": "esnext",
         "esModuleInterop": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
+        "noUncheckedIndexedAccess": true,
         "isolatedModules": true,
         "jsx": "preserve",
+        "strictNullChecks": true,
         "plugins": [
             {
                 "name": "next"
             }
-        ]
+        ],
+        "strict": true
     },
     "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
     "exclude": ["src/node_modules"]

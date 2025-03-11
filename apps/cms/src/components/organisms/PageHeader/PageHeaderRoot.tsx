@@ -1,9 +1,7 @@
-'use client'
-
 import { Flex } from '@chakra-ui/react'
-import { PageHeaderRootProps } from './types'
+import { PropsWithChildren } from 'react'
 
-export const PageHeaderRoot: React.FC<PageHeaderRootProps> = (props) => {
+export const PageHeaderRoot: React.FC<PropsWithChildren> = (props) => {
     return (
         <Flex direction="column" gap={2} {...props}>
             {props.children}
