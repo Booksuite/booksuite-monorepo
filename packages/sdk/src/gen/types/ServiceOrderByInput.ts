@@ -1,11 +1,10 @@
 export enum ServiceOrderByDTOOrderBy {
   'name' = 'name',
-  'description' = 'description',
   'included' = 'included',
-  'notes' = 'notes',
+  'createdAt' = 'createdAt',
 }
 
-export enum ServiceOrderByDTOOrder {
+export enum ServiceOrderByDTODirection {
   'asc' = 'asc',
   'desc' = 'desc',
 }
@@ -18,5 +17,5 @@ export type ServiceOrderByInput = {
   /**
    * @type string
    */
-  order: ServiceOrderByDTOOrder
+  direction: ServiceOrderByDTODirection
 }

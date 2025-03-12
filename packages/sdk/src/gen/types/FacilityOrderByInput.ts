@@ -1,10 +1,9 @@
 export enum FacilityOrderByDTOOrderBy {
   'name' = 'name',
   'createdAt' = 'createdAt',
-  'updatedAt' = 'updatedAt',
 }
 
-export enum FacilityOrderByDTOOrder {
+export enum FacilityOrderByDTODirection {
   'asc' = 'asc',
   'desc' = 'desc',
 }
@@ -17,5 +16,5 @@ export type FacilityOrderByInput = {
   /**
    * @type string
    */
-  order: FacilityOrderByDTOOrder
+  direction: FacilityOrderByDTODirection
 }

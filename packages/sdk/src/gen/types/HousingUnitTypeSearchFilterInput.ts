@@ -1,6 +1,6 @@
 export type HousingUnitTypeSearchFilterInput = {
   /**
-   * @type boolean
+   * @type boolean | undefined
    */
-  published: boolean
+  published?: boolean
 }

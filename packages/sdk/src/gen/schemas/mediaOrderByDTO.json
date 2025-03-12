@@ -1,1 +1,1 @@
-{"type":"object","properties":{"orderBy":{"type":"string","enum":["url","createdAt"]},"order":{"type":"string","enum":["asc","desc"]}},"required":["orderBy","order"],"x-readme-ref-name":"MediaOrderByDTO"}
+{"type":"object","properties":{"orderBy":{"type":"string","enum":["url","createdAt"]},"direction":{"type":"string","enum":["asc","desc"]}},"required":["orderBy","direction"],"x-readme-ref-name":"MediaOrderByDTO"}

@@ -1,1 +1,1 @@
-{"type":"object","properties":{"orderBy":{"type":"string","enum":["name","description","included","notes"]},"order":{"type":"string","enum":["asc","desc"]}},"required":["orderBy","order"],"x-readme-ref-name":"ServiceOrderByDTO"}
+{"type":"object","properties":{"orderBy":{"type":"string","enum":["name","included","createdAt"]},"direction":{"type":"string","enum":["asc","desc"]}},"required":["orderBy","direction"],"x-readme-ref-name":"ServiceOrderByDTO"}
