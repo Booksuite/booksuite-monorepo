@@ -6,9 +6,9 @@ export type ServiceMedia = {
    */
   id: string
   /**
-   * @type object
+   * @type number
    */
-  order: object
+  order: number | null
   /**
    * @type array
    */

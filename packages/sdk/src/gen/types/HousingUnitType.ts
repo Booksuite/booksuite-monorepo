@@ -12,45 +12,45 @@ export type HousingUnitType = {
    */
   slug: string
   /**
-   * @type object | undefined
+   * @type string
    */
-  shortDescription?: object
+  shortDescription: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  description?: object
+  description: string | null
   /**
    * @type number
    */
   order: number
   /**
-   * @type object | undefined
+   * @type number
    */
-  minGuests?: object
+  minGuests: number | null
   /**
-   * @type object | undefined
+   * @type number
    */
-  maxGuests?: object
+  maxGuests: number | null
   /**
-   * @type object | undefined
+   * @type number
    */
-  maxAdults?: object
+  maxAdults: number | null
   /**
-   * @type object | undefined
+   * @type number
    */
-  maxChildren?: object
+  maxChildren: number | null
   /**
-   * @type object
+   * @type number
    */
-  weekdaysPrice: object
+  weekdaysPrice: number | null
   /**
-   * @type object
+   * @type number
    */
-  weekendPrice: object
+  weekendPrice: number | null
   /**
-   * @type object
+   * @type number
    */
-  extraAdultPrice: object
+  extraAdultPrice: number | null
   /**
    * @type number
    */

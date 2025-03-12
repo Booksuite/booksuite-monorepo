@@ -8,13 +8,13 @@ export type User = {
    */
   firstName: string
   /**
-   * @type object
+   * @type string
    */
-  lastName: object | null
+  lastName: string | null
   /**
-   * @type object
+   * @type string
    */
-  phone: object | null
+  phone: string | null
   /**
    * @type string
    */

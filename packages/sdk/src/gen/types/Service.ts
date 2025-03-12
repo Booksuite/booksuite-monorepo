@@ -64,7 +64,7 @@ export type Service = {
    */
   notes: string
   /**
-   * @type object | undefined
+   * @type string
    */
-  videoUrl?: object
+  videoUrl: string | null
 }

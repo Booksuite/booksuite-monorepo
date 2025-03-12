@@ -34,39 +34,37 @@ export type BannerFull = {
    */
   position: BannerResponseFullDTOPosition
   /**
-   * @type object
+   * @type number
    */
-  order: object
+  order: number | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  title?: object
+  title: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  description?: object
+  description: string | null
   /**
    * @type string
    */
   action: BannerResponseFullDTOAction
   /**
-   * @type object | undefined
+   * @type string
    */
-  actionButtonText?: object
+  actionButtonText: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  actionButtonLink?: object
+  actionButtonLink: string | null
   /**
-   * @description ISO format
-   * @type object | undefined
+   * @type string, date-time
    */
-  startAt?: object
+  startAt: string | null
   /**
-   * @description ISO format
-   * @type object | undefined
+   * @type string, date-time
    */
-  endAt?: object
+  endAt: string | null
   /**
    * @type array
    */

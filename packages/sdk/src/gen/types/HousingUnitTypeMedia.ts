@@ -6,9 +6,9 @@ export type HousingUnitTypeMedia = {
    */
   isFeatured: boolean
   /**
-   * @type object
+   * @type number
    */
-  order: object
+  order: number | null
   /**
    * @type object
    */

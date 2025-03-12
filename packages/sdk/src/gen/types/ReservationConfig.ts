@@ -16,17 +16,17 @@ export type ReservationConfig = {
   id: string
   /**
    * @description Percentage added at the end of purchase
-   * @type object
+   * @type number
    */
-  tax: object
+  tax: number | null
   /**
    * @type string
    */
   reservationDepositType: ReservationConfigResponseDTOReservationDepositType
   /**
-   * @type object
+   * @type number
    */
-  reservationDepositTypeValue: object
+  reservationDepositTypeValue: number | null
   /**
    * @type string
    */

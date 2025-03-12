@@ -2,9 +2,9 @@ import type { Media } from './Media.ts'
 
 export type BannerMedia = {
   /**
-   * @type object | undefined
+   * @type number
    */
-  order?: object
+  order: number | null
   /**
    * @type object
    */

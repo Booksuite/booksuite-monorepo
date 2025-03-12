@@ -32,37 +32,35 @@ export type Banner = {
    */
   position: BannerResponseDTOPosition
   /**
-   * @type object
+   * @type number
    */
-  order: object
+  order: number | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  title?: object
+  title: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  description?: object
+  description: string | null
   /**
    * @type string
    */
   action: BannerResponseDTOAction
   /**
-   * @type object | undefined
+   * @type string
    */
-  actionButtonText?: object
+  actionButtonText: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  actionButtonLink?: object
+  actionButtonLink: string | null
   /**
-   * @description ISO format
-   * @type object | undefined
+   * @type string, date-time
    */
-  startAt?: object
+  startAt: string | null
   /**
-   * @description ISO format
-   * @type object | undefined
+   * @type string, date-time
    */
-  endAt?: object
+  endAt: string | null
 }
