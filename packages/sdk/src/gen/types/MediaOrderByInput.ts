@@ -1,12 +1,16 @@
-export enum MediaOrderByDTOOrderBy {
-  'url' = 'url',
-  'createdAt' = 'createdAt',
-}
+export const MediaOrderByDTOOrderBy = {
+  url: 'url',
+  createdAt: 'createdAt',
+} as const
 
-export enum MediaOrderByDTODirection {
-  'asc' = 'asc',
-  'desc' = 'desc',
-}
+type MediaOrderByDTOOrderBy = (typeof MediaOrderByDTOOrderBy)[keyof typeof MediaOrderByDTOOrderBy]
+
+export const MediaOrderByDTODirection = {
+  asc: 'asc',
+  desc: 'desc',
+} as const
+
+type MediaOrderByDTODirection = (typeof MediaOrderByDTODirection)[keyof typeof MediaOrderByDTODirection]
 
 export type MediaOrderByInput = {
   /**

@@ -1,18 +1,22 @@
-export enum ReservationOrderByDTOOrderBy {
-  'createdAt' = 'createdAt',
-  'updatedAt' = 'updatedAt',
-  'status' = 'status',
-  'startDate' = 'startDate',
-  'endDate' = 'endDate',
-  'totalDays' = 'totalDays',
-  'adults' = 'adults',
-  'children' = 'children',
-}
+export const ReservationOrderByDTOOrderBy = {
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  totalDays: 'totalDays',
+  adults: 'adults',
+  children: 'children',
+} as const
 
-export enum ReservationOrderByDTODirection {
-  'asc' = 'asc',
-  'desc' = 'desc',
-}
+type ReservationOrderByDTOOrderBy = (typeof ReservationOrderByDTOOrderBy)[keyof typeof ReservationOrderByDTOOrderBy]
+
+export const ReservationOrderByDTODirection = {
+  asc: 'asc',
+  desc: 'desc',
+} as const
+
+type ReservationOrderByDTODirection = (typeof ReservationOrderByDTODirection)[keyof typeof ReservationOrderByDTODirection]
 
 export type ReservationOrderByInput = {
   /**

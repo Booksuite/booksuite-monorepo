@@ -1,15 +1,19 @@
-export enum HousingUnitTypeOrderByDTOOrderBy {
-  'name' = 'name',
-  'description' = 'description',
-  'shortDescription' = 'shortDescription',
-  'housingUnits' = 'housingUnits',
-  'createdAt' = 'createdAt',
-}
+export const HousingUnitTypeOrderByDTOOrderBy = {
+  name: 'name',
+  description: 'description',
+  shortDescription: 'shortDescription',
+  housingUnits: 'housingUnits',
+  createdAt: 'createdAt',
+} as const
 
-export enum HousingUnitTypeOrderByDTODirection {
-  'asc' = 'asc',
-  'desc' = 'desc',
-}
+type HousingUnitTypeOrderByDTOOrderBy = (typeof HousingUnitTypeOrderByDTOOrderBy)[keyof typeof HousingUnitTypeOrderByDTOOrderBy]
+
+export const HousingUnitTypeOrderByDTODirection = {
+  asc: 'asc',
+  desc: 'desc',
+} as const
+
+type HousingUnitTypeOrderByDTODirection = (typeof HousingUnitTypeOrderByDTODirection)[keyof typeof HousingUnitTypeOrderByDTODirection]
 
 export type HousingUnitTypeOrderByInput = {
   /**

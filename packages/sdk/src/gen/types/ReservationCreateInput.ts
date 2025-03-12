@@ -1,27 +1,31 @@
 import type { ReservationServiceCreateInput } from './ReservationServiceCreateInput.ts'
 
-export enum ReservationCreateDTOStatus {
-  'WAITING_PAYMENT' = 'WAITING_PAYMENT',
-  'CONFIRMED' = 'CONFIRMED',
-  'CHECKED_IN' = 'CHECKED_IN',
-  'CHECKED_OUT' = 'CHECKED_OUT',
-  'ABANDONED' = 'ABANDONED',
-  'CANCELLED' = 'CANCELLED',
-  'PAYMENT_FAILED' = 'PAYMENT_FAILED',
-  'OVERBOOKED' = 'OVERBOOKED',
-  'WAITING_LIST' = 'WAITING_LIST',
-}
+export const ReservationCreateDTOStatus = {
+  WAITING_PAYMENT: 'WAITING_PAYMENT',
+  CONFIRMED: 'CONFIRMED',
+  CHECKED_IN: 'CHECKED_IN',
+  CHECKED_OUT: 'CHECKED_OUT',
+  ABANDONED: 'ABANDONED',
+  CANCELLED: 'CANCELLED',
+  PAYMENT_FAILED: 'PAYMENT_FAILED',
+  OVERBOOKED: 'OVERBOOKED',
+  WAITING_LIST: 'WAITING_LIST',
+} as const
 
-export enum ReservationCreateDTOSaleChannel {
-  'RECEPTION' = 'RECEPTION',
-  'PHONE' = 'PHONE',
-  'WHATSAPP' = 'WHATSAPP',
-  'INSTAGRAM' = 'INSTAGRAM',
-  'TIKTOK' = 'TIKTOK',
-  'EMAIL' = 'EMAIL',
-  'BOOKSUITE' = 'BOOKSUITE',
-  'OTHER' = 'OTHER',
-}
+type ReservationCreateDTOStatus = (typeof ReservationCreateDTOStatus)[keyof typeof ReservationCreateDTOStatus]
+
+export const ReservationCreateDTOSaleChannel = {
+  RECEPTION: 'RECEPTION',
+  PHONE: 'PHONE',
+  WHATSAPP: 'WHATSAPP',
+  INSTAGRAM: 'INSTAGRAM',
+  TIKTOK: 'TIKTOK',
+  EMAIL: 'EMAIL',
+  BOOKSUITE: 'BOOKSUITE',
+  OTHER: 'OTHER',
+} as const
+
+type ReservationCreateDTOSaleChannel = (typeof ReservationCreateDTOSaleChannel)[keyof typeof ReservationCreateDTOSaleChannel]
 
 export type ReservationCreateInput = {
   /**

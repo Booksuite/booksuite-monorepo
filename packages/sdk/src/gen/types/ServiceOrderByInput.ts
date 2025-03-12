@@ -1,13 +1,17 @@
-export enum ServiceOrderByDTOOrderBy {
-  'name' = 'name',
-  'included' = 'included',
-  'createdAt' = 'createdAt',
-}
+export const ServiceOrderByDTOOrderBy = {
+  name: 'name',
+  included: 'included',
+  createdAt: 'createdAt',
+} as const
 
-export enum ServiceOrderByDTODirection {
-  'asc' = 'asc',
-  'desc' = 'desc',
-}
+type ServiceOrderByDTOOrderBy = (typeof ServiceOrderByDTOOrderBy)[keyof typeof ServiceOrderByDTOOrderBy]
+
+export const ServiceOrderByDTODirection = {
+  asc: 'asc',
+  desc: 'desc',
+} as const
+
+type ServiceOrderByDTODirection = (typeof ServiceOrderByDTODirection)[keyof typeof ServiceOrderByDTODirection]
 
 export type ServiceOrderByInput = {
   /**
