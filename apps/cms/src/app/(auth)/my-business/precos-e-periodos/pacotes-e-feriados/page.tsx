@@ -1,9 +1,9 @@
 'use client'
 
-import { Button, Link } from '@chakra-ui/react'
+import { Button } from '@chakra-ui/react'
 
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-import { List } from '@/components/organisms/List'
+//import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
@@ -27,7 +27,7 @@ export default function PacotesEFeriados() {
             <div>
                 <ChipFilter items={chipItems} />
 
-                <List.Root>
+                {/*<List.Root>
                     <Link href="pacotes-e-feriados/detalhes">
                         <List.Item
                             title="Feriado Corpus Christi"
@@ -80,7 +80,7 @@ export default function PacotesEFeriados() {
                             statusColor="gray"
                         />
                     </Link>
-                </List.Root>
+                </List.Root>*/}
 
                 <Button
                     className="mt-[2.5rem] w-full"
