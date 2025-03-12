@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetBannerByIdQueryResponse, GetBannerByIdPathParams } from '../../types/BannerController/GetBannerById.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getGetBannerByIdUrl({ id, companyId }: { id: GetBannerByIdPathParams['id']; companyId: GetBannerByIdPathParams['companyId'] }) {
   return `/company/${companyId}/banner/${id}` as const
@@ -21,5 +21,5 @@ export async function getBannerById(
     url: getGetBannerByIdUrl({ id, companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

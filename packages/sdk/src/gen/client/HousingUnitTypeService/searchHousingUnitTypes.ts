@@ -1,12 +1,12 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   SearchHousingUnitTypesMutationRequest,
   SearchHousingUnitTypesMutationResponse,
   SearchHousingUnitTypesPathParams,
   SearchHousingUnitTypesQueryParams,
 } from '../../types/HousingUnitTypeController/SearchHousingUnitTypes.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getSearchHousingUnitTypesUrl({ companyId }: { companyId: SearchHousingUnitTypesPathParams['companyId'] }) {
   return `/company/${companyId}/housingUnitType/search` as const
@@ -30,5 +30,5 @@ export async function searchHousingUnitTypes(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

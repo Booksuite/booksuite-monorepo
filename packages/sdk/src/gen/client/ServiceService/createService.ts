@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { CreateServiceMutationRequest, CreateServiceMutationResponse, CreateServicePathParams } from '../../types/ServiceController/CreateService.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getCreateServiceUrl({ companyId }: { companyId: CreateServicePathParams['companyId'] }) {
   return `/company/${companyId}/service/create` as const
@@ -23,5 +23,5 @@ export async function createService(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

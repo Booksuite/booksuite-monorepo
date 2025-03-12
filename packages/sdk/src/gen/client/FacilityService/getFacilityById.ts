@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetFacilityByIdQueryResponse, GetFacilityByIdPathParams } from '../../types/FacilityController/GetFacilityById.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getGetFacilityByIdUrl({ id }: { id: GetFacilityByIdPathParams['id'] }) {
   return `/facility/${id}` as const
@@ -18,5 +18,5 @@ export async function getFacilityById({ id }: { id: GetFacilityByIdPathParams['i
     url: getGetFacilityByIdUrl({ id }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

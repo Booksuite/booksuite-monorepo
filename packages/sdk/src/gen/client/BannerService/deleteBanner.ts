@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { DeleteBannerMutationResponse, DeleteBannerPathParams } from '../../types/BannerController/DeleteBanner.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getDeleteBannerUrl({ id, companyId }: { id: DeleteBannerPathParams['id']; companyId: DeleteBannerPathParams['companyId'] }) {
   return `/company/${companyId}/banner/${id}` as const
@@ -21,5 +21,5 @@ export async function deleteBanner(
     url: getDeleteBannerUrl({ id, companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

@@ -1,11 +1,11 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   UpsertCompanyCancellationPolicyMutationRequest,
   UpsertCompanyCancellationPolicyMutationResponse,
   UpsertCompanyCancellationPolicyPathParams,
 } from '../../types/CancellationPolicyController/UpsertCompanyCancellationPolicy.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getUpsertCompanyCancellationPolicyUrl({ companyId }: { companyId: UpsertCompanyCancellationPolicyPathParams['companyId'] }) {
   return `/company/${companyId}/cancellationPolicy` as const
@@ -27,5 +27,5 @@ export async function upsertCompanyCancellationPolicy(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

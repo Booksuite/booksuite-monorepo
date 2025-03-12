@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetServiceByIdQueryResponse, GetServiceByIdPathParams } from '../../types/ServiceController/GetServiceById.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getGetServiceByIdUrl({ id, companyId }: { id: GetServiceByIdPathParams['id']; companyId: GetServiceByIdPathParams['companyId'] }) {
   return `/company/${companyId}/service/${id}` as const
@@ -21,5 +21,5 @@ export async function getServiceById(
     url: getGetServiceByIdUrl({ id, companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

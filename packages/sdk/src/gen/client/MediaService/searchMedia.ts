@@ -1,12 +1,12 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   SearchMediaMutationRequest,
   SearchMediaMutationResponse,
   SearchMediaPathParams,
   SearchMediaQueryParams,
 } from '../../types/MediaController/SearchMedia.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getSearchMediaUrl({ companyId }: { companyId: SearchMediaPathParams['companyId'] }) {
   return `/company/${companyId}/media/search` as const
@@ -30,5 +30,5 @@ export async function searchMedia(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

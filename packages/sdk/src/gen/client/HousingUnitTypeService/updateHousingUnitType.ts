@@ -1,11 +1,11 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   UpdateHousingUnitTypeMutationRequest,
   UpdateHousingUnitTypeMutationResponse,
   UpdateHousingUnitTypePathParams,
 } from '../../types/HousingUnitTypeController/UpdateHousingUnitType.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getUpdateHousingUnitTypeUrl({
   id,
@@ -33,5 +33,5 @@ export async function updateHousingUnitType(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

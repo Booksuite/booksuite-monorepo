@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { UploadMediaMutationResponse, UploadMediaPathParams } from '../../types/MediaController/UploadMedia.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getUploadMediaUrl({ companyId }: { companyId: UploadMediaPathParams['companyId'] }) {
   return `/company/${companyId}/media/upload` as const
@@ -21,5 +21,5 @@ export async function uploadMedia(
     url: getUploadMediaUrl({ companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

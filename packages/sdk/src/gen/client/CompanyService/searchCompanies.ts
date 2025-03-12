@@ -1,11 +1,11 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   SearchCompaniesMutationRequest,
   SearchCompaniesMutationResponse,
   SearchCompaniesQueryParams,
 } from '../../types/CompanyController/SearchCompanies.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getSearchCompaniesUrl() {
   return `/company/search` as const
@@ -28,5 +28,5 @@ export async function searchCompanies(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

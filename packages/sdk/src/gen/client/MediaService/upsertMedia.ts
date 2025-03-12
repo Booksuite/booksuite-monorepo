@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { UpsertMediaMutationRequest, UpsertMediaMutationResponse, UpsertMediaPathParams } from '../../types/MediaController/UpsertMedia.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getUpsertMediaUrl({ companyId }: { companyId: UpsertMediaPathParams['companyId'] }) {
   return `/company/${companyId}/media/upsert` as const
@@ -23,5 +23,5 @@ export async function upsertMedia(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }
