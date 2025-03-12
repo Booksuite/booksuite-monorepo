@@ -26,7 +26,6 @@ export default function DashboardLoginForm() {
         })
 
         if (result.error) {
-            console.error(result.error)
             setError(true)
             setIsLoading(false)
             return

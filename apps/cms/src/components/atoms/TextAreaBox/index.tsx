@@ -2,6 +2,7 @@
 
 import { FormControl, FormLabel, Text, Textarea } from '@chakra-ui/react'
 import React, { useState } from 'react'
+
 import { TextAreaBoxProps } from './types'
 
 export const TextAreaBox: React.FC<TextAreaBoxProps> = ({ ...props }) => {

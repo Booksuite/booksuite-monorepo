@@ -1,6 +1,7 @@
-import { Logo } from '@/components/atoms/Logo'
 import { Box, Button, Heading } from '@chakra-ui/react'
 import Link from 'next/link'
+
+import { Logo } from '@/components/atoms/Logo'
 
 export default function Custom404() {
     return (

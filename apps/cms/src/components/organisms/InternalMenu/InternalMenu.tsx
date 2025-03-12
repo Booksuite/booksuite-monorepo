@@ -1,9 +1,9 @@
 import { Flex } from '@chakra-ui/react'
+
 import { InternalMenuRootProps } from './types'
 
 export function InternalMenuRoot({
     children,
-    target = '_blank',
     ...props
 }: InternalMenuRootProps) {
     return (

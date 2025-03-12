@@ -25,13 +25,7 @@ import { AccommodationFormProps } from './types'
 
 export const DahboardAccommodationForm: React.FC<
     AccommodationFormProps<UpdateAcomodacaoDTO | CreateAcomodacaoDTO>
-> = ({
-    data,
-    // eslint-disable-next-line no-unused-vars
-    isSaving,
-    onSubmit,
-    ...props
-}) => {
+> = ({ data, onSubmit, ...props }) => {
     const [formData, setFormData] = useState<
         UpdateAcomodacaoDTO | CreateAcomodacaoDTO | null
     >(null)
