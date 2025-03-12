@@ -67,9 +67,9 @@ export type ServiceFull = {
    */
   notes: string
   /**
-   * @type object | undefined
+   * @type string
    */
-  videoUrl?: object
+  videoUrl: string | null
   /**
    * @type array
    */

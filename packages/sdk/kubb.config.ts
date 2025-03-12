@@ -4,7 +4,7 @@ import { pluginOas } from '@kubb/plugin-oas'
 import { pluginReactQuery } from '@kubb/plugin-react-query'
 import { pluginTs } from '@kubb/plugin-ts'
 
-const GENERATE_FROM = 'https://api.dev.booksuite.io/api-yaml'
+const GENERATE_FROM = 'http://localhost:3000/api-yaml'
 
 export default defineConfig(async () => {
     const response = await fetch(GENERATE_FROM)

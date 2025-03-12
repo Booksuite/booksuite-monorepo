@@ -24,7 +24,7 @@ export type AgeGroup = {
    */
   chargeType: AgeGroupResponseDTOChargeType
   /**
-   * @type object | undefined
+   * @type number
    */
-  value?: object
+  value: number | null
 }

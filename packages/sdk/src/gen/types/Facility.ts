@@ -37,7 +37,7 @@ export type Facility = {
    */
   name: string
   /**
-   * @type object
+   * @type string
    */
-  icon: object | null
+  icon: string | null
 }

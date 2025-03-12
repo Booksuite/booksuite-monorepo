@@ -6,9 +6,9 @@ export type HousingUnitTypeFacility = {
    */
   id: string
   /**
-   * @type object | undefined
+   * @type boolean
    */
-  isFeatured?: object
+  isFeatured: boolean | null
   /**
    * @type object
    */

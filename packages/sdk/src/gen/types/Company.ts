@@ -16,37 +16,37 @@ export type Company = {
    */
   slug: string
   /**
-   * @type object | undefined
+   * @type string
    */
-  shortDescription?: object
+  shortDescription: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  description?: object
+  description: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  timezone?: object
+  timezone: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  logo?: object
+  logo: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  favIcon?: object
+  favIcon: string | null
   /**
    * @type string
    */
   responsible: string
   /**
-   * @type object | undefined
+   * @type string
    */
-  responsibleEmail?: object
+  responsibleEmail: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  responsiblePhone?: object
+  responsiblePhone: string | null
   /**
    * @type string
    */
@@ -60,13 +60,13 @@ export type Company = {
    */
   companyName: string
   /**
-   * @type object | undefined
+   * @type string
    */
-  stateRegistration?: object
+  stateRegistration: string | null
   /**
-   * @type object | undefined
+   * @type string
    */
-  municipalRegistration?: object
+  municipalRegistration: string | null
   /**
    * @type string
    */

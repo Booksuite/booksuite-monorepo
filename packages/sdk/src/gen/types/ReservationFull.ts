@@ -35,9 +35,9 @@ export type ReservationFull = {
    */
   status: ReservationResponseFullDTOStatus
   /**
-   * @type string | undefined
+   * @type string
    */
-  saleChannel?: ReservationResponseFullDTOSaleChannel
+  saleChannel: ReservationResponseFullDTOSaleChannel
   /**
    * @type string, date-time
    */
@@ -47,17 +47,17 @@ export type ReservationFull = {
    */
   endDate: string
   /**
-   * @type object
+   * @type number
    */
-  totalDays: object
+  totalDays: number | null
   /**
-   * @type object
+   * @type number
    */
-  adults: object
+  adults: number | null
   /**
-   * @type object
+   * @type number
    */
-  children: object
+  children: number | null
   /**
    * @type string
    */
