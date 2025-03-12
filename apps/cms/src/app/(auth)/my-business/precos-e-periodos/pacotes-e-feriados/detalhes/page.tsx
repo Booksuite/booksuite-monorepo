@@ -6,10 +6,10 @@ import {
     Stack,
 } from '@chakra-ui/react'
 
-import { DateRangeBox } from '@/components/atoms/DateRangeBox'
+import DateRangeBox from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import InputNumberBox from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
