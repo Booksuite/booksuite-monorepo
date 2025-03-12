@@ -6,6 +6,7 @@ import GiftIcon from '@/components/svgs/icons/GiftIcon'
 
 export interface PrecosEPeriodosProps {}
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function PrecosEPeriodos(props: PrecosEPeriodosProps) {
     return (
         <div className="PrecosEPeriodos">
@@ -18,27 +19,18 @@ export default function PrecosEPeriodos(props: PrecosEPeriodosProps) {
             </PageHeader.Root>
 
             <InternalMenu.Root>
-                <InternalMenu.Button
-                    href="/my-business/precos-e-periodos/regras-de-temporada"
-                    icon={<CalendarIcon />}
-                    title="Regras de Temporada"
-                >
+                <InternalMenu.Button href="precos-e-periodos/regras-de-temporada">
+                    <CalendarIcon />
                     Regras de Temporada
                 </InternalMenu.Button>
 
-                <InternalMenu.Button
-                    href="/my-business/precos-e-periodos/pacotes-e-feriados"
-                    icon={<GiftIcon />}
-                    title="Pacotes e Feriados"
-                >
+                <InternalMenu.Button href="precos-e-periodos/pacotes-e-feriados">
+                    <GiftIcon />
                     Pacotes e Feriados
                 </InternalMenu.Button>
 
-                <InternalMenu.Button
-                    href="/my-business/precos-e-periodos/ofertas-e-cupons"
-                    icon={<DiscountIcon />}
-                    title="Ofertas e Cupons"
-                >
+                <InternalMenu.Button href="precos-e-periodos/ofertas-e-cupons">
+                    <DiscountIcon />
                     Ofertas e Cupons
                 </InternalMenu.Button>
             </InternalMenu.Root>

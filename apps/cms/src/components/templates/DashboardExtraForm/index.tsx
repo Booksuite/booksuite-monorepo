@@ -56,7 +56,7 @@ export const DashboardExtraForm: React.FC<
                                 : ''
                         }
                         label="Tipo de Cobrança"
-                        onChange={(e: { value: any }) => {
+                        onChange={(e) => {
                             setFormData((prev) => ({
                                 ...prev,
                                 billType: e.value,

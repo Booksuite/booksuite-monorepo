@@ -15,7 +15,9 @@ import { PageHeader } from '@/components/organisms/PageHeader'
 import { DashboardExperienceForm } from '@/components/templates/DashboardExperienceForm'
 
 interface ServiceDetailPageProps {
-    params: { id: string }
+    params: {
+        id: string
+    }
 }
 
 const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ params }) => {
@@ -54,7 +56,10 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ params }) => {
 
         setIsSaving(true)
 
-        const payload = { ...formData, status: status } as UpdateExperienceDTO
+        const payload = {
+            ...formData,
+            status: status,
+        } as UpdateExperienceDTO
 
         const response = new Promise((resolve, reject) => {
             resolve(updateExperience(params.id, payload))

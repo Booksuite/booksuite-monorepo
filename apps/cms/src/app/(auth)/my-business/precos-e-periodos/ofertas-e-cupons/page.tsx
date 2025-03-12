@@ -1,9 +1,9 @@
 'use client'
 
-import { Button } from '@chakra-ui/react'
+import { Button, Link } from '@chakra-ui/react'
 
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-//import { List } from '@/components/organisms/List'
+import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
@@ -27,7 +27,7 @@ export default function OfertasECupons() {
             <div>
                 <ChipFilter items={chipItems} />
 
-                {/*<List.Root>
+                <List.Root>
                     <Link href="ofertas-e-cupons/detalhes">
                         <List.Item
                             variant="secondary"
@@ -63,7 +63,7 @@ export default function OfertasECupons() {
                             status="Ativa"
                         />
                     </Link>
-                </List.Root>*/}
+                </List.Root>
 
                 <Button
                     className="mt-[2.5rem] w-full"

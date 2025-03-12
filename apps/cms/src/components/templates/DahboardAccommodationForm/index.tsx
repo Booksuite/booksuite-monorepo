@@ -34,9 +34,7 @@ export const DahboardAccommodationForm: React.FC<
         e.preventDefault()
 
         if (onSubmit) {
-            if (formData) {
-                onSubmit(e, formData)
-            }
+            onSubmit(e, formData)
         }
     }
 

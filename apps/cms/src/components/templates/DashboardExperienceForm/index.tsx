@@ -33,7 +33,7 @@ export const DashboardExperienceForm: React.FC<
 > = ({ data, isSaving, onSubmit, ...props }) => {
     const [formData, setFormData] = useState<
         UpdateExperienceDTO | CreateExperienceDTO
-    >({})
+    >(null)
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -140,7 +140,7 @@ export const DashboardExperienceForm: React.FC<
                         <DateRangeBox
                             asSingleDate
                             label="Início do Períodos de Compras"
-                            singleDateValue={data?.seasonStart ?? undefined}
+                            singleDateValue={data?.seasonStart ?? null}
                             onChange={(event) => {
                                 setFormData({
                                     ...formData,
@@ -459,7 +459,10 @@ export const DashboardExperienceForm: React.FC<
 
                         <SelectBox
                             options={[
-                                { value: 'Por unidade', label: 'Por unidade' },
+                                {
+                                    value: 'Por unidade',
+                                    label: 'Por unidade',
+                                },
                                 { value: 'Nome Lorem', label: 'Nome Lorem' },
                                 { value: 'Lorem Ipsum', label: 'Lorem Ipsum' },
                             ]}
