@@ -140,7 +140,7 @@ export const DashboardExperienceForm: React.FC<
                         <DateRangeBox
                             asSingleDate
                             label="Início do Períodos de Compras"
-                            singleDateValue={data?.seasonStart ?? null}
+                            singleDateValue={data?.seasonStart}
                             onChange={(event) => {
                                 setFormData({
                                     ...formData,

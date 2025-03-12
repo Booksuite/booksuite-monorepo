@@ -1,3 +1,4 @@
+import { CategoryDTO } from "./Category";
 import type { Status } from "./Status";
 
 export type UpdateExperienceDTO = Partial<Omit<Experience, "id">>;
@@ -24,4 +25,5 @@ export type Experience = {
   priceAdjustment?: string;
   discount: number;
   billType: string;
+  category: CategoryDTO[]
 };

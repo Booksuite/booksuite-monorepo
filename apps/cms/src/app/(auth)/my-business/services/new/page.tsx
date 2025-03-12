@@ -1,10 +1,12 @@
 'use client'
 
+import { useCreateService } from '@booksuite/sdk'
 import { Flex, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
-import { createExperience } from '@/common/services/experience/createExperience'
-import type { CreateExperienceDTO } from '@/common/types/Experience'
+import { TEST_COMPANY } from '@/common/contexts/user'
+import { CategoryDTO } from '@/common/types/Category'
+import type { CreateExperienceDTO, Experience } from '@/common/types/Experience'
 import type { Status } from '@/common/types/Status'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
@@ -14,12 +16,13 @@ import { DashboardExperienceForm } from '@/components/templates/DashboardExperie
 export default function CreateExperienciasPage() {
     const [isSaving, setIsSaving] = useState<boolean>(false)
     const [status, setStatus] = useState<Status>('Ativo')
+    const createService = useCreateService()
 
     const toast = useToast()
 
     function saveExperience(
         e: FormEvent<HTMLFormElement>,
-        formData: CreateExperienceDTO,
+        formData: CreateExperienceDTO | Partial<Omit<Experience, 'id'>>,
     ) {
         e.preventDefault()
 
@@ -34,8 +37,24 @@ export default function CreateExperienciasPage() {
             status: status,
         } as CreateExperienceDTO
 
+        const category: CategoryDTO[] = [
+            { id: 'b191a82a-e4fa-44f0-a0e6-b7229741f49e', name: 'Massagem' },
+        ]
+
         const response = new Promise((resolve, reject) => {
-            resolve(createExperience(payload))
+            resolve(
+                createService.mutate({
+                    companyId: TEST_COMPANY,
+                    data: {
+                        ...payload,
+                        published: status === 'Ativo',
+                        adults: 1, //campo faltando no front
+                        category: category, //arrumar esse campo
+                        included: 'test', //adicionar esse campo
+                        medias: [],
+                    },
+                }),
+            )
         }).finally(() => {
             setIsSaving(false)
         })
