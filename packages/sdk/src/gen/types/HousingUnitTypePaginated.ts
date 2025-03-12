@@ -1,10 +1,10 @@
-import type { HousingUnitType } from './HousingUnitType.ts'
+import type { HousingUnitTypeFull } from './HousingUnitTypeFull.ts'
 
 export type HousingUnitTypePaginated = {
   /**
    * @type array
    */
-  items: HousingUnitType[]
+  items: HousingUnitTypeFull[]
   /**
    * @type number
    */

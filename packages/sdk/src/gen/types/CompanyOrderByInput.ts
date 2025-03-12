@@ -6,9 +6,10 @@ export enum CompanyOrderByDTOOrderBy {
   'state' = 'state',
   'city' = 'city',
   'user' = 'user',
+  'createdAt' = 'createdAt',
 }
 
-export enum CompanyOrderByDTOOrder {
+export enum CompanyOrderByDTODirection {
   'asc' = 'asc',
   'desc' = 'desc',
 }
@@ -21,5 +22,5 @@ export type CompanyOrderByInput = {
   /**
    * @type string
    */
-  order: CompanyOrderByDTOOrder
+  direction: CompanyOrderByDTODirection
 }

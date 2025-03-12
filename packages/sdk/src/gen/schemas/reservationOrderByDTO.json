@@ -1,1 +1,1 @@
-{"type":"object","properties":{"orderBy":{"type":"string","enum":["createdAt","updatedAt","status","startDate","endDate","totalDays","adults","children"]},"order":{"type":"string","enum":["asc","desc"]}},"required":["orderBy","order"],"x-readme-ref-name":"ReservationOrderByDTO"}
+{"type":"object","properties":{"orderBy":{"type":"string","enum":["createdAt","updatedAt","status","startDate","endDate","totalDays","adults","children"]},"direction":{"type":"string","enum":["asc","desc"]}},"required":["orderBy","direction"],"x-readme-ref-name":"ReservationOrderByDTO"}

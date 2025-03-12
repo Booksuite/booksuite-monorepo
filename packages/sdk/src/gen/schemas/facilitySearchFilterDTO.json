@@ -1,1 +1,1 @@
-{"type":"object","properties":{"type":{"type":"string","enum":["HOUSING_UNIT_TYPE","COMPANY"],"example":"COMPANY"}},"required":["type"],"x-readme-ref-name":"FacilitySearchFilterDTO"}
+{"type":"object","properties":{"type":{"type":"string","enum":["HOUSING_UNIT_TYPE","COMPANY"],"example":"COMPANY"}},"x-readme-ref-name":"FacilitySearchFilterDTO"}

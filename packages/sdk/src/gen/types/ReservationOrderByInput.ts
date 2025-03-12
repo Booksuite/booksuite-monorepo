@@ -9,7 +9,7 @@ export enum ReservationOrderByDTOOrderBy {
   'children' = 'children',
 }
 
-export enum ReservationOrderByDTOOrder {
+export enum ReservationOrderByDTODirection {
   'asc' = 'asc',
   'desc' = 'desc',
 }
@@ -22,5 +22,5 @@ export type ReservationOrderByInput = {
   /**
    * @type string
    */
-  order: ReservationOrderByDTOOrder
+  direction: ReservationOrderByDTODirection
 }

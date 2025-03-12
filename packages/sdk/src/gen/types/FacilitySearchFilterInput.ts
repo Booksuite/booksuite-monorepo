@@ -5,7 +5,7 @@ export enum FacilitySearchFilterDTOType {
 
 export type FacilitySearchFilterInput = {
   /**
-   * @type string
+   * @type string | undefined
    */
-  type: FacilitySearchFilterDTOType
+  type?: FacilitySearchFilterDTOType
 }

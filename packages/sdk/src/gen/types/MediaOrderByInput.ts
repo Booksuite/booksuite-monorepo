@@ -3,7 +3,7 @@ export enum MediaOrderByDTOOrderBy {
   'createdAt' = 'createdAt',
 }
 
-export enum MediaOrderByDTOOrder {
+export enum MediaOrderByDTODirection {
   'asc' = 'asc',
   'desc' = 'desc',
 }
@@ -16,5 +16,5 @@ export type MediaOrderByInput = {
   /**
    * @type string
    */
-  order: MediaOrderByDTOOrder
+  direction: MediaOrderByDTODirection
 }

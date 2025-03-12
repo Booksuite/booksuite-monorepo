@@ -1,1 +1,1 @@
-{"type":"object","properties":{"orderBy":{"type":"string","enum":["position","order","createdAt","updatedAt"]},"order":{"type":"string","enum":["asc","desc"]}},"required":["orderBy","order"],"x-readme-ref-name":"BannerOrderByDTO"}
+{"type":"object","properties":{"orderBy":{"type":"string","enum":["position","order","createdAt"]},"direction":{"type":"string","enum":["asc","desc"]}},"required":["orderBy","direction"],"x-readme-ref-name":"BannerOrderByDTO"}

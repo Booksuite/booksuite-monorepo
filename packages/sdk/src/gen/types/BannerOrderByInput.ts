@@ -2,10 +2,9 @@ export enum BannerOrderByDTOOrderBy {
   'position' = 'position',
   'order' = 'order',
   'createdAt' = 'createdAt',
-  'updatedAt' = 'updatedAt',
 }
 
-export enum BannerOrderByDTOOrder {
+export enum BannerOrderByDTODirection {
   'asc' = 'asc',
   'desc' = 'desc',
 }
@@ -18,5 +17,5 @@ export type BannerOrderByInput = {
   /**
    * @type string
    */
-  order: BannerOrderByDTOOrder
+  direction: BannerOrderByDTODirection
 }
