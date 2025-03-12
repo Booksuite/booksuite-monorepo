@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { CreateFacilityMutationRequest, CreateFacilityMutationResponse } from '../../types/FacilityController/CreateFacility.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getCreateFacilityUrl() {
   return `/facility/create` as const
@@ -22,5 +22,5 @@ export async function createFacility(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

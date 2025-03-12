@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { CreateBannerMutationRequest, CreateBannerMutationResponse, CreateBannerPathParams } from '../../types/BannerController/CreateBanner.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getCreateBannerUrl({ companyId }: { companyId: CreateBannerPathParams['companyId'] }) {
   return `/company/${companyId}/banner/create` as const
@@ -23,5 +23,5 @@ export async function createBanner(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { DeleteMediaMutationResponse, DeleteMediaPathParams } from '../../types/MediaController/DeleteMedia.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getDeleteMediaUrl({ id, companyId }: { id: DeleteMediaPathParams['id']; companyId: DeleteMediaPathParams['companyId'] }) {
   return `/company/${companyId}/media/${id}` as const
@@ -21,5 +21,5 @@ export async function deleteMedia(
     url: getDeleteMediaUrl({ id, companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

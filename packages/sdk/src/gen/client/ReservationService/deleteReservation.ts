@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { DeleteReservationMutationResponse, DeleteReservationPathParams } from '../../types/ReservationController/DeleteReservation.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getDeleteReservationUrl({ id, companyId }: { id: DeleteReservationPathParams['id']; companyId: DeleteReservationPathParams['companyId'] }) {
   return `/company/${companyId}/reservation/${id}` as const
@@ -21,5 +21,5 @@ export async function deleteReservation(
     url: getDeleteReservationUrl({ id, companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

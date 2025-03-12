@@ -1,11 +1,11 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   UpsertCompanyReservationConfigMutationRequest,
   UpsertCompanyReservationConfigMutationResponse,
   UpsertCompanyReservationConfigPathParams,
 } from '../../types/ReservationConfigController/UpsertCompanyReservationConfig.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getUpsertCompanyReservationConfigUrl({ companyId }: { companyId: UpsertCompanyReservationConfigPathParams['companyId'] }) {
   return `/company/${companyId}/reservationConfig` as const
@@ -27,5 +27,5 @@ export async function upsertCompanyReservationConfig(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

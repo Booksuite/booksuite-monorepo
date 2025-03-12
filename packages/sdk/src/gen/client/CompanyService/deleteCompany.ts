@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { DeleteCompanyMutationResponse, DeleteCompanyPathParams } from '../../types/CompanyController/DeleteCompany.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getDeleteCompanyUrl({ id }: { id: DeleteCompanyPathParams['id'] }) {
   return `/company/${id}` as const
@@ -18,5 +18,5 @@ export async function deleteCompany({ id }: { id: DeleteCompanyPathParams['id'] 
     url: getDeleteCompanyUrl({ id }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

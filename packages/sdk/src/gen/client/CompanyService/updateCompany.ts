@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { UpdateCompanyMutationRequest, UpdateCompanyMutationResponse, UpdateCompanyPathParams } from '../../types/CompanyController/UpdateCompany.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getUpdateCompanyUrl({ id }: { id: UpdateCompanyPathParams['id'] }) {
   return `/company/${id}` as const
@@ -23,5 +23,5 @@ export async function updateCompany(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

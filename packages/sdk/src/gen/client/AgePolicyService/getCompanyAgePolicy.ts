@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetCompanyAgePolicyQueryResponse, GetCompanyAgePolicyPathParams } from '../../types/AgePolicyController/GetCompanyAgePolicy.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getGetCompanyAgePolicyUrl({ companyId }: { companyId: GetCompanyAgePolicyPathParams['companyId'] }) {
   return `/company/${companyId}/agePolicy` as const
@@ -21,5 +21,5 @@ export async function getCompanyAgePolicy(
     url: getGetCompanyAgePolicyUrl({ companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

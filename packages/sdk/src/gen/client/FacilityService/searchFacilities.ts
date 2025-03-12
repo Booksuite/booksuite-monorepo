@@ -1,11 +1,11 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   SearchFacilitiesMutationRequest,
   SearchFacilitiesMutationResponse,
   SearchFacilitiesQueryParams,
 } from '../../types/FacilityController/SearchFacilities.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getSearchFacilitiesUrl() {
   return `/facility/search` as const
@@ -28,5 +28,5 @@ export async function searchFacilities(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

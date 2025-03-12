@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { UpdateFacilityMutationRequest, UpdateFacilityMutationResponse, UpdateFacilityPathParams } from '../../types/FacilityController/UpdateFacility.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getUpdateFacilityUrl({ id }: { id: UpdateFacilityPathParams['id'] }) {
   return `/facility/${id}` as const
@@ -23,5 +23,5 @@ export async function updateFacility(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

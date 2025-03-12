@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetMediaByIdQueryResponse, GetMediaByIdPathParams } from '../../types/MediaController/GetMediaById.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getGetMediaByIdUrl({ id, companyId }: { id: GetMediaByIdPathParams['id']; companyId: GetMediaByIdPathParams['companyId'] }) {
   return `/company/${companyId}/media/${id}` as const
@@ -21,5 +21,5 @@ export async function getMediaById(
     url: getGetMediaByIdUrl({ id, companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

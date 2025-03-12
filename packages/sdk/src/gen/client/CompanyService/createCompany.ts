@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { CreateCompanyMutationRequest, CreateCompanyMutationResponse } from '../../types/CompanyController/CreateCompany.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getCreateCompanyUrl() {
   return `/company/create` as const
@@ -22,5 +22,5 @@ export async function createCompany(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

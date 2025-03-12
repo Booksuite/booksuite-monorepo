@@ -1,10 +1,10 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   GetCompanyReservationConfigQueryResponse,
   GetCompanyReservationConfigPathParams,
 } from '../../types/ReservationConfigController/GetCompanyReservationConfig.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getGetCompanyReservationConfigUrl({ companyId }: { companyId: GetCompanyReservationConfigPathParams['companyId'] }) {
   return `/company/${companyId}/reservationConfig` as const
@@ -24,5 +24,5 @@ export async function getCompanyReservationConfig(
     url: getGetCompanyReservationConfigUrl({ companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

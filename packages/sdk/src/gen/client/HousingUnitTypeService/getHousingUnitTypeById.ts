@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetHousingUnitTypeByIdQueryResponse, GetHousingUnitTypeByIdPathParams } from '../../types/HousingUnitTypeController/GetHousingUnitTypeById.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getGetHousingUnitTypeByIdUrl({
   id,
@@ -27,5 +27,5 @@ export async function getHousingUnitTypeById(
     url: getGetHousingUnitTypeByIdUrl({ id, companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

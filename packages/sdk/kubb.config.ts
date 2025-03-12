@@ -61,8 +61,7 @@ export default defineConfig(async () => {
                     type: 'tag',
                     name: ({ group }) => `${group}Service`,
                 },
-
-                operations: true,
+                importPath: '../../../axios-client',
                 parser: 'client',
                 exclude: [
                     {
@@ -71,8 +70,7 @@ export default defineConfig(async () => {
                     },
                 ],
                 pathParamsType: 'object',
-                dataReturnType: 'full',
-                client: 'fetch',
+                dataReturnType: 'data',
             }),
             pluginReactQuery({
                 output: {

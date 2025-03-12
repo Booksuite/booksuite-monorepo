@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { UpdateBannerMutationRequest, UpdateBannerMutationResponse, UpdateBannerPathParams } from '../../types/BannerController/UpdateBanner.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getUpdateBannerUrl({ id, companyId }: { id: UpdateBannerPathParams['id']; companyId: UpdateBannerPathParams['companyId'] }) {
   return `/company/${companyId}/banner/${id}` as const
@@ -23,5 +23,5 @@ export async function updateBanner(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }

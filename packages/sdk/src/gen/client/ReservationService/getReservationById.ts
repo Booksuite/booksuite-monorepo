@@ -1,7 +1,7 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetReservationByIdQueryResponse, GetReservationByIdPathParams } from '../../types/ReservationController/GetReservationById.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getGetReservationByIdUrl({ id, companyId }: { id: GetReservationByIdPathParams['id']; companyId: GetReservationByIdPathParams['companyId'] }) {
   return `/company/${companyId}/reservation/${id}` as const
@@ -21,5 +21,5 @@ export async function getReservationById(
     url: getGetReservationByIdUrl({ id, companyId }).toString(),
     ...requestConfig,
   })
-  return res
+  return res.data
 }

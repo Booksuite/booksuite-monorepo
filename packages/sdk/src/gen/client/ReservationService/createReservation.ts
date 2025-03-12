@@ -1,11 +1,11 @@
 /* eslint-disable no-alert, no-console */
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   CreateReservationMutationRequest,
   CreateReservationMutationResponse,
   CreateReservationPathParams,
 } from '../../types/ReservationController/CreateReservation.ts'
-import type { RequestConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 
 export function getCreateReservationUrl({ companyId }: { companyId: CreateReservationPathParams['companyId'] }) {
   return `/company/${companyId}/reservation/create` as const
@@ -27,5 +27,5 @@ export async function createReservation(
     data,
     ...requestConfig,
   })
-  return res
+  return res.data
 }
