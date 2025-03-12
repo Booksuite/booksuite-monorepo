@@ -1,8 +1,10 @@
-export enum AgeGroupResponseDTOChargeType {
-  'DAILY_PER_CHILDREN' = 'DAILY_PER_CHILDREN',
-  'DAILY_PERCENTAGE_PER_CHILDREN' = 'DAILY_PERCENTAGE_PER_CHILDREN',
-  'FREE' = 'FREE',
-}
+export const AgeGroupResponseDTOChargeType = {
+  DAILY_PER_CHILDREN: 'DAILY_PER_CHILDREN',
+  DAILY_PERCENTAGE_PER_CHILDREN: 'DAILY_PERCENTAGE_PER_CHILDREN',
+  FREE: 'FREE',
+} as const
+
+type AgeGroupResponseDTOChargeType = (typeof AgeGroupResponseDTOChargeType)[keyof typeof AgeGroupResponseDTOChargeType]
 
 export type AgeGroup = {
   /**

@@ -1,16 +1,20 @@
 import type { BannerMediaInput } from './BannerMediaInput.ts'
 
-export enum BannerCreateDTOPosition {
-  'HOME_TOP' = 'HOME_TOP',
-  'FEATURED_CONTENT' = 'FEATURED_CONTENT',
-}
+export const BannerCreateDTOPosition = {
+  HOME_TOP: 'HOME_TOP',
+  FEATURED_CONTENT: 'FEATURED_CONTENT',
+} as const
 
-export enum BannerCreateDTOAction {
-  'NONE' = 'NONE',
-  'SMART_SEARCH' = 'SMART_SEARCH',
-  'CUSTOM' = 'CUSTOM',
-  'SEND_TO_WHATSAPP' = 'SEND_TO_WHATSAPP',
-}
+type BannerCreateDTOPosition = (typeof BannerCreateDTOPosition)[keyof typeof BannerCreateDTOPosition]
+
+export const BannerCreateDTOAction = {
+  NONE: 'NONE',
+  SMART_SEARCH: 'SMART_SEARCH',
+  CUSTOM: 'CUSTOM',
+  SEND_TO_WHATSAPP: 'SEND_TO_WHATSAPP',
+} as const
+
+type BannerCreateDTOAction = (typeof BannerCreateDTOAction)[keyof typeof BannerCreateDTOAction]
 
 export type BannerCreateInput = {
   /**

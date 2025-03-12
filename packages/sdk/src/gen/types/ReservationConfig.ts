@@ -1,10 +1,13 @@
-export enum ReservationConfigResponseDTOReservationDepositType {
-  'PERCENTAGE_ON_RESERVATION' = 'PERCENTAGE_ON_RESERVATION',
-  'FULL_AMOUNT_ON_RESERVATION' = 'FULL_AMOUNT_ON_RESERVATION',
-  'DAYLIES_FULL_AMOUNT_ON_RESERVATION' = 'DAYLIES_FULL_AMOUNT_ON_RESERVATION',
-  'FIRST_DAYLY_ON_RESERVATION' = 'FIRST_DAYLY_ON_RESERVATION',
-  'NO_CHARGE' = 'NO_CHARGE',
-}
+export const ReservationConfigResponseDTOReservationDepositType = {
+  PERCENTAGE_ON_RESERVATION: 'PERCENTAGE_ON_RESERVATION',
+  FULL_AMOUNT_ON_RESERVATION: 'FULL_AMOUNT_ON_RESERVATION',
+  DAYLIES_FULL_AMOUNT_ON_RESERVATION: 'DAYLIES_FULL_AMOUNT_ON_RESERVATION',
+  FIRST_DAYLY_ON_RESERVATION: 'FIRST_DAYLY_ON_RESERVATION',
+  NO_CHARGE: 'NO_CHARGE',
+} as const
+
+type ReservationConfigResponseDTOReservationDepositType =
+  (typeof ReservationConfigResponseDTOReservationDepositType)[keyof typeof ReservationConfigResponseDTOReservationDepositType]
 
 export type ReservationConfig = {
   /**

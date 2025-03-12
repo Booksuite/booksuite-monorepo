@@ -1,12 +1,16 @@
-export enum FacilityOrderByDTOOrderBy {
-  'name' = 'name',
-  'createdAt' = 'createdAt',
-}
+export const FacilityOrderByDTOOrderBy = {
+  name: 'name',
+  createdAt: 'createdAt',
+} as const
 
-export enum FacilityOrderByDTODirection {
-  'asc' = 'asc',
-  'desc' = 'desc',
-}
+type FacilityOrderByDTOOrderBy = (typeof FacilityOrderByDTOOrderBy)[keyof typeof FacilityOrderByDTOOrderBy]
+
+export const FacilityOrderByDTODirection = {
+  asc: 'asc',
+  desc: 'desc',
+} as const
+
+type FacilityOrderByDTODirection = (typeof FacilityOrderByDTODirection)[keyof typeof FacilityOrderByDTODirection]
 
 export type FacilityOrderByInput = {
   /**

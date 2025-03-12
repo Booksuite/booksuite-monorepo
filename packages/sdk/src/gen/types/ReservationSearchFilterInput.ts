@@ -1,27 +1,31 @@
 import type { DateRangeInput } from './DateRangeInput.ts'
 
-export enum ReservationSearchFilterDTOSaleChannel {
-  'RECEPTION' = 'RECEPTION',
-  'PHONE' = 'PHONE',
-  'WHATSAPP' = 'WHATSAPP',
-  'INSTAGRAM' = 'INSTAGRAM',
-  'TIKTOK' = 'TIKTOK',
-  'EMAIL' = 'EMAIL',
-  'BOOKSUITE' = 'BOOKSUITE',
-  'OTHER' = 'OTHER',
-}
+export const ReservationSearchFilterDTOSaleChannel = {
+  RECEPTION: 'RECEPTION',
+  PHONE: 'PHONE',
+  WHATSAPP: 'WHATSAPP',
+  INSTAGRAM: 'INSTAGRAM',
+  TIKTOK: 'TIKTOK',
+  EMAIL: 'EMAIL',
+  BOOKSUITE: 'BOOKSUITE',
+  OTHER: 'OTHER',
+} as const
 
-export enum ReservationSearchFilterDTOStatus {
-  'WAITING_PAYMENT' = 'WAITING_PAYMENT',
-  'CONFIRMED' = 'CONFIRMED',
-  'CHECKED_IN' = 'CHECKED_IN',
-  'CHECKED_OUT' = 'CHECKED_OUT',
-  'ABANDONED' = 'ABANDONED',
-  'CANCELLED' = 'CANCELLED',
-  'PAYMENT_FAILED' = 'PAYMENT_FAILED',
-  'OVERBOOKED' = 'OVERBOOKED',
-  'WAITING_LIST' = 'WAITING_LIST',
-}
+type ReservationSearchFilterDTOSaleChannel = (typeof ReservationSearchFilterDTOSaleChannel)[keyof typeof ReservationSearchFilterDTOSaleChannel]
+
+export const ReservationSearchFilterDTOStatus = {
+  WAITING_PAYMENT: 'WAITING_PAYMENT',
+  CONFIRMED: 'CONFIRMED',
+  CHECKED_IN: 'CHECKED_IN',
+  CHECKED_OUT: 'CHECKED_OUT',
+  ABANDONED: 'ABANDONED',
+  CANCELLED: 'CANCELLED',
+  PAYMENT_FAILED: 'PAYMENT_FAILED',
+  OVERBOOKED: 'OVERBOOKED',
+  WAITING_LIST: 'WAITING_LIST',
+} as const
+
+type ReservationSearchFilterDTOStatus = (typeof ReservationSearchFilterDTOStatus)[keyof typeof ReservationSearchFilterDTOStatus]
 
 export type ReservationSearchFilterInput = {
   /**

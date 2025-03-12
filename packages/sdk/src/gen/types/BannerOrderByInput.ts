@@ -1,13 +1,17 @@
-export enum BannerOrderByDTOOrderBy {
-  'position' = 'position',
-  'order' = 'order',
-  'createdAt' = 'createdAt',
-}
+export const BannerOrderByDTOOrderBy = {
+  position: 'position',
+  order: 'order',
+  createdAt: 'createdAt',
+} as const
 
-export enum BannerOrderByDTODirection {
-  'asc' = 'asc',
-  'desc' = 'desc',
-}
+type BannerOrderByDTOOrderBy = (typeof BannerOrderByDTOOrderBy)[keyof typeof BannerOrderByDTOOrderBy]
+
+export const BannerOrderByDTODirection = {
+  asc: 'asc',
+  desc: 'desc',
+} as const
+
+type BannerOrderByDTODirection = (typeof BannerOrderByDTODirection)[keyof typeof BannerOrderByDTODirection]
 
 export type BannerOrderByInput = {
   /**

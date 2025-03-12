@@ -1,14 +1,18 @@
-export enum BannerResponseDTOPosition {
-  'HOME_TOP' = 'HOME_TOP',
-  'FEATURED_CONTENT' = 'FEATURED_CONTENT',
-}
+export const BannerResponseDTOPosition = {
+  HOME_TOP: 'HOME_TOP',
+  FEATURED_CONTENT: 'FEATURED_CONTENT',
+} as const
 
-export enum BannerResponseDTOAction {
-  'NONE' = 'NONE',
-  'SMART_SEARCH' = 'SMART_SEARCH',
-  'CUSTOM' = 'CUSTOM',
-  'SEND_TO_WHATSAPP' = 'SEND_TO_WHATSAPP',
-}
+type BannerResponseDTOPosition = (typeof BannerResponseDTOPosition)[keyof typeof BannerResponseDTOPosition]
+
+export const BannerResponseDTOAction = {
+  NONE: 'NONE',
+  SMART_SEARCH: 'SMART_SEARCH',
+  CUSTOM: 'CUSTOM',
+  SEND_TO_WHATSAPP: 'SEND_TO_WHATSAPP',
+} as const
+
+type BannerResponseDTOAction = (typeof BannerResponseDTOAction)[keyof typeof BannerResponseDTOAction]
 
 export type Banner = {
   /**
