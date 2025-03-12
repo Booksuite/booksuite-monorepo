@@ -1,10 +1,10 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   UpsertCompanyReservationConfigMutationRequest,
   UpsertCompanyReservationConfigMutationResponse,
   UpsertCompanyReservationConfigPathParams,
 } from '../../types/ReservationConfigController/UpsertCompanyReservationConfig.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { upsertCompanyReservationConfig } from '../../client/ReservationConfigService/upsertCompanyReservationConfig.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -19,7 +19,7 @@ export type UpsertCompanyReservationConfigMutationKey = ReturnType<typeof upsert
 export function useUpsertCompanyReservationConfig(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<UpsertCompanyReservationConfigMutationResponse>,
+      UpsertCompanyReservationConfigMutationResponse,
       ResponseErrorConfig<Error>,
       { companyId: UpsertCompanyReservationConfigPathParams['companyId']; data: UpsertCompanyReservationConfigMutationRequest }
     >
@@ -30,7 +30,7 @@ export function useUpsertCompanyReservationConfig(
   const mutationKey = mutationOptions?.mutationKey ?? upsertCompanyReservationConfigMutationKey()
 
   return useMutation<
-    ResponseConfig<UpsertCompanyReservationConfigMutationResponse>,
+    UpsertCompanyReservationConfigMutationResponse,
     ResponseErrorConfig<Error>,
     { companyId: UpsertCompanyReservationConfigPathParams['companyId']; data: UpsertCompanyReservationConfigMutationRequest }
   >({

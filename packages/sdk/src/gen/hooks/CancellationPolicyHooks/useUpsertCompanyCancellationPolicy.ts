@@ -1,10 +1,10 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   UpsertCompanyCancellationPolicyMutationRequest,
   UpsertCompanyCancellationPolicyMutationResponse,
   UpsertCompanyCancellationPolicyPathParams,
 } from '../../types/CancellationPolicyController/UpsertCompanyCancellationPolicy.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { upsertCompanyCancellationPolicy } from '../../client/CancellationPolicyService/upsertCompanyCancellationPolicy.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -19,7 +19,7 @@ export type UpsertCompanyCancellationPolicyMutationKey = ReturnType<typeof upser
 export function useUpsertCompanyCancellationPolicy(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<UpsertCompanyCancellationPolicyMutationResponse>,
+      UpsertCompanyCancellationPolicyMutationResponse,
       ResponseErrorConfig<Error>,
       { companyId: UpsertCompanyCancellationPolicyPathParams['companyId']; data: UpsertCompanyCancellationPolicyMutationRequest }
     >
@@ -30,7 +30,7 @@ export function useUpsertCompanyCancellationPolicy(
   const mutationKey = mutationOptions?.mutationKey ?? upsertCompanyCancellationPolicyMutationKey()
 
   return useMutation<
-    ResponseConfig<UpsertCompanyCancellationPolicyMutationResponse>,
+    UpsertCompanyCancellationPolicyMutationResponse,
     ResponseErrorConfig<Error>,
     { companyId: UpsertCompanyCancellationPolicyPathParams['companyId']; data: UpsertCompanyCancellationPolicyMutationRequest }
   >({

@@ -1,11 +1,11 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   SearchHousingUnitTypesMutationRequest,
   SearchHousingUnitTypesMutationResponse,
   SearchHousingUnitTypesPathParams,
   SearchHousingUnitTypesQueryParams,
 } from '../../types/HousingUnitTypeController/SearchHousingUnitTypes.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { searchHousingUnitTypes } from '../../client/HousingUnitTypeService/searchHousingUnitTypes.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -25,12 +25,7 @@ export function searchHousingUnitTypesQueryOptions(
   config: Partial<RequestConfig<SearchHousingUnitTypesMutationRequest>> & { client?: typeof client } = {},
 ) {
   const queryKey = searchHousingUnitTypesQueryKey({ companyId }, data, params)
-  return queryOptions<
-    ResponseConfig<SearchHousingUnitTypesMutationResponse>,
-    ResponseErrorConfig<Error>,
-    ResponseConfig<SearchHousingUnitTypesMutationResponse>,
-    typeof queryKey
-  >({
+  return queryOptions<SearchHousingUnitTypesMutationResponse, ResponseErrorConfig<Error>, SearchHousingUnitTypesMutationResponse, typeof queryKey>({
     enabled: !!(companyId && data),
     queryKey,
     queryFn: async ({ signal }) => {
@@ -44,15 +39,15 @@ export function searchHousingUnitTypesQueryOptions(
  * {@link /company/:companyId/housingUnitType/search}
  */
 export function useSearchHousingUnitTypes<
-  TData = ResponseConfig<SearchHousingUnitTypesMutationResponse>,
-  TQueryData = ResponseConfig<SearchHousingUnitTypesMutationResponse>,
+  TData = SearchHousingUnitTypesMutationResponse,
+  TQueryData = SearchHousingUnitTypesMutationResponse,
   TQueryKey extends QueryKey = SearchHousingUnitTypesQueryKey,
 >(
   { companyId }: { companyId: SearchHousingUnitTypesPathParams['companyId'] },
   data: SearchHousingUnitTypesMutationRequest,
   params?: SearchHousingUnitTypesQueryParams,
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<SearchHousingUnitTypesMutationResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<SearchHousingUnitTypesMutationResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig<SearchHousingUnitTypesMutationRequest>> & { client?: typeof client }
   } = {},
 ) {

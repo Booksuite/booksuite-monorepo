@@ -81,8 +81,8 @@ export default defineConfig(async () => {
                     name: ({ group }) => `${group}Hooks`,
                 },
                 client: {
-                    importPath: '@kubb/plugin-client/clients/fetch',
-                    dataReturnType: 'full',
+                    importPath: '../../../axios-client',
+                    dataReturnType: 'data',
                 },
                 query: {
                     methods: ['get'],

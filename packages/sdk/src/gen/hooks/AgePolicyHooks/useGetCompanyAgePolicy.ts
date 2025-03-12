@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetCompanyAgePolicyQueryResponse, GetCompanyAgePolicyPathParams } from '../../types/AgePolicyController/GetCompanyAgePolicy.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { getCompanyAgePolicy } from '../../client/AgePolicyService/getCompanyAgePolicy.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -15,12 +15,7 @@ export function getCompanyAgePolicyQueryOptions(
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
   const queryKey = getCompanyAgePolicyQueryKey({ companyId })
-  return queryOptions<
-    ResponseConfig<GetCompanyAgePolicyQueryResponse>,
-    ResponseErrorConfig<Error>,
-    ResponseConfig<GetCompanyAgePolicyQueryResponse>,
-    typeof queryKey
-  >({
+  return queryOptions<GetCompanyAgePolicyQueryResponse, ResponseErrorConfig<Error>, GetCompanyAgePolicyQueryResponse, typeof queryKey>({
     enabled: !!companyId,
     queryKey,
     queryFn: async ({ signal }) => {
@@ -34,13 +29,13 @@ export function getCompanyAgePolicyQueryOptions(
  * {@link /company/:companyId/agePolicy}
  */
 export function useGetCompanyAgePolicy<
-  TData = ResponseConfig<GetCompanyAgePolicyQueryResponse>,
-  TQueryData = ResponseConfig<GetCompanyAgePolicyQueryResponse>,
+  TData = GetCompanyAgePolicyQueryResponse,
+  TQueryData = GetCompanyAgePolicyQueryResponse,
   TQueryKey extends QueryKey = GetCompanyAgePolicyQueryKey,
 >(
   { companyId }: { companyId: GetCompanyAgePolicyPathParams['companyId'] },
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<GetCompanyAgePolicyQueryResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<GetCompanyAgePolicyQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {

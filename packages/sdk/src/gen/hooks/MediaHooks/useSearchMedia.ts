@@ -1,11 +1,11 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   SearchMediaMutationRequest,
   SearchMediaMutationResponse,
   SearchMediaPathParams,
   SearchMediaQueryParams,
 } from '../../types/MediaController/SearchMedia.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { searchMedia } from '../../client/MediaService/searchMedia.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -25,7 +25,7 @@ export function searchMediaQueryOptions(
   config: Partial<RequestConfig<SearchMediaMutationRequest>> & { client?: typeof client } = {},
 ) {
   const queryKey = searchMediaQueryKey({ companyId }, data, params)
-  return queryOptions<ResponseConfig<SearchMediaMutationResponse>, ResponseErrorConfig<Error>, ResponseConfig<SearchMediaMutationResponse>, typeof queryKey>({
+  return queryOptions<SearchMediaMutationResponse, ResponseErrorConfig<Error>, SearchMediaMutationResponse, typeof queryKey>({
     enabled: !!(companyId && data),
     queryKey,
     queryFn: async ({ signal }) => {
@@ -38,16 +38,12 @@ export function searchMediaQueryOptions(
 /**
  * {@link /company/:companyId/media/search}
  */
-export function useSearchMedia<
-  TData = ResponseConfig<SearchMediaMutationResponse>,
-  TQueryData = ResponseConfig<SearchMediaMutationResponse>,
-  TQueryKey extends QueryKey = SearchMediaQueryKey,
->(
+export function useSearchMedia<TData = SearchMediaMutationResponse, TQueryData = SearchMediaMutationResponse, TQueryKey extends QueryKey = SearchMediaQueryKey>(
   { companyId }: { companyId: SearchMediaPathParams['companyId'] },
   data: SearchMediaMutationRequest,
   params?: SearchMediaQueryParams,
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<SearchMediaMutationResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<SearchMediaMutationResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig<SearchMediaMutationRequest>> & { client?: typeof client }
   } = {},
 ) {

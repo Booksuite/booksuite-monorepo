@@ -1,11 +1,11 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   SearchServicesMutationRequest,
   SearchServicesMutationResponse,
   SearchServicesPathParams,
   SearchServicesQueryParams,
 } from '../../types/ServiceController/SearchServices.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { searchServices } from '../../client/ServiceService/searchServices.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -25,12 +25,7 @@ export function searchServicesQueryOptions(
   config: Partial<RequestConfig<SearchServicesMutationRequest>> & { client?: typeof client } = {},
 ) {
   const queryKey = searchServicesQueryKey({ companyId }, data, params)
-  return queryOptions<
-    ResponseConfig<SearchServicesMutationResponse>,
-    ResponseErrorConfig<Error>,
-    ResponseConfig<SearchServicesMutationResponse>,
-    typeof queryKey
-  >({
+  return queryOptions<SearchServicesMutationResponse, ResponseErrorConfig<Error>, SearchServicesMutationResponse, typeof queryKey>({
     enabled: !!(companyId && data),
     queryKey,
     queryFn: async ({ signal }) => {
@@ -44,15 +39,15 @@ export function searchServicesQueryOptions(
  * {@link /company/:companyId/service/search}
  */
 export function useSearchServices<
-  TData = ResponseConfig<SearchServicesMutationResponse>,
-  TQueryData = ResponseConfig<SearchServicesMutationResponse>,
+  TData = SearchServicesMutationResponse,
+  TQueryData = SearchServicesMutationResponse,
   TQueryKey extends QueryKey = SearchServicesQueryKey,
 >(
   { companyId }: { companyId: SearchServicesPathParams['companyId'] },
   data: SearchServicesMutationRequest,
   params?: SearchServicesQueryParams,
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<SearchServicesMutationResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<SearchServicesMutationResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig<SearchServicesMutationRequest>> & { client?: typeof client }
   } = {},
 ) {

@@ -1,10 +1,10 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   UpdateReservationMutationRequest,
   UpdateReservationMutationResponse,
   UpdateReservationPathParams,
 } from '../../types/ReservationController/UpdateReservation.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { updateReservation } from '../../client/ReservationService/updateReservation.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -19,7 +19,7 @@ export type UpdateReservationMutationKey = ReturnType<typeof updateReservationMu
 export function useUpdateReservation(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<UpdateReservationMutationResponse>,
+      UpdateReservationMutationResponse,
       ResponseErrorConfig<Error>,
       { id: UpdateReservationPathParams['id']; companyId: UpdateReservationPathParams['companyId']; data: UpdateReservationMutationRequest }
     >
@@ -30,7 +30,7 @@ export function useUpdateReservation(
   const mutationKey = mutationOptions?.mutationKey ?? updateReservationMutationKey()
 
   return useMutation<
-    ResponseConfig<UpdateReservationMutationResponse>,
+    UpdateReservationMutationResponse,
     ResponseErrorConfig<Error>,
     { id: UpdateReservationPathParams['id']; companyId: UpdateReservationPathParams['companyId']; data: UpdateReservationMutationRequest }
   >({

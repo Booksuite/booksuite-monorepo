@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetServiceByIdQueryResponse, GetServiceByIdPathParams } from '../../types/ServiceController/GetServiceById.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { getServiceById } from '../../client/ServiceService/getServiceById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ export function getServiceByIdQueryOptions(
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
   const queryKey = getServiceByIdQueryKey({ id, companyId })
-  return queryOptions<ResponseConfig<GetServiceByIdQueryResponse>, ResponseErrorConfig<Error>, ResponseConfig<GetServiceByIdQueryResponse>, typeof queryKey>({
+  return queryOptions<GetServiceByIdQueryResponse, ResponseErrorConfig<Error>, GetServiceByIdQueryResponse, typeof queryKey>({
     enabled: !!(id && companyId),
     queryKey,
     queryFn: async ({ signal }) => {
@@ -29,13 +29,13 @@ export function getServiceByIdQueryOptions(
  * {@link /company/:companyId/service/:id}
  */
 export function useGetServiceById<
-  TData = ResponseConfig<GetServiceByIdQueryResponse>,
-  TQueryData = ResponseConfig<GetServiceByIdQueryResponse>,
+  TData = GetServiceByIdQueryResponse,
+  TQueryData = GetServiceByIdQueryResponse,
   TQueryKey extends QueryKey = GetServiceByIdQueryKey,
 >(
   { id, companyId }: { id: GetServiceByIdPathParams['id']; companyId: GetServiceByIdPathParams['companyId'] },
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<GetServiceByIdQueryResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<GetServiceByIdQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {

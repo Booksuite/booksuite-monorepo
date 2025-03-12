@@ -1,9 +1,9 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   GetCompanyReservationConfigQueryResponse,
   GetCompanyReservationConfigPathParams,
 } from '../../types/ReservationConfigController/GetCompanyReservationConfig.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { getCompanyReservationConfig } from '../../client/ReservationConfigService/getCompanyReservationConfig.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -18,12 +18,7 @@ export function getCompanyReservationConfigQueryOptions(
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
   const queryKey = getCompanyReservationConfigQueryKey({ companyId })
-  return queryOptions<
-    ResponseConfig<GetCompanyReservationConfigQueryResponse>,
-    ResponseErrorConfig<Error>,
-    ResponseConfig<GetCompanyReservationConfigQueryResponse>,
-    typeof queryKey
-  >({
+  return queryOptions<GetCompanyReservationConfigQueryResponse, ResponseErrorConfig<Error>, GetCompanyReservationConfigQueryResponse, typeof queryKey>({
     enabled: !!companyId,
     queryKey,
     queryFn: async ({ signal }) => {
@@ -37,13 +32,13 @@ export function getCompanyReservationConfigQueryOptions(
  * {@link /company/:companyId/reservationConfig}
  */
 export function useGetCompanyReservationConfig<
-  TData = ResponseConfig<GetCompanyReservationConfigQueryResponse>,
-  TQueryData = ResponseConfig<GetCompanyReservationConfigQueryResponse>,
+  TData = GetCompanyReservationConfigQueryResponse,
+  TQueryData = GetCompanyReservationConfigQueryResponse,
   TQueryKey extends QueryKey = GetCompanyReservationConfigQueryKey,
 >(
   { companyId }: { companyId: GetCompanyReservationConfigPathParams['companyId'] },
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<GetCompanyReservationConfigQueryResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<GetCompanyReservationConfigQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {

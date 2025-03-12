@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetBannerByIdQueryResponse, GetBannerByIdPathParams } from '../../types/BannerController/GetBannerById.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { getBannerById } from '../../client/BannerService/getBannerById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ export function getBannerByIdQueryOptions(
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
   const queryKey = getBannerByIdQueryKey({ id, companyId })
-  return queryOptions<ResponseConfig<GetBannerByIdQueryResponse>, ResponseErrorConfig<Error>, ResponseConfig<GetBannerByIdQueryResponse>, typeof queryKey>({
+  return queryOptions<GetBannerByIdQueryResponse, ResponseErrorConfig<Error>, GetBannerByIdQueryResponse, typeof queryKey>({
     enabled: !!(id && companyId),
     queryKey,
     queryFn: async ({ signal }) => {
@@ -29,13 +29,13 @@ export function getBannerByIdQueryOptions(
  * {@link /company/:companyId/banner/:id}
  */
 export function useGetBannerById<
-  TData = ResponseConfig<GetBannerByIdQueryResponse>,
-  TQueryData = ResponseConfig<GetBannerByIdQueryResponse>,
+  TData = GetBannerByIdQueryResponse,
+  TQueryData = GetBannerByIdQueryResponse,
   TQueryKey extends QueryKey = GetBannerByIdQueryKey,
 >(
   { id, companyId }: { id: GetBannerByIdPathParams['id']; companyId: GetBannerByIdPathParams['companyId'] },
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<GetBannerByIdQueryResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<GetBannerByIdQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {

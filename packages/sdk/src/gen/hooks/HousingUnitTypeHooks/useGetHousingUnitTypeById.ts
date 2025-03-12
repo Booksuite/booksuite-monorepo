@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetHousingUnitTypeByIdQueryResponse, GetHousingUnitTypeByIdPathParams } from '../../types/HousingUnitTypeController/GetHousingUnitTypeById.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { getHousingUnitTypeById } from '../../client/HousingUnitTypeService/getHousingUnitTypeById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -20,12 +20,7 @@ export function getHousingUnitTypeByIdQueryOptions(
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
   const queryKey = getHousingUnitTypeByIdQueryKey({ id, companyId })
-  return queryOptions<
-    ResponseConfig<GetHousingUnitTypeByIdQueryResponse>,
-    ResponseErrorConfig<Error>,
-    ResponseConfig<GetHousingUnitTypeByIdQueryResponse>,
-    typeof queryKey
-  >({
+  return queryOptions<GetHousingUnitTypeByIdQueryResponse, ResponseErrorConfig<Error>, GetHousingUnitTypeByIdQueryResponse, typeof queryKey>({
     enabled: !!(id && companyId),
     queryKey,
     queryFn: async ({ signal }) => {
@@ -39,13 +34,13 @@ export function getHousingUnitTypeByIdQueryOptions(
  * {@link /company/:companyId/housingUnitType/:id}
  */
 export function useGetHousingUnitTypeById<
-  TData = ResponseConfig<GetHousingUnitTypeByIdQueryResponse>,
-  TQueryData = ResponseConfig<GetHousingUnitTypeByIdQueryResponse>,
+  TData = GetHousingUnitTypeByIdQueryResponse,
+  TQueryData = GetHousingUnitTypeByIdQueryResponse,
   TQueryKey extends QueryKey = GetHousingUnitTypeByIdQueryKey,
 >(
   { id, companyId }: { id: GetHousingUnitTypeByIdPathParams['id']; companyId: GetHousingUnitTypeByIdPathParams['companyId'] },
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<GetHousingUnitTypeByIdQueryResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<GetHousingUnitTypeByIdQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {

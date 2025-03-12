@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { DeleteBannerMutationResponse, DeleteBannerPathParams } from '../../types/BannerController/DeleteBanner.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { deleteBanner } from '../../client/BannerService/deleteBanner.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ export type DeleteBannerMutationKey = ReturnType<typeof deleteBannerMutationKey>
 export function useDeleteBanner(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<DeleteBannerMutationResponse>,
+      DeleteBannerMutationResponse,
       ResponseErrorConfig<Error>,
       { id: DeleteBannerPathParams['id']; companyId: DeleteBannerPathParams['companyId'] }
     >
@@ -26,7 +26,7 @@ export function useDeleteBanner(
   const mutationKey = mutationOptions?.mutationKey ?? deleteBannerMutationKey()
 
   return useMutation<
-    ResponseConfig<DeleteBannerMutationResponse>,
+    DeleteBannerMutationResponse,
     ResponseErrorConfig<Error>,
     { id: DeleteBannerPathParams['id']; companyId: DeleteBannerPathParams['companyId'] }
   >({

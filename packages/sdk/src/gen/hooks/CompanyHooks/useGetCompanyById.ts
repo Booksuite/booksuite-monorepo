@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetCompanyByIdQueryResponse, GetCompanyByIdPathParams } from '../../types/CompanyController/GetCompanyById.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { getCompanyById } from '../../client/CompanyService/getCompanyById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -11,7 +11,7 @@ export type GetCompanyByIdQueryKey = ReturnType<typeof getCompanyByIdQueryKey>
 
 export function getCompanyByIdQueryOptions({ id }: { id: GetCompanyByIdPathParams['id'] }, config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const queryKey = getCompanyByIdQueryKey({ id })
-  return queryOptions<ResponseConfig<GetCompanyByIdQueryResponse>, ResponseErrorConfig<Error>, ResponseConfig<GetCompanyByIdQueryResponse>, typeof queryKey>({
+  return queryOptions<GetCompanyByIdQueryResponse, ResponseErrorConfig<Error>, GetCompanyByIdQueryResponse, typeof queryKey>({
     enabled: !!id,
     queryKey,
     queryFn: async ({ signal }) => {
@@ -25,13 +25,13 @@ export function getCompanyByIdQueryOptions({ id }: { id: GetCompanyByIdPathParam
  * {@link /company/:id}
  */
 export function useGetCompanyById<
-  TData = ResponseConfig<GetCompanyByIdQueryResponse>,
-  TQueryData = ResponseConfig<GetCompanyByIdQueryResponse>,
+  TData = GetCompanyByIdQueryResponse,
+  TQueryData = GetCompanyByIdQueryResponse,
   TQueryKey extends QueryKey = GetCompanyByIdQueryKey,
 >(
   { id }: { id: GetCompanyByIdPathParams['id'] },
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<GetCompanyByIdQueryResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<GetCompanyByIdQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {

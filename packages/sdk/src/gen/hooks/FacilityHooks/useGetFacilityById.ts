@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { GetFacilityByIdQueryResponse, GetFacilityByIdPathParams } from '../../types/FacilityController/GetFacilityById.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { getFacilityById } from '../../client/FacilityService/getFacilityById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -11,7 +11,7 @@ export type GetFacilityByIdQueryKey = ReturnType<typeof getFacilityByIdQueryKey>
 
 export function getFacilityByIdQueryOptions({ id }: { id: GetFacilityByIdPathParams['id'] }, config: Partial<RequestConfig> & { client?: typeof client } = {}) {
   const queryKey = getFacilityByIdQueryKey({ id })
-  return queryOptions<ResponseConfig<GetFacilityByIdQueryResponse>, ResponseErrorConfig<Error>, ResponseConfig<GetFacilityByIdQueryResponse>, typeof queryKey>({
+  return queryOptions<GetFacilityByIdQueryResponse, ResponseErrorConfig<Error>, GetFacilityByIdQueryResponse, typeof queryKey>({
     enabled: !!id,
     queryKey,
     queryFn: async ({ signal }) => {
@@ -25,13 +25,13 @@ export function getFacilityByIdQueryOptions({ id }: { id: GetFacilityByIdPathPar
  * {@link /facility/:id}
  */
 export function useGetFacilityById<
-  TData = ResponseConfig<GetFacilityByIdQueryResponse>,
-  TQueryData = ResponseConfig<GetFacilityByIdQueryResponse>,
+  TData = GetFacilityByIdQueryResponse,
+  TQueryData = GetFacilityByIdQueryResponse,
   TQueryKey extends QueryKey = GetFacilityByIdQueryKey,
 >(
   { id }: { id: GetFacilityByIdPathParams['id'] },
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<GetFacilityByIdQueryResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<GetFacilityByIdQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
