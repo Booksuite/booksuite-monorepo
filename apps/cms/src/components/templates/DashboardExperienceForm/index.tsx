@@ -33,7 +33,7 @@ export const DashboardExperienceForm: React.FC<
 > = ({ data, isSaving, onSubmit, ...props }) => {
     const [formData, setFormData] = useState<
         UpdateExperienceDTO | CreateExperienceDTO
-    >(null)
+    >({})
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -141,21 +141,21 @@ export const DashboardExperienceForm: React.FC<
                             asSingleDate
                             label="Início do Períodos de Compras"
                             singleDateValue={data?.seasonStart}
-                            onChange={(event) => {
+                            onChange={(value) => {
                                 setFormData({
                                     ...formData,
-                                    seasonStart: event.target.value,
+                                    seasonStart: value as unknown as string,
                                 })
                             }}
                         />
                         <DateRangeBox
                             asSingleDate
                             label="Fim do Período de Compras"
-                            singleDateValue={data?.seasonEnd ?? ''}
+                            singleDateValue={data?.seasonEnd}
                             onChange={(value) => {
                                 setFormData({
                                     ...formData,
-                                    seasonEnd: value.target.value,
+                                    seasonEnd: value as unknown as string,
                                 })
                             }}
                         />
@@ -459,10 +459,7 @@ export const DashboardExperienceForm: React.FC<
 
                         <SelectBox
                             options={[
-                                {
-                                    value: 'Por unidade',
-                                    label: 'Por unidade',
-                                },
+                                { value: 'Por unidade', label: 'Por unidade' },
                                 { value: 'Nome Lorem', label: 'Nome Lorem' },
                                 { value: 'Lorem Ipsum', label: 'Lorem Ipsum' },
                             ]}

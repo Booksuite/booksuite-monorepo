@@ -1,6 +1,7 @@
 'use client'
 
 import 'moment/locale/pt-br'
+import 'react-datepicker/dist/react-datepicker.css'
 
 import {
     Box,
@@ -17,8 +18,7 @@ import {
 import { ptBR } from 'date-fns/locale'
 import moment from 'moment'
 import { useState } from 'react'
-import Calendar from 'react-date-range/dist/components/Calendar'
-import DateRange from 'react-date-range/dist/components/DateRange'
+import DatePicker from 'react-datepicker'
 
 import CalendarIcon from '@/components/svgs/icons/CalendarIcon'
 
@@ -34,56 +34,62 @@ export const DateRangeBox: React.FC<DateRangeBoxProps> = ({
 }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const [inputValue, setInputValue] = useState(getInitialInputValue)
-    const [dateRange, setDateRange] = useState([
-        {
-            startDate: startDateProps?.defaultValue ?? new Date(),
-            endDate: endDateProps?.defaultValue ?? null,
-            key: 'selection',
-        },
-    ])
+    const [startDate, setStartDate] = useState(
+        startDateProps?.defaultValue ?? new Date(),
+    )
+    const [endDate, setEndDate] = useState(endDateProps?.defaultValue ?? null)
     const [singleDate, setSingleDate] = useState(
-        getInitialSingleDate(singleDateValue),
+        getInitialSingleDate(singleDateValue ?? ''),
     )
 
     function getInitialSingleDate(date: string) {
         if (moment(date).isValid()) {
-            return date
+            return new Date(date)
         }
         return null
     }
 
     function getInitialInputValue() {
         if (asSingleDate) {
-            return singleDateValue ? formatSingleDate(singleDateValue) : ''
+            return singleDateValue
+                ? formatSingleDate(new Date(singleDateValue))
+                : ''
         }
         return startDateProps?.defaultValue || endDateProps?.defaultValue
-            ? formatDate(startDateProps.defaultValue, endDateProps.defaultValue)
+            ? formatDate(
+                  new Date(startDateProps?.defaultValue ?? ''),
+                  new Date(endDateProps?.defaultValue ?? ''),
+              )
             : ''
     }
 
-    function formatDate(start: string, end: string) {
+    function formatDate(start: Date, end: Date) {
         return `${moment(start).format('DD/MM/YYYY')} - ${moment(end).format('DD/MM/YYYY')}`
     }
 
-    function formatSingleDate(date: string) {
+    function formatSingleDate(date: Date) {
         return `${moment(date).format('DD/MM/YYYY')}`
     }
 
-    function handleChange(item) {
-        setDateRange([item.selection])
-        setInputValue(
-            formatDate(item.selection.startDate, item.selection.endDate),
-        )
+    function handleChange(dates: [Date | null, Date | null]) {
+        const [start, end] = dates
+        setStartDate(start)
+        setEndDate(end)
+        if (start && end) {
+            setInputValue(formatDate(start, end))
+        } else {
+            setInputValue('')
+        }
         if (props.onChange) {
-            props.onChange(item)
+            props.onChange({ startDate: start, endDate: end })
         }
     }
 
-    function handleChangeSingle(item) {
-        setSingleDate(item)
-        setInputValue(formatSingleDate(item))
+    function handleChangeSingle(date: Date | null) {
+        setSingleDate(date)
+        setInputValue(date ? formatSingleDate(date) : '')
         if (props.onChange) {
-            props.onChange(item)
+            props.onChange(date)
         }
     }
 
@@ -101,7 +107,6 @@ export const DateRangeBox: React.FC<DateRangeBoxProps> = ({
                     placeholder=" "
                     readOnly
                     value={inputValue}
-                    {...props}
                 />
             </InputGroup>
             <FormLabel>{label}</FormLabel>
@@ -111,22 +116,21 @@ export const DateRangeBox: React.FC<DateRangeBoxProps> = ({
                 <ModalContent p={5}>
                     <Box w="100%">
                         {asSingleDate ? (
-                            <Calendar
-                                locale={ptBR}
+                            <DatePicker
+                                selected={singleDate}
                                 onChange={handleChangeSingle}
-                                date={singleDate}
-                                dateDisplayFormat="ee/MMM/yyyy"
+                                locale={ptBR}
+                                dateFormat="dd/MM/yyyy"
                             />
                         ) : (
-                            <DateRange
-                                locale={ptBR}
-                                ranges={dateRange}
-                                editableDateInputs={true}
-                                moveRangeOnFirstSelection={false}
+                            <DatePicker
+                                selected={startDate}
                                 onChange={handleChange}
-                                startDatePlaceholder="Início"
-                                endDatePlaceholder="Fim"
-                                dateDisplayFormat="ee/MMM/yyyy"
+                                startDate={startDate}
+                                endDate={endDate}
+                                selectsRange
+                                locale={ptBR}
+                                dateFormat="dd/MM/yyyy"
                             />
                         )}
                     </Box>

@@ -5,7 +5,7 @@ import { Flex, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
 import { TEST_COMPANY } from '@/common/contexts/user'
-import { CategoryDTO } from '@/common/types/Category'
+import { CategoryDTO } from '@/common/dto/categoryDTO'
 import type { CreateExperienceDTO, Experience } from '@/common/types/Experience'
 import type { Status } from '@/common/types/Status'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
@@ -32,14 +32,9 @@ export default function CreateExperienciasPage() {
 
         setIsSaving(true)
 
-        const payload = {
-            ...formData,
-            status: status,
-        } as CreateExperienceDTO
+        const payload = { ...formData, status: status } as CreateExperienceDTO
 
-        const category: CategoryDTO[] = [
-            { id: 'b191a82a-e4fa-44f0-a0e6-b7229741f49e', name: 'Massagem' },
-        ]
+        const category: CategoryDTO[] = []
 
         const response = new Promise((resolve, reject) => {
             resolve(
@@ -49,7 +44,7 @@ export default function CreateExperienciasPage() {
                         ...payload,
                         published: status === 'Ativo',
                         adults: 1, //campo faltando no front
-                        category: category, //arrumar esse campo
+                        category: [], //arrumar esse campo
                         included: 'test', //adicionar esse campo
                         medias: [],
                     },

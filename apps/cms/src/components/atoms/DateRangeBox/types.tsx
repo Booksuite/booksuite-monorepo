@@ -1,15 +1,15 @@
-import { InputProps } from '@chakra-ui/react'
-
 export interface DateProps {
     name?: string
     defaultValue?: string
 }
 
-export interface DateRangeBoxProps extends InputProps {
-    inputText?: string
-    label?: string
-    startDateProps?: DateProps
-    endDateProps?: DateProps
+export interface DateRangeBoxProps {
+    label: string
+    startDateProps?: any
+    endDateProps?: any
     asSingleDate?: boolean
     singleDateValue?: string
+    onChange?: (
+        dates: { startDate: Date | null; endDate: Date | null } | Date | null,
+    ) => void
 }
