@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { UpdateFacilityMutationRequest, UpdateFacilityMutationResponse, UpdateFacilityPathParams } from '../../types/FacilityController/UpdateFacility.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { updateFacility } from '../../client/FacilityService/updateFacility.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ export type UpdateFacilityMutationKey = ReturnType<typeof updateFacilityMutation
 export function useUpdateFacility(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<UpdateFacilityMutationResponse>,
+      UpdateFacilityMutationResponse,
       ResponseErrorConfig<Error>,
       { id: UpdateFacilityPathParams['id']; data: UpdateFacilityMutationRequest }
     >
@@ -25,11 +25,7 @@ export function useUpdateFacility(
   const { mutation: mutationOptions, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? updateFacilityMutationKey()
 
-  return useMutation<
-    ResponseConfig<UpdateFacilityMutationResponse>,
-    ResponseErrorConfig<Error>,
-    { id: UpdateFacilityPathParams['id']; data: UpdateFacilityMutationRequest }
-  >({
+  return useMutation<UpdateFacilityMutationResponse, ResponseErrorConfig<Error>, { id: UpdateFacilityPathParams['id']; data: UpdateFacilityMutationRequest }>({
     mutationFn: async ({ id, data }) => {
       return updateFacility({ id }, data, config)
     },

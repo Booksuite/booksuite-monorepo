@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { UpdateServiceMutationRequest, UpdateServiceMutationResponse, UpdateServicePathParams } from '../../types/ServiceController/UpdateService.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { updateService } from '../../client/ServiceService/updateService.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ export type UpdateServiceMutationKey = ReturnType<typeof updateServiceMutationKe
 export function useUpdateService(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<UpdateServiceMutationResponse>,
+      UpdateServiceMutationResponse,
       ResponseErrorConfig<Error>,
       { id: UpdateServicePathParams['id']; companyId: UpdateServicePathParams['companyId']; data: UpdateServiceMutationRequest }
     >
@@ -26,7 +26,7 @@ export function useUpdateService(
   const mutationKey = mutationOptions?.mutationKey ?? updateServiceMutationKey()
 
   return useMutation<
-    ResponseConfig<UpdateServiceMutationResponse>,
+    UpdateServiceMutationResponse,
     ResponseErrorConfig<Error>,
     { id: UpdateServicePathParams['id']; companyId: UpdateServicePathParams['companyId']; data: UpdateServiceMutationRequest }
   >({

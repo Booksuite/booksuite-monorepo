@@ -1,10 +1,10 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   UpsertCompanyAgePolicyMutationRequest,
   UpsertCompanyAgePolicyMutationResponse,
   UpsertCompanyAgePolicyPathParams,
 } from '../../types/AgePolicyController/UpsertCompanyAgePolicy.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { upsertCompanyAgePolicy } from '../../client/AgePolicyService/upsertCompanyAgePolicy.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -19,7 +19,7 @@ export type UpsertCompanyAgePolicyMutationKey = ReturnType<typeof upsertCompanyA
 export function useUpsertCompanyAgePolicy(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<UpsertCompanyAgePolicyMutationResponse>,
+      UpsertCompanyAgePolicyMutationResponse,
       ResponseErrorConfig<Error>,
       { companyId: UpsertCompanyAgePolicyPathParams['companyId']; data: UpsertCompanyAgePolicyMutationRequest }
     >
@@ -30,7 +30,7 @@ export function useUpsertCompanyAgePolicy(
   const mutationKey = mutationOptions?.mutationKey ?? upsertCompanyAgePolicyMutationKey()
 
   return useMutation<
-    ResponseConfig<UpsertCompanyAgePolicyMutationResponse>,
+    UpsertCompanyAgePolicyMutationResponse,
     ResponseErrorConfig<Error>,
     { companyId: UpsertCompanyAgePolicyPathParams['companyId']; data: UpsertCompanyAgePolicyMutationRequest }
   >({

@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { DeleteMediaMutationResponse, DeleteMediaPathParams } from '../../types/MediaController/DeleteMedia.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { deleteMedia } from '../../client/MediaService/deleteMedia.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ export type DeleteMediaMutationKey = ReturnType<typeof deleteMediaMutationKey>
 export function useDeleteMedia(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<DeleteMediaMutationResponse>,
+      DeleteMediaMutationResponse,
       ResponseErrorConfig<Error>,
       { id: DeleteMediaPathParams['id']; companyId: DeleteMediaPathParams['companyId'] }
     >
@@ -26,7 +26,7 @@ export function useDeleteMedia(
   const mutationKey = mutationOptions?.mutationKey ?? deleteMediaMutationKey()
 
   return useMutation<
-    ResponseConfig<DeleteMediaMutationResponse>,
+    DeleteMediaMutationResponse,
     ResponseErrorConfig<Error>,
     { id: DeleteMediaPathParams['id']; companyId: DeleteMediaPathParams['companyId'] }
   >({

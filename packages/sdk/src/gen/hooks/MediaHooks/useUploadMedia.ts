@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { UploadMediaMutationResponse, UploadMediaPathParams } from '../../types/MediaController/UploadMedia.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { uploadMedia } from '../../client/MediaService/uploadMedia.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -14,14 +14,14 @@ export type UploadMediaMutationKey = ReturnType<typeof uploadMediaMutationKey>
  */
 export function useUploadMedia(
   options: {
-    mutation?: UseMutationOptions<ResponseConfig<UploadMediaMutationResponse>, ResponseErrorConfig<Error>, { companyId: UploadMediaPathParams['companyId'] }>
+    mutation?: UseMutationOptions<UploadMediaMutationResponse, ResponseErrorConfig<Error>, { companyId: UploadMediaPathParams['companyId'] }>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
   const { mutation: mutationOptions, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? uploadMediaMutationKey()
 
-  return useMutation<ResponseConfig<UploadMediaMutationResponse>, ResponseErrorConfig<Error>, { companyId: UploadMediaPathParams['companyId'] }>({
+  return useMutation<UploadMediaMutationResponse, ResponseErrorConfig<Error>, { companyId: UploadMediaPathParams['companyId'] }>({
     mutationFn: async ({ companyId }) => {
       return uploadMedia({ companyId }, config)
     },

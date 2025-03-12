@@ -1,9 +1,9 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   DeleteCompanyCancellationPolicyMutationResponse,
   DeleteCompanyCancellationPolicyPathParams,
 } from '../../types/CancellationPolicyController/DeleteCompanyCancellationPolicy.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { deleteCompanyCancellationPolicy } from '../../client/CancellationPolicyService/deleteCompanyCancellationPolicy.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -18,7 +18,7 @@ export type DeleteCompanyCancellationPolicyMutationKey = ReturnType<typeof delet
 export function useDeleteCompanyCancellationPolicy(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<DeleteCompanyCancellationPolicyMutationResponse>,
+      DeleteCompanyCancellationPolicyMutationResponse,
       ResponseErrorConfig<Error>,
       { companyId: DeleteCompanyCancellationPolicyPathParams['companyId'] }
     >
@@ -29,7 +29,7 @@ export function useDeleteCompanyCancellationPolicy(
   const mutationKey = mutationOptions?.mutationKey ?? deleteCompanyCancellationPolicyMutationKey()
 
   return useMutation<
-    ResponseConfig<DeleteCompanyCancellationPolicyMutationResponse>,
+    DeleteCompanyCancellationPolicyMutationResponse,
     ResponseErrorConfig<Error>,
     { companyId: DeleteCompanyCancellationPolicyPathParams['companyId'] }
   >({

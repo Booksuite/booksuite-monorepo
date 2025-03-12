@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { DeleteReservationMutationResponse, DeleteReservationPathParams } from '../../types/ReservationController/DeleteReservation.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { deleteReservation } from '../../client/ReservationService/deleteReservation.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ export type DeleteReservationMutationKey = ReturnType<typeof deleteReservationMu
 export function useDeleteReservation(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<DeleteReservationMutationResponse>,
+      DeleteReservationMutationResponse,
       ResponseErrorConfig<Error>,
       { id: DeleteReservationPathParams['id']; companyId: DeleteReservationPathParams['companyId'] }
     >
@@ -26,7 +26,7 @@ export function useDeleteReservation(
   const mutationKey = mutationOptions?.mutationKey ?? deleteReservationMutationKey()
 
   return useMutation<
-    ResponseConfig<DeleteReservationMutationResponse>,
+    DeleteReservationMutationResponse,
     ResponseErrorConfig<Error>,
     { id: DeleteReservationPathParams['id']; companyId: DeleteReservationPathParams['companyId'] }
   >({

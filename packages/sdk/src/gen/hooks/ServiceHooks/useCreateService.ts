@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { CreateServiceMutationRequest, CreateServiceMutationResponse, CreateServicePathParams } from '../../types/ServiceController/CreateService.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { createService } from '../../client/ServiceService/createService.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ export type CreateServiceMutationKey = ReturnType<typeof createServiceMutationKe
 export function useCreateService(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<CreateServiceMutationResponse>,
+      CreateServiceMutationResponse,
       ResponseErrorConfig<Error>,
       { companyId: CreateServicePathParams['companyId']; data: CreateServiceMutationRequest }
     >
@@ -26,7 +26,7 @@ export function useCreateService(
   const mutationKey = mutationOptions?.mutationKey ?? createServiceMutationKey()
 
   return useMutation<
-    ResponseConfig<CreateServiceMutationResponse>,
+    CreateServiceMutationResponse,
     ResponseErrorConfig<Error>,
     { companyId: CreateServicePathParams['companyId']; data: CreateServiceMutationRequest }
   >({

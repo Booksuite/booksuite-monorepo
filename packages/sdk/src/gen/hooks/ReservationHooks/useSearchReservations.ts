@@ -1,11 +1,11 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   SearchReservationsMutationRequest,
   SearchReservationsMutationResponse,
   SearchReservationsPathParams,
   SearchReservationsQueryParams,
 } from '../../types/ReservationController/SearchReservations.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { searchReservations } from '../../client/ReservationService/searchReservations.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -25,12 +25,7 @@ export function searchReservationsQueryOptions(
   config: Partial<RequestConfig<SearchReservationsMutationRequest>> & { client?: typeof client } = {},
 ) {
   const queryKey = searchReservationsQueryKey({ companyId }, data, params)
-  return queryOptions<
-    ResponseConfig<SearchReservationsMutationResponse>,
-    ResponseErrorConfig<Error>,
-    ResponseConfig<SearchReservationsMutationResponse>,
-    typeof queryKey
-  >({
+  return queryOptions<SearchReservationsMutationResponse, ResponseErrorConfig<Error>, SearchReservationsMutationResponse, typeof queryKey>({
     enabled: !!(companyId && data),
     queryKey,
     queryFn: async ({ signal }) => {
@@ -44,15 +39,15 @@ export function searchReservationsQueryOptions(
  * {@link /company/:companyId/reservation/search}
  */
 export function useSearchReservations<
-  TData = ResponseConfig<SearchReservationsMutationResponse>,
-  TQueryData = ResponseConfig<SearchReservationsMutationResponse>,
+  TData = SearchReservationsMutationResponse,
+  TQueryData = SearchReservationsMutationResponse,
   TQueryKey extends QueryKey = SearchReservationsQueryKey,
 >(
   { companyId }: { companyId: SearchReservationsPathParams['companyId'] },
   data: SearchReservationsMutationRequest,
   params?: SearchReservationsQueryParams,
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<SearchReservationsMutationResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<SearchReservationsMutationResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig<SearchReservationsMutationRequest>> & { client?: typeof client }
   } = {},
 ) {

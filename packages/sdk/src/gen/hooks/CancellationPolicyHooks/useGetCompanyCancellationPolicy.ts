@@ -1,9 +1,9 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   GetCompanyCancellationPolicyQueryResponse,
   GetCompanyCancellationPolicyPathParams,
 } from '../../types/CancellationPolicyController/GetCompanyCancellationPolicy.ts'
-import type { RequestConfig, ResponseErrorConfig, ResponseConfig } from '@kubb/plugin-client/clients/fetch'
 import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/react-query'
 import { getCompanyCancellationPolicy } from '../../client/CancellationPolicyService/getCompanyCancellationPolicy.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
@@ -18,12 +18,7 @@ export function getCompanyCancellationPolicyQueryOptions(
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
   const queryKey = getCompanyCancellationPolicyQueryKey({ companyId })
-  return queryOptions<
-    ResponseConfig<GetCompanyCancellationPolicyQueryResponse>,
-    ResponseErrorConfig<Error>,
-    ResponseConfig<GetCompanyCancellationPolicyQueryResponse>,
-    typeof queryKey
-  >({
+  return queryOptions<GetCompanyCancellationPolicyQueryResponse, ResponseErrorConfig<Error>, GetCompanyCancellationPolicyQueryResponse, typeof queryKey>({
     enabled: !!companyId,
     queryKey,
     queryFn: async ({ signal }) => {
@@ -37,13 +32,13 @@ export function getCompanyCancellationPolicyQueryOptions(
  * {@link /company/:companyId/cancellationPolicy}
  */
 export function useGetCompanyCancellationPolicy<
-  TData = ResponseConfig<GetCompanyCancellationPolicyQueryResponse>,
-  TQueryData = ResponseConfig<GetCompanyCancellationPolicyQueryResponse>,
+  TData = GetCompanyCancellationPolicyQueryResponse,
+  TQueryData = GetCompanyCancellationPolicyQueryResponse,
   TQueryKey extends QueryKey = GetCompanyCancellationPolicyQueryKey,
 >(
   { companyId }: { companyId: GetCompanyCancellationPolicyPathParams['companyId'] },
   options: {
-    query?: Partial<QueryObserverOptions<ResponseConfig<GetCompanyCancellationPolicyQueryResponse>, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
+    query?: Partial<QueryObserverOptions<GetCompanyCancellationPolicyQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {

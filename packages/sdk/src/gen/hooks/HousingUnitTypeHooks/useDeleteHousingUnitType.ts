@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { DeleteHousingUnitTypeMutationResponse, DeleteHousingUnitTypePathParams } from '../../types/HousingUnitTypeController/DeleteHousingUnitType.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { deleteHousingUnitType } from '../../client/HousingUnitTypeService/deleteHousingUnitType.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ export type DeleteHousingUnitTypeMutationKey = ReturnType<typeof deleteHousingUn
 export function useDeleteHousingUnitType(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<DeleteHousingUnitTypeMutationResponse>,
+      DeleteHousingUnitTypeMutationResponse,
       ResponseErrorConfig<Error>,
       { id: DeleteHousingUnitTypePathParams['id']; companyId: DeleteHousingUnitTypePathParams['companyId'] }
     >
@@ -26,7 +26,7 @@ export function useDeleteHousingUnitType(
   const mutationKey = mutationOptions?.mutationKey ?? deleteHousingUnitTypeMutationKey()
 
   return useMutation<
-    ResponseConfig<DeleteHousingUnitTypeMutationResponse>,
+    DeleteHousingUnitTypeMutationResponse,
     ResponseErrorConfig<Error>,
     { id: DeleteHousingUnitTypePathParams['id']; companyId: DeleteHousingUnitTypePathParams['companyId'] }
   >({

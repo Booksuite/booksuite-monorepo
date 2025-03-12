@@ -1,6 +1,6 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { CreateBannerMutationRequest, CreateBannerMutationResponse, CreateBannerPathParams } from '../../types/BannerController/CreateBanner.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { createBanner } from '../../client/BannerService/createBanner.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -15,7 +15,7 @@ export type CreateBannerMutationKey = ReturnType<typeof createBannerMutationKey>
 export function useCreateBanner(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<CreateBannerMutationResponse>,
+      CreateBannerMutationResponse,
       ResponseErrorConfig<Error>,
       { companyId: CreateBannerPathParams['companyId']; data: CreateBannerMutationRequest }
     >
@@ -26,7 +26,7 @@ export function useCreateBanner(
   const mutationKey = mutationOptions?.mutationKey ?? createBannerMutationKey()
 
   return useMutation<
-    ResponseConfig<CreateBannerMutationResponse>,
+    CreateBannerMutationResponse,
     ResponseErrorConfig<Error>,
     { companyId: CreateBannerPathParams['companyId']; data: CreateBannerMutationRequest }
   >({

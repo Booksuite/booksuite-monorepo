@@ -1,10 +1,10 @@
-import client from '@kubb/plugin-client/clients/fetch'
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   CreateHousingUnitTypeMutationRequest,
   CreateHousingUnitTypeMutationResponse,
   CreateHousingUnitTypePathParams,
 } from '../../types/HousingUnitTypeController/CreateHousingUnitType.ts'
-import type { RequestConfig, ResponseConfig, ResponseErrorConfig } from '@kubb/plugin-client/clients/fetch'
 import type { UseMutationOptions } from '@tanstack/react-query'
 import { createHousingUnitType } from '../../client/HousingUnitTypeService/createHousingUnitType.ts'
 import { useMutation } from '@tanstack/react-query'
@@ -19,7 +19,7 @@ export type CreateHousingUnitTypeMutationKey = ReturnType<typeof createHousingUn
 export function useCreateHousingUnitType(
   options: {
     mutation?: UseMutationOptions<
-      ResponseConfig<CreateHousingUnitTypeMutationResponse>,
+      CreateHousingUnitTypeMutationResponse,
       ResponseErrorConfig<Error>,
       { companyId: CreateHousingUnitTypePathParams['companyId']; data: CreateHousingUnitTypeMutationRequest }
     >
@@ -30,7 +30,7 @@ export function useCreateHousingUnitType(
   const mutationKey = mutationOptions?.mutationKey ?? createHousingUnitTypeMutationKey()
 
   return useMutation<
-    ResponseConfig<CreateHousingUnitTypeMutationResponse>,
+    CreateHousingUnitTypeMutationResponse,
     ResponseErrorConfig<Error>,
     { companyId: CreateHousingUnitTypePathParams['companyId']; data: CreateHousingUnitTypeMutationRequest }
   >({
