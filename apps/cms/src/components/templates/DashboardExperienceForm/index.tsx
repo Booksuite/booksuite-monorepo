@@ -47,14 +47,14 @@ export const DashboardExperienceForm: React.FC<
             <Stack gap={8}>
                 <Flex direction="column" gap={2}>
                     <InputBox
-                        label="Nome da Experiência"
                         name="name"
-                        defaultValue={data?.name}
-                        onChange={(event) => {
-                            setFormData({
-                                ...formData,
-                                [event.target.name]: event.target.value,
-                            })
+                        label="Nome da Experiência"
+                        defaultValue={formData.name}
+                        onValueChange={(value) => {
+                            setFormData((prevData) => ({
+                                ...prevData,
+                                name: value,
+                            }))
                         }}
                     />
 
@@ -420,12 +420,12 @@ export const DashboardExperienceForm: React.FC<
 
                         <InputBox
                             label="Valor incidente"
-                            type="number"
+                            type="currency"
                             defaultValue={data?.discount}
-                            onChange={(e) => {
+                            onValueChange={(value, name, values) => {
                                 setFormData({
                                     ...formData,
-                                    discount: parseFloat(e.target.value),
+                                    discount: values.float,
                                 })
                             }}
                         />
