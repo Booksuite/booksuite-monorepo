@@ -33,6 +33,7 @@ export default function CreateExperienciasPage() {
         setIsSaving(true)
 
         const payload = { ...formData, status: status } as CreateExperienceDTO
+        console.log(payload)
 
         const category: CategoryDTO[] = []
 
@@ -43,9 +44,9 @@ export default function CreateExperienciasPage() {
                     data: {
                         ...payload,
                         published: status === 'Ativo',
-                        adults: 1, //campo faltando no front
-                        category: [], //arrumar esse campo
-                        included: 'test', //adicionar esse campo
+                        adults: 1,
+                        category: [],
+                        included: 'test',
                         medias: [],
                     },
                 }),

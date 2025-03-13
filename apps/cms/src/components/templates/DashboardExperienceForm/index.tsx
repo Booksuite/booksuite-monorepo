@@ -144,7 +144,7 @@ export const DashboardExperienceForm: React.FC<
                             onChange={(value) => {
                                 setFormData({
                                     ...formData,
-                                    seasonSaleStart: value as unknown as string,
+                                    seasonStart: value as unknown as string,
                                 })
                             }}
                         />
@@ -155,7 +155,7 @@ export const DashboardExperienceForm: React.FC<
                             onChange={(value) => {
                                 setFormData({
                                     ...formData,
-                                    seasonSaleEnd: value as unknown as string,
+                                    seasonEnd: value as unknown as string,
                                 })
                             }}
                         />
