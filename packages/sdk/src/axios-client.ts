@@ -33,7 +33,9 @@ export type ResponseConfig<TData = unknown> = {
 
 export type ResponseErrorConfig<TError = unknown> = TError
 
-export const axiosInstance = axios.create({})
+export const axiosInstance = axios.create({
+    baseURL: '/api',
+})
 
 export const client = async <TData, TError = unknown, TVariables = unknown>(
     config: RequestConfig<TVariables>,
