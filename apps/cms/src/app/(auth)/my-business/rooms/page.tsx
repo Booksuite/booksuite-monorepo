@@ -6,9 +6,10 @@ import { useSearchParams } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-//import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
+
+import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
 
 const chipItems = [
     { key: '1', label: 'Ativas' },
@@ -26,7 +27,9 @@ export default function Rooms() {
     const companyId = useCurrentCompanyId()
     const { data: housingUnitTypes, isLoading } = useSearchHousingUnitTypes(
         { companyId },
-        { pagination: { page, itemsPerPage } },
+        {
+            pagination: { page, itemsPerPage },
+        },
     )
 
     return (
@@ -39,27 +42,30 @@ export default function Rooms() {
                 <PageHeader.Title>Acomodações</PageHeader.Title>
             </PageHeader.Root>
 
-            <div>
+            <Box>
                 <ChipFilter items={chipItems} />
 
-                <Stack gap={4}>
-                    {Array.from({ length: 4 }).map((_, index) => (
-                        <Box key={index}>
-                            <Stack direction="row" gap={4}>
-                                <Skeleton h="72px" w="72px" />
-                                <Stack>
-                                    <Skeleton h={4} w={150} />
-                                    <Skeleton h={3} w={140} />
-                                    <Skeleton h={3} w={135} />
-                                </Stack>
-                            </Stack>
-                        </Box>
-                    ))}
+                <Stack gap={4} my={4}>
+                    {isLoading
+                        ? Array.from({ length: 4 }).map((_, index) => (
+                              <Box key={index}>
+                                  <Stack direction="row" gap={4}>
+                                      <Skeleton h="72px" w="72px" />
+                                      <Stack>
+                                          <Skeleton h={4} w={150} />
+                                          <Skeleton h={3} w={140} />
+                                          <Skeleton h={3} w={135} />
+                                      </Stack>
+                                  </Stack>
+                              </Box>
+                          ))
+                        : housingUnitTypes?.items.map((housingUnitType) => (
+                              <HousingUnitTypeCard
+                                  key={housingUnitType.id}
+                                  housingUnitType={housingUnitType}
+                              />
+                          ))}
                 </Stack>
-
-                {/* {housingUnitTypes.items.map((housingUnitType) => (
-                    <Card.Container></Card.Container>
-                ))} */}
 
                 <Button
                     as={Link}
@@ -69,7 +75,7 @@ export default function Rooms() {
                 >
                     Adicionar Acomodação
                 </Button>
-            </div>
+            </Box>
         </div>
     )
 }

@@ -1,8 +1,7 @@
+import { CompanyFull } from '@booksuite/sdk'
 import { create } from 'zustand'
 
-import { CompanyFull } from '../models'
-
-export const TEST_COMPANY = '4107d1d7-49b9-41dd-86a6-2eb425dc4aef'
+export const TEST_COMPANY = '568cc87c-5594-4db7-9425-076b552e2966'
 
 type CurrentCompanyStore = {
     company: CompanyFull | null
