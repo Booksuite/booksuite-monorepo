@@ -1,4 +1,5 @@
 import { CategoryDTO } from '@/common/dto/categoryDTO'
+
 import type { Status } from './Status'
 
 export type UpdateExperienceDTO = Partial<Omit<Experience, 'id'>>
@@ -14,6 +15,8 @@ export type Experience = {
     onlineSale: boolean
     panelSale: boolean
     seasonalSale: boolean
+    seasonSaleStart: string
+    seasonSaleEnd: string
     seasonStart: string
     seasonEnd: string
     hosting?: string

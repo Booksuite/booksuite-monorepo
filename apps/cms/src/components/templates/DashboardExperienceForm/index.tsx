@@ -140,22 +140,22 @@ export const DashboardExperienceForm: React.FC<
                         <DateRangeBox
                             asSingleDate
                             label="Início do Períodos de Compras"
-                            singleDateValue={data?.seasonStart}
+                            singleDateValue={data?.seasonSaleStart}
                             onChange={(value) => {
                                 setFormData({
                                     ...formData,
-                                    seasonStart: value as unknown as string,
+                                    seasonSaleStart: value as unknown as string,
                                 })
                             }}
                         />
                         <DateRangeBox
                             asSingleDate
                             label="Fim do Período de Compras"
-                            singleDateValue={data?.seasonEnd}
+                            singleDateValue={data?.seasonSaleEnd}
                             onChange={(value) => {
                                 setFormData({
                                     ...formData,
-                                    seasonEnd: value as unknown as string,
+                                    seasonSaleEnd: value as unknown as string,
                                 })
                             }}
                         />
@@ -189,38 +189,24 @@ export const DashboardExperienceForm: React.FC<
                             <DateRangeBox
                                 asSingleDate
                                 label="Início do Período de Estadia"
-                                singleDateValue="01/12/2024"
+                                singleDateValue={data?.seasonStart}
+                                onChange={(value) => {
+                                    setFormData({
+                                        ...formData,
+                                        seasonStart: value as unknown as string,
+                                    })
+                                }}
                             />
                             <DateRangeBox
                                 asSingleDate
                                 label="Fim do Período de Estadia"
-                                singleDateValue="02/01/2025"
-                            />
-                        </Stack>
-
-                        <Stack spacing={2}>
-                            <h4>
-                                <Flex
-                                    alignItems="center"
-                                    justifyContent="space-between"
-                                    gap={2}
-                                >
-                                    Período de Estadia 2
-                                    <button type="button">
-                                        <Icons.Minus color="var(--clr-error)" />
-                                    </button>
-                                </Flex>
-                            </h4>
-
-                            <DateRangeBox
-                                asSingleDate
-                                label="Início do Período de Estadia"
-                                singleDateValue="01/12/2024"
-                            />
-                            <DateRangeBox
-                                asSingleDate
-                                label="Fim do Período de Estadia"
-                                singleDateValue="02/01/2025"
+                                singleDateValue={data?.seasonEnd}
+                                onChange={(value) => {
+                                    setFormData({
+                                        ...formData,
+                                        seasonEnd: value as unknown as string,
+                                    })
+                                }}
                             />
                         </Stack>
 
