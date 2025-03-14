@@ -2,11 +2,11 @@ import { CategoryDTO } from '@/common/dto/categoryDTO'
 
 import type { Status } from './Status'
 
-export type UpdateExperienceDTO = Partial<Omit<Experience, 'id'>>
+export type UpdateServiceDTO = Partial<Omit<Service, 'id'>>
 
-export type CreateExperienceDTO = Omit<Experience, 'id'>
+export type CreateServiceDTO = Omit<Service, 'id'>
 
-export type Experience = {
+export type Service = {
     id: number
     name: string
     status?: Status

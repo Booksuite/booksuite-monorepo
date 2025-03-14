@@ -5,14 +5,14 @@ import { Flex, Spinner, useToast } from '@chakra-ui/react'
 import React, { type FormEvent, useEffect, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { updateExperience } from '@/common/services/experience/updateExperience'
-import { UpdateExperienceDTO } from '@/common/types/Experience'
+import { updateService } from '@/common/services/service/updateService'
+import { UpdateServiceDTO } from '@/common/types/Service'
 import type { Status } from '@/common/types/Status'
 import { getErrorMessage } from '@/common/utils'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { DashboardExperienceForm } from '@/components/templates/DashboardExperienceForm'
+import { DashboardServiceForm } from '@/components/templates/DashboardServiceForm'
 
 interface ServiceDetailPageProps {
     params: {
@@ -24,7 +24,7 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ params }) => {
     const companyId = useCurrentCompanyId()
 
     const {
-        data: experience,
+        data: Service,
         isLoading,
         error,
     } = useGetServiceById({ id: params.id, companyId })
@@ -34,19 +34,19 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ params }) => {
 
     const toast = useToast()
 
-    // Set initial status from experience data when it loads
+    // Set initial status from Service data when it loads
     useEffect(() => {
-        if (experience && 'status' in experience) {
-            setStatus((experience.status as Status) || 'Inativo')
+        if (Service && 'status' in Service) {
+            setStatus((Service.status as Status) || 'Inativo')
         }
-    }, [experience])
+    }, [Service])
 
     /**
-     * Handle form submission to save experience
+     * Handle form submission to save Service
      */
-    function saveExperience(
+    function saveService(
         e: FormEvent<HTMLFormElement>,
-        formData: UpdateExperienceDTO,
+        formData: UpdateServiceDTO,
     ) {
         e.preventDefault()
 
@@ -59,10 +59,10 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ params }) => {
         const payload = {
             ...formData,
             status: status,
-        } as UpdateExperienceDTO
+        } as UpdateServiceDTO
 
         const response = new Promise((resolve, reject) => {
-            resolve(updateExperience(params.id, payload))
+            resolve(updateService(params.id, payload))
         }).finally(() => {
             setIsSaving(false)
         })
@@ -108,9 +108,9 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ params }) => {
             ) : error ? (
                 <p>{getErrorMessage(error, 'Erro ao carregar experiência')}</p>
             ) : (
-                <DashboardExperienceForm
-                    onSubmit={saveExperience}
-                    data={experience as any} // Using 'any' as a temporary solution
+                <DashboardServiceForm
+                    onSubmit={saveService}
+                    data={Service as any} // Using 'any' as a temporary solution
                     isSaving={isSaving}
                 />
             )}

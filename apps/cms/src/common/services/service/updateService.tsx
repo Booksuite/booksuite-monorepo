@@ -1,9 +1,9 @@
-import { UpdateExperienceDTO } from '@/common/types/Experience'
+import { UpdateServiceDTO } from '@/common/types/Service'
 import axiosInstance from '../axios/axiosInstance'
 
-const updateExperience = async (
+const updateService = async (
     id: number | string,
-    payload: UpdateExperienceDTO,
+    payload: UpdateServiceDTO,
 ) => {
     try {
         const response = await axiosInstance.patch(`/experience/${id}`, payload)
@@ -19,4 +19,4 @@ const updateExperience = async (
     }
 }
 
-export { updateExperience }
+export { updateService }

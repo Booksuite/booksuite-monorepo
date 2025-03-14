@@ -1,9 +1,9 @@
-import { CreateExperienceDTO } from '@/common/types/Experience'
+import { CreateServiceDTO } from '@/common/types/Service'
 import axiosInstance from '../axios/axiosInstance'
 
-const createExperience = async (payload: CreateExperienceDTO) => {
+const createService = async (payload: CreateServiceDTO) => {
     try {
-        const response = await axiosInstance.post(`/experience`, payload)
+        const response = await axiosInstance.post(`/Service`, payload)
 
         if (response && response.data) {
             return response.data
@@ -16,4 +16,4 @@ const createExperience = async (payload: CreateExperienceDTO) => {
     }
 }
 
-export { createExperience }
+export { createService }
