@@ -11,10 +11,7 @@ import {
 } from '@chakra-ui/react'
 import React, { FormEvent, useState } from 'react'
 
-import {
-    CreateExperienceDTO,
-    UpdateExperienceDTO,
-} from '@/common/types/Experience'
+import { CreateServiceDTO, UpdateServiceDTO } from '@/common/types/Service'
 import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
@@ -26,13 +23,13 @@ import { Gallery } from '@/components/organisms/Gallery'
 import { PriceList } from '@/components/organisms/PriceList'
 import { Icons } from '@/components/svgs/icons'
 
-import { ExperienceFormProps } from './types'
+import { ServiceFormProps } from './types'
 
-export const DashboardExperienceForm: React.FC<
-    ExperienceFormProps<UpdateExperienceDTO | CreateExperienceDTO>
+export const DashboardServiceForm: React.FC<
+    ServiceFormProps<UpdateServiceDTO | CreateServiceDTO>
 > = ({ data, isSaving, onSubmit, ...props }) => {
     const [formData, setFormData] = useState<
-        UpdateExperienceDTO | CreateExperienceDTO
+        UpdateServiceDTO | CreateServiceDTO
     >({})
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {

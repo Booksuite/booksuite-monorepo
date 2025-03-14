@@ -6,12 +6,12 @@ import { type FormEvent, useState } from 'react'
 
 import { TEST_COMPANY } from '@/common/contexts/user'
 import { CategoryDTO } from '@/common/dto/categoryDTO'
-import type { CreateExperienceDTO, Experience } from '@/common/types/Experience'
+import type { CreateServiceDTO, Service } from '@/common/types/Service'
 import type { Status } from '@/common/types/Status'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { DashboardExperienceForm } from '@/components/templates/DashboardExperienceForm'
+import { DashboardServiceForm } from '@/components/templates/DashboardServiceForm'
 
 export default function CreateExperienciasPage() {
     const [isSaving, setIsSaving] = useState<boolean>(false)
@@ -20,9 +20,9 @@ export default function CreateExperienciasPage() {
 
     const toast = useToast()
 
-    function saveExperience(
+    function saveService(
         e: FormEvent<HTMLFormElement>,
-        formData: CreateExperienceDTO | Partial<Omit<Experience, 'id'>>,
+        formData: CreateServiceDTO | Partial<Omit<Service, 'id'>>,
     ) {
         e.preventDefault()
 
@@ -32,7 +32,7 @@ export default function CreateExperienciasPage() {
 
         setIsSaving(true)
 
-        const payload = { ...formData, status: status } as CreateExperienceDTO
+        const payload = { ...formData, status: status } as CreateServiceDTO
         console.log(payload)
 
         const category: CategoryDTO[] = []
@@ -87,10 +87,7 @@ export default function CreateExperienciasPage() {
                 <PageHeader.Title>Criar Experiência</PageHeader.Title>
             </PageHeader.Root>
 
-            <DashboardExperienceForm
-                onSubmit={saveExperience}
-                isSaving={isSaving}
-            />
+            <DashboardServiceForm onSubmit={saveService} isSaving={isSaving} />
         </div>
     )
 }
