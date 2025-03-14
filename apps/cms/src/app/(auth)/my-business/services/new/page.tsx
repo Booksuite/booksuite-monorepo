@@ -4,7 +4,7 @@ import { Flex, useToast } from '@chakra-ui/react'
 import { type FormEvent, useState } from 'react'
 
 import { createExperience } from '@/common/services/experience/createExperience'
-import type { CreateExperienceDTO } from '@/common/types/Experience'
+import type { CreateExperienceDTO, Experience } from '@/common/types/Experience'
 import type { Status } from '@/common/types/Status'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
@@ -19,7 +19,7 @@ export default function CreateExperienciasPage() {
 
     function saveExperience(
         e: FormEvent<HTMLFormElement>,
-        formData: CreateExperienceDTO,
+        formData: CreateExperienceDTO | Partial<Omit<Experience, 'id'>>,
     ) {
         e.preventDefault()
 
@@ -29,10 +29,7 @@ export default function CreateExperienciasPage() {
 
         setIsSaving(true)
 
-        const payload = {
-            ...formData,
-            status: status,
-        } as CreateExperienceDTO
+        const payload = { ...formData, status: status } as CreateExperienceDTO
 
         const response = new Promise((resolve, reject) => {
             resolve(createExperience(payload))

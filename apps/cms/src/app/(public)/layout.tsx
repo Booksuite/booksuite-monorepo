@@ -1,8 +1,9 @@
 import { Box, Flex } from '@chakra-ui/react'
 
 import Logo from '@/components/svgs/Logo'
+import { ReactNode } from 'react'
 
-export default function PublicLayout({ children }) {
+export default function PublicLayout(children: ReactNode) {
     return (
         <Flex
             direction="column"
