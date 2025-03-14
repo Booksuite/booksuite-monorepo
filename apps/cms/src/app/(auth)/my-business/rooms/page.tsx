@@ -1,24 +1,28 @@
 'use client'
 
 import { useSearchHousingUnitTypes } from '@booksuite/sdk'
-import { Box, Button, Link, Skeleton, Stack } from '@chakra-ui/react'
-import { useSearchParams } from 'next/navigation'
+import { Box, Skeleton, Stack } from '@chakra-ui/react'
+import { Plus } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { Card } from '@/components/atoms/Card'
+import { LinkButton } from '@/components/atoms/LinkButton'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { Icons } from '@/components/svgs/icons'
 
 import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
 
 const chipItems = [
-    { key: '1', label: 'Ativas' },
-    { key: '2', label: 'Inativas' },
-    { key: '3', label: 'Todas' },
+    { key: 'published', label: 'Publicadas' },
+    { key: 'unpublished', label: 'Não publicadas' },
 ]
 
 export default function Rooms() {
+    const { push } = useRouter()
     const searchParams = useSearchParams()
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
     const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
     const itemsPerPage = searchParams.get('itemsPerPage')
         ? Number(searchParams.get('itemsPerPage'))
@@ -29,52 +33,67 @@ export default function Rooms() {
         { companyId },
         {
             pagination: { page, itemsPerPage },
+            filter:
+                selectedFilters.length > 0
+                    ? {
+                          published: selectedFilters.includes('published'),
+                      }
+                    : undefined,
         },
     )
 
     return (
         <div className="Acomodacoes">
-            <PageHeader.Root>
-                <PageHeader.BackLink href="/my-business">
-                    Meu Negócio
-                </PageHeader.BackLink>
-
-                <PageHeader.Title>Acomodações</PageHeader.Title>
-            </PageHeader.Root>
+            <PageHeader
+                title="Acomodações"
+                backLButtonLabel="Meu Negócio"
+                backButtonHref="/my-business"
+                headerRight={
+                    <LinkButton
+                        href="/my-business/rooms/create"
+                        leftIcon={<Plus size={16} />}
+                    >
+                        Adicionar
+                    </LinkButton>
+                }
+            />
 
             <Box>
-                <ChipFilter items={chipItems} />
+                <ChipFilter
+                    items={chipItems}
+                    value={selectedFilters}
+                    onChange={setSelectedFilters}
+                />
 
                 <Stack gap={4} my={4}>
                     {isLoading
                         ? Array.from({ length: 4 }).map((_, index) => (
-                              <Box key={index}>
-                                  <Stack direction="row" gap={4}>
-                                      <Skeleton h="72px" w="72px" />
-                                      <Stack>
-                                          <Skeleton h={4} w={150} />
-                                          <Skeleton h={3} w={140} />
-                                          <Skeleton h={3} w={135} />
-                                      </Stack>
-                                  </Stack>
-                              </Box>
+                              <Card.Container key={index}>
+                                  <Card.Section>
+                                      <Skeleton
+                                          borderRadius="md"
+                                          h="72px"
+                                          w="72px"
+                                      />
+                                  </Card.Section>
+                                  <Card.Section flex={1}>
+                                      <Skeleton h={4} w={170} />
+                                      <Skeleton h={3} w={140} />
+                                      <Skeleton h={3} w={122} />
+                                      <Skeleton h={3} w={135} />
+                                  </Card.Section>
+                              </Card.Container>
                           ))
                         : housingUnitTypes?.items.map((housingUnitType) => (
                               <HousingUnitTypeCard
                                   key={housingUnitType.id}
+                                  onClick={(id) =>
+                                      push(`/my-business/rooms/${id}`)
+                                  }
                                   housingUnitType={housingUnitType}
                               />
                           ))}
                 </Stack>
-
-                <Button
-                    as={Link}
-                    href="acomodacoes/criar"
-                    className="mt-[2.5rem] w-full"
-                    leftIcon={<Icons.Plus />}
-                >
-                    Adicionar Acomodação
-                </Button>
             </Box>
         </div>
     )
