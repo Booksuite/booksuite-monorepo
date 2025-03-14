@@ -1,9 +1,9 @@
 'use client'
 
-import { Button, Flex, Link } from '@chakra-ui/react'
+import { Button, Flex } from '@chakra-ui/react'
 
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-import { List } from '@/components/organisms/List'
+//import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
@@ -35,7 +35,7 @@ export default function OpcoesDeTarifa({}: OpcoesDeTarifaProps) {
             <div>
                 <ChipFilter items={chipItems} />
 
-                <List.Root>
+                {/*<List.Root>
                     <Link href="opcoes-de-tarifas/detalhes">
                         <List.Item
                             variant="secondary"
@@ -63,7 +63,7 @@ export default function OpcoesDeTarifa({}: OpcoesDeTarifaProps) {
                             status="Ativa"
                         />
                     </Link>
-                </List.Root>
+                </List.Root>*/}
 
                 <Button className="mt-4 w-full" leftIcon={<Icons.Plus />}>
                     Adicionar Tarifa
