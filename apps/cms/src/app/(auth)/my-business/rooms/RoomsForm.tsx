@@ -82,23 +82,15 @@ export const RoomsForm: React.FC = () => {
                                             const error =
                                                 errors.housingUnits?.[index]
                                             const errorMessage =
-                                                typeof error === 'string'
-                                                    ? error
-                                                    : error?.name
+                                                typeof error !== 'string'
+                                                    ? error?.name
+                                                    : ''
 
                                             return (
                                                 <InputBox
                                                     key={index}
                                                     label="Nome da unidade"
-                                                    error={errors.name}
-                                                    formControl={{
-                                                        isInvalid:
-                                                            !!errorMessage &&
-                                                            touched
-                                                                .housingUnits?.[
-                                                                index
-                                                            ]?.name,
-                                                    }}
+                                                    error={errorMessage}
                                                     value={
                                                         values.housingUnits?.[
                                                             index
