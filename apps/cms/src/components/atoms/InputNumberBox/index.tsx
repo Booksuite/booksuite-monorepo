@@ -13,11 +13,11 @@ import {
     NumberInputStepper,
 } from '@chakra-ui/react'
 import { CircleMinus, CirclePlus } from 'lucide-react'
-import { useRef } from 'react'
+import { ChangeEvent, useRef } from 'react'
 
 export interface InputNumberBoxProps
     extends Omit<NumberInputProps, 'onChange'> {
-    onChange?: (value: number) => void
+    onChange?: (e: ChangeEvent<any>) => void
     label?: string | React.ReactNode
     error?: string
     formControl?: FormControlProps
@@ -57,11 +57,17 @@ export const InputNumberBox: React.FC<InputNumberBoxProps> = ({
             </FormLabel>
 
             <NumberInput
-                defaultValue={props.defaultValue ?? 0}
                 min={props.min ?? 0}
                 {...props}
                 onChange={(_, newValue) => {
-                    props.onChange?.(newValue)
+                    props.onChange?.({
+                        target: {
+                            value: newValue,
+                        },
+                        currentTarget: {
+                            value: newValue,
+                        },
+                    } as ChangeEvent<any>)
                 }}
                 sx={{
                     display: 'flex',
