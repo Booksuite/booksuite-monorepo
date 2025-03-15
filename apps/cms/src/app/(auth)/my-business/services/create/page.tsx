@@ -7,6 +7,7 @@ import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import type { Status } from '@/common/types/Status'
+import { getErrorMessage } from '@/common/utils'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { ServiceForm } from '../components/ServiceForm'
