@@ -1,100 +1,75 @@
 'use client'
 
-import { Flex, Spinner, useToast } from '@chakra-ui/react'
-import { type FormEvent, useState } from 'react'
+import { useToast } from '@chakra-ui/react'
 
-import { useGetData } from '@/common/hooks/useGetData'
-import { updateAcomodacao } from '@/common/services/acomodacao/updateAcomodacao'
-import type { Acomodacao, UpdateAcomodacaoDTO } from '@/common/types/Acomodacao'
-import { SwitchBox } from '@/components/atoms/SwitchBox'
-import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
+import { RoomsForm } from '@/app/(auth)/my-business/rooms/RoomsForm'
+import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { DahboardAccommodationForm } from '@/components/templates/DahboardAccommodationForm'
+import {
+    useGetHousingUnitTypeById,
+    useUpdateHousingUnitType,
+} from '@booksuite/sdk'
+import { Formik } from 'formik'
+import {
+    createFormInitialValues,
+    RoomsFormData,
+    roomsFormSchema,
+} from '../utils/config'
 
-export default function DetalhesExperienciasPage({
-    params,
-}: {
+interface UpdateRoomProps {
     params: { id: string }
-}) {
-    const { isLoading, data, error } = useGetData('property/' + params.id)
-    const property: Acomodacao | null = data?.property ?? null
+}
 
-    const [isSaving, setIsSaving] = useState<boolean>(false)
-    // const [status, setStatus] = useState<Status>(property?.status ?? "Inativo");
+export default function UpdateRoom({ params }: UpdateRoomProps) {
+    const companyId = useCurrentCompanyId()
+
+    const { data: room } = useGetHousingUnitTypeById({
+        companyId,
+        id: params.id,
+    })
+
+    const { mutateAsync: updateHousintUnitType } = useUpdateHousingUnitType()
 
     const toast = useToast()
 
-    function saveExperience(
-        e: FormEvent<HTMLFormElement>,
-        formData: UpdateAcomodacaoDTO,
-    ) {
-        e.preventDefault()
+    async function handleSubmit(formData: RoomsFormData) {
+        try {
+            await updateHousintUnitType({
+                id: params.id,
+                companyId,
+                data: formData,
+            })
 
-        if (isSaving) {
-            return
+            toast({
+                title: 'Acomodação editada com sucesso',
+                status: 'success',
+            })
+        } catch (error) {
+            toast({
+                title: 'Erro ao editar acomodação',
+                description: getErrorMessage(error),
+                status: 'error',
+            })
         }
-
-        setIsSaving(true)
-
-        const payload = {
-            ...formData,
-            // status: status,
-        } as UpdateAcomodacaoDTO
-
-        const response = new Promise((resolve, reject) => {
-            resolve(updateAcomodacao(params.id, payload))
-        }).finally(() => {
-            setIsSaving(false)
-        })
-
-        toast.promise(response, toastGenericPatchMessages)
     }
 
-    // useEffect(() => {
-    //   if (property) {
-    //     setStatus(property.status);
-    //   }
-    // }, [property]);
-
     return (
-        <div className="DetalhesAcomodacoes">
-            <PageHeader.Root>
-                <Flex
-                    alignItems="center"
-                    justifyContent="space-between"
-                    gap={2}
+        <div>
+            <PageHeader
+                title="Editar Acomodação"
+                backButtonHref="/my-business/rooms"
+                backLButtonLabel="Acomodações"
+            />
+
+            {!!room && (
+                <Formik<RoomsFormData>
+                    initialValues={createFormInitialValues(room)}
+                    validationSchema={roomsFormSchema}
+                    onSubmit={handleSubmit}
                 >
-                    <PageHeader.BackLink href="/my-business/acomodacoes">
-                        Acomodações
-                    </PageHeader.BackLink>
-
-                    {!isLoading && (
-                        <SwitchBox
-                            label="Ativa"
-                            id="status"
-                            name="status"
-                            // onChange={() => {
-                            //   status === "Ativo" ? setStatus("Inativo") : setStatus("Ativo");
-                            // }}
-                            // isChecked={status === "Ativo"}
-                            isChecked
-                        />
-                    )}
-                </Flex>
-
-                <PageHeader.Title>Detalhes da Acomodação</PageHeader.Title>
-            </PageHeader.Root>
-
-            {isLoading ? (
-                <Spinner />
-            ) : error ? (
-                <p>{error}</p>
-            ) : (
-                <DahboardAccommodationForm
-                    onSubmit={saveExperience}
-                    data={property ?? null}
-                    isSaving={isSaving}
-                />
+                    <RoomsForm />
+                </Formik>
             )}
         </div>
     )

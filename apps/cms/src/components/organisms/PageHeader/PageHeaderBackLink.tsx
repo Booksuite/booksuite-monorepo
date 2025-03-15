@@ -1,23 +1,29 @@
-import { Link, LinkProps } from '@chakra-ui/react'
+import { Box, Link, LinkProps, Text } from '@chakra-ui/react'
 import { ChevronLeft } from 'lucide-react'
+import { Route } from 'next'
 import NextLink from 'next/link'
-import { PropsWithChildren } from 'react'
 
-export const PageHeaderBackLink: React.FC<PropsWithChildren<LinkProps>> = (
+interface PageHeaderBackLinkProps extends LinkProps {
+    href?: Route
+}
+
+export const PageHeaderBackLink: React.FC<PageHeaderBackLinkProps> = (
     props,
 ) => {
     return (
         <Link
-            {...props}
             as={NextLink}
             variant="primary"
             display="flex"
             alignItems="center"
-            fontSize="0.8rem"
+            fontSize="sm"
             fontWeight="medium"
+            {...props}
         >
-            <ChevronLeft style={{ flexShrink: 0 }} />
-            {props.children}
+            <Box mb={0.5}>
+                <ChevronLeft size={18} />
+            </Box>
+            <Text>{props.children}</Text>
         </Link>
     )
 }

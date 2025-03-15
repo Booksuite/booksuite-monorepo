@@ -13,6 +13,7 @@ export const CardContainer: React.FC<CardContainerProps> = ({
         bg="#F0F4F8"
         direction="row"
         gap={3}
+        transition="background-color 0.1s ease-in-out"
         {...props}
     >
         {children}

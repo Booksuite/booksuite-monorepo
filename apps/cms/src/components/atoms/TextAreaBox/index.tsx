@@ -1,25 +1,44 @@
 'use client'
 
-import { FormControl, FormLabel, Text, Textarea } from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { TextAreaBoxProps } from './types'
+import {
+    FormControl,
+    FormControlProps,
+    FormErrorMessage,
+    FormLabel,
+    Text,
+    Textarea,
+    TextareaProps,
+} from '@chakra-ui/react'
+import React from 'react'
 
-export const TextAreaBox: React.FC<TextAreaBoxProps> = ({ ...props }) => {
-    const [charCount, setCharCount] = useState(
-        props.defaultValue?.toString().length ?? 0,
-    )
+export interface TextAreaBoxProps extends TextareaProps {
+    formControl?: FormControlProps
+    label?: string
+    error?: string
+}
+
+export const TextAreaBox: React.FC<TextAreaBoxProps> = ({
+    label,
+    error,
+    formControl,
+    ...props
+}) => {
+    const charCount = props.value?.toString().length ?? 0
 
     function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-        setCharCount(e.target.value.length)
-
         if (props.onChange) {
             props.onChange(e)
         }
     }
 
     return (
-        <FormControl position="relative" width="100%" isolation="isolate">
-            <FormLabel>{props.label}</FormLabel>
+        <FormControl
+            position="relative"
+            width="100%"
+            isolation="isolate"
+            isInvalid={!!error}
+            {...formControl}
+        >
             <Textarea
                 placeholder=" "
                 {...props}
@@ -34,6 +53,8 @@ export const TextAreaBox: React.FC<TextAreaBoxProps> = ({ ...props }) => {
                     boxShadow: '0 0 0 1px #3182ce',
                 }}
             />
+            <FormLabel>{label}</FormLabel>
+            <FormErrorMessage>{error}</FormErrorMessage>
 
             {props.maxLength && (
                 <Text
