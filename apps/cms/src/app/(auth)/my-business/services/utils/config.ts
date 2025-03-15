@@ -1,0 +1,75 @@
+import { ServiceCreateInput, ServiceFull } from '@booksuite/sdk'
+import * as yup from 'yup'
+
+export type ServiceFormData = ServiceCreateInput
+
+export const createFormInitialValues = (
+    data?: ServiceFull,
+): ServiceFormData => ({
+    name: data?.name || '',
+    published: false,
+    adults: 0,
+    billType: data?.billType || '',
+    category: [],
+    medias: [],
+    description: data?.name || '',
+    minDaily: data?.minDaily || 1,
+    minNotice: data?.minNotice || 1,
+    included: data?.included || '',
+    notes: data?.notes || '',
+    onlineSale: data?.onlineSale || false,
+    panelSale: data?.panelSale || false,
+    seasonalSale: data?.seasonalSale || false,
+    price: data?.price || 0,
+    seasonEnd: data?.seasonEnd || '',
+    seasonStart: data?.seasonStart || '',
+    videoUrl: data?.videoUrl || '',
+})
+
+export const serviceFormSchema = yup.object({
+    name: yup.string().required('Nome é obrigatório'),
+    published: yup.boolean().required('Status é obrigatório'),
+    adults: yup.number().min(0),
+    billType: yup.string().required('Tipo de cobrança é obrigatório'),
+    category: yup
+        .array()
+        .of(
+            yup.object({
+                id: yup.string().required('Categoria é Obrigatório'),
+                name: yup.string().required('Nome da categoria é obrigatório'),
+            }),
+        )
+        .optional(),
+    medias: yup
+        .array()
+        .of(
+            yup.object({
+                mediaId: yup.string().required('Mídia é obrigatório'),
+                isFeatured: yup.boolean().optional(),
+                order: yup.number().optional(),
+            }),
+        )
+        .optional(),
+    description: yup.string().required('Descrição é obrigatória'),
+    minDaily: yup
+        .number()
+        .min(1, 'Mínimo de diárias deve ser pelo menos 1')
+        .required('Mínimo de diárias é obrigatório'),
+    minNotice: yup
+        .number()
+        .min(1, 'Mínimo de aviso deve ser pelo menos 1')
+        .required('Mínimo de aviso é obrigatório'),
+    included: yup.string().optional(),
+    notes: yup.string().optional(),
+    onlineSale: yup.boolean().required('Status da Venda online é obrigatória'),
+    panelSale: yup
+        .boolean()
+        .required('Status da Venda no painel é obrigatória'),
+    seasonalSale: yup
+        .boolean()
+        .required('Status da Venda sazonal é obrigatória'),
+    price: yup.number().min(0).required('Preço é obrigatório'),
+    seasonStart: yup.string().optional(),
+    seasonEnd: yup.string().optional(),
+    videoUrl: yup.string().optional(),
+})
