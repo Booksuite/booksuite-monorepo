@@ -7,7 +7,6 @@ import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import type { Status } from '@/common/types/Status'
-import { getErrorMessage } from '@/common/utils'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { ServiceForm } from '../components/ServiceForm'
@@ -19,6 +18,7 @@ import {
 
 export default function CreateServicePage() {
     const [status, setStatus] = useState<Status>('Ativo')
+
     const companyId = useCurrentCompanyId()
 
     const { mutateAsync: createService } = useCreateService()
@@ -32,18 +32,7 @@ export default function CreateServicePage() {
                 companyId,
                 data: formData,
             })
-
-            toast({
-                title: 'Experiência Criada com sucesso',
-                status: 'success',
-            })
-        } catch (error) {
-            toast({
-                title: 'Erro ao criar experiência',
-                description: getErrorMessage(error),
-                status: 'error',
-            })
-        }
+        } catch (error) {}
     }
 
     return (
