@@ -8,7 +8,7 @@ import {
     Input,
     InputProps,
 } from '@chakra-ui/react'
-import CurrencyInput from 'react-currency-input-field'
+import { CurrencyInput } from 'react-currency-mask'
 
 export interface InputBoxProps extends InputProps {
     formControl?: FormControlProps
@@ -25,13 +25,12 @@ export const InputBox: React.FC<InputBoxProps> = ({
     return (
         <FormControl isInvalid={!!error} {...props.formControl}>
             {props.type === 'currency' ? (
-                <Input
-                    as={CurrencyInput}
-                    prefix={props.prefix ?? 'R$ '}
-                    placeholder=" "
-                    decimalsLimit={2}
-                    decimalScale={2}
-                    {...props}
+                <CurrencyInput
+                    value={Number(props.value)}
+                    InputElement={<Input placeholder=" " />}
+                    onChangeValue={(e) => {
+                        props.onChange?.(e)
+                    }}
                 />
             ) : (
                 <Input placeholder=" " {...props} />

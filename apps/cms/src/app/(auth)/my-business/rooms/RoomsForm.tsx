@@ -1,7 +1,7 @@
 'use client'
 
-import { Button, Flex, Stack, Text } from '@chakra-ui/react'
-import { Form, useFormikContext } from 'formik'
+import { Button, Flex, Stack, Text, VStack } from '@chakra-ui/react'
+import { FieldArray, Form, useFormikContext } from 'formik'
 
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
@@ -11,7 +11,14 @@ import { Gallery } from '@/components/organisms/Gallery'
 import { RoomsFormData } from './utils/config'
 
 export const RoomsForm: React.FC = () => {
-    const { getFieldProps, touched, errors } = useFormikContext<RoomsFormData>()
+    const {
+        getFieldProps,
+        touched,
+        errors,
+        values,
+        handleChange,
+        setFieldValue,
+    } = useFormikContext<RoomsFormData>()
 
     return (
         <Form>
@@ -35,9 +42,85 @@ export const RoomsForm: React.FC = () => {
                         }}
                         {...getFieldProps('description')}
                     />
-
-                    <InputNumberBox label="Unidades disponíveis" />
                 </Flex>
+
+                <section>
+                    <Stack gap={2}>
+                        <FieldArray name="housingUnits">
+                            {({ remove, push }) => (
+                                <>
+                                    <InputNumberBox
+                                        label="Unidades disponíveis"
+                                        value={values.housingUnits.length}
+                                        onChange={({
+                                            target: { value: newValue },
+                                        }) => {
+                                            if (
+                                                newValue >
+                                                values.housingUnits.length
+                                            ) {
+                                                push({
+                                                    name: (
+                                                        values.housingUnits
+                                                            .length + 1
+                                                    ).toString(),
+                                                })
+                                            } else if (
+                                                newValue <
+                                                values.housingUnits.length
+                                            ) {
+                                                remove(
+                                                    values.housingUnits.length -
+                                                        1,
+                                                )
+                                            }
+                                        }}
+                                    />
+
+                                    <VStack gap={2}>
+                                        {values.housingUnits.map((_, index) => {
+                                            const error =
+                                                errors.housingUnits?.[index]
+                                            const errorMessage =
+                                                typeof error === 'string'
+                                                    ? error
+                                                    : error?.name
+
+                                            return (
+                                                <InputBox
+                                                    key={index}
+                                                    label="Nome da unidade"
+                                                    error={errors.name}
+                                                    formControl={{
+                                                        isInvalid:
+                                                            !!errorMessage &&
+                                                            touched
+                                                                .housingUnits?.[
+                                                                index
+                                                            ]?.name,
+                                                    }}
+                                                    value={
+                                                        values.housingUnits?.[
+                                                            index
+                                                        ]?.name
+                                                    }
+                                                    onChange={({
+                                                        target: { value },
+                                                    }) => {
+                                                        setFieldValue(
+                                                            `housingUnits.${index}.name`,
+                                                            value,
+                                                        )
+                                                    }}
+                                                />
+                                            )
+                                        })}
+                                    </VStack>
+                                </>
+                            )}
+                        </FieldArray>
+                    </Stack>
+                </section>
 
                 <section>
                     <Text as="h4">Hóspedes</Text>
@@ -46,30 +129,36 @@ export const RoomsForm: React.FC = () => {
                         <InputNumberBox
                             label="Máximo de Hóspedes"
                             error={errors.maxGuests}
+                            min={1}
                             formControl={{
                                 isInvalid:
                                     !!errors.maxGuests && touched.maxGuests,
                             }}
                             {...getFieldProps('maxGuests')}
+                            onChange={handleChange('maxGuests')}
                         />
                         <InputNumberBox
                             label="Mínimo de Hóspedes"
+                            min={1}
                             error={errors.minGuests}
                             formControl={{
                                 isInvalid:
                                     !!errors.minGuests && touched.minGuests,
                             }}
                             {...getFieldProps('minGuests')}
+                            onChange={handleChange('minGuests')}
                         />
 
                         <InputNumberBox
                             label="Máximo de Adultos"
                             error={errors.maxAdults}
+                            min={1}
                             formControl={{
                                 isInvalid:
                                     !!errors.maxAdults && touched.maxAdults,
                             }}
                             {...getFieldProps('maxAdults')}
+                            onChange={handleChange('maxAdults')}
                         />
                         <InputNumberBox
                             label="Máximo de Crianças"
@@ -79,6 +168,7 @@ export const RoomsForm: React.FC = () => {
                                     !!errors.maxChildren && touched.maxChildren,
                             }}
                             {...getFieldProps('maxChildren')}
+                            onChange={handleChange('maxChildren')}
                         />
                     </Stack>
                 </section>
@@ -129,6 +219,9 @@ export const RoomsForm: React.FC = () => {
                                     touched.chargeExtraAdultHigherThan,
                             }}
                             {...getFieldProps('chargeExtraAdultHigherThan')}
+                            onChange={handleChange(
+                                'chargeExtraAdultHigherThan',
+                            )}
                         />
                     </Stack>
                 </section>
