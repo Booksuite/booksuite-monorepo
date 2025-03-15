@@ -1,18 +1,6 @@
-export const BannerResponseDTOPosition = {
-  HOME_TOP: 'HOME_TOP',
-  FEATURED_CONTENT: 'FEATURED_CONTENT',
-} as const
+export type BannerResponseDTOPosition = 'HOME_TOP' | 'FEATURED_CONTENT'
 
-type BannerResponseDTOPosition = (typeof BannerResponseDTOPosition)[keyof typeof BannerResponseDTOPosition]
-
-export const BannerResponseDTOAction = {
-  NONE: 'NONE',
-  SMART_SEARCH: 'SMART_SEARCH',
-  CUSTOM: 'CUSTOM',
-  SEND_TO_WHATSAPP: 'SEND_TO_WHATSAPP',
-} as const
-
-type BannerResponseDTOAction = (typeof BannerResponseDTOAction)[keyof typeof BannerResponseDTOAction]
+export type BannerResponseDTOAction = 'NONE' | 'SMART_SEARCH' | 'CUSTOM' | 'SEND_TO_WHATSAPP'
 
 export type Banner = {
   /**

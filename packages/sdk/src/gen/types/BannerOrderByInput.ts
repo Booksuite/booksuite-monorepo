@@ -1,17 +1,6 @@
-export const BannerOrderByDTOOrderBy = {
-  position: 'position',
-  order: 'order',
-  createdAt: 'createdAt',
-} as const
+export type BannerOrderByDTOOrderBy = 'position' | 'order' | 'createdAt'
 
-type BannerOrderByDTOOrderBy = (typeof BannerOrderByDTOOrderBy)[keyof typeof BannerOrderByDTOOrderBy]
-
-export const BannerOrderByDTODirection = {
-  asc: 'asc',
-  desc: 'desc',
-} as const
-
-type BannerOrderByDTODirection = (typeof BannerOrderByDTODirection)[keyof typeof BannerOrderByDTODirection]
+export type BannerOrderByDTODirection = 'asc' | 'desc'
 
 export type BannerOrderByInput = {
   /**

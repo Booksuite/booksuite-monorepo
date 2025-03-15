@@ -1,20 +1,8 @@
 import type { BannerMedia } from './BannerMedia.ts'
 
-export const BannerResponseFullDTOPosition = {
-  HOME_TOP: 'HOME_TOP',
-  FEATURED_CONTENT: 'FEATURED_CONTENT',
-} as const
+export type BannerResponseFullDTOPosition = 'HOME_TOP' | 'FEATURED_CONTENT'
 
-type BannerResponseFullDTOPosition = (typeof BannerResponseFullDTOPosition)[keyof typeof BannerResponseFullDTOPosition]
-
-export const BannerResponseFullDTOAction = {
-  NONE: 'NONE',
-  SMART_SEARCH: 'SMART_SEARCH',
-  CUSTOM: 'CUSTOM',
-  SEND_TO_WHATSAPP: 'SEND_TO_WHATSAPP',
-} as const
-
-type BannerResponseFullDTOAction = (typeof BannerResponseFullDTOAction)[keyof typeof BannerResponseFullDTOAction]
+export type BannerResponseFullDTOAction = 'NONE' | 'SMART_SEARCH' | 'CUSTOM' | 'SEND_TO_WHATSAPP'
 
 export type BannerFull = {
   /**

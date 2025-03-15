@@ -9,10 +9,18 @@ export type UploadMediaPathParams = {
 
 export type UploadMedia200 = Media
 
+export type UploadMediaMutationRequest = {
+  /**
+   * @type string | undefined, binary
+   */
+  file?: Blob
+}
+
 export type UploadMediaMutationResponse = UploadMedia200
 
 export type UploadMediaMutation = {
   Response: UploadMedia200
+  Request: UploadMediaMutationRequest
   PathParams: UploadMediaPathParams
   Errors: any
 }

@@ -1,22 +1,6 @@
-export const ReservationOrderByDTOOrderBy = {
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  status: 'status',
-  startDate: 'startDate',
-  endDate: 'endDate',
-  totalDays: 'totalDays',
-  adults: 'adults',
-  children: 'children',
-} as const
+export type ReservationOrderByDTOOrderBy = 'createdAt' | 'updatedAt' | 'status' | 'startDate' | 'endDate' | 'totalDays' | 'adults' | 'children'
 
-type ReservationOrderByDTOOrderBy = (typeof ReservationOrderByDTOOrderBy)[keyof typeof ReservationOrderByDTOOrderBy]
-
-export const ReservationOrderByDTODirection = {
-  asc: 'asc',
-  desc: 'desc',
-} as const
-
-type ReservationOrderByDTODirection = (typeof ReservationOrderByDTODirection)[keyof typeof ReservationOrderByDTODirection]
+export type ReservationOrderByDTODirection = 'asc' | 'desc'
 
 export type ReservationOrderByInput = {
   /**

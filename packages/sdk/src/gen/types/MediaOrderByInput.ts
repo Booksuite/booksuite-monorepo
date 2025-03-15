@@ -1,16 +1,6 @@
-export const MediaOrderByDTOOrderBy = {
-  url: 'url',
-  createdAt: 'createdAt',
-} as const
+export type MediaOrderByDTOOrderBy = 'url' | 'createdAt'
 
-type MediaOrderByDTOOrderBy = (typeof MediaOrderByDTOOrderBy)[keyof typeof MediaOrderByDTOOrderBy]
-
-export const MediaOrderByDTODirection = {
-  asc: 'asc',
-  desc: 'desc',
-} as const
-
-type MediaOrderByDTODirection = (typeof MediaOrderByDTODirection)[keyof typeof MediaOrderByDTODirection]
+export type MediaOrderByDTODirection = 'asc' | 'desc'
 
 export type MediaOrderByInput = {
   /**

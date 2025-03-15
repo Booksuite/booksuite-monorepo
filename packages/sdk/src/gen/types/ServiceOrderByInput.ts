@@ -1,17 +1,6 @@
-export const ServiceOrderByDTOOrderBy = {
-  name: 'name',
-  included: 'included',
-  createdAt: 'createdAt',
-} as const
+export type ServiceOrderByDTOOrderBy = 'name' | 'included' | 'createdAt'
 
-type ServiceOrderByDTOOrderBy = (typeof ServiceOrderByDTOOrderBy)[keyof typeof ServiceOrderByDTOOrderBy]
-
-export const ServiceOrderByDTODirection = {
-  asc: 'asc',
-  desc: 'desc',
-} as const
-
-type ServiceOrderByDTODirection = (typeof ServiceOrderByDTODirection)[keyof typeof ServiceOrderByDTODirection]
+export type ServiceOrderByDTODirection = 'asc' | 'desc'
 
 export type ServiceOrderByInput = {
   /**

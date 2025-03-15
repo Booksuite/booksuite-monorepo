@@ -2,32 +2,18 @@ import type { HousingUnit } from './HousingUnit.ts'
 import type { ReservationService } from './ReservationService.ts'
 import type { User } from './User.ts'
 
-export const ReservationResponseFullDTOStatus = {
-  WAITING_PAYMENT: 'WAITING_PAYMENT',
-  CONFIRMED: 'CONFIRMED',
-  CHECKED_IN: 'CHECKED_IN',
-  CHECKED_OUT: 'CHECKED_OUT',
-  ABANDONED: 'ABANDONED',
-  CANCELLED: 'CANCELLED',
-  PAYMENT_FAILED: 'PAYMENT_FAILED',
-  OVERBOOKED: 'OVERBOOKED',
-  WAITING_LIST: 'WAITING_LIST',
-} as const
+export type ReservationResponseFullDTOStatus =
+  | 'WAITING_PAYMENT'
+  | 'CONFIRMED'
+  | 'CHECKED_IN'
+  | 'CHECKED_OUT'
+  | 'ABANDONED'
+  | 'CANCELLED'
+  | 'PAYMENT_FAILED'
+  | 'OVERBOOKED'
+  | 'WAITING_LIST'
 
-type ReservationResponseFullDTOStatus = (typeof ReservationResponseFullDTOStatus)[keyof typeof ReservationResponseFullDTOStatus]
-
-export const ReservationResponseFullDTOSaleChannel = {
-  RECEPTION: 'RECEPTION',
-  PHONE: 'PHONE',
-  WHATSAPP: 'WHATSAPP',
-  INSTAGRAM: 'INSTAGRAM',
-  TIKTOK: 'TIKTOK',
-  EMAIL: 'EMAIL',
-  BOOKSUITE: 'BOOKSUITE',
-  OTHER: 'OTHER',
-} as const
-
-type ReservationResponseFullDTOSaleChannel = (typeof ReservationResponseFullDTOSaleChannel)[keyof typeof ReservationResponseFullDTOSaleChannel]
+export type ReservationResponseFullDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAPP' | 'INSTAGRAM' | 'TIKTOK' | 'EMAIL' | 'BOOKSUITE' | 'OTHER'
 
 export type ReservationFull = {
   /**

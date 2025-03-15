@@ -1,16 +1,6 @@
-export const FacilityOrderByDTOOrderBy = {
-  name: 'name',
-  createdAt: 'createdAt',
-} as const
+export type FacilityOrderByDTOOrderBy = 'name' | 'createdAt'
 
-type FacilityOrderByDTOOrderBy = (typeof FacilityOrderByDTOOrderBy)[keyof typeof FacilityOrderByDTOOrderBy]
-
-export const FacilityOrderByDTODirection = {
-  asc: 'asc',
-  desc: 'desc',
-} as const
-
-type FacilityOrderByDTODirection = (typeof FacilityOrderByDTODirection)[keyof typeof FacilityOrderByDTODirection]
+export type FacilityOrderByDTODirection = 'asc' | 'desc'
 
 export type FacilityOrderByInput = {
   /**
