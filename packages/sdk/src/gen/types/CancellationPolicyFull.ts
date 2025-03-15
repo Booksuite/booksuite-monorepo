@@ -1,13 +1,6 @@
 import type { PenaltyRange } from './PenaltyRange.ts'
 
-export const CancellationPolicyResponseFullDTODefaultPenaltyBy = {
-  RESERVATION_PERCENTAGE: 'RESERVATION_PERCENTAGE',
-  FULL_DAILIES_PERCENTAGE: 'FULL_DAILIES_PERCENTAGE',
-  FIRST_NIGHT_AMOUNT: 'FIRST_NIGHT_AMOUNT',
-} as const
-
-type CancellationPolicyResponseFullDTODefaultPenaltyBy =
-  (typeof CancellationPolicyResponseFullDTODefaultPenaltyBy)[keyof typeof CancellationPolicyResponseFullDTODefaultPenaltyBy]
+export type CancellationPolicyResponseFullDTODefaultPenaltyBy = 'RESERVATION_PERCENTAGE' | 'FULL_DAILIES_PERCENTAGE' | 'FIRST_NIGHT_AMOUNT'
 
 export type CancellationPolicyFull = {
   /**

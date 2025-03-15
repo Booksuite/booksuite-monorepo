@@ -26,7 +26,7 @@ export default defineConfig(async () => {
                 group: { type: 'tag', name: ({ group }) => `${group}Schema` },
             }),
             pluginTs({
-                enumType: 'asPascalConst',
+                enumType: 'literal',
                 transformers: {
                     name(name) {
                         if (name.endsWith('Enum'))

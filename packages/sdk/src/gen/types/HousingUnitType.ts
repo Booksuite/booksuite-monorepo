@@ -16,6 +16,10 @@ export type HousingUnitType = {
    */
   shortDescription: string | null
   /**
+   * @type boolean
+   */
+  published: boolean
+  /**
    * @type string
    */
   description: string | null

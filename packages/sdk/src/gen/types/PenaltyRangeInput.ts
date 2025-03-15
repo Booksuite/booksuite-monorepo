@@ -1,10 +1,4 @@
-export const PenaltyRangeDTOPenaltyBy = {
-  RESERVATION_PERCENTAGE: 'RESERVATION_PERCENTAGE',
-  FULL_DAILIES_PERCENTAGE: 'FULL_DAILIES_PERCENTAGE',
-  FIRST_NIGHT_AMOUNT: 'FIRST_NIGHT_AMOUNT',
-} as const
-
-type PenaltyRangeDTOPenaltyBy = (typeof PenaltyRangeDTOPenaltyBy)[keyof typeof PenaltyRangeDTOPenaltyBy]
+export type PenaltyRangeDTOPenaltyBy = 'RESERVATION_PERCENTAGE' | 'FULL_DAILIES_PERCENTAGE' | 'FIRST_NIGHT_AMOUNT'
 
 export type PenaltyRangeInput = {
   /**

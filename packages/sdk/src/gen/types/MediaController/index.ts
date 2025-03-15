@@ -8,5 +8,5 @@ export type {
   SearchMediaMutationResponse,
   SearchMediaMutation,
 } from './SearchMedia.ts'
-export type { UploadMediaPathParams, UploadMedia200, UploadMediaMutationResponse, UploadMediaMutation } from './UploadMedia.ts'
+export type { UploadMediaPathParams, UploadMedia200, UploadMediaMutationRequest, UploadMediaMutationResponse, UploadMediaMutation } from './UploadMedia.ts'
 export type { UpsertMediaPathParams, UpsertMedia200, UpsertMediaMutationRequest, UpsertMediaMutationResponse, UpsertMediaMutation } from './UpsertMedia.ts'

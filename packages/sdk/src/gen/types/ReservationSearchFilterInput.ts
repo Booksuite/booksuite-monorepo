@@ -1,31 +1,17 @@
 import type { DateRangeInput } from './DateRangeInput.ts'
 
-export const ReservationSearchFilterDTOSaleChannel = {
-  RECEPTION: 'RECEPTION',
-  PHONE: 'PHONE',
-  WHATSAPP: 'WHATSAPP',
-  INSTAGRAM: 'INSTAGRAM',
-  TIKTOK: 'TIKTOK',
-  EMAIL: 'EMAIL',
-  BOOKSUITE: 'BOOKSUITE',
-  OTHER: 'OTHER',
-} as const
+export type ReservationSearchFilterDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAPP' | 'INSTAGRAM' | 'TIKTOK' | 'EMAIL' | 'BOOKSUITE' | 'OTHER'
 
-type ReservationSearchFilterDTOSaleChannel = (typeof ReservationSearchFilterDTOSaleChannel)[keyof typeof ReservationSearchFilterDTOSaleChannel]
-
-export const ReservationSearchFilterDTOStatus = {
-  WAITING_PAYMENT: 'WAITING_PAYMENT',
-  CONFIRMED: 'CONFIRMED',
-  CHECKED_IN: 'CHECKED_IN',
-  CHECKED_OUT: 'CHECKED_OUT',
-  ABANDONED: 'ABANDONED',
-  CANCELLED: 'CANCELLED',
-  PAYMENT_FAILED: 'PAYMENT_FAILED',
-  OVERBOOKED: 'OVERBOOKED',
-  WAITING_LIST: 'WAITING_LIST',
-} as const
-
-type ReservationSearchFilterDTOStatus = (typeof ReservationSearchFilterDTOStatus)[keyof typeof ReservationSearchFilterDTOStatus]
+export type ReservationSearchFilterDTOStatus =
+  | 'WAITING_PAYMENT'
+  | 'CONFIRMED'
+  | 'CHECKED_IN'
+  | 'CHECKED_OUT'
+  | 'ABANDONED'
+  | 'CANCELLED'
+  | 'PAYMENT_FAILED'
+  | 'OVERBOOKED'
+  | 'WAITING_LIST'
 
 export type ReservationSearchFilterInput = {
   /**
