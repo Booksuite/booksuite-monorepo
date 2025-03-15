@@ -5,7 +5,9 @@ import { Flex, useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
 import { useState } from 'react'
 
+import { useCurrentCompanyId } from '@/common/contexts/user'
 import type { Status } from '@/common/types/Status'
+import { getErrorMessage } from '@/common/utils'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { DashboardExperienceForm } from '@/components/templates/DashboardExperienceForm'
@@ -18,11 +20,31 @@ import {
 export default function CreateExperienciasPage() {
     const [isSaving, setIsSaving] = useState<boolean>(false)
     const [status, setStatus] = useState<Status>('Ativo')
-    const createService = useCreateService()
+    const companyId = useCurrentCompanyId()
+
+    const {mutateAsync: createService} = useCreateService()
 
     const toast = useToast()
 
-    function handleSubmit(formData: ServiceFormData) {}
+    async function handleSubmit(formData: ServiceFormData) {
+        try{
+            await createService({
+                companyId,
+                data: formData
+            })
+
+            toast({
+                title: 'Experiência Criada com sucesso',
+                status: 'success'
+            })
+        }catch(error){
+            toast({
+                title: 'Erro ao criar experiência',
+                description: getErrorMessage(error),
+                status: 'error',
+            })
+        }
+    }
 
     return (
         <div className="CreateExperiencias">

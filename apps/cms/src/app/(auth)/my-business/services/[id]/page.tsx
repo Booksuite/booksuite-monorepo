@@ -1,57 +1,58 @@
 'use client'
 
-import { useGetServiceById } from '@booksuite/sdk'
+import { useGetServiceById, useUpdateService } from '@booksuite/sdk'
 import { Flex, Spinner, useToast } from '@chakra-ui/react'
+import { Formik } from 'formik'
 import { type FormEvent, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { updateExtra } from '@/common/services/extra/updateExtra'
 import { UpdateExtraDTO } from '@/common/types/Extra'
+import { getErrorMessage } from '@/common/utils'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
+import { DashboardExperienceForm } from '@/components/templates/DashboardExperienceForm'
 import { DashboardExtraForm } from '@/components/templates/DashboardExtraForm'
+import { createFormInitialValues, ServiceFormData, serviceFormSchema } from '../utils/config'
 
-export default function ExtraDetailPage({
+export default function UpdateService({
     params,
 }: {
     params: { id: string }
 }) {
     const companyId = useCurrentCompanyId()
-    const {
-        data: extra,
-        isLoading,
-        error,
-    } = useGetServiceById({ id: params.id, companyId })
 
-    const [isSaving, setIsSaving] = useState<boolean>(false)
+    const {data: service} = useGetServiceById({
+        companyId,
+        id: params.id
+    })
+
+    const {mutateAsync: updateService} = useUpdateService()
 
     const toast = useToast()
 
-    function saveExtra(
-        e: FormEvent<HTMLFormElement>,
-        formData: UpdateExtraDTO,
+    async function handleSubmit(
+        formData: ServiceFormData
     ) {
-        e.preventDefault()
-
-        if (isSaving) {
-            return
-        }
-
-        setIsSaving(true)
-
-        const payload = {
-            ...formData,
-            // status: status,
-        } as UpdateExtraDTO
-
-        const response = new Promise((resolve, reject) => {
-            resolve(updateExtra(params.id, payload))
-        }).finally(() => {
-            setIsSaving(false)
-        })
-
-        toast.promise(response, toastGenericPatchMessages)
+    try{
+        await updateService({
+                    companyId,
+                    data: formData,
+                    id: params.id
+                })
+    
+                toast({
+                    title: 'Experiência modificada com sucesso',
+                    status: 'success'
+                })
+            }catch(error){
+                toast({
+                    title: 'Erro ao modificar experiência',
+                    description: getErrorMessage(error),
+                    status: 'error',
+                })
+            }
     }
 
     return (
@@ -77,16 +78,14 @@ export default function ExtraDetailPage({
                 <PageHeader.Title>Detalhes do Extra</PageHeader.Title>
             </PageHeader.Root>
 
-            {isLoading ? (
-                <Spinner />
-            ) : error ? (
-                <p>{error}</p>
-            ) : (
-                <DashboardExtraForm
-                    onSubmit={saveExtra}
-                    data={extra}
-                    isSaving={isSaving}
-                />
+            {!!service && 
+            ( <Formik<ServiceFormData>
+                            initialValues={createFormInitialValues(service)}
+                            validationSchema={serviceFormSchema}
+                            onSubmit={handleSubmit}
+                        >
+                        <DashboardExperienceForm />
+                        </Formik>
             )}
         </div>
     )
