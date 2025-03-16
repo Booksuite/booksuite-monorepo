@@ -10,7 +10,7 @@ import type { Status } from '@/common/types/Status'
 import { getErrorMessage } from '@/common/utils'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { DashboardExperienceForm } from '@/components/templates/DashboardExperienceForm'
+import { ServiceForm } from '../serviceForm'
 import {
     createFormInitialValues,
     ServiceFormData,
@@ -22,22 +22,22 @@ export default function CreateExperienciasPage() {
     const [status, setStatus] = useState<Status>('Ativo')
     const companyId = useCurrentCompanyId()
 
-    const {mutateAsync: createService} = useCreateService()
+    const { mutateAsync: createService } = useCreateService()
 
     const toast = useToast()
 
     async function handleSubmit(formData: ServiceFormData) {
-        try{
+        try {
             await createService({
                 companyId,
-                data: formData
+                data: formData,
             })
 
             toast({
                 title: 'Experiência Criada com sucesso',
-                status: 'success'
+                status: 'success',
             })
-        }catch(error){
+        } catch (error) {
             toast({
                 title: 'Erro ao criar experiência',
                 description: getErrorMessage(error),
@@ -80,7 +80,7 @@ export default function CreateExperienciasPage() {
                 validationSchema={serviceFormSchema}
                 onSubmit={handleSubmit}
             >
-                <DashboardExperienceForm />
+                <ServiceForm />
             </Formik>
         </div>
     )
