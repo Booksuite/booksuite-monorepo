@@ -6,8 +6,8 @@ import { FieldArray, Form, useFormikContext } from 'formik'
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
-
 import { Gallery } from '@/components/organisms/Gallery'
+
 import { RoomsFormData } from './utils/config'
 
 export const RoomsForm: React.FC = () => {
