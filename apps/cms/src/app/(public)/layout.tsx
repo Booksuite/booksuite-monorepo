@@ -1,5 +1,6 @@
-import Logo from '@/components/svgs/Logo'
 import { Box, Flex } from '@chakra-ui/react'
+
+import { Logo } from '@/components/atoms/Logo'
 
 export default function PublicLayout({ children }) {
     return (
@@ -14,7 +15,7 @@ export default function PublicLayout({ children }) {
         >
             <Box maxW="350px" w="full">
                 <Box display="flex" justifyContent="center">
-                    <Logo />
+                    <Logo.FullLogo />
                 </Box>
 
                 <Box mt={10}>{children}</Box>

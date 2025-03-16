@@ -1,6 +1,7 @@
-import { Logo } from '@/components/atoms/Logo'
 import { Box, Button, Heading } from '@chakra-ui/react'
 import Link from 'next/link'
+
+import { Logo } from '@/components/atoms/Logo'
 
 export default function Custom404() {
     return (
@@ -16,16 +17,18 @@ export default function Custom404() {
             px={4}
         >
             <Box maxWidth="350px">
-                <Logo
+                <div
                     style={{
-                        marginInline: 'auto',
-                        marginLeft: '65px',
+                        display: 'flex',
+                        justifyContent: 'center',
                     }}
-                />
-                <Heading as="h1" size="md" color={'white'}>
+                >
+                    <Logo.FullLogo />
+                </div>
+                <Heading as="h1" size="md" color={'white'} mt={4}>
                     Página não encontrada
                 </Heading>
-                <Button as={Link} href="/" mt={6}>
+                <Button as={Link} href="/" mt={4}>
                     Voltar
                 </Button>
             </Box>
