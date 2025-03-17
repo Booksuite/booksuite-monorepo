@@ -2,7 +2,7 @@
 
 import { useToast } from '@chakra-ui/react'
 
-import { RoomsForm } from '@/app/(auth)/my-business/rooms/RoomsForm'
+import { RoomsForm } from '@/app/(auth)/my-business/rooms/components/RoomsForm'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
 import { PageHeader } from '@/components/organisms/PageHeader'
