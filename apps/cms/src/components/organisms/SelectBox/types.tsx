@@ -1,0 +1,27 @@
+import { ModalProps as ChakraModalProps } from '@chakra-ui/react'
+
+export interface TabFilterItem {
+    label: string
+    value: string
+}
+
+export interface SelectBoxModalProps<T extends { name: string; id: string }>
+    extends Omit<ChakraModalProps, 'children'> {
+    onSelect: (items: T[]) => void
+    initialSelectedItems?: T[]
+    items: T[]
+    tabFilter?: TabFilterItem[]
+    filterGetter?: (item: T) => any
+    querySearchGetter?: (item: T) => string
+    keyGetter?: (item: T) => string
+    renderItemContent?: (item: T, selected: boolean) => React.ReactNode
+    title?: string
+    description?: string
+    selectButtonText?: string
+    cancelButtonText?: string
+}
+
+export interface SelectBoxProps<T extends { name: string; id: string }>
+    extends Omit<SelectBoxModalProps<T>, 'isOpen' | 'onClose'> {
+    openModalButtonText?: string
+}
