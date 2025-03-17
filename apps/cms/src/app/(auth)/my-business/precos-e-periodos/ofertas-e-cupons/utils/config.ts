@@ -1,21 +1,22 @@
 import * as yup from 'yup'
 
-export type offerCouponsData = {
+type offerCouponsData = {
+    id: string
     name: string
     description?: string
     startDate: string
-    endData: string
-    minDaily: string
-    maxDaily: string
-    minNotice?: string
-    maxNotice?: string
+    endDate: string
+    minDaily: number
+    maxDaily: number
+    minNotice?: number
+    maxNotice?: number
     validCancelledReservation: boolean
     validPackagesAndHolidays: boolean
-    housingUnitTypes: []
+    housingUnitTypes: string[]
     pix: boolean
     onHotel: boolean
     creditCard: boolean
-    nights: []
+    nights: string[]
     validServiceAndPackages: boolean
     priceVariationsType: string
     priceVariationValue: number
@@ -23,17 +24,21 @@ export type offerCouponsData = {
     showDiscountTag: boolean
     offerCupom: boolean
 }
+
+export type OfferCouponsFormData = offerCouponsData
+
 export const createFormInitialValues = (
     data?: offerCouponsData,
 ): offerCouponsData => ({
+    id: data?.id || '',
     name: data?.name || '',
     description: data?.description || '',
     startDate: data?.startDate || '',
-    endData: data?.endData || '',
-    minDaily: data?.minDaily || '',
-    maxDaily: data?.maxDaily || '',
-    minNotice: data?.minNotice || '',
-    maxNotice: data?.maxNotice || '',
+    endDate: data?.endDate || '',
+    minDaily: data?.minDaily || 0,
+    maxDaily: data?.maxDaily || 0,
+    minNotice: data?.minNotice || 0,
+    maxNotice: data?.maxNotice || 0,
     validCancelledReservation: data?.validCancelledReservation || false,
     validPackagesAndHolidays: data?.validPackagesAndHolidays || false,
     housingUnitTypes: data?.housingUnitTypes || [],
@@ -92,3 +97,62 @@ export const offerCouponsFormSchema = yup.object({
     showDiscountTag: yup.boolean().required('Campo obrigatório'),
     offerCupom: yup.boolean().required('Campo obrigatório'),
 })
+
+//Dados temporarios
+export const offerCouponsPaginated = {
+    items: [
+        {
+            id: '1',
+            name: 'Promoção de Verão',
+            description: 'Desconto de 20% para reservas no verão!',
+            startDate: '01/06/2025',
+            endDate: '31/08/2025',
+            minDaily: '2',
+            maxDaily: '7',
+            minNotice: '3',
+            maxNotice: '30',
+            validCancelledReservation: true,
+            validPackagesAndHolidays: false,
+            housingUnitTypes: ['Chalé Diamente'],
+            pix: true,
+            onHotel: false,
+            creditCard: true,
+            nights: [],
+            validServiceAndPackages: true,
+            priceVariationsType: 'percentual',
+            priceVariationValue: 20,
+            showOnFeatures: true,
+            showDiscountTag: true,
+            offerCupom: true,
+        },
+        {
+            id: '2',
+            name: 'Desconto de Inverno',
+            description: 'Ganhe 15% de desconto em pacotes para feriados!',
+            startDate: '15/04/2025',
+            endDate: '21/04/2025',
+            minDaily: '3',
+            maxDaily: '10',
+            minNotice: '5',
+            maxNotice: '60',
+            validCancelledReservation: false,
+            validPackagesAndHolidays: true,
+            housingUnitTypes: ['Suite Deluxe'],
+            pix: true,
+            onHotel: true,
+            creditCard: false,
+            nights: [],
+            validServiceAndPackages: true,
+            priceVariationsType: 'fixo',
+            priceVariationValue: 100,
+            showOnFeatures: false,
+            showDiscountTag: true,
+            offerCupom: false,
+        },
+    ],
+    totalItems: 2,
+    totalPages: 1,
+    currentPage: 1,
+    prevPage: null,
+    nextPage: null,
+}
