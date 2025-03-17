@@ -1,22 +1,80 @@
 'use client'
 
-import { useSearchHousingUnitTypes } from '@booksuite/sdk'
-import { Box, Skeleton, Stack } from '@chakra-ui/react'
+import { HousingUnitTypeFull, useSearchHousingUnitTypes } from '@booksuite/sdk'
+import { Box, Image, Table, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
 import { Plus } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { Card } from '@/components/atoms/Card'
 import { LinkButton } from '@/components/atoms/LinkButton'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
-import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
+import { formatCurrency } from '@/common/utils/currency'
+import {
+    getTableCellSkeleton,
+    getTableHeaderCellProps,
+    getTableProps,
+} from '@/common/utils/table'
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    useReactTable,
+} from '@tanstack/react-table'
+import pluralize from 'pluralize'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
     { key: 'unpublished', label: 'Não publicadas' },
+]
+
+const columnsDefinition: ColumnDef<HousingUnitTypeFull>[] = [
+    {
+        id: 'image',
+        size: 85,
+        cell: ({ row }) => (
+            <Image
+                src={row.original.medias[0]?.media.url}
+                alt={row.original.name}
+                borderRadius="lg"
+                width="72px"
+                height="72px"
+            />
+        ),
+    },
+    {
+        header: 'Nome',
+        accessorKey: 'name',
+        cell: ({ row }) => (
+            <Text fontWeight="bold" fontSize="md">
+                {row.original.name}
+            </Text>
+        ),
+    },
+    {
+        header: 'Dia de semana',
+        accessorFn: (row) =>
+            row.weekdaysPrice ? formatCurrency(row.weekdaysPrice) : '-',
+    },
+    {
+        header: 'Fim de semana',
+        accessorFn: (row) =>
+            row.weekendPrice ? formatCurrency(row.weekendPrice) : '-',
+    },
+    {
+        header: 'Max. de hóspedes',
+        accessorFn: (row) =>
+            row.maxGuests
+                ? `${row.maxGuests} ${pluralize('hóspede', row.maxGuests)}`
+                : 'Sem limites',
+    },
+    {
+        header: 'Unidade',
+        accessorFn: (row) =>
+            `${row.housingUnits.length} ${pluralize('unidade', row.housingUnits.length)}`,
+    },
 ]
 
 export default function Rooms() {
@@ -42,6 +100,12 @@ export default function Rooms() {
         },
     )
 
+    const table = useReactTable({
+        data: housingUnitTypes?.items ?? [],
+        columns: columnsDefinition,
+        getCoreRowModel: getCoreRowModel(),
+    })
+
     return (
         <div className="Acomodacoes">
             <PageHeader
@@ -65,35 +129,54 @@ export default function Rooms() {
                     onChange={setSelectedFilters}
                 />
 
-                <Stack gap={4} my={4}>
+                <Table {...getTableProps()}>
+                    <Thead>
+                        <Tr>
+                            {table.getFlatHeaders().map((header) => (
+                                <Th
+                                    key={header.id}
+                                    {...getTableHeaderCellProps(header)}
+                                >
+                                    {header.isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext(),
+                                          )}
+                                </Th>
+                            ))}
+                        </Tr>
+                    </Thead>
                     {isLoading
-                        ? Array.from({ length: 4 }).map((_, index) => (
-                              <Card.Container key={index}>
-                                  <Card.Section>
-                                      <Skeleton
-                                          borderRadius="md"
-                                          h="72px"
-                                          w="72px"
-                                      />
-                                  </Card.Section>
-                                  <Card.Section flex={1}>
-                                      <Skeleton h={4} w={170} />
-                                      <Skeleton h={3} w={140} />
-                                      <Skeleton h={3} w={122} />
-                                      <Skeleton h={3} w={135} />
-                                  </Card.Section>
-                              </Card.Container>
+                        ? Array.from({ length: 4 }).map(() => (
+                              <Tr>
+                                  {table.getFlatHeaders().map((header) => (
+                                      <Th
+                                          key={header.id}
+                                          className={
+                                              header.column.id === 'drag-handle'
+                                                  ? 'drag-handle'
+                                                  : ''
+                                          }
+                                      >
+                                          {getTableCellSkeleton(header)}
+                                      </Th>
+                                  ))}
+                              </Tr>
                           ))
-                        : housingUnitTypes?.items.map((housingUnitType) => (
-                              <HousingUnitTypeCard
-                                  key={housingUnitType.id}
-                                  onClick={(id) =>
-                                      push(`/my-business/rooms/${id}`)
-                                  }
-                                  housingUnitType={housingUnitType}
-                              />
+                        : table.getRowModel().rows.map((row) => (
+                              <Tr key={row.original.id}>
+                                  {row.getVisibleCells().map((cell) => (
+                                      <Td key={cell.id}>
+                                          {flexRender(
+                                              cell.column.columnDef.cell,
+                                              cell.getContext(),
+                                          )}
+                                      </Td>
+                                  ))}
+                              </Tr>
                           ))}
-                </Stack>
+                </Table>
             </Box>
         </div>
     )

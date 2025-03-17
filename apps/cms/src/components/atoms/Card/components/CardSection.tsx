@@ -13,6 +13,13 @@ export const CardSection: React.FC<CardSectionProps> = ({
             direction={{ base: 'column', md: 'row' }}
             justify={{ base: 'flex-start', md: 'space-between' }}
             gap={{ base: 0.5, md: 2 }}
+            display="contents"
+            css={{
+                '& > *': {
+                    display: 'table-cell',
+                    verticalAlign: 'middle',
+                },
+            }}
             {...props}
         >
             {children}
