@@ -7,6 +7,24 @@ import GiftIcon from '@/components/svgs/icons/GiftIcon'
 export interface PrecosEPeriodosProps {}
 
 export default function PrecosEPeriodos(props: PrecosEPeriodosProps) {
+    const menuItems: MenuItem[] = [
+        {
+            icon: <CalendarIcon />,
+            title: 'Regras de Temporada',
+            href: '/my-business/precos-e-periodos/regras-de-temporada',
+        },
+        {
+            icon: <GiftIcon />,
+            title: 'Pacotes e Feriados',
+            href: '/my-business/precos-e-periodos/pacotes-e-feriados',
+        },
+        {
+            icon: <DiscountIcon />,
+            title: 'Ofertas e Cupons',
+            href: '/my-business/precos-e-periodos/ofertas-e-cupons',
+        },
+    ]
+
     return (
         <div className="PrecosEPeriodos">
             <PageHeader.Root>
@@ -18,20 +36,14 @@ export default function PrecosEPeriodos(props: PrecosEPeriodosProps) {
             </PageHeader.Root>
 
             <InternalMenu.Root>
-                <InternalMenu.Button href="precos-e-periodos/regras-de-temporada">
-                    <CalendarIcon />
-                    Regras de Temporada
-                </InternalMenu.Button>
-
-                <InternalMenu.Button href="precos-e-periodos/pacotes-e-feriados">
-                    <GiftIcon />
-                    Pacotes e Feriados
-                </InternalMenu.Button>
-
-                <InternalMenu.Button href="precos-e-periodos/ofertas-e-cupons">
-                    <DiscountIcon />
-                    Ofertas e Cupons
-                </InternalMenu.Button>
+                {menuItems.map((item) => (
+                    <InternalMenu.Button
+                        key={item.href}
+                        icon={item.icon}
+                        title={item.title}
+                        href={item.href}
+                    />
+                ))}
             </InternalMenu.Root>
         </div>
     )

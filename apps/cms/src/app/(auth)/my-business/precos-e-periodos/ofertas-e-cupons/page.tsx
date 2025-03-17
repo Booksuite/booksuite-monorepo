@@ -3,7 +3,6 @@
 import { Button, Link } from '@chakra-ui/react'
 
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Icons } from '@/components/svgs/icons'
 
