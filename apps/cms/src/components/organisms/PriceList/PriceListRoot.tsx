@@ -1,7 +1,9 @@
 'use client'
 
-import { AddButton } from '@/components/atoms/AddButton'
 import { Box, Text } from '@chakra-ui/react'
+
+import { LinkButton } from '@/components/atoms/LinkButton'
+
 import { PriceListRootProps } from './types'
 
 export const PriceListRoot: React.FC<PriceListRootProps> = ({
@@ -25,7 +27,7 @@ export const PriceListRoot: React.FC<PriceListRootProps> = ({
             {children ?? <Text>{notFoundText}</Text>}
 
             {showAddButton && props.onAdd && (
-                <AddButton
+                <LinkButton
                     mt={children ? 2 : 4}
                     onClick={(event) => props.onAdd?.(event)}
                 />
