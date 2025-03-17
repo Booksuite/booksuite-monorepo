@@ -2,12 +2,13 @@
 
 import { useSearchServices } from '@booksuite/sdk'
 import { Box, Skeleton, Stack } from '@chakra-ui/react'
+import { Plus } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { Card } from '@/components/atoms/Card'
-//import { LinkButton } from '@/components/atoms/LinkButton'
+import { LinkButton } from '@/components/atoms/LinkButton'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
@@ -47,21 +48,21 @@ export default function Services() {
                 title="Experiências"
                 backLButtonLabel="Meu Negócio"
                 backButtonHref="/my-business"
-                /*headerRight={
+                headerRight={
                     <LinkButton
                         href="/my-business/services/create"
                         leftIcon={<Plus size={16} />}
                     >
                         Adicionar
                     </LinkButton>
-                }*/
+                }
             />
 
             <Box>
                 <ChipFilter
                     items={chipItems}
-                    //value={selectedFilters}
-                    //onChange={setSelectedFilters}
+                    value={selectedFilters}
+                    onChange={setSelectedFilters}
                 />
 
                 <Stack gap={4} my={4}>
