@@ -10,7 +10,7 @@ import type { Status } from '@/common/types/Status'
 import { getErrorMessage } from '@/common/utils'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { ServiceForm } from '../serviceForm'
+import { ServiceForm } from '../components/ServiceForm'
 import {
     createFormInitialValues,
     ServiceFormData,
@@ -54,7 +54,7 @@ export default function CreateExperienciasPage() {
                     justifyContent="space-between"
                     gap={2}
                 >
-                    <PageHeader.BackLink href="/my-business/experiencias">
+                    <PageHeader.BackLink href="/my-business/services">
                         Experiências
                     </PageHeader.BackLink>
 
