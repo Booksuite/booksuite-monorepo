@@ -12,7 +12,7 @@ import { FieldArray, Form, useFormikContext } from 'formik'
 import { CirclePlus } from 'lucide-react'
 import type React from 'react'
 
-import { DateRangeBox } from '@/components/atoms/DateRangeBox'
+import { DatePickerBox } from '@/components/atoms/DatePickerBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
@@ -152,26 +152,31 @@ export const ServiceForm: React.FC = () => {
                     <section>
                         <Text as="h2">Períodos de Venda</Text>
                         <Stack gap={2}>
-                            <DateRangeBox
-                                label="Início do Período de Venda"
-                                singleDateValue={values.seasonStart}
-                                /*error={errors.seasonStart}
+                            <h4>Início do Período de Venda</h4>
+                            <DatePickerBox
+                                value={values.seasonStart}
+                                onChange={(date) =>
+                                    setFieldValue('seasonStart', date)
+                                }
+                                error={errors.seasonStart}
                                 formControl={{
                                     isInvalid:
                                         !!errors.seasonStart &&
                                         touched.seasonStart,
-                                }}*/
-                                {...getFieldProps('seasonStart')}
+                                }}
                             />
-                            <DateRangeBox
-                                label="Fim do Período de Venda"
-                                singleDateValue={values.seasonEnd}
-                                /*error={errors.seasonEnd}
+
+                            <h4>Fim do Período de Venda</h4>
+                            <DatePickerBox
+                                value={values.seasonEnd}
+                                onChange={(date) =>
+                                    setFieldValue('seasonEnd', date)
+                                }
+                                error={errors.seasonEnd}
                                 formControl={{
                                     isInvalid:
                                         !!errors.seasonEnd && touched.seasonEnd,
-                                }}*/
-                                {...getFieldProps('seasonEnd')}
+                                }}
                             />
                         </Stack>
                     </section>
@@ -277,7 +282,6 @@ export const ServiceForm: React.FC = () => {
                                         (media) =>
                                             `/placeholder.svg?height=200&width=300&mediaId=${media.mediaId}`,
                                     )}
-                                    //onRemove={(index) => remove(index)}
                                 />
 
                                 <Button
