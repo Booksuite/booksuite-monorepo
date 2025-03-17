@@ -4,7 +4,7 @@ import { updateService, useGetServiceById } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
 
-import { ServiceForm } from '@/app/(auth)/my-business/services/serviceForm'
+import { ServiceForm } from '@/app/(auth)/my-business/services/components/ServiceForm'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
 import { PageHeader } from '@/components/organisms/PageHeader'

@@ -19,8 +19,7 @@ import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { Gallery } from '@/components/organisms/Gallery'
-
-import type { ServiceFormData } from './utils/config'
+import type { ServiceFormData } from '../utils/config'
 
 export const ServiceForm: React.FC = () => {
     const {
@@ -67,10 +66,10 @@ export const ServiceForm: React.FC = () => {
                 <Flex direction="column" gap={2}>
                     <InputBox
                         label="Nome da Experiência"
-                        /*error={errors.name}
+                        error={errors.name}
                         formControl={{
                             isInvalid: !!errors.name && touched.name,
-                        }}*/
+                        }}
                         {...getFieldProps('name')}
                     />
                 </Flex>
@@ -80,11 +79,11 @@ export const ServiceForm: React.FC = () => {
                         <InputNumberBox
                             label="Mínimo de Diárias"
                             min={1}
-                            /*error={errors.minDaily}
+                            error={errors.minDaily}
                             formControl={{
                                 isInvalid:
                                     !!errors.minDaily && touched.minDaily,
-                            }}*/
+                            }}
                             {...getFieldProps('minDaily')}
                             onChange={handleChange('minDaily')}
                         />
@@ -96,11 +95,11 @@ export const ServiceForm: React.FC = () => {
                         <InputNumberBox
                             label="Antecedência mínima"
                             min={1}
-                            /*error={errors.minNotice}
+                            error={errors.minNotice}
                             formControl={{
                                 isInvalid:
                                     !!errors.minNotice && touched.minNotice,
-                            }}*/
+                            }}
                             {...getFieldProps('minNotice')}
                             onChange={handleChange('minNotice')}
                         />
@@ -182,11 +181,11 @@ export const ServiceForm: React.FC = () => {
                     <Text as="h2">Adultos</Text>
                     <InputNumberBox
                         label="Número de adultos"
-                        /*error={errors.adults}
+                        error={errors.adults}
                         min={0}
                         formControl={{
                             isInvalid: !!errors.adults && touched.adults,
-                        }}*/
+                        }}
                         {...getFieldProps('adults')}
                         onChange={handleChange('adults')}
                     />
@@ -195,7 +194,7 @@ export const ServiceForm: React.FC = () => {
                 <section>
                     <Text as="h2">Categorias</Text>
                     <CheckboxGroup
-                        value={values.category.map((c) => c.id)} // Pegando IDs das categorias selecionadas
+                        value={values.category.map((c) => c.id)}
                         onChange={(selectedIds) => {
                             const selectedCategories = categories.filter(
                                 (cat) => selectedIds.includes(cat.id),
@@ -307,10 +306,10 @@ export const ServiceForm: React.FC = () => {
 
                     <InputBox
                         label="URL do Vídeo (Youtube somente)"
-                        /*error={errors.videoUrl}
+                        error={errors.videoUrl}
                         formControl={{
                             isInvalid: !!errors.videoUrl && touched.videoUrl,
-                        }}*/
+                        }}
                         {...getFieldProps('videoUrl')}
                     />
                 </section>
@@ -320,11 +319,11 @@ export const ServiceForm: React.FC = () => {
                     <TextAreaBox
                         label="Descrição"
                         maxLength={250}
-                        /*error={errors.description}
+                        error={errors.description}
                         formControl={{
                             isInvalid:
                                 !!errors.description && touched.description,
-                        }}*/
+                        }}
                         {...getFieldProps('description')}
                     />
 
@@ -332,10 +331,10 @@ export const ServiceForm: React.FC = () => {
                         mt={2}
                         label="Informações gerais e observações"
                         maxLength={500}
-                        /*error={errors.notes}
+                        error={errors.notes}
                         formControl={{
                             isInvalid: !!errors.notes && touched.notes,
-                        }}*/
+                        }}
                         {...getFieldProps('notes')}
                     />
                 </section>
@@ -376,10 +375,10 @@ export const ServiceForm: React.FC = () => {
                         <InputBox
                             label="Preço Final da Experiência"
                             type="currency"
-                            /*error={errors.price}
+                            error={errors.price}
                             formControl={{
                                 isInvalid: !!errors.price && touched.price,
-                            }}*/
+                            }}
                             {...getFieldProps('price')}
                         />
 
