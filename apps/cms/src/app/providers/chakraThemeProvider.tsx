@@ -186,6 +186,11 @@ export default function ChakraThemeProvider({
     const theme = extendTheme({
         components: {
             Button: buttonTheme,
+            Td: {
+                baseStyle: {
+                    padding: 0,
+                },
+            },
             Form: {
                 variants: {
                     floating: {

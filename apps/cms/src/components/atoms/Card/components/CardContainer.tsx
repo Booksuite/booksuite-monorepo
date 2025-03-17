@@ -14,6 +14,7 @@ export const CardContainer: React.FC<CardContainerProps> = ({
         direction="row"
         gap={3}
         transition="background-color 0.1s ease-in-out"
+        display="table-row"
         {...props}
     >
         {children}
