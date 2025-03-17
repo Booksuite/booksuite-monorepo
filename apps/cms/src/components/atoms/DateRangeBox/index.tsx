@@ -17,8 +17,7 @@ import {
 import { ptBR } from 'date-fns/locale'
 import moment from 'moment'
 import { useState } from 'react'
-import Calendar from 'react-date-range/dist/components/Calendar'
-import DateRange from 'react-date-range/dist/components/DateRange'
+import { Calendar, DateRange } from 'react-date-range'
 
 import CalendarIcon from '@/components/svgs/icons/CalendarIcon'
 
