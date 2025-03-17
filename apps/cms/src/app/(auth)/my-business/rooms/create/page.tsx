@@ -7,7 +7,7 @@ import { Formik } from 'formik'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { RoomsForm } from '../RoomsForm'
+import { RoomsForm } from '../components/RoomsForm'
 import {
     createFormInitialValues,
     RoomsFormData,
