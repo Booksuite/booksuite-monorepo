@@ -1,54 +1,42 @@
 'use client'
 
-import { FormControl, FormLabel, Input } from '@chakra-ui/react'
-import { ElementType, useState } from 'react'
-import CurrencyInput from 'react-currency-input-field'
-import InputMask from 'react-input-mask'
-import { InputBoxProps } from './types'
+import {
+    FormControl,
+    FormControlProps,
+    FormErrorMessage,
+    FormLabel,
+    Input,
+    InputProps,
+} from '@chakra-ui/react'
+import { CurrencyInput } from 'react-currency-mask'
 
-function InputBox({ asText = false, onValueChange, ...props }: InputBoxProps) {
-    const [inputHiddenValue, setInputHiddenValue] = useState(
-        props.defaultValue ?? undefined,
-    )
+export interface InputBoxProps extends InputProps {
+    formControl?: FormControlProps
+    error?: string
+    label?: string
+    mask?: string
+}
 
+export const InputBox: React.FC<InputBoxProps> = ({
+    label,
+    error,
+    ...props
+}) => {
     return (
-        <FormControl
-            {...props.formControl}
-            className={`InputBox ${props.formControl?.className}`}
-        >
+        <FormControl isInvalid={!!error} {...props.formControl}>
             {props.type === 'currency' ? (
-                <>
-                    {asText === false && (
-                        <input
-                            type="hidden"
-                            name={props.name}
-                            value={inputHiddenValue}
-                        />
-                    )}
-                    <Input
-                        as={CurrencyInput}
-                        prefix={props.prefix ?? 'R$ '}
-                        placeholder=" "
-                        decimalsLimit={2}
-                        decimalScale={2}
-                        onValueChange={(value, name, values) => {
-                            setInputHiddenValue(values.float)
-                            onValueChange(value, name, values)
-                        }}
-                        {...props}
-                        name={asText ? props.name : ''}
-                    />
-                </>
-            ) : (
-                <Input
-                    as={
-                        props?.mask
-                            ? (InputMask as unknown as ElementType)
-                            : undefined
-                    }
+                <CurrencyInput
+                    value={Number(props.value)}
+                    InputElement={<Input placeholder=" " />}
+                    onChangeValue={(e) => {
+                        props.onChange?.(e)
+                    }}
                 />
+            ) : (
+                <Input placeholder=" " {...props} />
             )}
-            <FormLabel>{props.label}</FormLabel>
+            <FormLabel>{label}</FormLabel>
+            <FormErrorMessage color="red.400">{error}</FormErrorMessage>
         </FormControl>
     )
 }
