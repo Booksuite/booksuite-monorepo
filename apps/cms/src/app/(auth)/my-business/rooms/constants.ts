@@ -1,0 +1,1 @@
+export const MAX_FEATURED_FACILITIES = 5
