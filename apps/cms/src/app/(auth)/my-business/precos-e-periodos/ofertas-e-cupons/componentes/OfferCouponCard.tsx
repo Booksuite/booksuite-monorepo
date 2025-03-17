@@ -1,4 +1,3 @@
-import { HousingUnitTypeFull } from '@booksuite/sdk'
 import {
     Menu,
     MenuButton,
@@ -7,59 +6,40 @@ import {
     MenuList,
 } from '@chakra-ui/react'
 import { Copy, Edit, Eye, EyeOff, Trash } from 'lucide-react'
-import pluralize from 'pluralize'
+import React from 'react'
 
-import { formatCurrency } from '@/common/utils/currency'
 import { Card } from '@/components/atoms/Card'
+import { offerCouponsData } from '../utils/config'
 
-interface HousingUnitTypeCardProps {
-    housingUnitType: HousingUnitTypeFull
+interface OfferCouponCardProps {
+    offerCoupon: offerCouponsData
     onClick?: (id: string) => void
 }
 
-export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
-    housingUnitType,
+export const OfferCouponCard: React.FC<OfferCouponCardProps> = ({
+    offerCoupon,
     onClick,
 }) => {
-    const thumbUrl = housingUnitType.medias[0]?.media.url
-
     return (
         <Card.Container
-            key={housingUnitType.id}
+            key={offerCoupon.id}
             _hover={{
                 bg: 'gray.200',
             }}
+            cursor='pointer'
+            onClick={() => onClick?.(offerCoupon.id)}
         >
-            <Card.Section>
-                {thumbUrl && (
-                    <Card.Image
-                        src={thumbUrl}
-                        alt={housingUnitType.name}
-                        onClick={() => onClick?.(housingUnitType.id)}
-                        cursor="pointer"
-                    />
-                )}
-            </Card.Section>
             <Card.Section flex={1}>
-                <Card.Title>{housingUnitType.name}</Card.Title>
-                {housingUnitType.weekdaysPrice && (
+                <Card.Title>{offerCoupon.name}</Card.Title>
+                {offerCoupon.startDate && (
                     <Card.Text hideBelow="md">
-                        {formatCurrency(housingUnitType.weekdaysPrice)}
+                        {offerCoupon.startDate}
                     </Card.Text>
                 )}
-                {housingUnitType.weekendPrice && (
-                    <Card.Text>
-                        {formatCurrency(housingUnitType.weekendPrice)}
-                    </Card.Text>
+
+                {offerCoupon.endDate && (
+                    <Card.Text hideBelow="md">{offerCoupon.endDate}</Card.Text>
                 )}
-                <Card.Text hideBelow="md">
-                    {housingUnitType.maxGuests || 1}{' '}
-                    {pluralize('hóspede', housingUnitType.maxGuests || 1)}
-                </Card.Text>
-                <Card.Text>
-                    {housingUnitType.housingUnits.length}{' '}
-                    {pluralize('unidade', housingUnitType.housingUnits.length)}
-                </Card.Text>
             </Card.Section>
             <Card.Section>
                 <Menu>
