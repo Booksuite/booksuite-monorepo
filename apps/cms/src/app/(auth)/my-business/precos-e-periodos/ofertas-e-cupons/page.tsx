@@ -2,7 +2,7 @@
 
 import { Box, Skeleton, Stack } from '@chakra-ui/react'
 import { Plus } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 import { Card } from '@/components/atoms/Card'
@@ -14,8 +14,9 @@ import { OfferCouponCard } from './componentes/OfferCouponCard'
 import { offerCouponsPaginated } from './utils/config'
 
 export default function OfferCoupons() {
-    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
     const { push } = useRouter()
+    const searchParams = useSearchParams()
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
 
     const chipItems = [
         { key: '1', label: 'Ativas' },
@@ -71,11 +72,10 @@ export default function OfferCoupons() {
                         : OfferCoupons?.items.map((offerCoupon) => (
                               <OfferCouponCard
                                   key={offerCoupon.id}
-                                  onClick={
-                                      (id) =>
-                                          push(
-                                              `/my-business/precos-e-periodos/ofertas-e-cupons`,
-                                          ) //colocar redirect pro edit
+                                  onClick={(id) =>
+                                      push(
+                                          `/my-business/precos-e-periodos/ofertas-e-cupons/${id}`,
+                                      )
                                   }
                                   offerCoupon={offerCoupon}
                               />
