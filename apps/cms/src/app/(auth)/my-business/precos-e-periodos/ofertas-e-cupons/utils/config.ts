@@ -1,4 +1,26 @@
+import { number } from 'prop-types'
 import * as yup from 'yup'
+
+//Dados Temporários
+type housingUnitType = {
+    id: number
+    name: string
+}
+
+type paymentMethod = {
+    id: number
+    name: string
+}
+
+const unit1: housingUnitType = {
+    id: 1,
+    name: 'Deluxe Suite',
+}
+
+const unit2: housingUnitType = {
+    id: 2,
+    name: 'Chalé Diamante',
+}
 
 type offerCouponsData = {
     id: string
@@ -12,17 +34,16 @@ type offerCouponsData = {
     maxNotice?: number
     validCancelledReservation: boolean
     validPackagesAndHolidays: boolean
-    housingUnitTypes: string[]
-    pix: boolean
-    onHotel: boolean
-    creditCard: boolean
+    housingUnitTypes: housingUnitType[]
+    paymentMethods: paymentMethod[]
     nights: string[]
     validServiceAndPackages: boolean
     priceVariationsType: string
     priceVariationValue: number
     showOnFeatures: boolean
     showDiscountTag: boolean
-    offerCupom: boolean
+    coupon: boolean
+    couponCode: string
 }
 
 export type OfferCouponsFormData = offerCouponsData
@@ -41,17 +62,16 @@ export const createFormInitialValues = (
     maxNotice: data?.maxNotice || 0,
     validCancelledReservation: data?.validCancelledReservation || false,
     validPackagesAndHolidays: data?.validPackagesAndHolidays || false,
-    housingUnitTypes: data?.housingUnitTypes || [],
-    pix: data?.pix || false,
-    onHotel: data?.onHotel || false,
-    creditCard: data?.creditCard || false,
+    housingUnitTypes: data?.housingUnitTypes || [unit1, unit2],
+    paymentMethods: data?.paymentMethods || [],
     nights: data?.nights || [],
     validServiceAndPackages: data?.validServiceAndPackages || false,
     priceVariationsType: data?.priceVariationsType || '',
     priceVariationValue: data?.priceVariationValue || 0,
     showOnFeatures: data?.showOnFeatures || false,
     showDiscountTag: data?.showDiscountTag || false,
-    offerCupom: data?.offerCupom || false,
+    coupon: data?.coupon || false,
+    couponCode: data?.couponCode || '',
 })
 
 export const offerCouponsFormSchema = yup.object({
@@ -65,6 +85,7 @@ export const offerCouponsFormSchema = yup.object({
     maxNotice: yup.string().optional(),
     validCancelledReservation: yup.boolean().required('Campo obrigatório'),
     validPackagesAndHolidays: yup.boolean().required('Campo obrigatório'),
+    paymentMethods: yup.object().shape({id: yup.number(), name: yup.string()}).required('´Métodos de Pagamento Obrigatório'),
     housingUnitTypes: yup
         .array()
         .of(
@@ -78,9 +99,7 @@ export const offerCouponsFormSchema = yup.object({
             }),
         )
         .optional(),
-    pix: yup.boolean().required('Campo obrigatório'),
-    onHotel: yup.boolean().required('Campo obrigatório'),
-    creditCard: yup.boolean().required('Campo obrigatório'),
+
     nights: yup
         .array()
         .of(yup.number().min(1, 'Noite deve ser pelo menos 1'))
@@ -95,7 +114,8 @@ export const offerCouponsFormSchema = yup.object({
         .required('Valor da variação de preço é obrigatório'),
     showOnFeatures: yup.boolean().required('Campo obrigatório'),
     showDiscountTag: yup.boolean().required('Campo obrigatório'),
-    offerCupom: yup.boolean().required('Campo obrigatório'),
+    coupon: yup.boolean().required('Campo obrigatório'),
+    couponCode: yup.string(),
 })
 
 //Dados temporarios
