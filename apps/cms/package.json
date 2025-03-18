@@ -31,6 +31,7 @@
         "next-auth": "^4.24.7",
         "pluralize": "^8.0.0",
         "prop-types": "^15.8.1",
+        "radash": "^12.1.0",
         "react": "^18",
         "react-currency-mask": "^1.3.3",
         "react-date-range": "^2.0.1",
