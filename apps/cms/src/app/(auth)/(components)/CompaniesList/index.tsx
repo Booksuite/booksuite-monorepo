@@ -6,7 +6,7 @@ import { useState } from 'react'
 import { getErrorMessage } from '@/common/utils'
 
 import { useSearchCompanies } from '@booksuite/sdk'
-import { PaginationControls } from './PaginationControls'
+import { PaginationControls } from '../../../../components/molecules/PaginationControl'
 
 export const CompaniesList: React.FC = () => {
     const [page, setPage] = useState<number>(1)
