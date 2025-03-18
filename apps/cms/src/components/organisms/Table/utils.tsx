@@ -5,7 +5,13 @@ import {
     TableColumnHeaderProps,
     TableProps,
 } from '@chakra-ui/react'
-import { Cell, Header } from '@tanstack/react-table'
+import { Cell, Header, RowData } from '@tanstack/react-table'
+
+export function getTableColumnType<T extends RowData>(
+    data: Header<T, unknown> | Cell<T, unknown>,
+): string {
+    return (data.column.columnDef.meta?.type || data.column.id) as string
+}
 
 export function getTableProps(withDragHandle = false): TableProps {
     return {
@@ -15,10 +21,14 @@ export function getTableProps(withDragHandle = false): TableProps {
             '& thead': {
                 '& th': {
                     padding: 12,
+                    '&.drag-handle': {
+                        width: '30px',
+                        padding: 6,
+                    },
                 },
             },
             '& > tr': {
-                '& td, & th': {
+                '& td': {
                     border: 'none',
                     padding: 12,
                     '&:not(.drag-handle)': {
@@ -48,10 +58,12 @@ export function getTableHeaderCellProps<T>(
     }
 }
 
-export function getTableCellSkeleton<T>(
+export function getTableCellSkeleton<T extends RowData>(
     header: Header<T, unknown>,
 ): React.ReactNode {
-    switch (header.column.id) {
+    const type = getTableColumnType(header)
+
+    switch (type) {
         case 'drag-handle':
             return null
         case 'image':
@@ -63,7 +75,9 @@ export function getTableCellSkeleton<T>(
     }
 }
 
-export function getTableCellProps<T>(cell: Cell<T, unknown>): TableCellProps {
+export function getTableCellProps<T extends RowData>(
+    cell: Cell<T, unknown>,
+): TableCellProps {
     return {
         className: cell.column.id === 'drag-handle' ? 'drag-handle' : '',
     }

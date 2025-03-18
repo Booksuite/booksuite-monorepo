@@ -1,29 +1,40 @@
 'use client'
 
-import { HousingUnitTypeFull, useSearchHousingUnitTypes } from '@booksuite/sdk'
-import { Box, Image, Table, Td, Text, Th, Thead, Tr } from '@chakra-ui/react'
-import { Plus } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
-
-import { useCurrentCompanyId } from '@/common/contexts/user'
-import { LinkButton } from '@/components/atoms/LinkButton'
-import { ChipFilter } from '@/components/organisms/ChipFilter'
-import { PageHeader } from '@/components/organisms/PageHeader'
-
-import { formatCurrency } from '@/common/utils/currency'
 import {
-    getTableCellSkeleton,
-    getTableHeaderCellProps,
-    getTableProps,
-} from '@/common/utils/table'
+    HousingUnitTypeFull,
+    HousingUnitTypeOrderByDTOOrderBy,
+    useSearchHousingUnitTypes,
+} from '@booksuite/sdk'
+import {
+    HStack,
+    IconButton,
+    Image,
+    Input,
+    InputGroup,
+    InputRightElement,
+    Text,
+    VStack,
+} from '@chakra-ui/react'
 import {
     ColumnDef,
-    flexRender,
+    functionalUpdate,
     getCoreRowModel,
     useReactTable,
 } from '@tanstack/react-table'
+import { Plus, Search, X } from 'lucide-react'
 import pluralize from 'pluralize'
+import { debounce } from 'radash'
+import { useEffect, useRef, useState } from 'react'
+
+import { useCurrentCompanyId } from '@/common/contexts/user'
+import { useSearchParamsOrder } from '@/common/hooks/useOrder'
+import { useSearchParamsPagination } from '@/common/hooks/usePagination'
+import { formatCurrency } from '@/common/utils/currency'
+import { LinkButton } from '@/components/atoms/LinkButton'
+import { ChipFilter } from '@/components/organisms/ChipFilter'
+import { PageHeader } from '@/components/organisms/PageHeader'
+import { Table } from '@/components/organisms/Table'
+import { PaginationControls } from '../../../../components/molecules/PaginationControl'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
@@ -45,8 +56,10 @@ const columnsDefinition: ColumnDef<HousingUnitTypeFull>[] = [
         ),
     },
     {
+        id: 'name',
         header: 'Nome',
         accessorKey: 'name',
+        enableSorting: true,
         cell: ({ row }) => (
             <Text fontWeight="bold" fontSize="md">
                 {row.original.name}
@@ -54,16 +67,19 @@ const columnsDefinition: ColumnDef<HousingUnitTypeFull>[] = [
         ),
     },
     {
+        id: 'weekdaysPrice',
         header: 'Dia de semana',
         accessorFn: (row) =>
             row.weekdaysPrice ? formatCurrency(row.weekdaysPrice) : '-',
     },
     {
+        id: 'weekendPrice',
         header: 'Fim de semana',
         accessorFn: (row) =>
             row.weekendPrice ? formatCurrency(row.weekendPrice) : '-',
     },
     {
+        id: 'maxGuests',
         header: 'Max. de hóspedes',
         accessorFn: (row) =>
             row.maxGuests
@@ -71,26 +87,48 @@ const columnsDefinition: ColumnDef<HousingUnitTypeFull>[] = [
                 : 'Sem limites',
     },
     {
-        header: 'Unidade',
+        id: 'housingUnits',
+        header: 'Unidades',
         accessorFn: (row) =>
             `${row.housingUnits.length} ${pluralize('unidade', row.housingUnits.length)}`,
     },
 ]
 
 export default function Rooms() {
-    const { push } = useRouter()
-    const searchParams = useSearchParams()
     const [selectedFilters, setSelectedFilters] = useState<string[]>([])
-    const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
-    const itemsPerPage = searchParams.get('itemsPerPage')
-        ? Number(searchParams.get('itemsPerPage'))
-        : 10
+    const [searchQuery, setSearchQuery] = useState<string>('')
+    const [searchInputValue, setSearchInputValue] = useState<string>('')
+
+    const { orderBy, orderDirection, setOrderBy, setOrderDirection } =
+        useSearchParamsOrder<HousingUnitTypeOrderByDTOOrderBy>({
+            defaultOrder: 'name',
+            currentPath: '/my-business/rooms',
+        })
+
+    const { page, itemsPerPage, setPage, setItemsPerPage } =
+        useSearchParamsPagination({
+            currentPath: '/my-business/rooms',
+        })
+
+    const debouncedSearch = useRef(
+        debounce({ delay: 350 }, (search: string) => {
+            setSearchQuery(search)
+        }),
+    )
+
+    useEffect(() => {
+        debouncedSearch.current(searchInputValue)
+    }, [debouncedSearch, searchInputValue])
 
     const companyId = useCurrentCompanyId()
     const { data: housingUnitTypes, isLoading } = useSearchHousingUnitTypes(
         { companyId },
         {
             pagination: { page, itemsPerPage },
+            order: {
+                orderBy,
+                direction: orderDirection,
+            },
             filter:
                 selectedFilters.length > 0
                     ? {
@@ -98,12 +136,33 @@ export default function Rooms() {
                       }
                     : undefined,
         },
+        { query: searchQuery.length > 0 ? searchQuery : undefined },
     )
 
     const table = useReactTable({
         data: housingUnitTypes?.items ?? [],
         columns: columnsDefinition,
         getCoreRowModel: getCoreRowModel(),
+        manualSorting: true,
+        state: {
+            sorting: [
+                {
+                    id: orderBy,
+                    desc: orderDirection === 'desc',
+                },
+            ],
+        },
+        onSortingChange: (sorting) => {
+            const newValue = functionalUpdate(sorting, [
+                {
+                    id: orderBy,
+                    desc: orderDirection === 'desc',
+                },
+            ])
+
+            setOrderBy(newValue[0]?.id ?? 'name')
+            setOrderDirection(newValue[0]?.desc ? 'desc' : 'asc')
+        },
     })
 
     return (
@@ -122,62 +181,57 @@ export default function Rooms() {
                 }
             />
 
-            <Box>
-                <ChipFilter
-                    items={chipItems}
-                    value={selectedFilters}
-                    onChange={setSelectedFilters}
-                />
+            <VStack gap={4} alignItems="stretch">
+                <HStack flex={1} justifyContent="space-between">
+                    <ChipFilter
+                        items={chipItems}
+                        value={selectedFilters}
+                        onChange={setSelectedFilters}
+                    />
+                    <InputGroup w="300px">
+                        <Input
+                            type="text"
+                            placeholder="Pesquisar"
+                            value={searchInputValue}
+                            onChange={(e) =>
+                                setSearchInputValue(e.target.value)
+                            }
+                        />
+                        <InputRightElement>
+                            <IconButton
+                                variant="ghost"
+                                aria-label="Pesquisar"
+                                size="sm"
+                                onClick={() => {
+                                    setSearchInputValue('')
+                                    setSearchQuery('')
+                                }}
+                            >
+                                {searchQuery.length > 0 ? (
+                                    <X size={16} />
+                                ) : (
+                                    <Search size={16} />
+                                )}
+                            </IconButton>
+                        </InputRightElement>
+                    </InputGroup>
+                </HStack>
 
-                <Table {...getTableProps()}>
-                    <Thead>
-                        <Tr>
-                            {table.getFlatHeaders().map((header) => (
-                                <Th
-                                    key={header.id}
-                                    {...getTableHeaderCellProps(header)}
-                                >
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                              header.column.columnDef.header,
-                                              header.getContext(),
-                                          )}
-                                </Th>
-                            ))}
-                        </Tr>
-                    </Thead>
-                    {isLoading
-                        ? Array.from({ length: 4 }).map(() => (
-                              <Tr>
-                                  {table.getFlatHeaders().map((header) => (
-                                      <Th
-                                          key={header.id}
-                                          className={
-                                              header.column.id === 'drag-handle'
-                                                  ? 'drag-handle'
-                                                  : ''
-                                          }
-                                      >
-                                          {getTableCellSkeleton(header)}
-                                      </Th>
-                                  ))}
-                              </Tr>
-                          ))
-                        : table.getRowModel().rows.map((row) => (
-                              <Tr key={row.original.id}>
-                                  {row.getVisibleCells().map((cell) => (
-                                      <Td key={cell.id}>
-                                          {flexRender(
-                                              cell.column.columnDef.cell,
-                                              cell.getContext(),
-                                          )}
-                                      </Td>
-                                  ))}
-                              </Tr>
-                          ))}
-                </Table>
-            </Box>
+                <Table table={table} />
+
+                <HStack justifyContent="flex-end">
+                    <PaginationControls
+                        page={page}
+                        prevPage={housingUnitTypes?.prevPage ?? null}
+                        nextPage={housingUnitTypes?.nextPage ?? null}
+                        totalPages={housingUnitTypes?.totalPages ?? 0}
+                        totalItems={housingUnitTypes?.totalItems ?? 0}
+                        itemsPerPage={itemsPerPage}
+                        onItemsPerPageChange={setItemsPerPage}
+                        onPageChange={setPage}
+                    />
+                </HStack>
+            </VStack>
         </div>
     )
 }
