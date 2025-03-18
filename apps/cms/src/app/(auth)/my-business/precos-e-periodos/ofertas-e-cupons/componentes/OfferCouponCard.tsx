@@ -9,10 +9,10 @@ import { Copy, Edit, Eye, EyeOff, Trash } from 'lucide-react'
 import React from 'react'
 
 import { Card } from '@/components/atoms/Card'
-import { offerCouponsData } from '../utils/config'
+import { OfferCouponsFormData } from '../utils/config'
 
 interface OfferCouponCardProps {
-    offerCoupon: offerCouponsData
+    offerCoupon: OfferCouponsFormData
     onClick?: (id: string) => void
 }
 

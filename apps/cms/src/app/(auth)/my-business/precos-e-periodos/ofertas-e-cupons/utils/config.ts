@@ -1,4 +1,3 @@
-import { number } from 'prop-types'
 import * as yup from 'yup'
 
 //Dados Temporários
@@ -85,7 +84,10 @@ export const offerCouponsFormSchema = yup.object({
     maxNotice: yup.string().optional(),
     validCancelledReservation: yup.boolean().required('Campo obrigatório'),
     validPackagesAndHolidays: yup.boolean().required('Campo obrigatório'),
-    paymentMethods: yup.object().shape({id: yup.number(), name: yup.string()}).required('´Métodos de Pagamento Obrigatório'),
+    paymentMethods: yup
+        .object()
+        .shape({ id: yup.number(), name: yup.string() })
+        .required('´Métodos de Pagamento Obrigatório'),
     housingUnitTypes: yup
         .array()
         .of(
@@ -122,52 +124,56 @@ export const offerCouponsFormSchema = yup.object({
 export const offerCouponsPaginated = {
     items: [
         {
-            id: '1',
+            id: '0',
             name: 'Promoção de Verão',
             description: 'Desconto de 20% para reservas no verão!',
             startDate: '01/06/2025',
             endDate: '31/08/2025',
-            minDaily: '2',
-            maxDaily: '7',
-            minNotice: '3',
-            maxNotice: '30',
+            minDaily: 2,
+            maxDaily: 7,
+            minNotice: 3,
+            maxNotice: 30,
             validCancelledReservation: true,
             validPackagesAndHolidays: false,
-            housingUnitTypes: ['Chalé Diamente'],
+            housingUnitTypes: [],
             pix: true,
             onHotel: false,
             creditCard: true,
             nights: [],
+            paymentMethods: [],
             validServiceAndPackages: true,
             priceVariationsType: 'percentual',
             priceVariationValue: 20,
             showOnFeatures: true,
             showDiscountTag: true,
-            offerCupom: true,
+            coupon: true,
+            couponCode: 'RAMOM10',
         },
         {
-            id: '2',
+            id: '1',
             name: 'Desconto de Inverno',
             description: 'Ganhe 15% de desconto em pacotes para feriados!',
             startDate: '15/04/2025',
             endDate: '21/04/2025',
-            minDaily: '3',
-            maxDaily: '10',
-            minNotice: '5',
-            maxNotice: '60',
+            minDaily: 3,
+            maxDaily: 10,
+            minNotice: 5,
+            maxNotice: 60,
             validCancelledReservation: false,
             validPackagesAndHolidays: true,
-            housingUnitTypes: ['Suite Deluxe'],
+            housingUnitTypes: [],
             pix: true,
             onHotel: true,
             creditCard: false,
             nights: [],
+            paymentMethods: [],
             validServiceAndPackages: true,
             priceVariationsType: 'fixo',
             priceVariationValue: 100,
             showOnFeatures: false,
             showDiscountTag: true,
-            offerCupom: false,
+            coupon: true,
+            couponCode: 'RAMOM10',
         },
     ],
     totalItems: 2,

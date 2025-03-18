@@ -1,6 +1,13 @@
 'use client'
 
-import { Button, CheckboxGroup, Flex, Stack, Switch, Text } from '@chakra-ui/react'
+import {
+    Button,
+    CheckboxGroup,
+    Flex,
+    Stack,
+    Switch,
+    Text,
+} from '@chakra-ui/react'
 import { Form, useFormikContext } from 'formik'
 import React from 'react'
 
@@ -46,7 +53,6 @@ export const OfferCouponsForm: React.FC = () => {
         { id: 'sunday', name: 'Domingo' },
     ]
 
-
     return (
         <Form>
             <Stack gap={8}>
@@ -72,6 +78,11 @@ export const OfferCouponsForm: React.FC = () => {
                         {...getFieldProps('description')}
                     />
                 </Flex>
+
+                {/* Adicionar Campo Date Faltante (Esperar o a PR do service ser mergeada pra pegar o componente DatePickerBox)       */}
+                {/* <section>
+                    <Text as="h2">Períodos Válidos</Text>
+                </section> */}
 
                 <section>
                     <Text as="h2">Condições de Aplicabilidade</Text>
@@ -204,13 +215,10 @@ export const OfferCouponsForm: React.FC = () => {
                     <CheckboxGroup
                         value={values.paymentMethods.map((p) => p.id)}
                         onChange={(selectedIds) => {
-                            const selectedMethods = paymentMethods.filter(
-                                (p) => selectedIds.includes(p.id),
+                            const selectedMethods = paymentMethods.filter((p) =>
+                                selectedIds.includes(p.id),
                             )
-                            setFieldValue(
-                                'paymentMethods',
-                                selectedMethods,
-                            )
+                            setFieldValue('paymentMethods', selectedMethods)
                         }}
                     >
                         <Stack spacing={2} direction="column">
@@ -244,7 +252,7 @@ export const OfferCouponsForm: React.FC = () => {
                 <section>
                     <Text as="h3">Noites válidas</Text>
                     <CheckboxGroup
-                        value={values.nights} 
+                        value={values.nights}
                         onChange={(selectedIds) =>
                             setFieldValue('validNights', selectedIds)
                         }
@@ -264,10 +272,7 @@ export const OfferCouponsForm: React.FC = () => {
                                             : values.nights.filter(
                                                   (id) => id !== night.name,
                                               )
-                                        setFieldValue(
-                                            'nights',
-                                            updatedNights,
-                                        )
+                                        setFieldValue('nights', updatedNights)
                                     }}
                                 >
                                     {night.name}
