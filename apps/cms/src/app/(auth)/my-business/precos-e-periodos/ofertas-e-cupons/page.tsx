@@ -75,7 +75,7 @@ export default function OfferCoupons() {
                                       (id) =>
                                           push(
                                               `/my-business/precos-e-periodos/ofertas-e-cupons`,
-                                          ) //colocar redirect pro create
+                                          ) //colocar redirect pro edit
                                   }
                                   offerCoupon={offerCoupon}
                               />

@@ -16,7 +16,9 @@ export default function CreateOfferCoupon() {
     const companyId = useCurrentCompanyId()
     const toast = useToast()
 
-    async function handleSubmit(formData: OfferCouponsFormData) {}
+    async function handleSubmit(formData: OfferCouponsFormData) {
+        console.log(formData)
+    }
 
     return (
         <div>
