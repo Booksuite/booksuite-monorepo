@@ -23,6 +23,7 @@ export default function ChakraThemeProvider({
 }: ChakraThemeProviderProps) {
     const outline = defineStyle({
         color: 'primary.900',
+        borderColor: 'gray.300',
         _hover: {
             color: 'primary.600',
             _disabled: {
@@ -186,6 +187,20 @@ export default function ChakraThemeProvider({
     const theme = extendTheme({
         components: {
             Button: buttonTheme,
+            Select: {
+                baseStyle: {
+                    field: {
+                        borderRadius: '8px',
+                    },
+                },
+            },
+            Input: {
+                baseStyle: {
+                    field: {
+                        borderRadius: '8px',
+                    },
+                },
+            },
             Form: {
                 variants: {
                     floating: {
@@ -247,17 +262,10 @@ export default function ChakraThemeProvider({
             Switch: SwitchTheme,
             Checkbox: checkBoxTheme,
             Alert: {
-                variants: {
-                    custom: {
-                        container: {
-                            background: 'tertiary.50',
-                            color: 'primary.900',
-                            borderRadius: '4px',
-                        },
+                baseStyle: {
+                    container: {
+                        borderRadius: '8px',
                     },
-                },
-                defaultProps: {
-                    variant: 'custom',
                 },
             },
             Accordion: AccordionTheme,
