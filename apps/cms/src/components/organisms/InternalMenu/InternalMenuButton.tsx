@@ -14,7 +14,7 @@ export const InternalMenuButton: React.FC<InternalMenuButtonProps> = ({
     ...props
 }) => {
     return (
-        // @ts-expect-error
+        // @ts-expect-error - NextLink is not a valid prop for Link
         <Link as={NextLink} {...props}>
             <Flex
                 alignItems="center"

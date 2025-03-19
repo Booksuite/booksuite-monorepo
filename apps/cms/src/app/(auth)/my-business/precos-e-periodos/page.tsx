@@ -18,18 +18,27 @@ export default function PrecosEPeriodos(props: PrecosEPeriodosProps) {
             </PageHeader.Root>
 
             <InternalMenu.Root>
-                <InternalMenu.Button href="precos-e-periodos/regras-de-temporada">
-                    <CalendarIcon />
+                <InternalMenu.Button
+                    href="/my-business/precos-e-periodos/regras-de-temporada"
+                    icon={<CalendarIcon />}
+                    title="Regras de Temporada"
+                >
                     Regras de Temporada
                 </InternalMenu.Button>
 
-                <InternalMenu.Button href="precos-e-periodos/pacotes-e-feriados">
-                    <GiftIcon />
+                <InternalMenu.Button
+                    href="/my-business/precos-e-periodos/pacotes-e-feriados"
+                    icon={<GiftIcon />}
+                    title="Pacotes e Feriados"
+                >
                     Pacotes e Feriados
                 </InternalMenu.Button>
 
-                <InternalMenu.Button href="precos-e-periodos/ofertas-e-cupons">
-                    <DiscountIcon />
+                <InternalMenu.Button
+                    href="/my-business/precos-e-periodos/ofertas-e-cupons"
+                    icon={<DiscountIcon />}
+                    title="Ofertas e Cupons"
+                >
                     Ofertas e Cupons
                 </InternalMenu.Button>
             </InternalMenu.Root>

@@ -2,7 +2,6 @@ import { VStack } from '@chakra-ui/react'
 import { usePathname } from 'next/navigation'
 
 import { NavLink } from './components/NavLink'
-
 import type { NavMenuProps } from './types'
 
 export const NavMenu: React.FC<NavMenuProps> = ({ links }) => {

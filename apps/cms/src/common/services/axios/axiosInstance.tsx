@@ -1,40 +1,37 @@
-import axios from "axios";
-import { getSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
+import axios from 'axios'
+import { getSession, signOut } from 'next-auth/react'
 
-const baseURL = process.env.API_URL;
+const baseURL = process.env.API_URL
 
 const ApiClient = () => {
-  const defaultOptions = {
-    baseURL,
-  };
-
-  const instance = axios.create(defaultOptions);
-
-  instance.interceptors.request.use(async (request) => {
-    const session = await getSession();
-    if (session) {
-      request.headers.Authorization = `Bearer ${session.user.token}`;
+    const defaultOptions = {
+        baseURL,
     }
-    return request;
-  });
 
-  instance.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      console.log(`error`, error);
+    const instance = axios.create(defaultOptions)
 
-      if (error.response.data.message === "jwt expired") {
-        signOut();
-      }
+    instance.interceptors.request.use(async (request) => {
+        const session = await getSession()
+        if (session) {
+            request.headers.Authorization = `Bearer ${session.user.token}`
+        }
+        return request
+    })
 
-      return error;
-    }
-  );
+    instance.interceptors.response.use(
+        (response) => {
+            return response
+        },
+        (error) => {
+            if (error.response.data.message === 'jwt expired') {
+                signOut()
+            }
 
-  return instance;
-};
+            return error
+        },
+    )
 
-export default ApiClient();
+    return instance
+}
+
+export default ApiClient()

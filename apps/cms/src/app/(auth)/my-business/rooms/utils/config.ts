@@ -1,5 +1,6 @@
 import { HousingUnitTypeCreateInput, HousingUnitTypeFull } from '@booksuite/sdk'
 import * as yup from 'yup'
+
 import {
     normalizeHousingUnitTypeFacilityInput,
     normalizeHousingUnitTypeMediaInput,

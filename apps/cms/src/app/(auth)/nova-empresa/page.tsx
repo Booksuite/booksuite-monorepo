@@ -47,7 +47,7 @@ export default function NovaEmpresa() {
 
         setIsSaving(true)
 
-        const response = new Promise((resolve, reject) => {
+        const response = new Promise((resolve) => {
             resolve(createCompany(formData))
         })
             .then((resp: any) => {

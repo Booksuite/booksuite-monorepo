@@ -3,14 +3,18 @@
     "packageManager": "yarn@4.6.0",
     "private": true,
     "scripts": {
-        "generate:sdk": "yarn workspace @booksuite/sdk generate"
+        "generate:sdk": "yarn workspace @booksuite/sdk generate",
+        "lint": "yarn workspace @booksuite/cms run lint"
     },
     "workspaces": [
         "apps/*",
         "packages/*"
     ],
     "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^8.26.1",
+        "@typescript-eslint/parser": "^8.26.0",
         "eslint-plugin-simple-import-sort": "^12.1.1",
-        "prettier": "^3.4.2"
+        "prettier": "^3.4.2",
+        "typescript-eslint": "^8.26.0"
     }
 }

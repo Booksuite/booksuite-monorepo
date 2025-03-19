@@ -11,6 +11,7 @@ export interface SelectBoxModalProps<T extends { name: string; id: string }>
     initialSelectedItems?: T[]
     items: T[]
     tabFilter?: TabFilterItem[]
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     filterGetter?: (item: T) => any
     querySearchGetter?: (item: T) => string
     keyGetter?: (item: T) => string
