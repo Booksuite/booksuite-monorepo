@@ -11,6 +11,7 @@ import {
     MapPin,
     Pencil,
     ScanText,
+    Telescope,
     UserRound,
 } from 'lucide-react'
 import { Route } from 'next'
@@ -45,11 +46,11 @@ const menuItems: MenuItem[] = [
         title: 'Identidade Visual',
         href: `/settings/identidade-visual`,
     },
-    /*{
-        icon: <WavesLadder size={20} />,
+    {
+        icon: <Telescope size={20} />,
         title: 'Comodidades',
         href: `/settings/comodidades`,
-    },*/
+    },
     {
         icon: <AtSign size={20} />,
         title: 'Contato e Redes Sociais',
