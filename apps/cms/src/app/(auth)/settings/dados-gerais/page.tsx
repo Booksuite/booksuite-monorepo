@@ -1,149 +1,47 @@
 'use client'
 
-import { Button, CheckboxGroup, Flex, Stack, useToast } from '@chakra-ui/react'
-import { type FormEvent, useState } from 'react'
+import { getCompanyByIdQueryKey, useGetCompanyById } from '@booksuite/sdk'
+import { useToast } from '@chakra-ui/react'
+import { Formik } from 'formik'
 
-import { useCompanyContext } from '@/app/providers/companyProvider'
-import { updateCompany } from '@/common/services/company/updateCompany'
-import { UpdateCompanyDTO } from '@/common/types/Company'
-import { slugify } from '@/common/utils/slugify'
-import InputBox from '@/components/atoms/InputBox'
-import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
-import SelectBox from '@/components/atoms/SelectBox'
-import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
+import { useCurrentCompanyId } from '@/common/contexts/user'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
-export default function DadosGerais() {
-    const [formData, setFormData] = useState<UpdateCompanyDTO | null>(null)
-    const [isSaving, setIsSaving] = useState<boolean>(false)
+import { GeneralDataForm } from './components/GeneralDataForm'
+import {
+    createFormInitialValues,
+    GeneralData,
+    generalDataSchema,
+} from './utils/config'
 
-    const { company, setCompany } = useCompanyContext()
+export default function GeneralDataPage() {
+    const companyId = useCurrentCompanyId()
+
+    const { data: companyGeneralData, isLoading } = useGetCompanyById({
+        id: companyId,
+    })
 
     const toast = useToast()
 
-    function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault()
-
-        if (isSaving || !formData) {
-            return
-        }
-
-        setIsSaving(true)
-
-        const response = new Promise((resolve) => {
-            resolve(updateCompany(company.id, formData))
-        })
-            .then((resp: any) => {
-                if (resp.success) {
-                    if (resp.company) {
-                        setCompany(resp.company)
-                    }
-                }
-            })
-            .finally(() => {
-                setIsSaving(false)
-            })
-
-        toast.promise(response, toastGenericPatchMessages)
-    }
+    function handleSubmit(e: GeneralData) {}
 
     return (
-        <div className="DadosGerais">
-            <PageHeader.Root>
-                <PageHeader.BackLink href="/configuracoes">
-                    Configurações
-                </PageHeader.BackLink>
+        <div className="GeneralData">
+            <PageHeader
+                title="Dados Gerais"
+                backLButtonLabel="Configurações"
+                backButtonHref="/configuracoes"
+            />
 
-                <PageHeader.Title>Dados Gerais</PageHeader.Title>
-            </PageHeader.Root>
-
-            <form onSubmit={handleSubmit}>
-                <Stack gap={8}>
-                    <Flex direction="column" gap={2}>
-                        <InputBox
-                            label="Nome da Acomodação"
-                            defaultValue={company.name}
-                            onChange={(event) => {
-                                setFormData({
-                                    ...formData,
-                                    name: event.target.value,
-                                    slug: slugify(event.target.value),
-                                })
-                            }}
-                        />
-
-                        <SelectBox
-                            options={[
-                                {
-                                    value: 'Pousada',
-                                    label: 'Pousada',
-                                },
-                                { value: 'Nome Lorem', label: 'Nome Lorem' },
-                                { value: 'Lorem Ipsum', label: 'Lorem Ipsum' },
-                            ]}
-                            defaultValue={
-                                company.branchBusiness
-                                    ? {
-                                          value: company.branchBusiness,
-                                          label: company.branchBusiness,
-                                      }
-                                    : null
-                            }
-                            onChange={(e: { value: string; label: string }) => {
-                                setFormData({
-                                    ...formData,
-                                    branchBusiness: e.value,
-                                })
-                            }}
-                            label="Tipo de Negócio"
-                        />
-
-                        <SelectBox
-                            options={[
-                                {
-                                    value: 'Brasília (GMT - 03:00)',
-                                    label: 'Brasília (GMT - 03:00)',
-                                },
-                                { value: 'Nome Lorem', label: 'Nome Lorem' },
-                                { value: 'Lorem Ipsum', label: 'Lorem Ipsum' },
-                            ]}
-                            defaultValue={
-                                company.timezone
-                                    ? {
-                                          value: company.timezone,
-                                          label: company.timezone,
-                                      }
-                                    : null
-                            }
-                            onChange={(e: { value: string; label: string }) => {
-                                setFormData({ ...formData, timezone: e.value })
-                            }}
-                            label="Fuso Horário"
-                        />
-
-                        <section>
-                            <h4 className="mt-4">Idiomas disponíveis</h4>
-
-                            <CheckboxGroup
-                            // onChange={(value: string[]) => {
-                            //   setFormData({ ...formData, nights: value });
-                            // }}
-                            >
-                                <Stack spacing={[2]} direction={['column']}>
-                                    <InputCheckboxBox>
-                                        Português
-                                    </InputCheckboxBox>
-                                    <InputCheckboxBox>Inglês</InputCheckboxBox>
-                                </Stack>
-                            </CheckboxGroup>
-                        </section>
-                    </Flex>
-
-                    <Button type="submit" isLoading={isSaving}>
-                        Salvar
-                    </Button>
-                </Stack>
-            </form>
+            {isLoading ? (
+                <Formik<GeneralData>
+                    initialValues={createFormInitialValues(companyGeneralData)}
+                    validationSchema={generalDataSchema}
+                    onSubmit={handleSubmit}
+                >
+                    <GeneralDataForm />
+                </Formik>
+            ) : undefined}
         </div>
     )
 }
