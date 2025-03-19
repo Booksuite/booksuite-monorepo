@@ -1,9 +1,19 @@
-import { Button, HStack, Stack, Switch, Text, VStack } from '@chakra-ui/react'
+import {
+    Box,
+    Button,
+    Flex,
+    HStack,
+    Stack,
+    Switch,
+    Text,
+    VStack,
+} from '@chakra-ui/react'
 import { FieldArray, Form, useFormikContext } from 'formik'
-import { CircleMinus, CirclePlus } from 'lucide-react'
+import { CircleMinus, CirclePlus, Info } from 'lucide-react'
 
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import SelectBox from '@/components/atoms/SelectBox'
 import { AgePolicyFormData } from '../utils/config'
 
 export const AgePolicyForm = () => {
@@ -29,10 +39,22 @@ export const AgePolicyForm = () => {
                     {...getFieldProps('adultMinAge')}
                     onChange={handleChange('adultMinAge')}
                 />
-                <Text fontSize="sm" color="gray.500">
-                    Importante: selecione acima qual idade o sistema deve
-                    considerar adulto (cobrando valor integral).
-                </Text>
+                <Box
+                    bg={'gray.100'}
+                    p={3}
+                    borderRadius={'md'}
+                    display={'flex'}
+                    alignItems={'center'}
+                >
+                    <Flex align="center" gap={2} margin={'0 auto'}>
+                        <Info size={23} color={'#0B1F51'} />
+                        <Text fontSize={'md'} color={'#0B1F51'}>
+                            <b>Importante:</b> selecione acima qual idade o
+                            sistema deve considerar adulto (cobrando valor
+                            integral).
+                        </Text>
+                    </Flex>
+                </Box>
 
                 <h2>Crianças</h2>
                 <HStack justifyContent={'space-between'}>
@@ -113,7 +135,7 @@ export const AgePolicyForm = () => {
                                                     `ageGroups.${index}.finalAge`,
                                                 )}
                                             />
-                                            <InputBox
+                                            <SelectBox
                                                 label="Tipo de cobrança"
                                                 error={error?.chargeType}
                                                 formControl={{
@@ -123,8 +145,67 @@ export const AgePolicyForm = () => {
                                                             index
                                                         ]?.chargeType,
                                                 }}
+                                                options={[
+                                                    {
+                                                        label: 'Cobrar por criança por diária',
+                                                        value: 'child_per_day',
+                                                    },
+                                                    {
+                                                        label: 'Cobrar por faixa etária',
+                                                        value: 'age_group',
+                                                    },
+                                                ]}
+                                                placeholder="Selecione o tipo de cobrança"
+                                                isSearchable={false}
+                                                closeMenuOnSelect
+                                                value={
+                                                    values.ageGroups?.[index]
+                                                        ?.chargeType
+                                                        ? [
+                                                              {
+                                                                  label: 'Cobrar por criança por diária',
+                                                                  value: 'child_per_day',
+                                                              },
+                                                              {
+                                                                  label: 'Cobrar por faixa etária',
+                                                                  value: 'age_group',
+                                                              },
+                                                          ].find(
+                                                              (opt) =>
+                                                                  opt.value ===
+                                                                  (values
+                                                                      .ageGroups[
+                                                                      index
+                                                                  ]
+                                                                      ?.chargeType as string),
+                                                          ) || null
+                                                        : null
+                                                }
+                                                onChange={(
+                                                    option: {
+                                                        value: string
+                                                    } | null,
+                                                ) =>
+                                                    setFieldValue(
+                                                        `ageGroups.${index}.chargeType`,
+                                                        option?.value || '',
+                                                    )
+                                                }
+                                            />
+
+                                            <InputBox
+                                                label="Valor a ser cobrado"
+                                                type="currency"
+                                                error={error?.value}
+                                                formControl={{
+                                                    isInvalid:
+                                                        !!error?.value &&
+                                                        touched.ageGroups?.[
+                                                            index
+                                                        ]?.value,
+                                                }}
                                                 {...getFieldProps(
-                                                    `ageGroups.${index}.chargeType`,
+                                                    `ageGroups.${index}.value`,
                                                 )}
                                             />
                                         </VStack>
