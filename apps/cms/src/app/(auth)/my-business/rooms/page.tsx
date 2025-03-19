@@ -49,6 +49,7 @@ const columnsDefinition: ColumnDef<HousingUnitTypeFull>[] = [
             <Image
                 src={row.original.medias[0]?.media.url}
                 alt={row.original.name}
+                objectFit="cover"
                 borderRadius="lg"
                 width="72px"
                 height="72px"
@@ -61,7 +62,7 @@ const columnsDefinition: ColumnDef<HousingUnitTypeFull>[] = [
         accessorKey: 'name',
         enableSorting: true,
         cell: ({ row }) => (
-            <Text fontWeight="bold" fontSize="md">
+            <Text fontWeight="bold" fontSize="md" color="#486581">
                 {row.original.name}
             </Text>
         ),
@@ -99,7 +100,7 @@ export default function Rooms() {
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
 
-    const { orderBy, orderDirection, setOrderBy, setOrderDirection } =
+    const { orderBy, orderDirection, setOrder } =
         useSearchParamsOrder<HousingUnitTypeOrderByDTOOrderBy>({
             defaultOrder: 'name',
             currentPath: '/my-business/rooms',
@@ -121,7 +122,11 @@ export default function Rooms() {
     }, [debouncedSearch, searchInputValue])
 
     const companyId = useCurrentCompanyId()
-    const { data: housingUnitTypes, isLoading } = useSearchHousingUnitTypes(
+    const {
+        data: housingUnitTypes,
+        isLoading,
+        error,
+    } = useSearchHousingUnitTypes(
         { companyId },
         {
             pagination: { page, itemsPerPage },
@@ -160,8 +165,10 @@ export default function Rooms() {
                 },
             ])
 
-            setOrderBy(newValue[0]?.id ?? 'name')
-            setOrderDirection(newValue[0]?.desc ? 'desc' : 'asc')
+            setOrder(
+                newValue[0]?.id ?? 'name',
+                newValue[0]?.desc ? 'desc' : 'asc',
+            )
         },
     })
 
@@ -217,7 +224,7 @@ export default function Rooms() {
                     </InputGroup>
                 </HStack>
 
-                <Table table={table} />
+                <Table table={table} error={error} isLoading={isLoading} />
 
                 <HStack justifyContent="flex-end">
                     <PaginationControls
