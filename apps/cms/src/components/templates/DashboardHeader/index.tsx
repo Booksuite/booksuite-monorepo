@@ -23,6 +23,8 @@ import {
     Search,
 } from 'lucide-react'
 
+import { Logo } from '@/components/atoms/Logo'
+
 import type { DashboardHeaderProps } from './types'
 
 export const DashboardHeader = ({
@@ -53,7 +55,7 @@ export const DashboardHeader = ({
                 />
 
                 <Box fontSize="2xl" fontWeight="regular" color="white">
-                    <strong>book</strong>suite
+                    <Logo.LogoText />
                 </Box>
 
                 <Flex gap={2}>
