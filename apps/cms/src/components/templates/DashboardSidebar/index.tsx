@@ -39,7 +39,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 
     const SidebarContent = (
         <VStack spacing={6} h="full" py={6} px={4} w="full" align="stretch">
-            <Logo />
+            <Logo.FullLogo />
             <NavMenu links={mainLinks} />
             <NavMenu links={footerLinks} />
         </VStack>
@@ -87,10 +87,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                                     fontWeight="bold"
                                     color="white"
                                 >
-                                    book
-                                    <span style={{ fontWeight: 'normal' }}>
-                                        suite
-                                    </span>
+                                    <Logo.LogoText />
                                 </Box>
 
                                 <Flex gap={2}>
