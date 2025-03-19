@@ -11,7 +11,6 @@ const createExperience = async (payload: CreateExperienceDTO) => {
             throw new Error('Nenhum dado retornado da API.')
         }
     } catch (error) {
-        console.error(error)
         throw error
     }
 }

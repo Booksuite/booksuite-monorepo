@@ -3,7 +3,7 @@ import { ReactNode } from 'react'
 
 import { Logo } from '@/components/atoms/Logo'
 
-export default function PublicLayout(children: ReactNode) {
+export default function PublicLayout({ children }: { children: ReactNode }) {
     return (
         <Flex
             direction="column"

@@ -56,7 +56,7 @@ const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ params }) => {
 
         const payload = { ...formData, status: status } as UpdateExperienceDTO
 
-        const response = new Promise((resolve, reject) => {
+        const response = new Promise((resolve) => {
             resolve(updateExperience(params.id, payload))
         }).finally(() => {
             setIsSaving(false)

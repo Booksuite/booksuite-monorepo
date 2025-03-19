@@ -17,9 +17,9 @@ import { useCallback, useMemo } from 'react'
 
 import { COMODITIES_TAB_FILTER } from '@/common/constants/facility'
 import { SelectBox } from '@/components/organisms/SelectBox'
+import { MAX_FEATURED_FACILITIES } from '../constants'
 import { RoomsFormData } from '../utils/config'
 
-import { MAX_FEATURED_FACILITIES } from '../constants'
 import { HousintUnitTypeFacilityItem } from './HousintUnitTypeFacilityItem'
 
 export const HousingUnitTypeFacilitiesField = () => {
