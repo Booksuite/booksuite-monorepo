@@ -4,16 +4,17 @@ import { CircleMinus, CirclePlus } from 'lucide-react'
 
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
-
-export type AgePolicyFormData = {
-    acceptChildren: boolean
-    adultMinAge: number
-    ageGroups: { initialAge: number; finalAge: number; chargeType: string }[]
-}
+import { AgePolicyFormData } from '../utils/config'
 
 export const AgePolicyForm = () => {
-    const { getFieldProps, touched, errors, values, setFieldValue } =
-        useFormikContext<AgePolicyFormData>()
+    const {
+        getFieldProps,
+        touched,
+        errors,
+        values,
+        handleChange,
+        setFieldValue,
+    } = useFormikContext<AgePolicyFormData>()
 
     return (
         <Form>
@@ -26,6 +27,7 @@ export const AgePolicyForm = () => {
                         isInvalid: !!errors.adultMinAge && touched.adultMinAge,
                     }}
                     {...getFieldProps('adultMinAge')}
+                    onChange={handleChange('adultMinAge')}
                 />
                 <Text fontSize="sm" color="gray.500">
                     Importante: selecione acima qual idade o sistema deve
@@ -90,6 +92,9 @@ export const AgePolicyForm = () => {
                                                 {...getFieldProps(
                                                     `ageGroups.${index}.initialAge`,
                                                 )}
+                                                onChange={handleChange(
+                                                    `ageGroups.${index}.initialAge`,
+                                                )}
                                             />
                                             <InputNumberBox
                                                 label="Idade Final"
@@ -102,6 +107,9 @@ export const AgePolicyForm = () => {
                                                         ]?.finalAge,
                                                 }}
                                                 {...getFieldProps(
+                                                    `ageGroups.${index}.finalAge`,
+                                                )}
+                                                onChange={handleChange(
                                                     `ageGroups.${index}.finalAge`,
                                                 )}
                                             />

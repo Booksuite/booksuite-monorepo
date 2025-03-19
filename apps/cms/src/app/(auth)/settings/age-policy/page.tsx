@@ -4,8 +4,9 @@ import { Formik } from 'formik'
 
 import { PageHeader } from '@/components/organisms/PageHeader'
 
-import { AgePolicyForm, AgePolicyFormData } from './components/AgePolicyForm'
+import { AgePolicyForm } from './components/AgePolicyForm'
 import {
+    AgePolicyFormData,
     agePolicyFormSchema,
     createAgePolicyInitialValues,
 } from './utils/config'
