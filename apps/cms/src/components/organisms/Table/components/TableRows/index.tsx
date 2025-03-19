@@ -1,5 +1,5 @@
 import { Alert, AlertIcon, AlertTitle, Td, Th, Tr } from '@chakra-ui/react'
-import { flexRender, Table as ReactTable, RowData } from '@tanstack/react-table'
+import { flexRender, RowData,Table as ReactTable } from '@tanstack/react-table'
 
 import { getTableCellSkeleton, getTableColumnType } from '../../utils'
 

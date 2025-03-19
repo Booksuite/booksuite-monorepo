@@ -11,8 +11,7 @@ import {
 } from '@chakra-ui/react'
 import React from 'react'
 
-const { definePartsStyle, defineMultiStyleConfig } =
-    createMultiStyleConfigHelpers(alertAnatomy.keys)
+const { definePartsStyle } = createMultiStyleConfigHelpers(alertAnatomy.keys)
 
 interface ChakraThemeProviderProps {
     children: React.ReactNode

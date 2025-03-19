@@ -1,8 +1,8 @@
 'use client'
 
 import { Button, FormControl, FormLabel, Input } from '@chakra-ui/react'
-import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 import { useState } from 'react'
 
 import type { LoginForm } from './types'
@@ -26,7 +26,6 @@ export default function DashboardLoginForm() {
         })
 
         if (result.error) {
-            console.error(result.error)
             setError(true)
             setIsLoading(false)
             return

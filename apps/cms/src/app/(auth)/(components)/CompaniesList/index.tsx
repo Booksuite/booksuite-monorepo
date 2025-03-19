@@ -1,11 +1,10 @@
 'use client'
 
+import { useSearchCompanies } from '@booksuite/sdk'
 import { Spinner, Table, Td, Th, Tr } from '@chakra-ui/react'
 import { useState } from 'react'
 
 import { getErrorMessage } from '@/common/utils'
-
-import { useSearchCompanies } from '@booksuite/sdk'
 import { PaginationControls } from '../../../../components/molecules/PaginationControl'
 
 export const CompaniesList: React.FC = () => {

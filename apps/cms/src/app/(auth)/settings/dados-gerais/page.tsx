@@ -1,19 +1,20 @@
 'use client'
 
-import { PageHeader } from '@/components/organisms/PageHeader'
+import { Button, CheckboxGroup, Flex, Stack, useToast } from '@chakra-ui/react'
+import { type FormEvent, useState } from 'react'
+
+import { useCompanyContext } from '@/app/providers/companyProvider'
+import { updateCompany } from '@/common/services/company/updateCompany'
+import { UpdateCompanyDTO } from '@/common/types/Company'
+import { slugify } from '@/common/utils/slugify'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
-import { updateCompany } from '@/common/services/company/updateCompany'
-import { useCompanyContext } from '@/app/providers/companyProvider'
-import type { UpdateCompa@/src/utils/slugify/types/Company'
-import { slugify } from '@/common/utils/slugify'
-import { Button, CheckboxGroup, Flex, Stack, useToast } from '@chakra-ui/react'
-import { useState, type FormEvent } from 'react'
+import { PageHeader } from '@/components/organisms/PageHeader'
 
 export default function DadosGerais() {
-    const [formData, setFormData] = useState<UpdateCompanyDTO>(null)
+    const [formData, setFormData] = useState<UpdateCompanyDTO | null>(null)
     const [isSaving, setIsSaving] = useState<boolean>(false)
 
     const { company, setCompany } = useCompanyContext()
@@ -29,7 +30,7 @@ export default function DadosGerais() {
 
         setIsSaving(true)
 
-        const response = new Promise((resolve, reject) => {
+        const response = new Promise((resolve) => {
             resolve(updateCompany(company.id, formData))
         })
             .then((resp: any) => {

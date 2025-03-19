@@ -1,4 +1,4 @@
-import { ButtonProps, Button as ChakraButton } from '@chakra-ui/react'
+import { Button as ChakraButton,ButtonProps } from '@chakra-ui/react'
 import { Route } from 'next'
 import Link from 'next/link'
 
