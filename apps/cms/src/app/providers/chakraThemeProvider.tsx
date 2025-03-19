@@ -262,17 +262,10 @@ export default function ChakraThemeProvider({
             Switch: SwitchTheme,
             Checkbox: checkBoxTheme,
             Alert: {
-                variants: {
-                    custom: {
-                        container: {
-                            background: 'tertiary.50',
-                            color: 'primary.900',
-                            borderRadius: '4px',
-                        },
+                baseStyle: {
+                    container: {
+                        borderRadius: '8px',
                     },
-                },
-                defaultProps: {
-                    variant: 'custom',
                 },
             },
             Accordion: AccordionTheme,

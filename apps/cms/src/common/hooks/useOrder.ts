@@ -26,20 +26,13 @@ export function useSearchParamsOrder<T extends string>({
         ? searchParams.get('orderDirection')
         : defaultDirection
 
-    const setOrderBy = useCallback(
-        (orderBy: string) => {
-            push(`${currentPath}?${createQueryString('orderBy', orderBy)}`)
-        },
-        [currentPath, push],
-    )
-
-    const setOrderDirection = useCallback(
-        (orderDirection: 'asc' | 'desc') => {
+    const setOrder = useCallback(
+        (orderBy: string, orderDirection: 'asc' | 'desc') => {
             push(
-                `${currentPath}?${createQueryString(
-                    'orderDirection',
-                    orderDirection,
-                )}`,
+                `${currentPath}?${createQueryString([
+                    ['orderBy', orderBy],
+                    ['orderDirection', orderDirection],
+                ])}`,
             )
         },
         [currentPath, push],
@@ -48,7 +41,6 @@ export function useSearchParamsOrder<T extends string>({
     return {
         orderBy: orderBy as T,
         orderDirection: orderDirection as 'asc' | 'desc',
-        setOrderBy,
-        setOrderDirection,
+        setOrder,
     }
 }

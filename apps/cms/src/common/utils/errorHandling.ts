@@ -2,6 +2,8 @@
  * Utility functions for error handling
  */
 
+import { AxiosError } from 'axios'
+
 type ErrorWithMessage = {
     message: string
 }
@@ -25,6 +27,10 @@ function toErrorWithMessage(
     error: unknown,
     fallback?: string,
 ): ErrorWithMessage {
+    if (error instanceof AxiosError) {
+        return { message: error.response?.data.message }
+    }
+
     if (isErrorWithMessage(error)) {
         return error
     }

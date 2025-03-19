@@ -28,7 +28,7 @@ export function getTableProps(withDragHandle = false): TableProps {
                 },
             },
             '& > tr': {
-                '& td': {
+                '& td, & > th': {
                     border: 'none',
                     padding: 12,
                     '&:not(.drag-handle)': {
