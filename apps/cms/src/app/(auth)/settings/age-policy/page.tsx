@@ -18,7 +18,7 @@ export default function PoliticaDeIdade() {
     return (
         <div className="PoliticaDeIdade">
             <PageHeader.Root>
-                <PageHeader.BackLink href="/configuracoes">
+                <PageHeader.BackLink href="/settings">
                     Configurações
                 </PageHeader.BackLink>
 
