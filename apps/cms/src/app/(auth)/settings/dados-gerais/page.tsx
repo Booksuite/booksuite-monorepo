@@ -14,7 +14,7 @@ import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 export default function DadosGerais() {
-    const [formData, setFormData] = useState<UpdateCompanyDTO>(null)
+    const [formData, setFormData] = useState<UpdateCompanyDTO | null>(null)
     const [isSaving, setIsSaving] = useState<boolean>(false)
 
     const { company, setCompany } = useCompanyContext()

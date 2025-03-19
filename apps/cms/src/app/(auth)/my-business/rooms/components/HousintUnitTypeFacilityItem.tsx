@@ -1,6 +1,5 @@
-import { Box, Text } from '@chakra-ui/react'
-
 import { Facility } from '@booksuite/sdk'
+import { Box, Text } from '@chakra-ui/react'
 import { HStack } from '@chakra-ui/react'
 import { Star } from 'lucide-react'
 

@@ -31,7 +31,7 @@ export default function CreateExperienciasPage() {
 
         const payload = { ...formData, status: status } as CreateExperienceDTO
 
-        const response = new Promise((resolve, reject) => {
+        const response = new Promise((resolve) => {
             resolve(createExperience(payload))
         }).finally(() => {
             setIsSaving(false)

@@ -1,8 +1,4 @@
 import { HousingUnitTypeFull } from '@booksuite/sdk'
-import pluralize from 'pluralize'
-
-import { formatCurrency } from '@/common/utils/currency'
-import { Card } from '@/components/atoms/Card'
 import {
     Menu,
     MenuButton,
@@ -11,6 +7,10 @@ import {
     MenuList,
 } from '@chakra-ui/react'
 import { Copy, Edit, Eye, EyeOff, Trash } from 'lucide-react'
+import pluralize from 'pluralize'
+
+import { formatCurrency } from '@/common/utils/currency'
+import { Card } from '@/components/atoms/Card'
 
 interface HousingUnitTypeCardProps {
     housingUnitType: HousingUnitTypeFull

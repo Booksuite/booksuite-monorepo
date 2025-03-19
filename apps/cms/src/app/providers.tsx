@@ -12,7 +12,7 @@ interface ProvidersProps {
     session?: Session
 }
 
-export function Providers({ children, session }: ProvidersProps) {
+export function Providers({ children }: ProvidersProps) {
     return (
         <CssCacheProvider>
             <ChakraThemeProvider>

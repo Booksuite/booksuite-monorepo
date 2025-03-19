@@ -45,7 +45,7 @@ export default function ExtraDetailPage({
             // status: status,
         } as UpdateExtraDTO
 
-        const response = new Promise((resolve, reject) => {
+        const response = new Promise((resolve) => {
             resolve(updateExtra(params.id, payload))
         }).finally(() => {
             setIsSaving(false)

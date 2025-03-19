@@ -11,7 +11,6 @@ const createExtra = async (payload: CreateExtraDTO) => {
             throw new Error('Nenhum dado retornado da API.')
         }
     } catch (error) {
-        console.error(error)
         throw error
     }
 }

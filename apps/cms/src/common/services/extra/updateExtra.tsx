@@ -11,7 +11,6 @@ const updateExtra = async (id: number | string, payload: UpdateExtraDTO) => {
             throw new Error('Nenhum dado retornado da API.')
         }
     } catch (error) {
-        console.error(error)
         throw error
     }
 }
