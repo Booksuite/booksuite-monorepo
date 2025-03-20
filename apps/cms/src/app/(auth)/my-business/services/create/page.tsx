@@ -27,7 +27,8 @@ export default function CreateServicePage() {
     const toast = useToast()
 
     async function handleSubmit(formData: ServiceFormData) {
-        console.log(formData)
+        formData.availableWeekDays = {...formData.availableWeekDays}
+
         try {
             await createService({
                 companyId,
