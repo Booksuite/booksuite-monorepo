@@ -1,7 +1,7 @@
 import { CompanyFull } from '@booksuite/sdk'
 import { create } from 'zustand'
 
-export const TEST_COMPANY = '568cc87c-5594-4db7-9425-076b552e2966'
+export const TEST_COMPANY = 'fe6799d4-396f-48cf-bb73-cae5b82e85b2'
 
 type CurrentCompanyStore = {
     company: CompanyFull | null
