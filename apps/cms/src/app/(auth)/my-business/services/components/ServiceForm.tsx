@@ -56,7 +56,6 @@ export const ServiceForm: React.FC = () => {
     const {
         data: housingUnitTypes,
         isLoading: isLoadingHousingUnitTypes,
-        error,
     } = useSearchHousingUnitTypes(
         {
             companyId: companyId,
@@ -297,6 +296,31 @@ export const ServiceForm: React.FC = () => {
                         </Stack>
                     </CheckboxGroup>
                 </section> */}
+
+                <section>
+                    <Text as="h2">Descrição e Informação</Text>
+                    <TextAreaBox
+                        label="Descrição"
+                        maxLength={250}
+                        error={errors.description}
+                        formControl={{
+                            isInvalid:
+                                !!errors.description && touched.description,
+                        }}
+                        {...getFieldProps('description')}
+                    />
+
+                    <TextAreaBox
+                        mt={2}
+                        label="Informações gerais e observações"
+                        maxLength={500}
+                        error={errors.notes}
+                        formControl={{
+                            isInvalid: !!errors.notes && touched.notes,
+                        }}
+                        {...getFieldProps('notes')}
+                    />
+                </section>
 
                 <section>
                     <Text as="h2">Descrição e Informação</Text>
