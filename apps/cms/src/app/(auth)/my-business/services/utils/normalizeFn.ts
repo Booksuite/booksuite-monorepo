@@ -1,10 +1,9 @@
-import { ServiceCategory, ServiceCategoryInput } from '@booksuite/sdk'
+// import { ServiceHousingUnitTypeInput } from '@booksuite/sdk'
 
-export function normalizeServiceCategoryInput(
-    category: ServiceCategory[],
-): ServiceCategoryInput[] {
-    return category.map((c) => ({
-        id: c.id,
-        name: c.name,    
-    }))
-}   
+// export function normalizeServiceCategoryInput(
+//     housing: ServiceHousingUnitTypeInput[],
+// ): ServiceHousingUnitTypeInput[] {
+//     return housing.map((h) => ({
+//         ...h
+//     }))
+// }
