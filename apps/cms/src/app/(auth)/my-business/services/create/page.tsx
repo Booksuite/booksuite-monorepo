@@ -27,7 +27,6 @@ export default function CreateServicePage() {
 
     async function handleSubmit(formData: ServiceFormData) {
         console.log(formData)
-
         try {
             await createService({
                 companyId,
