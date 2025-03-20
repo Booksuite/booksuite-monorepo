@@ -24,7 +24,7 @@ export const createAddressInitialValues = (
     city: data?.city || '',
 })
 
-export const addressSchema = yup.object({
+export const addressFormSchema = yup.object({
     stateRegistration: yup.string().nullable(),
     municipalRegistration: yup.string().nullable(),
     address: yup.string().required('O endereço é obrigatório'),
