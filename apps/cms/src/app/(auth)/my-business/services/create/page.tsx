@@ -17,7 +17,7 @@ import {
     serviceFormSchema,
 } from '../utils/config'
 
-export default function CreateExperienciasPage() {
+export default function CreateServicePage() {
     const [status, setStatus] = useState<Status>('Ativo')
 
     const companyId = useCurrentCompanyId()
@@ -27,7 +27,8 @@ export default function CreateExperienciasPage() {
     const toast = useToast()
 
     async function handleSubmit(formData: ServiceFormData) {
-        console.log(formData)
+        formData.availableWeekDays = {...formData.availableWeekDays}
+
         try {
             await createService({
                 companyId,
@@ -37,7 +38,7 @@ export default function CreateExperienciasPage() {
     }
 
     return (
-        <div className="CreateExperiencias">
+        <div className="CreateService">
             <PageHeader.Root>
                 <Flex
                     alignItems="center"
@@ -45,7 +46,7 @@ export default function CreateExperienciasPage() {
                     gap={2}
                 >
                     <PageHeader.BackLink href="/my-business/services">
-                        Experiências
+                        Serviços
                     </PageHeader.BackLink>
 
                     <SwitchBox
@@ -53,16 +54,16 @@ export default function CreateExperienciasPage() {
                         id="status"
                         name="status"
                         defaultChecked
-                        onChange={() => {
+                        onChange={() => 
                             status === 'Ativo'
                                 ? setStatus('Inativo')
                                 : setStatus('Ativo')
-                        }}
+                        }
                         isChecked={status === 'Ativo'}
                     />
                 </Flex>
 
-                <PageHeader.Title>Criar Experiência</PageHeader.Title>
+                <PageHeader.Title>Criar Serviço</PageHeader.Title>
             </PageHeader.Root>
 
             <Formik<ServiceFormData>
