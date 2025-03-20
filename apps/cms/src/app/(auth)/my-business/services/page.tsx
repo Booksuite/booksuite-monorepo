@@ -162,7 +162,7 @@ export default function Services() {
     return (
         <div className="Services">
             <PageHeader
-                title="Experiências"
+                title="Serviços"
                 backLButtonLabel="Meu Negócio"
                 backButtonHref="/my-business"
                 headerRight={
