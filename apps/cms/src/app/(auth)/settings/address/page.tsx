@@ -267,3 +267,41 @@ export default function Endereco() {
         </div>
     )
 }*/
+
+'use client'
+
+import { Formik } from 'formik'
+
+import { PageHeader } from '@/components/organisms/PageHeader'
+
+import {
+    AddressFormData,
+    addressFormSchema,
+    createAddressInitialValues,
+} from './utils/config'
+
+export default function Address() {
+    function handleSubmit(formData: AddressFormData) {
+        return null
+    }
+
+    return (
+        <div className="address">
+            <PageHeader.Root>
+                <PageHeader.BackLink href="/settings">
+                    Configurações
+                </PageHeader.BackLink>
+
+                <PageHeader.Title>Endereço</PageHeader.Title>
+            </PageHeader.Root>
+
+            <Formik<AddressFormData>
+                initialValues={createAddressInitialValues()}
+                validationSchema={addressFormSchema}
+                onSubmit={handleSubmit}
+            >
+                {/*<AddressForm />*/}
+            </Formik>
+        </div>
+    )
+}
