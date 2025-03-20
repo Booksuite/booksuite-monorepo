@@ -50,12 +50,12 @@ export const ServiceForm: React.FC = () => {
         { id: 7, name: 'Domingo' },
     ]
 
-    /*const optionsPriceAdjustment = [
-        { value: 'PERCENT_DISCOUNT', label: 'Desconto Percentual' },
-        { value: 'PERCENT_ADD', label: 'Acréscimo Percentual' },
-        { value: 'FIXED_DISCOUNT', label: 'Desconto Fixo' },
-        { value: 'FIXED_ADD', label: 'Acréscimo Fixo' },
-    ]*/
+    // const optionsPriceAdjustment = [
+    //     { value: 'PERCENT_DISCOUNT', label: 'Desconto Percentual' },
+    //     { value: 'PERCENT_ADD', label: 'Acréscimo Percentual' },
+    //     { value: 'FIXED_DISCOUNT', label: 'Desconto Fixo' },
+    //     { value: 'FIXED_ADD', label: 'Acréscimo Fixo' },
+    // ]
 
     const optionsBill = [
         { value: 'PER_NIGHT', label: 'Por noite' },
@@ -67,7 +67,6 @@ export const ServiceForm: React.FC = () => {
     const {
         data: housingUnitTypes,
         isLoading: isLoadingHousingUnitTypes,
-        error,
     } = useSearchHousingUnitTypes(
         {
             companyId: companyId,
@@ -93,39 +92,52 @@ export const ServiceForm: React.FC = () => {
                         }}
                         {...getFieldProps('name')}
                     />
+
+                    <InputBox
+                        label="Preço Final da Experiência"
+                        type="currency"
+                        error={errors.price}
+                        formControl={{
+                            isInvalid: !!errors.price && touched.price,
+                        }}
+                        onChange={(e) => {
+                            setFieldValue('price',0)
+                        }}
+                    />
+
+                    <SelectBox
+                        label="Tipo de Cobrança"
+                        options={optionsBill}
+                        onChange={(selectedOption: any) =>
+                            setFieldValue('billType', selectedOption?.value)
+                        }
+                        value={optionsBill.find(
+                            (opt) => opt.value === values.billType,
+                        )}
+                    />
+
+                    <InputNumberBox
+                        label="Mínimo de Diárias"
+                        min={1}
+                        error={errors.minDaily}
+                        formControl={{
+                            isInvalid: !!errors.minDaily && touched.minDaily,
+                        }}
+                        {...getFieldProps('minDaily')}
+                        onChange={handleChange('minDaily')}
+                    />
+
+                    <InputNumberBox
+                        label="Antecedência mínima"
+                        min={1}
+                        error={errors.minNotice}
+                        formControl={{
+                            isInvalid: !!errors.minNotice && touched.minNotice,
+                        }}
+                        {...getFieldProps('minNotice')}
+                        onChange={handleChange('minNotice')}
+                    />
                 </Flex>
-
-                <section>
-                    <Stack gap={2}>
-                        <InputNumberBox
-                            label="Mínimo de Diárias"
-                            min={1}
-                            error={errors.minDaily}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.minDaily && touched.minDaily,
-                            }}
-                            {...getFieldProps('minDaily')}
-                            onChange={handleChange('minDaily')}
-                        />
-                    </Stack>
-                </section>
-
-                <section>
-                    <Stack gap={2}>
-                        <InputNumberBox
-                            label="Antecedência mínima"
-                            min={1}
-                            error={errors.minNotice}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.minNotice && touched.minNotice,
-                            }}
-                            {...getFieldProps('minNotice')}
-                            onChange={handleChange('minNotice')}
-                        />
-                    </Stack>
-                </section>
 
                 <section>
                     <Text as="h2">Configurações de Venda</Text>
@@ -323,6 +335,31 @@ export const ServiceForm: React.FC = () => {
                 </section>
 
                 <section>
+                    <Text as="h2">Descrição e Informação</Text>
+                    <TextAreaBox
+                        label="Descrição"
+                        maxLength={250}
+                        error={errors.description}
+                        formControl={{
+                            isInvalid:
+                                !!errors.description && touched.description,
+                        }}
+                        {...getFieldProps('description')}
+                    />
+
+                    <TextAreaBox
+                        mt={2}
+                        label="Informações gerais e observações"
+                        maxLength={500}
+                        error={errors.notes}
+                        formControl={{
+                            isInvalid: !!errors.notes && touched.notes,
+                        }}
+                        {...getFieldProps('notes')}
+                    />
+                </section>
+
+                <section>
                     <Text as="h2">Fotos e vídeo</Text>
                     <Text as="h2" mt={2}>
                         Galeria
@@ -371,93 +408,6 @@ export const ServiceForm: React.FC = () => {
                         }}
                         {...getFieldProps('videoUrl')}
                     />
-                </section>
-
-                <section>
-                    <Text as="h2">Descrição e Informação</Text>
-                    <TextAreaBox
-                        label="Descrição"
-                        maxLength={250}
-                        error={errors.description}
-                        formControl={{
-                            isInvalid:
-                                !!errors.description && touched.description,
-                        }}
-                        {...getFieldProps('description')}
-                    />
-
-                    <TextAreaBox
-                        mt={2}
-                        label="Informações gerais e observações"
-                        maxLength={500}
-                        error={errors.notes}
-                        formControl={{
-                            isInvalid: !!errors.notes && touched.notes,
-                        }}
-                        {...getFieldProps('notes')}
-                    />
-                </section>
-
-                <section>
-                    <Text as="h2">Preço</Text>
-                    <Stack gap={2}>
-                        <InputBox
-                            label="Soma dos Extras Selecionados"
-                            type="currency"
-                            isDisabled
-                            /*error={errors.}
-                            formControl={{
-                                isInvalid: !!errors. && touched.,
-                            }}*/
-                            {...getFieldProps('')}
-                        />
-
-                        {/*<SelectBox
-                            label="Ajuste de Preço"
-                            options={optionsPriceAdjustment}
-                            onChange={(selectedOption: any) =>
-                                setFieldValue(
-                                    'priceAdjustment',
-                                    selectedOption?.value,
-                                )
-                            }
-                            value={optionsPriceAdjustment.find(
-                                (opt) => opt.value === values.priceAdjustment,
-                            )}
-                        />
-                        {{errors. && touched. && (
-                            <Text color="red.500" fontSize="sm">
-                                {errors.}
-                            </Text>
-                        )}*/}
-
-                        <InputBox
-                            label="Preço Final da Experiência"
-                            type="currency"
-                            error={errors.price}
-                            formControl={{
-                                isInvalid: !!errors.price && touched.price,
-                            }}
-                            {...getFieldProps('price')}
-                        />
-
-                        <SelectBox
-                            label="Tipo de Cobrança"
-                            options={optionsBill}
-                            onChange={(selectedOption: any) =>
-                                setFieldValue('billType', selectedOption?.value)
-                            }
-                            value={optionsBill.find(
-                                (opt) => opt.value === values.billType,
-                            )}
-                        />
-
-                        {errors.billType && touched.billType && (
-                            <Text color="red.500" fontSize="sm">
-                                {errors.billType}
-                            </Text>
-                        )}
-                    </Stack>
                 </section>
 
                 <Button type="submit" size="lg">
