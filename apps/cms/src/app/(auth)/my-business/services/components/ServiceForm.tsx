@@ -24,6 +24,11 @@ import { Gallery } from '@/components/organisms/Gallery'
 import type { ServiceFormData } from '../utils/config'
 
 export const ServiceForm: React.FC = () => {
+    interface availableHousingUnitTypes {
+        id: string
+        name: string
+    }
+
     const {
         getFieldProps,
         touched,
@@ -33,11 +38,7 @@ export const ServiceForm: React.FC = () => {
         setFieldValue,
     } = useFormikContext<ServiceFormData>()
 
-    const categories = [
-        { id: '1', name: 'Categoria 1' },
-        { id: '2', name: 'Categoria 2' },
-        { id: '3', name: 'Categoria 3' },
-    ]
+    const availablehousingUnitTypes: availableHousingUnitTypes[] = []
 
     const validNights = [
         { id: 1, name: 'Segunda-feira' },
@@ -65,7 +66,7 @@ export const ServiceForm: React.FC = () => {
     const companyId = useCurrentCompanyId()
     const {
         data: housingUnitTypes,
-        isLoading,
+        isLoading: isLoadingHousingUnitTypes,
         error,
     } = useSearchHousingUnitTypes(
         {
@@ -75,6 +76,10 @@ export const ServiceForm: React.FC = () => {
             pagination: { itemsPerPage: 100, page: 1 },
         },
     )
+
+    housingUnitTypes?.items.map((housing) => {
+        availablehousingUnitTypes.push({ id: housing.id, name: housing.name })
+    })
 
     return (
         <Form>
@@ -212,56 +217,63 @@ export const ServiceForm: React.FC = () => {
                     />
                 </section>
 
-                {/* <section>
-                    <Text as="h2">Categorias</Text>
-                    <CheckboxGroup
-                        value={values.category.map((c) => c.id)}
-                        onChange={(selectedIds) => {
-                            const selectedCategories = categories.filter(
-                                (cat) => selectedIds.includes(cat.id),
-                            )
-                            setFieldValue('category', selectedCategories)
-                        }}
-                    >
-                        <Stack spacing={2} direction="column">
-                            {categories.map((cat) => (
-                                <InputCheckboxBox
-                                    key={cat.id}
-                                    value={cat.id}
-                                    isChecked={values.category.some(
-                                        (c) => c.id === cat.id,
-                                    )}
-                                    onChange={(e) => {
-                                        const isChecked = e.target.checked
-                                        const newCategories = isChecked
-                                            ? [...values.category, cat]
-                                            : values.category.filter(
-                                                  (c) => c.id !== cat.id,
-                                              )
-                                        setFieldValue('category', newCategories)
-                                    }}
-                                >
-                                    {cat.name}
-                                </InputCheckboxBox>
-                            ))}
-                        </Stack>
-                    </CheckboxGroup>
-                </section> */}
+                {!isLoadingHousingUnitTypes ? (
+                    <section>
+                        <Text as="h2">Acomodações Válidas</Text>
+                        <CheckboxGroup
+                            value={values.availableHousingUnitTypes.map((h) => h.housingUnitTypeId)}
+                            onChange={(selectedIds) => {
+                                setFieldValue('availableHousingUnitTypes', selectedIds)
+                            }}
+                        >
+                            <Stack spacing={2} direction="column">
+                                {availablehousingUnitTypes.map((housing) => (
+                                    <InputCheckboxBox
+                                        key={housing.id}
+                                        value={housing.id}
+                                        isChecked={values.availableHousingUnitTypes.includes(
+                                            {housingUnitTypeId: housing.id},
+                                        )}
+                                        onChange={(e) => {
+                                            const isChecked = e.target.checked
+                                            const updatedHousingTypes = isChecked
+                                                ? [
+                                                      ...values.availableHousingUnitTypes,
+                                                      housing.id,
+                                                  ]
+                                                : values.availableHousingUnitTypes.filter(
+                                                      (id) => id.housingUnitTypeId !== housing.id,
+                                                  )
+                                            setFieldValue(
+                                                'availableHousingUnitTypes',
+                                                updatedHousingTypes,
+                                            )
+                                        }}
+                                    >
+                                        {housing.name}
+                                    </InputCheckboxBox>
+                                ))}
+                            </Stack>
+                        </CheckboxGroup>
+                    </section>
+                ) : undefined}
 
                 <section>
                     <Text as="h2">Noites válidas</Text>
                     <CheckboxGroup
                         value={values.availableWeekDays}
-                        onChange={(selectedIds) =>
+                        onChange={(selectedIds) => {
                             setFieldValue('availableWeekDays', selectedIds)
-                        }
+                        }}
                     >
                         <Stack spacing={2} direction="column">
                             {validNights.map((night) => (
                                 <InputCheckboxBox
                                     key={night.id}
-                                    value={night.name}
-                                    isChecked={values.availableWeekDays.includes(night.id)}
+                                    value={night.id}
+                                    isChecked={values.availableWeekDays.includes(
+                                        night.id,
+                                    )}
                                     onChange={(e) => {
                                         const isChecked = e.target.checked
                                         const updatedNights = isChecked
@@ -272,7 +284,10 @@ export const ServiceForm: React.FC = () => {
                                             : values.availableWeekDays.filter(
                                                   (id) => id !== night.id,
                                               )
-                                        setFieldValue('availableWeekDays', updatedNights)
+                                        setFieldValue(
+                                            'availableWeekDays',
+                                            updatedNights,
+                                        )
                                     }}
                                 >
                                     {night.name}
