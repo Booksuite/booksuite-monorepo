@@ -274,6 +274,7 @@ import { Formik } from 'formik'
 
 import { PageHeader } from '@/components/organisms/PageHeader'
 
+import { AddressForm } from './components/AddressForm'
 import {
     AddressFormData,
     addressFormSchema,
@@ -300,7 +301,7 @@ export default function Address() {
                 validationSchema={addressFormSchema}
                 onSubmit={handleSubmit}
             >
-                {/*<AddressForm />*/}
+                <AddressForm />
             </Formik>
         </div>
     )
