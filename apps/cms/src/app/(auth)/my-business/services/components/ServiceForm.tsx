@@ -47,6 +47,20 @@ export const ServiceForm: React.FC = () => {
             },
         )
 
+    const companyId = useCurrentCompanyId()
+    const {
+        data: housingUnitTypes,
+        isLoading,
+        error,
+    } = useSearchHousingUnitTypes(
+        {
+            companyId: companyId,
+        },
+        {
+            pagination: { itemsPerPage: 100, page: 1 },
+        },
+    )
+
     return (
         <Form>
             <Stack gap={8}>
@@ -257,7 +271,7 @@ export const ServiceForm: React.FC = () => {
                             ))}
                         </Stack>
                     </CheckboxGroup>
-                </section>
+                </section> */}
 
                 <section>
                     <Text as="h2">Descrição e Informação</Text>
