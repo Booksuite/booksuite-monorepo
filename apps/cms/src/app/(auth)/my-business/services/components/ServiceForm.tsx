@@ -245,16 +245,32 @@ export const ServiceForm: React.FC = () => {
                             }}
                         >
                             <Stack spacing={2} direction="column">
-                                {housingUnitTypes.items.map((housing) => {
-                                    return (
-                                        <InputCheckboxBox
-                                            key={housing.id}
-                                            value={housing.id}
-                                        >
-                                            {housing.name}
-                                        </InputCheckboxBox>
-                                    )
-                                })}
+                                {availablehousingUnitTypes.map((housing) => (
+                                    <InputCheckboxBox
+                                        key={housing.id}
+                                        value={housing.id}
+                                        isChecked={values.availableHousingUnitTypes.includes(
+                                            {housingUnitTypeId: housing.id},
+                                        )}
+                                        onChange={(e) => {
+                                            const isChecked = e.target.checked
+                                            const updatedHousingTypes = isChecked
+                                                ? [
+                                                      ...values.availableHousingUnitTypes,
+                                                      housing.id,
+                                                  ]
+                                                : values.availableHousingUnitTypes.filter(
+                                                      (id) => id.housingUnitTypeId !== housing.id,
+                                                  )
+                                            setFieldValue(
+                                                'availableHousingUnitTypes',
+                                                updatedHousingTypes,
+                                            )
+                                        }}
+                                    >
+                                        {housing.name}
+                                    </InputCheckboxBox>
+                                ))}
                             </Stack>
                         </CheckboxGroup>
                     </section>
