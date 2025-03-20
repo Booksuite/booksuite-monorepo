@@ -27,6 +27,7 @@ export default function CreateExperienciasPage() {
     const toast = useToast()
 
     async function handleSubmit(formData: ServiceFormData) {
+        console.log(formData)
         try {
             await createService({
                 companyId,

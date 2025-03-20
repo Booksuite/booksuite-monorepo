@@ -1,5 +1,6 @@
 'use client'
 
+import { useSearchHousingUnitTypes } from '@booksuite/sdk'
 import {
     Button,
     CheckboxGroup,
@@ -12,6 +13,7 @@ import { FieldArray, Form, useFormikContext } from 'formik'
 import { CirclePlus } from 'lucide-react'
 import type React from 'react'
 
+import { useCurrentCompanyId } from '@/common/contexts/user'
 import { DatePickerBox } from '@/components/atoms/DatePickerBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
@@ -38,13 +40,13 @@ export const ServiceForm: React.FC = () => {
     ]
 
     const validNights = [
-        { id: 'monday', name: 'Segunda-feira' },
-        { id: 'tuesday', name: 'Terça-feira' },
-        { id: 'wednesday', name: 'Quarta-feira' },
-        { id: 'thursday', name: 'Quinta-feira' },
-        { id: 'friday', name: 'Sexta-feira' },
-        { id: 'saturday', name: 'Sábado' },
-        { id: 'sunday', name: 'Domingo' },
+        { id: 1, name: 'Segunda-feira' },
+        { id: 2, name: 'Terça-feira' },
+        { id: 3, name: 'Quarta-feira' },
+        { id: 4, name: 'Quinta-feira' },
+        { id: 5, name: 'Sexta-feira' },
+        { id: 6, name: 'Sábado' },
+        { id: 7, name: 'Domingo' },
     ]
 
     /*const optionsPriceAdjustment = [
@@ -59,6 +61,20 @@ export const ServiceForm: React.FC = () => {
         { value: 'PER_PERSON', label: 'Por pessoa' },
         { value: 'FIXED', label: 'Valor fixo' },
     ]
+
+    const companyId = useCurrentCompanyId()
+    const {
+        data: housingUnitTypes,
+        isLoading,
+        error,
+    } = useSearchHousingUnitTypes(
+        {
+            companyId: companyId,
+        },
+        {
+            pagination: { itemsPerPage: 100, page: 1 },
+        },
+    )
 
     return (
         <Form>
@@ -196,7 +212,7 @@ export const ServiceForm: React.FC = () => {
                     />
                 </section>
 
-                <section>
+                {/* <section>
                     <Text as="h2">Categorias</Text>
                     <CheckboxGroup
                         value={values.category.map((c) => c.id)}
@@ -230,42 +246,40 @@ export const ServiceForm: React.FC = () => {
                             ))}
                         </Stack>
                     </CheckboxGroup>
-                </section>
+                </section> */}
 
                 <section>
                     <Text as="h2">Noites válidas</Text>
-                    {/*<CheckboxGroup
-                        value={values.validNights} 
+                    <CheckboxGroup
+                        value={values.availableWeekDays}
                         onChange={(selectedIds) =>
-                            setFieldValue('validNights', selectedIds)
+                            setFieldValue('availableWeekDays', selectedIds)
                         }
                     >
                         <Stack spacing={2} direction="column">
                             {validNights.map((night) => (
                                 <InputCheckboxBox
                                     key={night.id}
-                                    value={night.id}
-                                    isChecked={values.validNights.includes(
-                                        night.id,
-                                    )}
+                                    value={night.name}
+                                    isChecked={values.availableWeekDays.includes(night.id)}
                                     onChange={(e) => {
                                         const isChecked = e.target.checked
                                         const updatedNights = isChecked
-                                            ? [...values.validNights, night.id]
-                                            : values.validNights.filter(
+                                            ? [
+                                                  ...values.availableWeekDays,
+                                                  night.id,
+                                              ]
+                                            : values.availableWeekDays.filter(
                                                   (id) => id !== night.id,
                                               )
-                                        setFieldValue(
-                                            'validNights',
-                                            updatedNights,
-                                        )
+                                        setFieldValue('availableWeekDays', updatedNights)
                                     }}
                                 >
                                     {night.name}
                                 </InputCheckboxBox>
                             ))}
                         </Stack>
-                    </CheckboxGroup>*/}
+                    </CheckboxGroup>
                 </section>
 
                 <section>
@@ -310,9 +324,10 @@ export const ServiceForm: React.FC = () => {
 
                     <InputBox
                         label="URL do Vídeo (Youtube somente)"
-                        error={errors.videoUrl}
+                        error={errors.coverMediaId}
                         formControl={{
-                            isInvalid: !!errors.videoUrl && touched.videoUrl,
+                            isInvalid:
+                                !!errors.coverMediaId && touched.coverMediaId,
                         }}
                         {...getFieldProps('videoUrl')}
                     />

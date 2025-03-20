@@ -1,38 +1,126 @@
 'use client'
 
-import { useSearchServices } from '@booksuite/sdk'
-import { Box, Skeleton, Stack } from '@chakra-ui/react'
-import { Plus } from 'lucide-react'
+import {
+    ServiceFull,
+    ServiceOrderByDTOOrderBy,
+    useSearchServices,
+} from '@booksuite/sdk'
+import {
+    HStack,
+    IconButton,
+    Image,
+    Input,
+    InputGroup,
+    InputRightElement,
+    Text,
+    VStack,
+} from '@chakra-ui/react'
+import {
+    ColumnDef,
+    functionalUpdate,
+    getCoreRowModel,
+    useReactTable,
+} from '@tanstack/react-table'
+import { Plus, Search, X } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { useState } from 'react'
+import { debounce } from 'radash'
+import { useEffect, useRef, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { Card } from '@/components/atoms/Card'
+import { useSearchParamsOrder } from '@/common/hooks/useOrder'
+import { useSearchParamsPagination } from '@/common/hooks/usePagination'
+import { formatCurrency } from '@/common/utils/currency'
 import { LinkButton } from '@/components/atoms/LinkButton'
+import { PaginationControls } from '@/components/molecules/PaginationControl'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
-
-import { ServiceCard } from './components/ServiceCard'
+import { Table } from '@/components/organisms/Table'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
     { key: 'unpublished', label: 'Não publicadas' },
 ]
 
+const columnsDefinition: ColumnDef<ServiceFull>[] = [
+    {
+        id: 'image',
+        size: 85,
+        cell: ({ row }) => (
+            <Image
+                src={row.original.medias[0]?.media.url}
+                alt={row.original.name}
+                objectFit="cover"
+                borderRadius="lg"
+                width="72px"
+                height="72px"
+            />
+        ),
+    },
+    {
+        id: 'name',
+        header: 'Nome',
+        accessorKey: 'name',
+        enableSorting: true,
+        cell: ({ row }) => (
+            <Text fontWeight="bold" fontSize="md" color="#486581">
+                {row.original.name}
+            </Text>
+        ),
+    },
+    {
+        id: 'price',
+        header: 'Preço',
+        accessorFn: (row) => (row.price ? formatCurrency(row.price) : '-'),
+    },
+    {
+        id: 'published',
+        header: 'Status',
+        accessorFn: (row) => (row.published ? 'Ativo' : 'Inativo'),
+    },
+]
+
 export default function Services() {
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+    const [searchQuery, setSearchQuery] = useState<string>('')
+    const [searchInputValue, setSearchInputValue] = useState<string>('')
+
+    const { orderBy, orderDirection, setOrder } =
+        useSearchParamsOrder<ServiceOrderByDTOOrderBy>({
+            defaultOrder: 'name',
+            currentPath: '/my-business/services',
+        })
+
+    const { page, itemsPerPage, setPage, setItemsPerPage } =
+        useSearchParamsPagination({
+            currentPath: '/my-business/services',
+        })
+
+    const debouncedSearch = useRef(
+        debounce({ delay: 350 }, (search: string) => {
+            setSearchQuery(search)
+        }),
+    )
+
+    useEffect(() => {
+        debouncedSearch.current(searchInputValue)
+    }, [debouncedSearch, searchInputValue])
+
     const { push } = useRouter()
     const searchParams = useSearchParams()
-    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
-    const page = searchParams.get('page') ? Number(searchParams.get('page')) : 1
-    const itemsPerPage = searchParams.get('itemsPerPage')
-        ? Number(searchParams.get('itemsPerPage'))
-        : 10
 
     const companyId = useCurrentCompanyId()
-    const { data: service, isLoading } = useSearchServices(
+    const {
+        data: services,
+        isLoading,
+        error,
+    } = useSearchServices(
         { companyId },
         {
             pagination: { page, itemsPerPage },
+            order: {
+                orderBy,
+                direction: orderDirection,
+            },
             filter:
                 selectedFilters.length > 0
                     ? {
@@ -40,7 +128,36 @@ export default function Services() {
                       }
                     : undefined,
         },
+        { query: searchQuery.length > 0 ? searchQuery : undefined },
     )
+
+    const table = useReactTable({
+        data: services?.items ?? [],
+        columns: columnsDefinition,
+        getCoreRowModel: getCoreRowModel(),
+        manualSorting: true,
+        state: {
+            sorting: [
+                {
+                    id: orderBy,
+                    desc: orderDirection === 'desc',
+                },
+            ],
+        },
+        onSortingChange: (sorting) => {
+            const newValue = functionalUpdate(sorting, [
+                {
+                    id: orderBy,
+                    desc: orderDirection === 'desc',
+                },
+            ])
+
+            setOrder(
+                newValue[0]?.id ?? 'name',
+                newValue[0]?.desc ? 'desc' : 'asc',
+            )
+        },
+    })
 
     return (
         <div className="Services">
@@ -58,43 +175,58 @@ export default function Services() {
                 }
             />
 
-            <Box>
-                <ChipFilter
-                    items={chipItems}
-                    value={selectedFilters}
-                    onChange={setSelectedFilters}
-                />
+            <VStack gap={4} alignItems="stretch">
+                <HStack flex={1} justifyContent="space-between">
+                    <ChipFilter
+                        items={chipItems}
+                        value={selectedFilters}
+                        onChange={setSelectedFilters}
+                    />
 
-                <Stack gap={4} my={4}>
-                    {isLoading
-                        ? Array.from({ length: 4 }).map((_, index) => (
-                              <Card.Container key={index}>
-                                  <Card.Section>
-                                      <Skeleton
-                                          borderRadius="md"
-                                          h="72px"
-                                          w="72px"
-                                      />
-                                  </Card.Section>
-                                  <Card.Section flex={1}>
-                                      <Skeleton h={4} w={170} />
-                                      <Skeleton h={3} w={140} />
-                                      <Skeleton h={3} w={122} />
-                                      <Skeleton h={3} w={135} />
-                                  </Card.Section>
-                              </Card.Container>
-                          ))
-                        : service?.items.map((service) => (
-                              <ServiceCard
-                                  key={service.id}
-                                  onClick={(id) =>
-                                      push(`/my-business/services/${id}`)
-                                  }
-                                  service={service}
-                              />
-                          ))}
-                </Stack>
-            </Box>
+                    <InputGroup w="300px">
+                        <Input
+                            type="text"
+                            placeholder="Pesquisar"
+                            value={searchInputValue}
+                            onChange={(e) =>
+                                setSearchInputValue(e.target.value)
+                            }
+                        />
+                        <InputRightElement>
+                            <IconButton
+                                variant="ghost"
+                                aria-label="Pesquisar"
+                                size="sm"
+                                onClick={() => {
+                                    setSearchInputValue('')
+                                    setSearchQuery('')
+                                }}
+                            >
+                                {searchQuery.length > 0 ? (
+                                    <X size={16} />
+                                ) : (
+                                    <Search size={16} />
+                                )}
+                            </IconButton>
+                        </InputRightElement>
+                    </InputGroup>
+                </HStack>
+
+                <Table table={table} error={error} isLoading={isLoading} />
+
+                <HStack justifyContent="flex-end">
+                    <PaginationControls
+                        page={page}
+                        prevPage={services?.prevPage ?? null}
+                        nextPage={services?.nextPage ?? null}
+                        totalPages={services?.totalPages ?? 0}
+                        totalItems={services?.totalItems ?? 0}
+                        itemsPerPage={itemsPerPage}
+                        onItemsPerPageChange={setItemsPerPage}
+                        onPageChange={setPage}
+                    />
+                </HStack>
+            </VStack>
         </div>
     )
 }

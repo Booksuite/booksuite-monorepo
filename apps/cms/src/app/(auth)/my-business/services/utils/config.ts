@@ -10,7 +10,7 @@ export const createFormInitialValues = (
     published: false,
     adults: 0,
     billType: data?.billType || '',
-    category: [],
+    availableWeekDays: [],
     medias: [],
     description: data?.name || '',
     minDaily: data?.minDaily || 1,
@@ -23,7 +23,8 @@ export const createFormInitialValues = (
     price: data?.price || 0,
     seasonEnd: data?.seasonEnd || '',
     seasonStart: data?.seasonStart || '',
-    videoUrl: data?.videoUrl || '',
+    coverMediaId: '',
+    availableHousingUnitTypes: []
 })
 
 export const serviceFormSchema = yup.object({
@@ -31,13 +32,10 @@ export const serviceFormSchema = yup.object({
     published: yup.boolean().required('Status é obrigatório'),
     adults: yup.number().min(0),
     billType: yup.string().required('Tipo de cobrança é obrigatório'),
-    category: yup
+    availableHousingUnitTypes: yup
         .array()
         .of(
-            yup.object({
-                id: yup.string().required('Categoria é Obrigatório'),
-                name: yup.string().required('Nome da categoria é obrigatório'),
-            }),
+            yup.object(),
         )
         .optional(),
     medias: yup
@@ -59,6 +57,8 @@ export const serviceFormSchema = yup.object({
         .number()
         .min(1, 'Mínimo de aviso deve ser pelo menos 1')
         .required('Mínimo de aviso é obrigatório'),
+
+    availableWeekDays: yup.array().required('Noites são obrigatórias'),
     included: yup.string().optional(),
     notes: yup.string().optional(),
     onlineSale: yup.boolean().required('Status da Venda online é obrigatória'),
@@ -71,5 +71,5 @@ export const serviceFormSchema = yup.object({
     price: yup.number().min(0).required('Preço é obrigatório'),
     seasonStart: yup.string().optional(),
     seasonEnd: yup.string().optional(),
-    videoUrl: yup.string().optional(),
+    coverMediaId: yup.string().optional(),
 })
