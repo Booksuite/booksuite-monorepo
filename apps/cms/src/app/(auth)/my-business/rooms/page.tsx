@@ -27,7 +27,6 @@ import pluralize from 'pluralize'
 import { debounce } from 'radash'
 import { useEffect, useRef, useState } from 'react'
 
-import { useCurrentCompanyId } from '@/common/contexts/user'
 import { useSearchParamsOrder } from '@/common/hooks/useOrder'
 import { useSearchParamsPagination } from '@/common/hooks/usePagination'
 import { formatCurrency } from '@/common/utils/currency'
