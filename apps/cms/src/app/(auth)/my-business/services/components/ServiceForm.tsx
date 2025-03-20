@@ -27,6 +27,11 @@ import type { ServiceFormData } from '../utils/config'
 import { VALID_NIGHTS } from '../utils/constants'
 
 export const ServiceForm: React.FC = () => {
+    interface availableHousingUnitTypes {
+        id: string
+        name: string
+    }
+
     const {
         getFieldProps,
         touched,
@@ -50,7 +55,7 @@ export const ServiceForm: React.FC = () => {
     const companyId = useCurrentCompanyId()
     const {
         data: housingUnitTypes,
-        isLoading,
+        isLoading: isLoadingHousingUnitTypes,
         error,
     } = useSearchHousingUnitTypes(
         {
@@ -60,6 +65,10 @@ export const ServiceForm: React.FC = () => {
             pagination: { itemsPerPage: 100, page: 1 },
         },
     )
+
+    housingUnitTypes?.items.map((housing) => {
+        availablehousingUnitTypes.push({ id: housing.id, name: housing.name })
+    })
 
     return (
         <Form>
