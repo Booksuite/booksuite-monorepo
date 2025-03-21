@@ -8,10 +8,10 @@ import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
-import { GeneralDataForm } from './components/GeneralDataForm'
+import { GeneralForm } from './components/GeneralDataForm'
 import {
     createFormInitialValues,
-    GeneralData,
+    GeneralDataForm,
     generalDataSchema,
 } from './utils/config'
 
@@ -26,7 +26,7 @@ export default function GeneralDataPage() {
 
     const toast = useToast()
 
-    async function handleSubmit(formData: GeneralData) {
+    async function handleSubmit(formData: GeneralDataForm) {
         try {
             await updateCompany({
                 id: companyId,
@@ -55,12 +55,12 @@ export default function GeneralDataPage() {
             />
 
             {!isLoading && (
-                <Formik<GeneralData>
+                <Formik<GeneralDataForm>
                     initialValues={createFormInitialValues(companyGeneralData)}
                     validationSchema={generalDataSchema}
                     onSubmit={handleSubmit}
                 >
-                    <GeneralDataForm />
+                    <GeneralForm />
                 </Formik>
             )}
         </div>

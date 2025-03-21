@@ -5,18 +5,16 @@ import { Form, useFormikContext } from 'formik'
 import React from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
-import { GeneralData } from '../utils/config'
+import { GeneralDataForm } from '../utils/config'
 import { BRAZIL_TIMEZONES, COMPANY_TYPES } from '../utils/constants'
 
-export const GeneralDataForm: React.FC = () => {
+export const GeneralForm: React.FC = () => {
     const {
         getFieldProps,
         touched,
         errors,
-        values,
-        handleChange,
         setFieldValue,
-    } = useFormikContext<GeneralData>()
+    } = useFormikContext<GeneralDataForm>()
 
     return (
         <Form>
