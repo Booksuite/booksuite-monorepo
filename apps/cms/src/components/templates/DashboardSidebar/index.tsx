@@ -32,7 +32,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
     ]
 
     const footerLinks: LinkItem[] = [
-        { href: '/configuracoes', label: 'Configurações' },
+        { href: '/settings', label: 'Configurações' },
     ]
 
     const isMobile = useBreakpointValue({ base: true, md: false })
