@@ -1,12 +1,8 @@
+import { Archive, CircleDollarSign, CirclePlus, Home, Wine } from 'lucide-react'
 import { Route } from 'next'
 
 import { InternalMenu } from '@/components/organisms/InternalMenu'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import BoxIcon from '@/components/svgs/icons/BoxIcon'
-import GlassesIcon from '@/components/svgs/icons/GlassesIcon'
-import HomeIcon from '@/components/svgs/icons/HomeIcon'
-import MoneyIcon from '@/components/svgs/icons/MoneyIcon'
-import PlusIcon from '@/components/svgs/icons/PlusIcon'
 
 type MenuItem = {
     icon: React.ReactNode
@@ -16,27 +12,27 @@ type MenuItem = {
 
 const menuItems: MenuItem[] = [
     {
-        icon: <HomeIcon />,
+        icon: <Home size={20} />,
         title: 'Acomodações',
         href: '/my-business/rooms',
     },
     {
-        icon: <MoneyIcon />,
+        icon: <CircleDollarSign size={20} />,
         title: 'Preços e Períodos',
         href: '/my-business/precos-e-periodos',
     },
     {
-        icon: <PlusIcon />,
+        icon: <CirclePlus size={20} />,
         title: 'Extras',
         href: '/my-business/services',
     },
     {
-        icon: <GlassesIcon />,
+        icon: <Wine size={20} />,
         title: 'Serviços',
         href: '/my-business/services',
     },
     {
-        icon: <BoxIcon />,
+        icon: <Archive size={20} />,
         title: 'Opções de Tarifas',
         href: '/my-business/opcoes-de-tarifas',
     },
