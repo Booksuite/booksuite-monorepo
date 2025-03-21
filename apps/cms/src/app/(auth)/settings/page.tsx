@@ -39,7 +39,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <MapPin size={20} />,
         title: 'Endereço',
-        href: `/settings/endereco`,
+        href: `/settings/address`,
     },
     {
         icon: <Pencil size={20} />,

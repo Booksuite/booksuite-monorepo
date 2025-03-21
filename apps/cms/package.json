@@ -20,6 +20,7 @@
         "@tanstack/react-table": "^8.21.2",
         "@types/react-input-mask": "^3.0.5",
         "axios": "^1.7.2",
+        "cep-promise": "^4.4.1",
         "chakra-react-select": "^4.8.0",
         "cookies-next": "^4.3.0",
         "formik": "^2.4.6",
