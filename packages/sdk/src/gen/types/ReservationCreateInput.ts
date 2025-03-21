@@ -1,4 +1,4 @@
-import type { ReservationServiceCreateInput } from './ReservationServiceCreateInput.ts'
+import type { ReservationServiceInput } from './ReservationServiceInput.ts'
 
 export type ReservationCreateDTOStatus =
   | 'WAITING_PAYMENT'
@@ -61,5 +61,5 @@ export type ReservationCreateInput = {
   /**
    * @type array
    */
-  services: ReservationServiceCreateInput[]
+  services: ReservationServiceInput[]
 }

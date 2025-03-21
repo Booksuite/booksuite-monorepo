@@ -17,7 +17,7 @@ export function useUpdateBanner(
     mutation?: UseMutationOptions<
       UpdateBannerMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateBannerPathParams['id']; companyId: UpdateBannerPathParams['companyId']; data: UpdateBannerMutationRequest }
+      { id: UpdateBannerPathParams['id']; companyId: UpdateBannerPathParams['companyId']; data?: UpdateBannerMutationRequest }
     >
     client?: Partial<RequestConfig<UpdateBannerMutationRequest>> & { client?: typeof client }
   } = {},
@@ -28,7 +28,7 @@ export function useUpdateBanner(
   return useMutation<
     UpdateBannerMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: UpdateBannerPathParams['id']; companyId: UpdateBannerPathParams['companyId']; data: UpdateBannerMutationRequest }
+    { id: UpdateBannerPathParams['id']; companyId: UpdateBannerPathParams['companyId']; data?: UpdateBannerMutationRequest }
   >({
     mutationFn: async ({ id, companyId, data }) => {
       return updateBanner({ id, companyId }, data, config)

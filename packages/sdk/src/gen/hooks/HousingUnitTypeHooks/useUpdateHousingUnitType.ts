@@ -21,7 +21,7 @@ export function useUpdateHousingUnitType(
     mutation?: UseMutationOptions<
       UpdateHousingUnitTypeMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateHousingUnitTypePathParams['id']; companyId: UpdateHousingUnitTypePathParams['companyId']; data: UpdateHousingUnitTypeMutationRequest }
+      { id: UpdateHousingUnitTypePathParams['id']; companyId: UpdateHousingUnitTypePathParams['companyId']; data?: UpdateHousingUnitTypeMutationRequest }
     >
     client?: Partial<RequestConfig<UpdateHousingUnitTypeMutationRequest>> & { client?: typeof client }
   } = {},
@@ -32,7 +32,7 @@ export function useUpdateHousingUnitType(
   return useMutation<
     UpdateHousingUnitTypeMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: UpdateHousingUnitTypePathParams['id']; companyId: UpdateHousingUnitTypePathParams['companyId']; data: UpdateHousingUnitTypeMutationRequest }
+    { id: UpdateHousingUnitTypePathParams['id']; companyId: UpdateHousingUnitTypePathParams['companyId']; data?: UpdateHousingUnitTypeMutationRequest }
   >({
     mutationFn: async ({ id, companyId, data }) => {
       return updateHousingUnitType({ id, companyId }, data, config)

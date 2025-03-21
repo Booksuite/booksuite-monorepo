@@ -1,10 +1,10 @@
-import type { Service } from './Service.ts'
+import type { ServiceFull } from './ServiceFull.ts'
 
 export type ServicePaginated = {
   /**
    * @type array
    */
-  items: Service[]
+  items: ServiceFull[]
   /**
    * @type number
    */

@@ -33,8 +33,8 @@ export type { UpsertCompanyReservationConfigMutationKey } from './hooks/Reservat
 export type { CreateReservationMutationKey } from './hooks/ReservationHooks/useCreateReservation.ts'
 export type { DeleteReservationMutationKey } from './hooks/ReservationHooks/useDeleteReservation.ts'
 export type { GetReservationByIdQueryKey } from './hooks/ReservationHooks/useGetReservationById.ts'
+export type { ReservationControllerUpdateMutationKey } from './hooks/ReservationHooks/useReservationControllerUpdate.ts'
 export type { SearchReservationsQueryKey } from './hooks/ReservationHooks/useSearchReservations.ts'
-export type { UpdateReservationMutationKey } from './hooks/ReservationHooks/useUpdateReservation.ts'
 export type { CreateServiceMutationKey } from './hooks/ServiceHooks/useCreateService.ts'
 export type { DeleteServiceMutationKey } from './hooks/ServiceHooks/useDeleteService.ts'
 export type { GetServiceByIdQueryKey } from './hooks/ServiceHooks/useGetServiceById.ts'
@@ -91,6 +91,7 @@ export type { BannerOrderByDTOOrderBy, BannerOrderByDTODirection, BannerOrderByI
 export type { BannerPaginated } from './types/BannerPaginated.ts'
 export type { BannerSearchBodyInput } from './types/BannerSearchBodyInput.ts'
 export type { BannerSearchFilterDTOPosition, BannerSearchFilterInput } from './types/BannerSearchFilterInput.ts'
+export type { BannerUpdateDTOPosition, BannerUpdateDTOAction, BannerUpdateInput } from './types/BannerUpdateInput.ts'
 export type {
   DeleteCompanyCancellationPolicyPathParams,
   DeleteCompanyCancellationPolicy200,
@@ -112,7 +113,7 @@ export type {
 } from './types/CancellationPolicyController/UpsertCompanyCancellationPolicy.ts'
 export type { CancellationPolicyResponseFullDTODefaultPenaltyBy, CancellationPolicyFull } from './types/CancellationPolicyFull.ts'
 export type { CancellationPolicyDTODefaultPenaltyBy, CancellationPolicyInput } from './types/CancellationPolicyInput.ts'
-export type { Company } from './types/Company.ts'
+export type { CompanyResponseDTOType, Company } from './types/Company.ts'
 export type { CompanyContactResponseDTOType, CompanyContact } from './types/CompanyContact.ts'
 export type { CompanyContactDTOType, CompanyContactInput } from './types/CompanyContactInput.ts'
 export type {
@@ -145,7 +146,7 @@ export type {
 export type { CompanyCreateInput } from './types/CompanyCreateInput.ts'
 export type { CompanyFacility } from './types/CompanyFacility.ts'
 export type { CompanyFacilityInput } from './types/CompanyFacilityInput.ts'
-export type { CompanyFull } from './types/CompanyFull.ts'
+export type { CompanyResponseFullDTOType, CompanyFull } from './types/CompanyFull.ts'
 export type { CompanyOrderByDTOOrderBy, CompanyOrderByDTODirection, CompanyOrderByInput } from './types/CompanyOrderByInput.ts'
 export type { CompanyPaginated } from './types/CompanyPaginated.ts'
 export type { CompanySearchBodyInput } from './types/CompanySearchBodyInput.ts'
@@ -154,6 +155,7 @@ export type { CompanySettings } from './types/CompanySettings.ts'
 export type { CompanySettingsInput } from './types/CompanySettingsInput.ts'
 export type { CompanySettingsTheme } from './types/CompanySettingsTheme.ts'
 export type { CompanySettingsThemeInput } from './types/CompanySettingsThemeInput.ts'
+export type { CompanyUpdateInput } from './types/CompanyUpdateInput.ts'
 export type { DateRangeInput } from './types/DateRangeInput.ts'
 export type { FacilityResponseDTOType, FacilityResponseDTOCategory, Facility } from './types/Facility.ts'
 export type {
@@ -240,6 +242,8 @@ export type { HousingUnitTypeOrderByDTOOrderBy, HousingUnitTypeOrderByDTODirecti
 export type { HousingUnitTypePaginated } from './types/HousingUnitTypePaginated.ts'
 export type { HousingUnitTypeSearchBodyInput } from './types/HousingUnitTypeSearchBodyInput.ts'
 export type { HousingUnitTypeSearchFilterInput } from './types/HousingUnitTypeSearchFilterInput.ts'
+export type { HousingUnitTypeUpdateInput } from './types/HousingUnitTypeUpdateInput.ts'
+export type { MapCoordinatesInput } from './types/MapCoordinatesInput.ts'
 export type { Media } from './types/Media.ts'
 export type { DeleteMediaPathParams, DeleteMedia200, DeleteMediaMutationResponse, DeleteMediaMutation } from './types/MediaController/DeleteMedia.ts'
 export type { GetMediaByIdPathParams, GetMediaById200, GetMediaByIdQueryResponse, GetMediaByIdQuery } from './types/MediaController/GetMediaById.ts'
@@ -309,6 +313,13 @@ export type {
   GetReservationByIdQuery,
 } from './types/ReservationController/GetReservationById.ts'
 export type {
+  ReservationControllerUpdatePathParams,
+  ReservationControllerUpdate200,
+  ReservationControllerUpdateMutationRequest,
+  ReservationControllerUpdateMutationResponse,
+  ReservationControllerUpdateMutation,
+} from './types/ReservationController/ReservationControllerUpdate.ts'
+export type {
   SearchReservationsPathParams,
   SearchReservationsQueryParams,
   SearchReservations200,
@@ -316,13 +327,6 @@ export type {
   SearchReservationsMutationResponse,
   SearchReservationsMutation,
 } from './types/ReservationController/SearchReservations.ts'
-export type {
-  UpdateReservationPathParams,
-  UpdateReservation200,
-  UpdateReservationMutationRequest,
-  UpdateReservationMutationResponse,
-  UpdateReservationMutation,
-} from './types/ReservationController/UpdateReservation.ts'
 export type { ReservationCreateDTOStatus, ReservationCreateDTOSaleChannel, ReservationCreateInput } from './types/ReservationCreateInput.ts'
 export type { ReservationResponseFullDTOStatus, ReservationResponseFullDTOSaleChannel, ReservationFull } from './types/ReservationFull.ts'
 export type { ReservationOrderByDTOOrderBy, ReservationOrderByDTODirection, ReservationOrderByInput } from './types/ReservationOrderByInput.ts'
@@ -334,10 +338,9 @@ export type {
   ReservationSearchFilterInput,
 } from './types/ReservationSearchFilterInput.ts'
 export type { ReservationService } from './types/ReservationService.ts'
-export type { ReservationServiceCreateInput } from './types/ReservationServiceCreateInput.ts'
+export type { ReservationServiceInput } from './types/ReservationServiceInput.ts'
+export type { ReservationUpdateDTOStatus, ReservationUpdateDTOSaleChannel, ReservationUpdateInput } from './types/ReservationUpdateInput.ts'
 export type { Service } from './types/Service.ts'
-export type { ServiceCategory } from './types/ServiceCategory.ts'
-export type { ServiceCategoryInput } from './types/ServiceCategoryInput.ts'
 export type {
   CreateServicePathParams,
   CreateService200,
@@ -369,12 +372,14 @@ export type {
 } from './types/ServiceController/UpdateService.ts'
 export type { ServiceCreateInput } from './types/ServiceCreateInput.ts'
 export type { ServiceFull } from './types/ServiceFull.ts'
+export type { ServiceHousingUnitTypeInput } from './types/ServiceHousingUnitTypeInput.ts'
 export type { ServiceMedia } from './types/ServiceMedia.ts'
-export type { ServiceMediaCreateInput } from './types/ServiceMediaCreateInput.ts'
+export type { ServiceMediaInput } from './types/ServiceMediaInput.ts'
 export type { ServiceOrderByDTOOrderBy, ServiceOrderByDTODirection, ServiceOrderByInput } from './types/ServiceOrderByInput.ts'
 export type { ServicePaginated } from './types/ServicePaginated.ts'
 export type { ServiceSearchBodyInput } from './types/ServiceSearchBodyInput.ts'
 export type { ServiceSearchFilterInput } from './types/ServiceSearchFilterInput.ts'
+export type { ServiceUpdateInput } from './types/ServiceUpdateInput.ts'
 export type { User } from './types/User.ts'
 export { agePolicyService } from './client/AgePolicyService/agePolicyService.ts'
 export { getGetCompanyAgePolicyUrl, getCompanyAgePolicy } from './client/AgePolicyService/getCompanyAgePolicy.ts'
@@ -419,9 +424,9 @@ export { getUpsertCompanyReservationConfigUrl, upsertCompanyReservationConfig } 
 export { getCreateReservationUrl, createReservation } from './client/ReservationService/createReservation.ts'
 export { getDeleteReservationUrl, deleteReservation } from './client/ReservationService/deleteReservation.ts'
 export { getGetReservationByIdUrl, getReservationById } from './client/ReservationService/getReservationById.ts'
+export { getReservationControllerUpdateUrl, reservationControllerUpdate } from './client/ReservationService/reservationControllerUpdate.ts'
 export { reservationService } from './client/ReservationService/reservationService.ts'
 export { getSearchReservationsUrl, searchReservations } from './client/ReservationService/searchReservations.ts'
-export { getUpdateReservationUrl, updateReservation } from './client/ReservationService/updateReservation.ts'
 export { getCreateServiceUrl, createService } from './client/ServiceService/createService.ts'
 export { getDeleteServiceUrl, deleteService } from './client/ServiceService/deleteService.ts'
 export { getGetServiceByIdUrl, getServiceById } from './client/ServiceService/getServiceById.ts'
@@ -488,8 +493,8 @@ export {
 export { createReservationMutationKey, useCreateReservation } from './hooks/ReservationHooks/useCreateReservation.ts'
 export { deleteReservationMutationKey, useDeleteReservation } from './hooks/ReservationHooks/useDeleteReservation.ts'
 export { getReservationByIdQueryKey, getReservationByIdQueryOptions, useGetReservationById } from './hooks/ReservationHooks/useGetReservationById.ts'
+export { reservationControllerUpdateMutationKey, useReservationControllerUpdate } from './hooks/ReservationHooks/useReservationControllerUpdate.ts'
 export { searchReservationsQueryKey, searchReservationsQueryOptions, useSearchReservations } from './hooks/ReservationHooks/useSearchReservations.ts'
-export { updateReservationMutationKey, useUpdateReservation } from './hooks/ReservationHooks/useUpdateReservation.ts'
 export { createServiceMutationKey, useCreateService } from './hooks/ServiceHooks/useCreateService.ts'
 export { deleteServiceMutationKey, useDeleteService } from './hooks/ServiceHooks/useDeleteService.ts'
 export { getServiceByIdQueryKey, getServiceByIdQueryOptions, useGetServiceById } from './hooks/ServiceHooks/useGetServiceById.ts'

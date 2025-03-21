@@ -1,6 +1,10 @@
 import type { CompanyContact } from './CompanyContact.ts'
 import type { CompanyFacility } from './CompanyFacility.ts'
 import type { CompanySettings } from './CompanySettings.ts'
+import type { MapCoordinatesInput } from './MapCoordinatesInput.ts'
+import type { Media } from './Media.ts'
+
+export type CompanyResponseFullDTOType = 'INN' | 'HOTEL' | 'RESORT' | 'CHALET' | 'FARM_HOTEL' | 'AIRBNB' | 'HOSTEL' | 'FLAT_APART_HOTEL' | 'CAMPING' | 'OTHER'
 
 export type CompanyFull = {
   /**
@@ -27,6 +31,10 @@ export type CompanyFull = {
    * @type string
    */
   description: string | null
+  /**
+   * @type string
+   */
+  type: CompanyResponseFullDTOType
   /**
    * @type string
    */
@@ -78,6 +86,10 @@ export type CompanyFull = {
   /**
    * @type string
    */
+  zipcode: string
+  /**
+   * @type string
+   */
   number: string
   /**
    * @type string
@@ -91,14 +103,21 @@ export type CompanyFull = {
    * @type string
    */
   city: string
+  mapCoordinates: MapCoordinatesInput
   /**
-   * @type object | undefined
+   * @type string
    */
-  settings?: CompanySettings
+  bannerTitle: string | null
   /**
-   * @type array | undefined
+   * @type string
    */
-  contacts?: CompanyContact[]
+  bannerDescription: string | null
+  bannerImage: Media | null
+  settings: CompanySettings | null
+  /**
+   * @type array
+   */
+  contacts: CompanyContact[] | null
   /**
    * @type array
    */

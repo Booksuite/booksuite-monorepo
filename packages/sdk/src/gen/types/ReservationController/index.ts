@@ -8,6 +8,13 @@ export type {
 export type { DeleteReservationPathParams, DeleteReservation200, DeleteReservationMutationResponse, DeleteReservationMutation } from './DeleteReservation.ts'
 export type { GetReservationByIdPathParams, GetReservationById200, GetReservationByIdQueryResponse, GetReservationByIdQuery } from './GetReservationById.ts'
 export type {
+  ReservationControllerUpdatePathParams,
+  ReservationControllerUpdate200,
+  ReservationControllerUpdateMutationRequest,
+  ReservationControllerUpdateMutationResponse,
+  ReservationControllerUpdateMutation,
+} from './ReservationControllerUpdate.ts'
+export type {
   SearchReservationsPathParams,
   SearchReservationsQueryParams,
   SearchReservations200,
@@ -15,10 +22,3 @@ export type {
   SearchReservationsMutationResponse,
   SearchReservationsMutation,
 } from './SearchReservations.ts'
-export type {
-  UpdateReservationPathParams,
-  UpdateReservation200,
-  UpdateReservationMutationRequest,
-  UpdateReservationMutationResponse,
-  UpdateReservationMutation,
-} from './UpdateReservation.ts'
