@@ -1,1 +1,1 @@
-{"type":"object","properties":{"orderBy":{"type":"string","enum":["position","order","createdAt"]},"direction":{"type":"string","enum":["asc","desc"]}},"required":["orderBy","direction"],"x-readme-ref-name":"BannerOrderByDTO"}
+{"type":"object","properties":{"orderBy":{"allOf":[{"type":"string","enum":["position","order","createdAt"],"x-readme-ref-name":"BannerOrderBy"}]},"direction":{"allOf":[{"type":"string","enum":["asc","desc"],"x-readme-ref-name":"OrderDirection"}]}},"required":["orderBy","direction"],"x-readme-ref-name":"BannerOrderByDTO"}

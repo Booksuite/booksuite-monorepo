@@ -1,3 +1,4 @@
+import type { BillingType } from './BillingType.ts'
 import type { HousingUnitType } from './HousingUnitType.ts'
 import type { Media } from './Media.ts'
 import type { ServiceMedia } from './ServiceMedia.ts'
@@ -15,10 +16,7 @@ export type ServiceFull = {
    * @type boolean
    */
   published: boolean
-  /**
-   * @type string
-   */
-  billType: string
+  billingType: BillingType
   /**
    * @type number
    */

@@ -1,0 +1,1 @@
+{"type":"string","enum":["createdAt","updatedAt","status","startDate","endDate","totalDays","adults","children"],"x-readme-ref-name":"ReservationOrderBy"}

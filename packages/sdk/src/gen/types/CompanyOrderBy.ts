@@ -1,0 +1,1 @@
+export type CompanyOrderBy = 'name' | 'shortDescription' | 'description' | 'companyName' | 'state' | 'city' | 'user' | 'createdAt'

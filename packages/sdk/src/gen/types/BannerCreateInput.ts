@@ -1,8 +1,6 @@
+import type { BannerAction } from './BannerAction.ts'
 import type { BannerMediaInput } from './BannerMediaInput.ts'
-
-export type BannerCreateDTOPosition = 'HOME_TOP' | 'FEATURED_CONTENT'
-
-export type BannerCreateDTOAction = 'NONE' | 'SMART_SEARCH' | 'CUSTOM' | 'SEND_TO_WHATSAPP'
+import type { BannerPosition } from './BannerPosition.ts'
 
 export type BannerCreateInput = {
   /**
@@ -13,10 +11,7 @@ export type BannerCreateInput = {
    * @type boolean
    */
   published: boolean
-  /**
-   * @type string
-   */
-  position: BannerCreateDTOPosition
+  position: BannerPosition
   /**
    * @type number
    */
@@ -29,10 +24,7 @@ export type BannerCreateInput = {
    * @type string | undefined
    */
   description?: string
-  /**
-   * @type string
-   */
-  action: BannerCreateDTOAction
+  action: BannerAction
   /**
    * @type string | undefined
    */

@@ -1,0 +1,1 @@
+{"type":"string","enum":["NONE","SMART_SEARCH","CUSTOM","SEND_TO_WHATSAPP"],"x-readme-ref-name":"BannerAction"}

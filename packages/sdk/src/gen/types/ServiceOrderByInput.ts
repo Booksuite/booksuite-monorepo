@@ -1,14 +1,7 @@
-export type ServiceOrderByDTOOrderBy = 'name' | 'included' | 'createdAt'
-
-export type ServiceOrderByDTODirection = 'asc' | 'desc'
+import type { OrderDirection } from './OrderDirection.ts'
+import type { ServiceOrderBy } from './ServiceOrderBy.ts'
 
 export type ServiceOrderByInput = {
-  /**
-   * @type string
-   */
-  orderBy: ServiceOrderByDTOOrderBy
-  /**
-   * @type string
-   */
-  direction: ServiceOrderByDTODirection
+  orderBy: ServiceOrderBy
+  direction: OrderDirection
 }

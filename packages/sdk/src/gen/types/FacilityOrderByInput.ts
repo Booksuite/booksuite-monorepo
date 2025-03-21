@@ -1,14 +1,7 @@
-export type FacilityOrderByDTOOrderBy = 'name' | 'createdAt'
-
-export type FacilityOrderByDTODirection = 'asc' | 'desc'
+import type { FacilityOrderBy } from './FacilityOrderBy.ts'
+import type { OrderDirection } from './OrderDirection.ts'
 
 export type FacilityOrderByInput = {
-  /**
-   * @type string
-   */
-  orderBy: FacilityOrderByDTOOrderBy
-  /**
-   * @type string
-   */
-  direction: FacilityOrderByDTODirection
+  orderBy: FacilityOrderBy
+  direction: OrderDirection
 }

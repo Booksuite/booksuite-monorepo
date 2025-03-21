@@ -1,3 +1,4 @@
+import type { BillingType } from './BillingType.ts'
 import type { ServiceHousingUnitTypeInput } from './ServiceHousingUnitTypeInput.ts'
 import type { ServiceMediaInput } from './ServiceMediaInput.ts'
 
@@ -10,10 +11,7 @@ export type ServiceCreateInput = {
    * @type boolean
    */
   published: boolean
-  /**
-   * @type string
-   */
-  billType: string
+  billingType: BillingType
   /**
    * @type number
    */
@@ -51,10 +49,6 @@ export type ServiceCreateInput = {
    */
   seasonEnd: string
   /**
-   * @type array
-   */
-  availableWeekDays: number[]
-  /**
    * @type string
    */
   description: string
@@ -74,6 +68,10 @@ export type ServiceCreateInput = {
    * @type array
    */
   medias: ServiceMediaInput[]
+  /**
+   * @type array
+   */
+  availableWeekDays: number[]
   /**
    * @type array
    */
