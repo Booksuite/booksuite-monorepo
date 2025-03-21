@@ -1,25 +1,54 @@
 'use client'
 
-import { Button, Stack } from '@chakra-ui/react'
+import { Button, Stack, useToast } from '@chakra-ui/react'
+import cep from 'cep-promise'
 import { Form, useFormikContext } from 'formik'
+import { debounce } from 'radash'
+import { useEffect, useRef, useState } from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
 import { AddressFormData } from '../utils/config'
 
 export const AddressForm = () => {
-    const { getFieldProps, touched, errors } =
+    const [searchInputValue, setSearchInputValue] = useState<string>('')
+    const toast = useToast()
+
+    const { getFieldProps, setFieldValue, touched, errors } =
         useFormikContext<AddressFormData>()
+
+    const debouncedSearch = useRef(
+        debounce({ delay: 800 }, (search: string) => {
+            cep(search)
+                .then((address) => {
+                    setFieldValue('city', address.city)
+                    setFieldValue('state', address.state)
+                    setFieldValue('address', address.street)
+                    setFieldValue('country', 'Brasil')
+                    setFieldValue('zipcode', address.cep)
+                    toast({ title: 'CEP encontrado', status: 'success' })
+                })
+                .catch(() => {
+                    toast({ title: 'CEP não encontrado' })
+                })
+        }),
+    )
+
+    useEffect(() => {
+        if (searchInputValue) {
+            debouncedSearch.current(searchInputValue)
+        }
+    }, [debouncedSearch, searchInputValue])
 
     return (
         <Form>
             <Stack spacing={4}>
                 <InputBox
                     label="CEP"
-                    /*error={errors.}
-                    formControl={{
-                        isInvalid: !!errors. && touched.,
+                    {...getFieldProps('zipcode')}
+                    onChange={(e) => {
+                        setSearchInputValue(e.target.value)
+                        getFieldProps('zipcode').onChange(e)
                     }}
-                    {...getFieldProps('')}*/
                 />
                 <InputBox
                     label="Endereço"
@@ -85,7 +114,9 @@ export const AddressForm = () => {
                     }}
                     {...getFieldProps('')}*/
                 />
-                <Button type="submit">Salvar</Button>
+                <Button type="submit" size="lg">
+                    Salvar
+                </Button>
             </Stack>
         </Form>
     )
