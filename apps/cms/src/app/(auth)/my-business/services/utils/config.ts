@@ -9,7 +9,7 @@ export const createFormInitialValues = (
     name: data?.name || '',
     published: false,
     adults: 0,
-    billType: data?.billType || '',
+    billingType: data?.billingType || 'DAILY',
     availableWeekDays: [],
     medias: [],
     description: data?.name || '',
@@ -31,7 +31,7 @@ export const serviceFormSchema = yup.object({
     name: yup.string().required('Nome é obrigatório'),
     published: yup.boolean().required('Status é obrigatório'),
     adults: yup.number().min(0),
-    billType: yup.string().required('Tipo de cobrança é obrigatório'),
+    billingType: yup.string().required('Tipo de cobrança é obrigatório'),
     availableHousingUnitTypes: yup
         .array()
         .of(
