@@ -27,7 +27,6 @@ export default function GeneralDataPage() {
     const toast = useToast()
 
     async function handleSubmit(formData: GeneralData) {
-        console.log(formData)
         try {
             await updateCompany({
                 id: companyId,
@@ -35,12 +34,12 @@ export default function GeneralDataPage() {
             })
 
             toast({
-                title: 'Acomodação editada com sucesso',
+                title: 'Dados gerais modificados com sucesso ',
                 status: 'success',
             })
         } catch (error) {
             toast({
-                title: 'Erro ao editar acomodação',
+                title: 'Erro ao editar dados gerais',
                 description: getErrorMessage(error),
                 status: 'error',
             })
