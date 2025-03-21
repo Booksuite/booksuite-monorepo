@@ -1,5 +1,5 @@
 import type { Company } from '../Company.ts'
-import type { CompanyCreateInput } from '../CompanyCreateInput.ts'
+import type { CompanyUpdateInput } from '../CompanyUpdateInput.ts'
 
 export type UpdateCompanyPathParams = {
   /**
@@ -10,7 +10,7 @@ export type UpdateCompanyPathParams = {
 
 export type UpdateCompany200 = Company
 
-export type UpdateCompanyMutationRequest = CompanyCreateInput
+export type UpdateCompanyMutationRequest = CompanyUpdateInput
 
 export type UpdateCompanyMutationResponse = UpdateCompany200
 

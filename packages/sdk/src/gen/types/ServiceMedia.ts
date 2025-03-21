@@ -10,7 +10,7 @@ export type ServiceMedia = {
    */
   order: number | null
   /**
-   * @type array
+   * @type object
    */
-  media: Media[]
+  media: Media
 }

@@ -1,5 +1,5 @@
 import type { Service } from '../Service.ts'
-import type { ServiceCreateInput } from '../ServiceCreateInput.ts'
+import type { ServiceUpdateInput } from '../ServiceUpdateInput.ts'
 
 export type UpdateServicePathParams = {
   /**
@@ -14,7 +14,7 @@ export type UpdateServicePathParams = {
 
 export type UpdateService200 = Service
 
-export type UpdateServiceMutationRequest = ServiceCreateInput
+export type UpdateServiceMutationRequest = ServiceUpdateInput
 
 export type UpdateServiceMutationResponse = UpdateService200
 
