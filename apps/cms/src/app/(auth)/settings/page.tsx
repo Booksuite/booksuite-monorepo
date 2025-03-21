@@ -29,7 +29,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <Home size={20} />,
         title: 'Dados gerais',
-        href: `/settings/dados-gerais`,
+        href: `/settings/general`,
     },
     {
         icon: <Hotel size={20} />,

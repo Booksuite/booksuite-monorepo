@@ -1,10 +1,11 @@
 'use client'
 
-import { getCompanyByIdQueryKey, useGetCompanyById } from '@booksuite/sdk'
+import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import { GeneralDataForm } from './components/GeneralDataForm'
@@ -21,19 +22,40 @@ export default function GeneralDataPage() {
         id: companyId,
     })
 
+    const { mutateAsync: updateCompany } = useUpdateCompany()
+
     const toast = useToast()
 
-    function handleSubmit(e: GeneralData) {}
+    async function handleSubmit(formData: GeneralData) {
+        console.log(formData)
+        try {
+            await updateCompany({
+                id: companyId,
+                data: formData,
+            })
+
+            toast({
+                title: 'Acomodação editada com sucesso',
+                status: 'success',
+            })
+        } catch (error) {
+            toast({
+                title: 'Erro ao editar acomodação',
+                description: getErrorMessage(error),
+                status: 'error',
+            })
+        }
+    }
 
     return (
         <div className="GeneralData">
             <PageHeader
                 title="Dados Gerais"
                 backLButtonLabel="Configurações"
-                backButtonHref="/configuracoes"
+                backButtonHref="/settings"
             />
 
-            {isLoading ? (
+            {!isLoading && (
                 <Formik<GeneralData>
                     initialValues={createFormInitialValues(companyGeneralData)}
                     validationSchema={generalDataSchema}
@@ -41,7 +63,7 @@ export default function GeneralDataPage() {
                 >
                     <GeneralDataForm />
                 </Formik>
-            ) : undefined}
+            )}
         </div>
     )
 }
