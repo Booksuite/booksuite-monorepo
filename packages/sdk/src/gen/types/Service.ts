@@ -1,3 +1,4 @@
+import type { BillingType } from './BillingType.ts'
 import type { Media } from './Media.ts'
 
 export type Service = {
@@ -13,10 +14,7 @@ export type Service = {
    * @type boolean
    */
   published: boolean
-  /**
-   * @type string
-   */
-  billType: string
+  billingType: BillingType
   /**
    * @type number
    */

@@ -1,3 +1,4 @@
+import type { BillingType } from './BillingType.ts'
 import type { ServiceHousingUnitTypeInput } from './ServiceHousingUnitTypeInput.ts'
 import type { ServiceMediaInput } from './ServiceMediaInput.ts'
 
@@ -10,10 +11,7 @@ export type ServiceUpdateInput = {
    * @type boolean | undefined
    */
   published?: boolean
-  /**
-   * @type string | undefined
-   */
-  billType?: string
+  billingType?: BillingType
   /**
    * @type number | undefined
    */
@@ -51,10 +49,6 @@ export type ServiceUpdateInput = {
    */
   seasonEnd?: string
   /**
-   * @type array | undefined
-   */
-  availableWeekDays?: number[]
-  /**
    * @type string | undefined
    */
   description?: string
@@ -74,6 +68,10 @@ export type ServiceUpdateInput = {
    * @type array | undefined
    */
   medias?: ServiceMediaInput[]
+  /**
+   * @type array | undefined
+   */
+  availableWeekDays?: number[]
   /**
    * @type array | undefined
    */

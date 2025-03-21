@@ -1,0 +1,1 @@
+{"type":"string","enum":["name","shortDescription","description","companyName","state","city","user","createdAt"],"x-readme-ref-name":"CompanyOrderBy"}

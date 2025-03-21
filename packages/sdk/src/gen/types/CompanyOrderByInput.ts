@@ -1,14 +1,7 @@
-export type CompanyOrderByDTOOrderBy = 'name' | 'shortDescription' | 'description' | 'companyName' | 'state' | 'city' | 'user' | 'createdAt'
-
-export type CompanyOrderByDTODirection = 'asc' | 'desc'
+import type { CompanyOrderBy } from './CompanyOrderBy.ts'
+import type { OrderDirection } from './OrderDirection.ts'
 
 export type CompanyOrderByInput = {
-  /**
-   * @type string
-   */
-  orderBy: CompanyOrderByDTOOrderBy
-  /**
-   * @type string
-   */
-  direction: CompanyOrderByDTODirection
+  orderBy: CompanyOrderBy
+  direction: OrderDirection
 }

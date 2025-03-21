@@ -1,0 +1,1 @@
+export type BannerPosition = 'HOME_TOP' | 'FEATURED_CONTENT'

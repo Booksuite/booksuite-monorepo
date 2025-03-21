@@ -1,0 +1,1 @@
+export type BannerOrderBy = 'position' | 'order' | 'createdAt'

@@ -1,14 +1,7 @@
-export type MediaOrderByDTOOrderBy = 'url' | 'createdAt'
-
-export type MediaOrderByDTODirection = 'asc' | 'desc'
+import type { MediaOrderBy } from './MediaOrderBy.ts'
+import type { OrderDirection } from './OrderDirection.ts'
 
 export type MediaOrderByInput = {
-  /**
-   * @type string
-   */
-  orderBy: MediaOrderByDTOOrderBy
-  /**
-   * @type string
-   */
-  direction: MediaOrderByDTODirection
+  orderBy: MediaOrderBy
+  direction: OrderDirection
 }

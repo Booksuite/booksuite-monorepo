@@ -1,8 +1,5 @@
-export type BannerSearchFilterDTOPosition = 'HOME_TOP' | 'FEATURED_CONTENT'
+import type { BannerPosition } from './BannerPosition.ts'
 
 export type BannerSearchFilterInput = {
-  /**
-   * @type string | undefined
-   */
-  position?: BannerSearchFilterDTOPosition
+  position?: BannerPosition
 }

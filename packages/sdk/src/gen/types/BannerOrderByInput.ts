@@ -1,14 +1,7 @@
-export type BannerOrderByDTOOrderBy = 'position' | 'order' | 'createdAt'
-
-export type BannerOrderByDTODirection = 'asc' | 'desc'
+import type { BannerOrderBy } from './BannerOrderBy.ts'
+import type { OrderDirection } from './OrderDirection.ts'
 
 export type BannerOrderByInput = {
-  /**
-   * @type string
-   */
-  orderBy: BannerOrderByDTOOrderBy
-  /**
-   * @type string
-   */
-  direction: BannerOrderByDTODirection
+  orderBy: BannerOrderBy
+  direction: OrderDirection
 }

@@ -49,25 +49,25 @@ export type CompanyCreateInput = {
    */
   responsible: string
   /**
-   * @type string | undefined
+   * @type string
    */
-  responsibleEmail?: string
+  responsibleEmail: string
   /**
-   * @type string | undefined
+   * @type string
    */
-  responsiblePhone?: string
+  responsiblePhone: string
   /**
    * @type string
    */
   docType: string
   /**
-   * @type string
+   * @type string | undefined
    */
-  identification: string
+  identification?: string
   /**
-   * @type string
+   * @type string | undefined
    */
-  companyName: string
+  companyName?: string
   /**
    * @type string | undefined
    */
@@ -77,38 +77,38 @@ export type CompanyCreateInput = {
    */
   municipalRegistration?: string
   /**
-   * @type string
+   * @type string | undefined
    */
-  address: string
+  address?: string
   /**
-   * @type string
+   * @type string | undefined
    */
-  zipcode: string
+  zipcode?: string
   /**
-   * @type string
+   * @type string | undefined
    */
-  number: string
+  number?: string
   /**
-   * @type string
+   * @type string | undefined
    */
-  country: string
+  country?: string
   /**
-   * @type string
+   * @type string | undefined
    */
-  state: string
+  state?: string
   /**
-   * @type array
+   * @type string | undefined
    */
-  facilities: CompanyFacilityInput[]
+  city?: string
   /**
-   * @type string
+   * @type array | undefined
    */
-  city: string
+  facilities?: CompanyFacilityInput[]
   mapCoordinates: MapCoordinatesInput
   /**
-   * @type string
+   * @type string | undefined
    */
-  bannerImageId: string
+  bannerImageId?: string
   /**
    * @type string | undefined
    */

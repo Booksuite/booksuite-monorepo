@@ -1,8 +1,6 @@
+import type { BannerAction } from './BannerAction.ts'
 import type { BannerMedia } from './BannerMedia.ts'
-
-export type BannerResponseFullDTOPosition = 'HOME_TOP' | 'FEATURED_CONTENT'
-
-export type BannerResponseFullDTOAction = 'NONE' | 'SMART_SEARCH' | 'CUSTOM' | 'SEND_TO_WHATSAPP'
+import type { BannerPosition } from './BannerPosition.ts'
 
 export type BannerFull = {
   /**
@@ -17,10 +15,7 @@ export type BannerFull = {
    * @type string
    */
   name: string
-  /**
-   * @type string
-   */
-  position: BannerResponseFullDTOPosition
+  position: BannerPosition
   /**
    * @type number
    */
@@ -33,10 +28,7 @@ export type BannerFull = {
    * @type string
    */
   description: string | null
-  /**
-   * @type string
-   */
-  action: BannerResponseFullDTOAction
+  action: BannerAction
   /**
    * @type string
    */

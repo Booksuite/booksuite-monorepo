@@ -51,23 +51,23 @@ export type Company = {
   /**
    * @type string
    */
-  responsibleEmail: string | null
+  responsibleEmail: string
   /**
    * @type string
    */
-  responsiblePhone: string | null
+  responsiblePhone: string
   /**
    * @type string
    */
-  docType: string
+  docType: string | null
   /**
    * @type string
    */
-  identification: string
+  identification: string | null
   /**
    * @type string
    */
-  companyName: string
+  companyName: string | null
   /**
    * @type string
    */
@@ -79,28 +79,28 @@ export type Company = {
   /**
    * @type string
    */
-  address: string
+  address: string | null
   /**
    * @type string
    */
-  zipcode: string
+  zipcode: string | null
   /**
    * @type string
    */
-  number: string
+  number: string | null
   /**
    * @type string
    */
-  country: string
+  country: string | null
   /**
    * @type string
    */
-  state: string
+  state: string | null
   /**
    * @type string
    */
-  city: string
-  mapCoordinates: MapCoordinatesInput
+  city: string | null
+  mapCoordinates: MapCoordinatesInput | null
   /**
    * @type string
    */

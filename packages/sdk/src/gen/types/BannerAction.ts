@@ -1,0 +1,1 @@
+export type BannerAction = 'NONE' | 'SMART_SEARCH' | 'CUSTOM' | 'SEND_TO_WHATSAPP'

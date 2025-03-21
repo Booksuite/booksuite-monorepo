@@ -1,0 +1,1 @@
+export type BillingType = 'PER_GUEST_DAILY' | 'PER_GUEST' | 'DAILY' | 'PER_RESERVATION'

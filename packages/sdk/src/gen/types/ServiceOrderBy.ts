@@ -1,0 +1,1 @@
+export type ServiceOrderBy = 'name' | 'included' | 'createdAt'

@@ -1,14 +1,7 @@
-export type ReservationOrderByDTOOrderBy = 'createdAt' | 'updatedAt' | 'status' | 'startDate' | 'endDate' | 'totalDays' | 'adults' | 'children'
-
-export type ReservationOrderByDTODirection = 'asc' | 'desc'
+import type { OrderDirection } from './OrderDirection.ts'
+import type { ReservationOrderBy } from './ReservationOrderBy.ts'
 
 export type ReservationOrderByInput = {
-  /**
-   * @type string
-   */
-  orderBy: ReservationOrderByDTOOrderBy
-  /**
-   * @type string
-   */
-  direction: ReservationOrderByDTODirection
+  orderBy: ReservationOrderBy
+  direction: OrderDirection
 }

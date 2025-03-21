@@ -46,13 +46,13 @@ export type CompanyUpdateInput = {
    */
   responsible?: string
   /**
-   * @type string
+   * @type string | undefined
    */
-  responsibleEmail?: string | null
+  responsibleEmail?: string
   /**
-   * @type string
+   * @type string | undefined
    */
-  responsiblePhone?: string | null
+  responsiblePhone?: string
   /**
    * @type string | undefined
    */

@@ -1,6 +1,5 @@
-export type BannerResponseDTOPosition = 'HOME_TOP' | 'FEATURED_CONTENT'
-
-export type BannerResponseDTOAction = 'NONE' | 'SMART_SEARCH' | 'CUSTOM' | 'SEND_TO_WHATSAPP'
+import type { BannerAction } from './BannerAction.ts'
+import type { BannerPosition } from './BannerPosition.ts'
 
 export type Banner = {
   /**
@@ -15,10 +14,7 @@ export type Banner = {
    * @type string
    */
   name: string
-  /**
-   * @type string
-   */
-  position: BannerResponseDTOPosition
+  position: BannerPosition
   /**
    * @type number
    */
@@ -31,10 +27,7 @@ export type Banner = {
    * @type string
    */
   description: string | null
-  /**
-   * @type string
-   */
-  action: BannerResponseDTOAction
+  action: BannerAction
   /**
    * @type string
    */

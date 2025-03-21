@@ -1,0 +1,1 @@
+{"type":"string","enum":["position","order","createdAt"],"x-readme-ref-name":"BannerOrderBy"}
