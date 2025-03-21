@@ -177,6 +177,7 @@ export const RoomsForm: React.FC = () => {
                                     touched.weekdaysPrice,
                             }}
                             {...getFieldProps('weekdaysPrice')}
+                            onChange={handleChange('weekdaysPrice')}
                         />
                         <InputBox
                             label="Preço fim de semana"
@@ -188,6 +189,7 @@ export const RoomsForm: React.FC = () => {
                                     touched.weekendPrice,
                             }}
                             {...getFieldProps('weekendPrice')}
+                            onChange={handleChange('weekendPrice')}
                         />
                         <InputBox
                             label="Valor por adulto extra"
@@ -199,6 +201,7 @@ export const RoomsForm: React.FC = () => {
                                     touched.extraAdultPrice,
                             }}
                             {...getFieldProps('extraAdultPrice')}
+                            onChange={handleChange('extraAdultPrice')}
                         />
                         <InputNumberBox
                             label="Cobrar valor extra por adulto acima de"

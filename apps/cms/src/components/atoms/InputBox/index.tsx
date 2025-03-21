@@ -8,6 +8,7 @@ import {
     Input,
     InputProps,
 } from '@chakra-ui/react'
+import { ChangeEvent } from 'react'
 import { CurrencyInput } from 'react-currency-mask'
 
 export interface InputBoxProps extends InputProps {
@@ -28,8 +29,11 @@ export const InputBox: React.FC<InputBoxProps> = ({
                 <CurrencyInput
                     value={Number(props.value)}
                     InputElement={<Input placeholder=" " />}
-                    onChangeValue={(e) => {
-                        props.onChange?.(e)
+                    onChangeValue={(_, value) => {
+                        props.onChange?.({
+                            currentTarget: { value },
+                            target: { value },
+                        } as ChangeEvent<HTMLInputElement>)
                     }}
                 />
             ) : (
