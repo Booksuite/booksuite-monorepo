@@ -19,7 +19,6 @@ import {
 
 export default function CreateServicePage() {
     const [status, setStatus] = useState<Status>('Ativo')
-
     const companyId = useCurrentCompanyId()
 
     const { mutateAsync: createService } = useCreateService()
@@ -27,14 +26,25 @@ export default function CreateServicePage() {
     const toast = useToast()
 
     async function handleSubmit(formData: ServiceFormData) {
-        formData.availableWeekDays = {...formData.availableWeekDays}
+        console.log(formData)
 
         try {
             await createService({
                 companyId,
                 data: formData,
             })
-        } catch (error) {}
+
+            toast({
+                title: 'Experiência Criada com sucesso',
+                status: 'success',
+            })
+        } catch (error) {
+            toast({
+                title: 'Erro ao criar experiência',
+                description: getErrorMessage(error),
+                status: 'error',
+            })
+        }
     }
 
     return (
