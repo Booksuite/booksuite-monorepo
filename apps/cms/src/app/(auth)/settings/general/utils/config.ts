@@ -1,11 +1,11 @@
-import { CompanyFull } from '@booksuite/sdk'
+import { CompanyUpdateInput } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type GeneralData = Pick<CompanyFull, 'name' | 'timezone' | 'type'>
+export type GeneralDataForm = Pick<CompanyUpdateInput, 'name' | 'timezone' | 'type'>
 
 export const createFormInitialValues = (
-    data?: CompanyFull | null,
-): GeneralData => ({
+    data?: Partial<CompanyUpdateInput> | null,
+): GeneralDataForm => ({
     name: data?.name || '',
     timezone: data?.timezone || '',
     type: data?.type || 'HOTEL',
