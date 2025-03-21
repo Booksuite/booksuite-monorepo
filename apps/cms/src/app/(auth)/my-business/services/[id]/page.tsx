@@ -33,12 +33,12 @@ export default function UpdateService({ params }: UpdateServiceProps) {
             await updateService({ id: params.id, companyId }, formData)
 
             toast({
-                title: 'Experiência editada com sucesso',
+                title: 'Serviço modificado com sucesso',
                 status: 'success',
             })
         } catch (error) {
             toast({
-                title: 'Erro ao editar experiência',
+                title: 'Erro ao editar Serviço',
                 description: getErrorMessage(error),
                 status: 'error',
             })

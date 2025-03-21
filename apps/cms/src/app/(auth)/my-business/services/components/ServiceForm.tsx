@@ -3,8 +3,10 @@
 import { useSearchHousingUnitTypes } from '@booksuite/sdk'
 import {
     Button,
+    Checkbox,
     CheckboxGroup,
     Flex,
+    Select,
     Stack,
     Switch,
     Text,
@@ -13,22 +15,18 @@ import { FieldArray, Form, useFormikContext } from 'formik'
 import { CirclePlus } from 'lucide-react'
 import type React from 'react'
 
+import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { DatePickerBox } from '@/components/atoms/DatePickerBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
-import SelectBox from '@/components/atoms/SelectBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { Gallery } from '@/components/organisms/Gallery'
 import type { ServiceFormData } from '../utils/config'
+import { VALID_NIGHTS } from '../utils/constants'
 
 export const ServiceForm: React.FC = () => {
-    interface availableHousingUnitTypes {
-        id: string
-        name: string
-    }
-
     const {
         getFieldProps,
         touched,
@@ -38,47 +36,16 @@ export const ServiceForm: React.FC = () => {
         setFieldValue,
     } = useFormikContext<ServiceFormData>()
 
-    const availablehousingUnitTypes: availableHousingUnitTypes[] = []
-
-    const validNights = [
-        { id: 1, name: 'Segunda-feira' },
-        { id: 2, name: 'Terça-feira' },
-        { id: 3, name: 'Quarta-feira' },
-        { id: 4, name: 'Quinta-feira' },
-        { id: 5, name: 'Sexta-feira' },
-        { id: 6, name: 'Sábado' },
-        { id: 7, name: 'Domingo' },
-    ]
-
-    // const optionsPriceAdjustment = [
-    //     { value: 'PERCENT_DISCOUNT', label: 'Desconto Percentual' },
-    //     { value: 'PERCENT_ADD', label: 'Acréscimo Percentual' },
-    //     { value: 'FIXED_DISCOUNT', label: 'Desconto Fixo' },
-    //     { value: 'FIXED_ADD', label: 'Acréscimo Fixo' },
-    // ]
-
-    const optionsBill = [
-        { value: 'PER_NIGHT', label: 'Por noite' },
-        { value: 'PER_PERSON', label: 'Por pessoa' },
-        { value: 'FIXED', label: 'Valor fixo' },
-    ]
-
     const companyId = useCurrentCompanyId()
-    const {
-        data: housingUnitTypes,
-        isLoading: isLoadingHousingUnitTypes,
-    } = useSearchHousingUnitTypes(
-        {
-            companyId: companyId,
-        },
-        {
-            pagination: { itemsPerPage: 100, page: 1 },
-        },
-    )
-
-    housingUnitTypes?.items.map((housing) => {
-        availablehousingUnitTypes.push({ id: housing.id, name: housing.name })
-    })
+    const { data: housingUnitTypes, isLoading: isLoadingHousingUnitTypes } =
+        useSearchHousingUnitTypes(
+            {
+                companyId: companyId,
+            },
+            {
+                pagination: { itemsPerPage: 100, page: 1 },
+            },
+        )
 
     return (
         <Form>
@@ -100,21 +67,30 @@ export const ServiceForm: React.FC = () => {
                         formControl={{
                             isInvalid: !!errors.price && touched.price,
                         }}
-                        onChange={(e) => {
-                            setFieldValue('price',0)
-                        }}
+                        {...getFieldProps('price')}
+                        onChange={handleChange('price')}
                     />
 
-                    <SelectBox
-                        label="Tipo de Cobrança"
-                        options={optionsBill}
-                        onChange={(selectedOption: any) =>
-                            setFieldValue('billType', selectedOption?.value)
+                    <Select
+                        size="lg"
+                        onChange={(selectedOption) =>
+                            setFieldValue(
+                                'billingType',
+                                selectedOption.target.value,
+                            )
                         }
-                        value={optionsBill.find(
-                            (opt) => opt.value === values.billType,
+                    >
+                        <option value="" disabled selected hidden>
+                            Selecione um tipo de cobrança
+                        </option>
+                        {Object.entries(BILLING_TYPE_MAPPING).map(
+                            ([key, value]) => (
+                                <option key={key} value={key}>
+                                    {value}
+                                </option>
+                            ),
                         )}
-                    />
+                    </Select>
 
                     <InputNumberBox
                         label="Mínimo de Diárias"
@@ -229,7 +205,7 @@ export const ServiceForm: React.FC = () => {
                     />
                 </section>
 
-                {!isLoadingHousingUnitTypes ? (
+                {!isLoadingHousingUnitTypes && !!housingUnitTypes && (
                     <section>
                         <Text as="h2">Acomodações Válidas</Text>
                         <CheckboxGroup
@@ -246,45 +222,11 @@ export const ServiceForm: React.FC = () => {
                             }}
                         >
                             <Stack spacing={2} direction="column">
-                                {availablehousingUnitTypes.map((housing) => {
-                                    const isChecked =
-                                        values.availableHousingUnitTypes.some(
-                                            (h) =>
-                                                h.housingUnitTypeId ===
-                                                housing.id,
-                                        )
-
+                                {housingUnitTypes.items.map((housing) => {
                                     return (
                                         <InputCheckboxBox
                                             key={housing.id}
                                             value={housing.id}
-                                            isChecked={isChecked}
-                                            onChange={(e) => {
-                                                const isChecked =
-                                                    e.target.checked
-                                                let updatedHousingTypes = [
-                                                    ...values.availableHousingUnitTypes,
-                                                ]
-
-                                                if (isChecked) {
-                                                    updatedHousingTypes.push({
-                                                        housingUnitTypeId:
-                                                            housing.id,
-                                                    })
-                                                } else {
-                                                    updatedHousingTypes =
-                                                        updatedHousingTypes.filter(
-                                                            (h) =>
-                                                                h.housingUnitTypeId !==
-                                                                housing.id,
-                                                        )
-                                                }
-
-                                                setFieldValue(
-                                                    'availableHousingUnitTypes',
-                                                    updatedHousingTypes,
-                                                )
-                                            }}
                                         >
                                             {housing.name}
                                         </InputCheckboxBox>
@@ -293,42 +235,25 @@ export const ServiceForm: React.FC = () => {
                             </Stack>
                         </CheckboxGroup>
                     </section>
-                ) : undefined}
+                )}
 
                 <section>
                     <Text as="h2">Noites válidas</Text>
                     <CheckboxGroup
                         value={values.availableWeekDays}
-                        onChange={(selectedIds) => {
-                            setFieldValue('availableWeekDays', selectedIds)
+                        onChange={(newValue) => {
+                            console.log(newValue)
+                            setFieldValue(
+                                'availableWeekDays',
+                                newValue.map(Number),
+                            )
                         }}
                     >
                         <Stack spacing={2} direction="column">
-                            {validNights.map((night) => (
-                                <InputCheckboxBox
-                                    key={night.id}
-                                    value={night.id}
-                                    isChecked={values.availableWeekDays.includes(
-                                        night.id,
-                                    )}
-                                    onChange={(e) => {
-                                        const isChecked = e.target.checked
-                                        const updatedNights = isChecked
-                                            ? [
-                                                  ...values.availableWeekDays,
-                                                  night.id,
-                                              ]
-                                            : values.availableWeekDays.filter(
-                                                  (id) => id !== night.id,
-                                              )
-                                        setFieldValue(
-                                            'availableWeekDays',
-                                            updatedNights,
-                                        )
-                                    }}
-                                >
-                                    {night.name}
-                                </InputCheckboxBox>
+                            {VALID_NIGHTS.map((night) => (
+                                <Checkbox key={night.name} value={night.value}>
+                                    {night.name}`
+                                </Checkbox>
                             ))}
                         </Stack>
                     </CheckboxGroup>
@@ -366,7 +291,7 @@ export const ServiceForm: React.FC = () => {
                     </Text>
 
                     <FieldArray name="medias">
-                        {({ remove, push }) => (
+                        {({ push }) => (
                             <>
                                 <Gallery.Root
                                     items={values.medias.map(
@@ -406,7 +331,7 @@ export const ServiceForm: React.FC = () => {
                             isInvalid:
                                 !!errors.coverMediaId && touched.coverMediaId,
                         }}
-                        {...getFieldProps('videoUrl')}
+                        {...getFieldProps('coverMediaId')}
                     />
                 </section>
 
