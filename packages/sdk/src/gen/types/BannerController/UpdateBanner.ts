@@ -1,5 +1,5 @@
 import type { Banner } from '../Banner.ts'
-import type { BannerCreateInput } from '../BannerCreateInput.ts'
+import type { BannerUpdateInput } from '../BannerUpdateInput.ts'
 
 export type UpdateBannerPathParams = {
   /**
@@ -14,7 +14,7 @@ export type UpdateBannerPathParams = {
 
 export type UpdateBanner200 = Banner
 
-export type UpdateBannerMutationRequest = BannerCreateInput
+export type UpdateBannerMutationRequest = BannerUpdateInput
 
 export type UpdateBannerMutationResponse = UpdateBanner200
 

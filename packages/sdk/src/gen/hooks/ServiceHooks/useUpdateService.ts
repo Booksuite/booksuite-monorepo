@@ -17,7 +17,7 @@ export function useUpdateService(
     mutation?: UseMutationOptions<
       UpdateServiceMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateServicePathParams['id']; companyId: UpdateServicePathParams['companyId']; data: UpdateServiceMutationRequest }
+      { id: UpdateServicePathParams['id']; companyId: UpdateServicePathParams['companyId']; data?: UpdateServiceMutationRequest }
     >
     client?: Partial<RequestConfig<UpdateServiceMutationRequest>> & { client?: typeof client }
   } = {},
@@ -28,7 +28,7 @@ export function useUpdateService(
   return useMutation<
     UpdateServiceMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: UpdateServicePathParams['id']; companyId: UpdateServicePathParams['companyId']; data: UpdateServiceMutationRequest }
+    { id: UpdateServicePathParams['id']; companyId: UpdateServicePathParams['companyId']; data?: UpdateServiceMutationRequest }
   >({
     mutationFn: async ({ id, companyId, data }) => {
       return updateService({ id, companyId }, data, config)

@@ -1,5 +1,5 @@
 import type { HousingUnitType } from '../HousingUnitType.ts'
-import type { HousingUnitTypeCreateInput } from '../HousingUnitTypeCreateInput.ts'
+import type { HousingUnitTypeUpdateInput } from '../HousingUnitTypeUpdateInput.ts'
 
 export type UpdateHousingUnitTypePathParams = {
   /**
@@ -14,7 +14,7 @@ export type UpdateHousingUnitTypePathParams = {
 
 export type UpdateHousingUnitType200 = HousingUnitType
 
-export type UpdateHousingUnitTypeMutationRequest = HousingUnitTypeCreateInput
+export type UpdateHousingUnitTypeMutationRequest = HousingUnitTypeUpdateInput
 
 export type UpdateHousingUnitTypeMutationResponse = UpdateHousingUnitType200
 

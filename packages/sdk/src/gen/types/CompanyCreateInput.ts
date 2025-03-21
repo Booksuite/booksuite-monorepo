@@ -1,6 +1,7 @@
 import type { CompanyContactInput } from './CompanyContactInput.ts'
 import type { CompanyFacilityInput } from './CompanyFacilityInput.ts'
 import type { CompanySettingsInput } from './CompanySettingsInput.ts'
+import type { MapCoordinatesInput } from './MapCoordinatesInput.ts'
 
 export type CompanyCreateInput = {
   /**
@@ -82,6 +83,10 @@ export type CompanyCreateInput = {
   /**
    * @type string
    */
+  zipcode: string
+  /**
+   * @type string
+   */
   number: string
   /**
    * @type string
@@ -99,4 +104,17 @@ export type CompanyCreateInput = {
    * @type string
    */
   city: string
+  mapCoordinates: MapCoordinatesInput
+  /**
+   * @type string
+   */
+  bannerImageId: string
+  /**
+   * @type string | undefined
+   */
+  bannerTitle?: string
+  /**
+   * @type string | undefined
+   */
+  bannerDescription?: string
 }

@@ -12,7 +12,7 @@ export function getUpdateBannerUrl({ id, companyId }: { id: UpdateBannerPathPara
  */
 export async function updateBanner(
   { id, companyId }: { id: UpdateBannerPathParams['id']; companyId: UpdateBannerPathParams['companyId'] },
-  data: UpdateBannerMutationRequest,
+  data?: UpdateBannerMutationRequest,
   config: Partial<RequestConfig<UpdateBannerMutationRequest>> & { client?: typeof client } = {},
 ) {
   const { client: request = client, ...requestConfig } = config

@@ -22,7 +22,7 @@ export function getUpdateHousingUnitTypeUrl({
  */
 export async function updateHousingUnitType(
   { id, companyId }: { id: UpdateHousingUnitTypePathParams['id']; companyId: UpdateHousingUnitTypePathParams['companyId'] },
-  data: UpdateHousingUnitTypeMutationRequest,
+  data?: UpdateHousingUnitTypeMutationRequest,
   config: Partial<RequestConfig<UpdateHousingUnitTypeMutationRequest>> & { client?: typeof client } = {},
 ) {
   const { client: request = client, ...requestConfig } = config

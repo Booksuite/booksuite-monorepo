@@ -1,3 +1,5 @@
+import type { Media } from './Media.ts'
+
 export type Service = {
   /**
    * @type string
@@ -63,8 +65,5 @@ export type Service = {
    * @type string
    */
   notes: string
-  /**
-   * @type string
-   */
-  videoUrl: string | null
+  coverMedia: Media | null
 }

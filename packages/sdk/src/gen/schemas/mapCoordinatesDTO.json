@@ -1,0 +1,1 @@
+{"type":"object","properties":{"latitude":{"type":"number","description":"Latitude","example":123.456},"longitude":{"type":"number","description":"Longitude","example":123.456}},"required":["latitude","longitude"],"x-readme-ref-name":"MapCoordinatesDTO"}

@@ -1,5 +1,5 @@
-import type { ServiceCategoryInput } from './ServiceCategoryInput.ts'
-import type { ServiceMediaCreateInput } from './ServiceMediaCreateInput.ts'
+import type { ServiceHousingUnitTypeInput } from './ServiceHousingUnitTypeInput.ts'
+import type { ServiceMediaInput } from './ServiceMediaInput.ts'
 
 export type ServiceCreateInput = {
   /**
@@ -51,6 +51,10 @@ export type ServiceCreateInput = {
    */
   seasonEnd: string
   /**
+   * @type array
+   */
+  availableWeekDays: number[]
+  /**
    * @type string
    */
   description: string
@@ -65,13 +69,13 @@ export type ServiceCreateInput = {
   /**
    * @type string | undefined
    */
-  videoUrl?: string
+  coverMediaId?: string
   /**
    * @type array
    */
-  medias: ServiceMediaCreateInput[]
+  medias: ServiceMediaInput[]
   /**
    * @type array
    */
-  category: ServiceCategoryInput[]
+  availableHousingUnitTypes: ServiceHousingUnitTypeInput[]
 }

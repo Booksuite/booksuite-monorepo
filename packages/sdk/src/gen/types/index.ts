@@ -49,6 +49,7 @@ export type { BannerOrderByDTOOrderBy, BannerOrderByDTODirection, BannerOrderByI
 export type { BannerPaginated } from './BannerPaginated.ts'
 export type { BannerSearchBodyInput } from './BannerSearchBodyInput.ts'
 export type { BannerSearchFilterDTOPosition, BannerSearchFilterInput } from './BannerSearchFilterInput.ts'
+export type { BannerUpdateDTOPosition, BannerUpdateDTOAction, BannerUpdateInput } from './BannerUpdateInput.ts'
 export type {
   DeleteCompanyCancellationPolicyPathParams,
   DeleteCompanyCancellationPolicy200,
@@ -70,7 +71,7 @@ export type {
 } from './CancellationPolicyController/UpsertCompanyCancellationPolicy.ts'
 export type { CancellationPolicyResponseFullDTODefaultPenaltyBy, CancellationPolicyFull } from './CancellationPolicyFull.ts'
 export type { CancellationPolicyDTODefaultPenaltyBy, CancellationPolicyInput } from './CancellationPolicyInput.ts'
-export type { Company } from './Company.ts'
+export type { CompanyResponseDTOType, Company } from './Company.ts'
 export type { CompanyContactResponseDTOType, CompanyContact } from './CompanyContact.ts'
 export type { CompanyContactDTOType, CompanyContactInput } from './CompanyContactInput.ts'
 export type { CreateCompany200, CreateCompanyMutationRequest, CreateCompanyMutationResponse, CreateCompanyMutation } from './CompanyController/CreateCompany.ts'
@@ -93,7 +94,7 @@ export type {
 export type { CompanyCreateInput } from './CompanyCreateInput.ts'
 export type { CompanyFacility } from './CompanyFacility.ts'
 export type { CompanyFacilityInput } from './CompanyFacilityInput.ts'
-export type { CompanyFull } from './CompanyFull.ts'
+export type { CompanyResponseFullDTOType, CompanyFull } from './CompanyFull.ts'
 export type { CompanyOrderByDTOOrderBy, CompanyOrderByDTODirection, CompanyOrderByInput } from './CompanyOrderByInput.ts'
 export type { CompanyPaginated } from './CompanyPaginated.ts'
 export type { CompanySearchBodyInput } from './CompanySearchBodyInput.ts'
@@ -102,6 +103,7 @@ export type { CompanySettings } from './CompanySettings.ts'
 export type { CompanySettingsInput } from './CompanySettingsInput.ts'
 export type { CompanySettingsTheme } from './CompanySettingsTheme.ts'
 export type { CompanySettingsThemeInput } from './CompanySettingsThemeInput.ts'
+export type { CompanyUpdateInput } from './CompanyUpdateInput.ts'
 export type { DateRangeInput } from './DateRangeInput.ts'
 export type { FacilityResponseDTOType, FacilityResponseDTOCategory, Facility } from './Facility.ts'
 export type {
@@ -183,6 +185,8 @@ export type { HousingUnitTypeOrderByDTOOrderBy, HousingUnitTypeOrderByDTODirecti
 export type { HousingUnitTypePaginated } from './HousingUnitTypePaginated.ts'
 export type { HousingUnitTypeSearchBodyInput } from './HousingUnitTypeSearchBodyInput.ts'
 export type { HousingUnitTypeSearchFilterInput } from './HousingUnitTypeSearchFilterInput.ts'
+export type { HousingUnitTypeUpdateInput } from './HousingUnitTypeUpdateInput.ts'
+export type { MapCoordinatesInput } from './MapCoordinatesInput.ts'
 export type { Media } from './Media.ts'
 export type { DeleteMediaPathParams, DeleteMedia200, DeleteMediaMutationResponse, DeleteMediaMutation } from './MediaController/DeleteMedia.ts'
 export type { GetMediaByIdPathParams, GetMediaById200, GetMediaByIdQueryResponse, GetMediaByIdQuery } from './MediaController/GetMediaById.ts'
@@ -252,6 +256,13 @@ export type {
   GetReservationByIdQuery,
 } from './ReservationController/GetReservationById.ts'
 export type {
+  ReservationControllerUpdatePathParams,
+  ReservationControllerUpdate200,
+  ReservationControllerUpdateMutationRequest,
+  ReservationControllerUpdateMutationResponse,
+  ReservationControllerUpdateMutation,
+} from './ReservationController/ReservationControllerUpdate.ts'
+export type {
   SearchReservationsPathParams,
   SearchReservationsQueryParams,
   SearchReservations200,
@@ -259,13 +270,6 @@ export type {
   SearchReservationsMutationResponse,
   SearchReservationsMutation,
 } from './ReservationController/SearchReservations.ts'
-export type {
-  UpdateReservationPathParams,
-  UpdateReservation200,
-  UpdateReservationMutationRequest,
-  UpdateReservationMutationResponse,
-  UpdateReservationMutation,
-} from './ReservationController/UpdateReservation.ts'
 export type { ReservationCreateDTOStatus, ReservationCreateDTOSaleChannel, ReservationCreateInput } from './ReservationCreateInput.ts'
 export type { ReservationResponseFullDTOStatus, ReservationResponseFullDTOSaleChannel, ReservationFull } from './ReservationFull.ts'
 export type { ReservationOrderByDTOOrderBy, ReservationOrderByDTODirection, ReservationOrderByInput } from './ReservationOrderByInput.ts'
@@ -273,10 +277,9 @@ export type { ReservationPaginated } from './ReservationPaginated.ts'
 export type { ReservationSearchBodyInput } from './ReservationSearchBodyInput.ts'
 export type { ReservationSearchFilterDTOSaleChannel, ReservationSearchFilterDTOStatus, ReservationSearchFilterInput } from './ReservationSearchFilterInput.ts'
 export type { ReservationService } from './ReservationService.ts'
-export type { ReservationServiceCreateInput } from './ReservationServiceCreateInput.ts'
+export type { ReservationServiceInput } from './ReservationServiceInput.ts'
+export type { ReservationUpdateDTOStatus, ReservationUpdateDTOSaleChannel, ReservationUpdateInput } from './ReservationUpdateInput.ts'
 export type { Service } from './Service.ts'
-export type { ServiceCategory } from './ServiceCategory.ts'
-export type { ServiceCategoryInput } from './ServiceCategoryInput.ts'
 export type {
   CreateServicePathParams,
   CreateService200,
@@ -303,10 +306,12 @@ export type {
 } from './ServiceController/UpdateService.ts'
 export type { ServiceCreateInput } from './ServiceCreateInput.ts'
 export type { ServiceFull } from './ServiceFull.ts'
+export type { ServiceHousingUnitTypeInput } from './ServiceHousingUnitTypeInput.ts'
 export type { ServiceMedia } from './ServiceMedia.ts'
-export type { ServiceMediaCreateInput } from './ServiceMediaCreateInput.ts'
+export type { ServiceMediaInput } from './ServiceMediaInput.ts'
 export type { ServiceOrderByDTOOrderBy, ServiceOrderByDTODirection, ServiceOrderByInput } from './ServiceOrderByInput.ts'
 export type { ServicePaginated } from './ServicePaginated.ts'
 export type { ServiceSearchBodyInput } from './ServiceSearchBodyInput.ts'
 export type { ServiceSearchFilterInput } from './ServiceSearchFilterInput.ts'
+export type { ServiceUpdateInput } from './ServiceUpdateInput.ts'
 export type { User } from './User.ts'

@@ -1,4 +1,5 @@
-import type { ServiceCategory } from './ServiceCategory.ts'
+import type { HousingUnitType } from './HousingUnitType.ts'
+import type { Media } from './Media.ts'
 import type { ServiceMedia } from './ServiceMedia.ts'
 
 export type ServiceFull = {
@@ -66,13 +67,13 @@ export type ServiceFull = {
    * @type string
    */
   notes: string
-  /**
-   * @type string
-   */
-  videoUrl: string | null
+  coverMedia: Media | null
   /**
    * @type array
    */
   medias: ServiceMedia[]
-  category: ServiceCategory | null
+  /**
+   * @type array
+   */
+  availableHousingUnitTypes: HousingUnitType[] | null
 }
