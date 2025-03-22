@@ -4,7 +4,7 @@ import * as yup from 'yup'
 export type AgePolicyFormData = AgePolicyInput
 
 export const createAgePolicyInitialValues = (
-    data?: AgePolicyFull,
+    data?: AgePolicyFull | null,
 ): AgePolicyFormData => ({
     acceptChildren: data?.acceptChildren || false,
     adultMinAge: data?.adultMinAge || 0,
@@ -14,7 +14,7 @@ export const createAgePolicyInitialValues = (
             initialAge: group.initialAge,
             finalAge: group.finalAge,
             chargeType: group.chargeType,
-            value: group.value !== null ? { amount: group.value } : undefined,
+            value: group.value || 0
         })) || [],
 })
 
@@ -37,7 +37,7 @@ export const agePolicyFormSchema = yup.object({
                     'A idade máxima deve ser maior que a mínima',
                 ),
             chargeType: yup.string().required('Tipo de cobrança é obrigatório'),
-            value: yup.object().optional(),
+            value: yup.number().required('Preço de cobrança obrigátorio'),
         }),
     ),
 })

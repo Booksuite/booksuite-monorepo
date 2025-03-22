@@ -15,6 +15,7 @@ import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { AgePolicyFormData } from '../utils/config'
+import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
 
 export const AgePolicyForm = () => {
     const {
@@ -145,40 +146,39 @@ export const AgePolicyForm = () => {
                                                             index
                                                         ]?.chargeType,
                                                 }}
-                                                options={[
-                                                    {
-                                                        label: 'Cobrar por criança por diária',
-                                                        value: 'child_per_day',
-                                                    },
-                                                    {
-                                                        label: 'Cobrar por faixa etária',
-                                                        value: 'age_group',
-                                                    },
-                                                ]}
+                                                options={Object.entries(
+                                                    AGE_GROUP_CHARGE_TYPE,
+                                                ).map(([value, label]) => ({
+                                                    label,
+                                                    value,
+                                                }))}
                                                 placeholder="Selecione o tipo de cobrança"
                                                 isSearchable={false}
                                                 closeMenuOnSelect
                                                 value={
                                                     values.ageGroups?.[index]
                                                         ?.chargeType
-                                                        ? [
-                                                              {
-                                                                  label: 'Cobrar por criança por diária',
-                                                                  value: 'child_per_day',
-                                                              },
-                                                              {
-                                                                  label: 'Cobrar por faixa etária',
-                                                                  value: 'age_group',
-                                                              },
-                                                          ].find(
-                                                              (opt) =>
-                                                                  opt.value ===
-                                                                  (values
-                                                                      .ageGroups[
-                                                                      index
-                                                                  ]
-                                                                      ?.chargeType as string),
-                                                          ) || null
+                                                        ? Object.entries(
+                                                              AGE_GROUP_CHARGE_TYPE,
+                                                          )
+                                                              .map(
+                                                                  ([
+                                                                      value,
+                                                                      label,
+                                                                  ]) => ({
+                                                                      label,
+                                                                      value,
+                                                                  }),
+                                                              )
+                                                              .find(
+                                                                  (opt) =>
+                                                                      opt.value ===
+                                                                      (values
+                                                                          .ageGroups[
+                                                                          index
+                                                                      ]
+                                                                          ?.chargeType as string),
+                                                              ) || null
                                                         : null
                                                 }
                                                 onChange={(
@@ -193,21 +193,27 @@ export const AgePolicyForm = () => {
                                                 }
                                             />
 
-                                            <InputBox
-                                                label="Valor a ser cobrado"
-                                                type="currency"
-                                                error={error?.value}
-                                                formControl={{
-                                                    isInvalid:
-                                                        !!error?.value &&
-                                                        touched.ageGroups?.[
-                                                            index
-                                                        ]?.value,
-                                                }}
-                                                {...getFieldProps(
-                                                    `ageGroups.${index}.value`,
-                                                )}
-                                            />
+                                            {values.ageGroups[index]
+                                                ?.chargeType !== 'FREE' && (
+                                                <InputBox
+                                                    label="Valor a ser cobrado"
+                                                    type="currency"
+                                                    error={error?.value}
+                                                    formControl={{
+                                                        isInvalid:
+                                                            !!error?.value &&
+                                                            touched.ageGroups?.[
+                                                                index
+                                                            ]?.value,
+                                                    }}
+                                                    {...getFieldProps(
+                                                        `ageGroups.${index}.value`,
+                                                    )}
+                                                    onChange={handleChange(
+                                                        `ageGroups.${index}.value`,
+                                                    )}
+                                                />
+                                            )}
                                         </VStack>
                                     )
                                 })}
@@ -222,6 +228,7 @@ export const AgePolicyForm = () => {
                                             initialAge: 0,
                                             finalAge: 0,
                                             chargeType: '',
+                                            id: '',
                                         })
                                     }
                                 >
@@ -232,7 +239,9 @@ export const AgePolicyForm = () => {
                     </FieldArray>
                 )}
 
-                <Button type="submit">Salvar</Button>
+                <Button type="submit" size="lg">
+                    Salvar
+                </Button>
             </Stack>
         </Form>
     )
