@@ -2,6 +2,8 @@
 
 import { Session } from 'next-auth'
 
+import { ConfirmationDialog } from '@/components/templates/ConfirmationDialog'
+
 import ChakraThemeProvider from './providers/chakraThemeProvider'
 import CssCacheProvider from './providers/cssCacheProvider'
 import { SidebarProvider } from './providers/sidebarProvider'
@@ -17,7 +19,10 @@ export function Providers({ children }: ProvidersProps) {
         <CssCacheProvider>
             <ChakraThemeProvider>
                 <TanstackQueryProvider>
-                    <SidebarProvider>{children}</SidebarProvider>
+                    <SidebarProvider>
+                        {children}
+                        <ConfirmationDialog />
+                    </SidebarProvider>
                 </TanstackQueryProvider>
             </ChakraThemeProvider>
         </CssCacheProvider>

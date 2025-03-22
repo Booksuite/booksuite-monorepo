@@ -22,6 +22,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import { Plus, Search, X } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import pluralize from 'pluralize'
 import { debounce } from 'radash'
 import { useEffect, useRef, useState } from 'react'
@@ -35,6 +36,8 @@ import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Table } from '@/components/organisms/Table'
 import { PaginationControls } from '../../../../components/molecules/PaginationControl'
+
+import { HousingUnitTypeRowActionsMenu } from './components/RowActionsMenu'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
@@ -93,9 +96,18 @@ const columnsDefinition: ColumnDef<HousingUnitTypeFull>[] = [
         accessorFn: (row) =>
             `${row.housingUnits.length} ${pluralize('unidade', row.housingUnits.length)}`,
     },
+    {
+        id: 'actions',
+        size: 50,
+        cell: ({ row }) => (
+            <HousingUnitTypeRowActionsMenu item={row.original} />
+        ),
+    },
 ]
 
 export default function Rooms() {
+    const { push } = useRouter()
+
     const [selectedFilters, setSelectedFilters] = useState<string[]>([])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
@@ -172,6 +184,10 @@ export default function Rooms() {
         },
     })
 
+    const handleRowClick = (row: HousingUnitTypeFull) => {
+        push(`/my-business/rooms/${row.id}`)
+    }
+
     return (
         <div className="Acomodacoes">
             <PageHeader
@@ -224,7 +240,12 @@ export default function Rooms() {
                     </InputGroup>
                 </HStack>
 
-                <Table table={table} error={error} isLoading={isLoading} />
+                <Table
+                    onRowClick={handleRowClick}
+                    table={table}
+                    error={error}
+                    isLoading={isLoading}
+                />
 
                 <HStack justifyContent="flex-end">
                     <PaginationControls

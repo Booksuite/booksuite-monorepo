@@ -36,6 +36,7 @@ export const Table = <T extends RowData>({
     errorFallbackMessage = 'Erro desconhecido',
     errorTitle = 'Erro ao carregar tabela',
     emptyMessage = 'Nenhum resultado encontrado',
+    ...props
 }: TableProps<T>) => {
     const withDragHandle = useMemo(
         () =>
@@ -106,6 +107,7 @@ export const Table = <T extends RowData>({
                         isLoading={isLoading}
                         table={table}
                         emptyMessage={emptyMessage}
+                        {...props}
                     />
                 )}
             </ChakraTable>
