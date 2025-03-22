@@ -4,7 +4,7 @@ import { Formik } from 'formik'
 
 import { PageHeader } from '@/components/organisms/PageHeader'
 
-//import { CancellationPolicyForm } from './components/CancellationPolicyForm'
+import { CancellationPolicyForm } from './components/CancellationPolicyForm'
 import {
     CancellationPolicyFormData,
     cancellationPolicyFormSchema,
@@ -31,7 +31,7 @@ export default function PoliticaDeCancelamento() {
                 validationSchema={cancellationPolicyFormSchema}
                 onSubmit={handleSubmit}
             >
-                {/*<CancellationPolicyForm />*/}
+                <CancellationPolicyForm />
             </Formik>
         </div>
     )
