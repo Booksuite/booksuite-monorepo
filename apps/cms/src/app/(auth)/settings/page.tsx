@@ -84,7 +84,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <Baby size={20} />,
         title: 'Política de Idade',
-        href: `/settings/politica-de-idade`,
+        href: `/settings/age-policy`,
     },
     {
         icon: <ScanText size={20} />,
