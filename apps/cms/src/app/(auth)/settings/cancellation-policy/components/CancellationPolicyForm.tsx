@@ -11,6 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { FieldArray, Form, useFormikContext } from 'formik'
 import { CircleMinus, CirclePlus, ScanText } from 'lucide-react'
+import Link from 'next/link'
 
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
@@ -320,16 +321,22 @@ export const CancellationPolicyForm = () => {
                             Se necessário personalize nosso modelo de políticas
                             de cancelamento para o seu negócio.
                         </h3>
-                        <Button
-                            variant="outline"
-                            width={'100%'}
-                            leftIcon={<CirclePlus size={23} />}
-                            mb={4}
-                            border={0}
-                            fontSize={'md'}
+                        <Link
+                            href="/settings/cancellation-policy/templates"
+                            passHref
                         >
-                            Selecionar Modelo
-                        </Button>
+                            <Button
+                                variant="outline"
+                                width={'100%'}
+                                leftIcon={<CirclePlus size={23} />}
+                                mb={4}
+                                border={0}
+                                fontSize={'md'}
+                                as="a"
+                            >
+                                Selecionar Modelo
+                            </Button>
+                        </Link>
                     </Flex>
                 </VStack>
 
