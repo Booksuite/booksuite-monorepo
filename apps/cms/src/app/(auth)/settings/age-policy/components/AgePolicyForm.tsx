@@ -221,6 +221,7 @@ export const AgePolicyForm = () => {
                                         push({
                                             initialAge: 0,
                                             finalAge: 0,
+                                            value: 0,
                                             chargeType: '',
                                         })
                                     }

@@ -12,8 +12,23 @@ import {
 } from './utils/config'
 
 export default function PoliticaDeIdade() {
-    function handleSubmit(formData: AgePolicyFormData) {
-        return null
+    const companyId = useCurrentCompanyId()
+      const toast = useToast()
+
+    const { data: companyAgePolicyData, isLoading } = useGetCompanyAgePolicy({
+        companyId: companyId,
+    })
+
+    const { mutateAsync: updateCompanyAgePolicy } = useUpsertCompanyAgePolicy()
+
+    async function handleSubmit(formData: AgePolicyFormData) {
+        try {
+            await updateCompanyAgePolicy({ companyId: companyId, data: formData })
+            toast({title: 'Políticas de Idade modificadas com sucesso', status: 'success'})
+
+        } catch (erro) {
+            toast({title: 'Erro ao modificar Políticas de Idade', status: 'error'})
+        }
     }
 
     return (
