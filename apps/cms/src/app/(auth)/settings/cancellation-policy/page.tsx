@@ -11,7 +11,7 @@ import {
     createCancellationPolicyInitialValues,
 } from './utils/config'
 
-export default function PoliticaDeCancelamento() {
+export default function CancellationPolicy() {
     function handleSubmit(formData: CancellationPolicyFormData) {
         return null
     }
