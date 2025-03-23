@@ -18,7 +18,7 @@ export type AgeGroupInput = {
    */
   chargeType: AgeGroupDTOChargeType
   /**
-   * @type object | undefined
+   * @type number | undefined
    */
-  value?: object
+  value?: number
 }

@@ -1,12 +1,15 @@
 'use client'
 
+import { HousingUnitTypeMedia } from '@booksuite/sdk'
 import { Button, Flex, Stack, Text, VStack } from '@chakra-ui/react'
 import { FieldArray, Form, useFormikContext } from 'formik'
+import { useState } from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
-import { Gallery } from '@/components/organisms/Gallery'
+import { MediaGallery } from '@/components/organisms/MediaGallery/MediaGallery'
+import { MediaItem } from '@/components/organisms/MediaGallery/types'
 import { RoomsFormData } from '../utils/config'
 
 import { HousingUnitTypeFacilitiesField } from './HousingUnitTypeFacilitiesField'
@@ -20,6 +23,30 @@ export const RoomsForm: React.FC = () => {
         handleChange,
         setFieldValue,
     } = useFormikContext<RoomsFormData>()
+
+    const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
+
+    const handleMediaChange = (selectedMedia: MediaItem[]) => {
+        const formattedMedia: HousingUnitTypeMedia[] = selectedMedia.map(
+            (media, index) => {
+                const sameMedia = values.medias.find(
+                    (item) => item.media.id === media.id,
+                )
+                const isFeatured = !!sameMedia?.isFeatured
+                const order = sameMedia?.order || index
+
+                return {
+                    id: media.id,
+                    isFeatured,
+                    order,
+                    media,
+                }
+            },
+        )
+
+        setFieldValue('medias', formattedMedia)
+        setIsMediaGalleryOpen(false)
+    }
 
     return (
         <Form>
@@ -222,21 +249,35 @@ export const RoomsForm: React.FC = () => {
                     <h2>Fotos e vídeo</h2>
                     <h4>Galeria</h4>
 
-                    <Gallery.Root
-                        items={[
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                            '/imagem-exemplo.png',
-                        ]}
-                    />
+                    <Button onClick={() => setIsMediaGalleryOpen(true)} mb={4}>
+                        Selecionar Mídia
+                    </Button>
+
+                    {values.medias.length > 0 ? (
+                        values.medias.map((item) => (
+                            <div key={item.media.id}>{item.media.url}</div>
+                        ))
+                    ) : (
+                        <Text color="red.500">
+                            {errors.medias
+                                ? 'É necessário selecionar pelo menos uma mídia'
+                                : ''}
+                        </Text>
+                    )}
+
+                    {isMediaGalleryOpen && (
+                        <MediaGallery
+                            isOpen={isMediaGalleryOpen}
+                            onClose={() => setIsMediaGalleryOpen(false)}
+                            selectedItems={values.medias.map(
+                                (item) => item.media.id,
+                            )}
+                            initialItems={values.medias.map(
+                                (item) => item.media,
+                            )}
+                            onItemsChange={handleMediaChange}
+                        />
+                    )}
                 </section>
 
                 <HousingUnitTypeFacilitiesField />
