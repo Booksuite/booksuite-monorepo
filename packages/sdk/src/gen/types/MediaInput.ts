@@ -10,10 +10,6 @@ export type MediaInput = {
    */
   url: string
   /**
-   * @type string
-   */
-  companyId: string
-  /**
    * @type object
    */
   metadata: MetadataDto

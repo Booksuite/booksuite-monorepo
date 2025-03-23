@@ -160,7 +160,7 @@ export type { CompanySettings } from './types/CompanySettings.ts'
 export type { CompanySettingsInput } from './types/CompanySettingsInput.ts'
 export type { CompanySettingsTheme } from './types/CompanySettingsTheme.ts'
 export type { CompanySettingsThemeInput } from './types/CompanySettingsThemeInput.ts'
-export type { CompanyUpdateInput } from './types/CompanyUpdateInput.ts'
+export type { CompanyUpdateDTOType, CompanyUpdateInput } from './types/CompanyUpdateInput.ts'
 export type { DateRangeInput } from './types/DateRangeInput.ts'
 export type { FacilityResponseDTOType, FacilityResponseDTOCategory, Facility } from './types/Facility.ts'
 export type {

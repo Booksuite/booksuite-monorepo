@@ -1,12 +1,35 @@
-import { HousingUnitTypeCreateInput, HousingUnitTypeFull } from '@booksuite/sdk'
+import {
+    HousingUnitTypeCreateInput,
+    HousingUnitTypeFull,
+    HousingUnitTypeMedia,
+    HousingUnitTypeMediaInput,
+} from '@booksuite/sdk'
 import * as yup from 'yup'
 
-import {
-    normalizeHousingUnitTypeFacilityInput,
-    normalizeHousingUnitTypeMediaInput,
-} from './normalizeFn'
+import { normalizeHousingUnitTypeFacilityInput } from './normalizeFn'
 
-export type RoomsFormData = HousingUnitTypeCreateInput
+export type RoomsFormData = Omit<HousingUnitTypeCreateInput, 'medias'> & {
+    medias: HousingUnitTypeMedia[]
+}
+
+export const transformFormDataForSubmit = (
+    formData: RoomsFormData,
+): HousingUnitTypeCreateInput => {
+    const { medias, ...rest } = formData
+
+    const transformedMedias: HousingUnitTypeMediaInput[] = medias.map(
+        (media) => ({
+            mediaId: media.media.id,
+            isFeatured: media.isFeatured,
+            order: media.order || undefined,
+        }),
+    )
+
+    return {
+        ...rest,
+        medias: transformedMedias,
+    }
+}
 
 export const createFormInitialValues = (
     data?: HousingUnitTypeFull,
@@ -27,7 +50,7 @@ export const createFormInitialValues = (
     chargeExtraAdultHigherThan: data?.chargeExtraAdultHigherThan || 1,
     housingUnits: data?.housingUnits || [],
     facilities: normalizeHousingUnitTypeFacilityInput(data?.facilities || []),
-    medias: normalizeHousingUnitTypeMediaInput(data?.medias || []),
+    medias: data?.medias || [],
 })
 
 export const roomsFormSchema = yup.object({
@@ -60,11 +83,5 @@ export const roomsFormSchema = yup.object({
             facilityId: yup.string().required('Comodidade é obrigatório'),
         }),
     ),
-    medias: yup.array().of(
-        yup.object({
-            mediaId: yup.string().required('Mídia é obrigatório'),
-            isFeatured: yup.boolean().optional(),
-            order: yup.number().optional(),
-        }),
-    ),
+    medias: yup.array().min(1, 'Mídia é obrigatório'),
 })
