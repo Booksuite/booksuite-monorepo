@@ -29,7 +29,6 @@ export default function PoliticaDeIdade() {
 
     async function handleSubmit(formData: AgePolicyFormData) {
         try {
-            console.log(formData)
             await updateCompanyAgePolicy({ companyId: companyId, data: formData })
             toast({title: 'Políticas de Idade modificadas com sucesso', status: 'success'})
 
