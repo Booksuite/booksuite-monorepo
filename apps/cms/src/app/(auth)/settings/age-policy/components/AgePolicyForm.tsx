@@ -229,7 +229,6 @@ export const AgePolicyForm = () => {
                                             finalAge: 0,
                                             value: 0,
                                             chargeType: '',
-                                            id: '',
                                         })
                                     }
                                 >
