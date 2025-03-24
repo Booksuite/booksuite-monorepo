@@ -44,7 +44,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <Pencil size={20} />,
         title: 'Identidade Visual',
-        href: `/settings/identidade-visual`,
+        href: `/settings/visual-identity`,
     },
     {
         icon: <Telescope size={20} />,
