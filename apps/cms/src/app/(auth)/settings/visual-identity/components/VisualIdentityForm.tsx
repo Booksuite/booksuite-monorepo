@@ -5,19 +5,24 @@ import {
     Button,
     Flex,
     FormControl,
-    FormLabel,
     Image,
-    Input,
     Stack,
     Text,
 } from '@chakra-ui/react'
-import { CirclePlus } from 'lucide-react'
 import { ChangeEvent, useRef, useState } from 'react'
+
+import InputBox from '@/components/atoms/InputBox'
+import SelectBox from '@/components/atoms/SelectBox'
 
 export default function VisualIdentityForm() {
     const [logo, setLogo] = useState<string | null>(null)
     const [favicon, setFavicon] = useState<string | null>(null)
     const [mainColor, setMainColor] = useState('#714C3B')
+
+    const options = [
+        { value: 'Quadrada', label: 'Quadrada' },
+        { value: 'Retangulo', label: 'Retangulo' },
+    ]
 
     const logoInputRef = useRef<HTMLInputElement>(null)
     const faviconInputRef = useRef<HTMLInputElement>(null)
@@ -52,11 +57,44 @@ export default function VisualIdentityForm() {
     return (
         <Box mx="auto" p={4} bg="white" borderRadius="lg">
             <Stack spacing={4}>
-                <FormControl>
-                    <h2 style={{ fontWeight: '600' }}>Upload Logotipo</h2>
+                <SelectBox
+                    label="Prorção do logotipo"
+                    options={options}
+                    value={options}
+                ></SelectBox>
+
+                <FormControl
+                    border={'1px solid'}
+                    borderColor={'gray.100'}
+                    p={4}
+                    borderRadius="md"
+                >
+                    <Flex
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                        mb={2}
+                    >
+                        <Box>
+                            <h2
+                                style={{ fontWeight: '600', marginBottom: '0' }}
+                            >
+                                Adicionar seu logotipo
+                            </h2>
+                            <Text>
+                                Arquivo deve ser em PNG com tamanho mínimo de
+                                200px
+                            </Text>
+                        </Box>
+                        <Button
+                            onClick={openLogoSelector}
+                            variant="solid"
+                            colorScheme="primary"
+                        >
+                            Adicionar
+                        </Button>
+                    </Flex>
 
                     <Box
-                        borderWidth={1}
                         borderRadius="md"
                         p={4}
                         bg="gray.100"
@@ -78,7 +116,6 @@ export default function VisualIdentityForm() {
                         )}
                     </Box>
 
-                    {/* Input oculto para o logotipo */}
                     <input
                         type="file"
                         ref={logoInputRef}
@@ -86,24 +123,39 @@ export default function VisualIdentityForm() {
                         accept="image/*"
                         style={{ display: 'none' }}
                     />
-
-                    <Button
-                        mt={3}
-                        variant="outline"
-                        width={'100%'}
-                        leftIcon={<CirclePlus size={16} />}
-                        mb={4}
-                        size={'lg'}
-                        onClick={openLogoSelector}
-                    >
-                        Substituir Logotipo
-                    </Button>
                 </FormControl>
 
-                <FormControl>
-                    <h2 style={{ fontWeight: '600' }}>Upload Favicon</h2>
+                <FormControl
+                    border={'1px solid'}
+                    borderColor={'gray.100'}
+                    p={4}
+                    borderRadius="md"
+                >
+                    <Flex
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                        mb={2}
+                    >
+                        <Box>
+                            <h2
+                                style={{ fontWeight: '600', marginBottom: '0' }}
+                            >
+                                Adicionar seu favicon
+                            </h2>
+                            <Text>
+                                Arquivo deve ser em ICO com tamanho mínimo de
+                                32px
+                            </Text>
+                        </Box>
+                        <Button
+                            onClick={openFaviconSelector}
+                            variant="solid"
+                            colorScheme="primary"
+                        >
+                            Adicionar
+                        </Button>
+                    </Flex>
                     <Box
-                        borderWidth={1}
                         borderRadius="md"
                         p={4}
                         bg="gray.100"
@@ -124,7 +176,6 @@ export default function VisualIdentityForm() {
                         )}
                     </Box>
 
-                    {/* Input oculto para o favicon */}
                     <input
                         type="file"
                         ref={faviconInputRef}
@@ -132,42 +183,21 @@ export default function VisualIdentityForm() {
                         accept="image/*"
                         style={{ display: 'none' }}
                     />
-
-                    <Button
-                        mt={3}
-                        variant="outline"
-                        width={'100%'}
-                        leftIcon={<CirclePlus size={16} />}
-                        mb={4}
-                        size={'lg'}
-                        onClick={openFaviconSelector}
-                    >
-                        Substituir Favicon
-                    </Button>
                 </FormControl>
 
                 <FormControl>
-                    <FormLabel fontWeight="bold">
-                        Cor principal do site
-                    </FormLabel>
-                    <Flex
-                        align="center"
-                        gap={2}
-                        bg="gray.50"
-                        p={2}
-                        borderRadius="md"
-                    >
-                        <Input
+                    <h2 style={{ fontWeight: '600' }}>Cor principal do site</h2>
+                    <Flex align="center" gap={2} p={2}>
+                        <InputBox
+                            label={'Cor principal (HEX)'}
                             value={mainColor}
-                            isReadOnly
-                            borderWidth={0}
-                            fontWeight="bold"
+                            fontWeight="400"
                             onChange={(e) => setMainColor(e.target.value)}
                         />
                         <Box
                             bg={mainColor}
                             borderRadius="md"
-                            boxSize="75px"
+                            boxSize="50px"
                         ></Box>
                     </Flex>
                 </FormControl>
