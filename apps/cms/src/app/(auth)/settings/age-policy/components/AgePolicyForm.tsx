@@ -47,7 +47,7 @@ export const AgePolicyForm = () => {
                     display={'flex'}
                     alignItems={'center'}
                 >
-                    <Flex align="center" gap={2} margin={'0 auto'}>
+                    <Flex align="center" gap={2}>
                         <Info size={23} color={'#0B1F51'} />
                         <Text fontSize={'md'} color={'#0B1F51'}>
                             <b>Importante:</b> selecione acima qual idade o
