@@ -8,7 +8,7 @@ import { useState } from 'react'
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
-import { MediaGallery } from '@/components/organisms/MediaGallery/MediaGallery'
+import { MediaGallery } from '@/components/organisms/MediaGallery'
 import { MediaItem } from '@/components/organisms/MediaGallery/types'
 import { RoomsFormData } from '../utils/config'
 
