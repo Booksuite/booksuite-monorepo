@@ -21,17 +21,20 @@ import {
     SimpleGrid,
     Skeleton,
     Text,
+    useToast,
 } from '@chakra-ui/react'
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { Plus, UploadIcon } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
 
 import { AddUrlModal } from './components/AddUrlModal'
-import { MediaItems } from './components/MediaItems'
+import { GalleryMediaItems } from './components/MediaItems'
 import { ITEMS_PER_PAGE } from './constants'
 import { MediaGalleryProps, MediaUrlInfo } from './types'
+import { getGalleryDescription } from './utils'
 
 export const MediaGallery: React.FC<MediaGalleryProps> = ({
     isOpen,
@@ -47,12 +50,13 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
     const modalBodyRef = useRef<HTMLDivElement>(null)
 
     const queryClient = useQueryClient()
+    const companyId = useCurrentCompanyId()
+
+    const toast = useToast()
 
     const [selectedItems, setSelectedItems] = useState<string[]>(
         initialItems.map((item) => item.id),
     )
-
-    const companyId = useCurrentCompanyId()
 
     const {
         data,
@@ -159,13 +163,6 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
             },
         })
 
-    const handleRemoveItem = (index: number) => {
-        const updatedItems = [...allMediaItems]
-        updatedItems.splice(index, 1)
-        // setAllMediaItems(updatedItems)
-        onItemsChange?.(updatedItems)
-    }
-
     const handleSelectItem = (itemId: string) => {
         if (selectedItems.includes(itemId)) {
             setSelectedItems(selectedItems.filter((id) => id !== itemId))
@@ -208,7 +205,14 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                 fileInputRef.current.value = ''
             }
         } catch (error) {
-            console.error('Error uploading file:', error)
+            toast({
+                title: 'Erro ao fazer upload',
+                description: getErrorMessage(
+                    error,
+                    'Verifique se o arquivo é uma imagem válida',
+                ),
+                status: 'error',
+            })
         }
     }
 
@@ -230,6 +234,14 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
             <ModalContent height="80vh" maxH="80vh">
                 <ModalHeader>
                     Galeria de mídias
+                    <Text
+                        variant="caption"
+                        fontWeight="light"
+                        fontSize="sm"
+                        color="gray.600"
+                    >
+                        {getGalleryDescription(minItems, maxItems)}
+                    </Text>
                     <HStack
                         mt={2}
                         justifyContent="flex-end"
@@ -281,13 +293,12 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                             </SimpleGrid>
                         ) : allMediaItems.length > 0 ? (
                             <>
-                                <MediaItems
+                                <GalleryMediaItems
                                     medias={allMediaItems}
                                     isLoading={isFetching}
                                     selectedItems={selectedItems}
-                                    handleDeleteSelected={handleDeleteSelected}
-                                    handleSelectItem={handleSelectItem}
-                                    handleRemoveItem={handleRemoveItem}
+                                    onUnselectAll={handleDeleteSelected}
+                                    onSelectItem={handleSelectItem}
                                 />
                                 {isFetchingNextPage && (
                                     <Flex justifyContent="center" py={4} mt={2}>

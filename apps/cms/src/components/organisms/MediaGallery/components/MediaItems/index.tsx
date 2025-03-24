@@ -7,7 +7,6 @@ import {
     Input,
     InputGroup,
     InputRightElement,
-    SimpleGrid,
     Spinner,
     Text,
 } from '@chakra-ui/react'
@@ -15,24 +14,22 @@ import { Search, X } from 'lucide-react'
 import pluralize from 'pluralize'
 import { useState } from 'react'
 
-import { MediaGalleryItem } from '../MediaItem'
+import { MediaItems } from '@/components/organisms/MediaItems'
 
 interface MediaItemsProps {
     medias: Media[]
-    selectedItems: string[]
+    selectedItems?: string[]
     isLoading?: boolean
-    handleDeleteSelected: () => void
-    handleSelectItem: (item: string) => void
-    handleRemoveItem: (index: number) => void
+    onSelectItem: (item: string) => void
+    onUnselectAll: () => void
 }
 
-export const MediaItems: React.FC<MediaItemsProps> = ({
+export const GalleryMediaItems: React.FC<MediaItemsProps> = ({
     medias,
-    selectedItems,
+    selectedItems = [],
     isLoading,
-    handleDeleteSelected,
-    handleSelectItem,
-    handleRemoveItem,
+    onSelectItem,
+    onUnselectAll,
 }) => {
     const [searchInput, setSearchInput] = useState('')
 
@@ -82,23 +79,26 @@ export const MediaItems: React.FC<MediaItemsProps> = ({
                         size="sm"
                         leftIcon={<X />}
                         variant="outline"
-                        onClick={handleDeleteSelected}
+                        onClick={onUnselectAll}
                     >
                         Desmarcar todos
                     </Button>
                 </HStack>
             </HStack>
-            <SimpleGrid columns={[2, 4, 8]} gap={3}>
-                {filteredMedias.map((item, index) => (
-                    <MediaGalleryItem
-                        key={item.id || `${item.url}-${index}`}
-                        item={item}
-                        isSelected={selectedItems.includes(item.id || item.url)}
-                        onSelect={() => handleSelectItem(item.id || item.url)}
-                        onRemove={() => handleRemoveItem(index)}
-                    />
-                ))}
-            </SimpleGrid>
+
+            <MediaItems
+                medias={filteredMedias}
+                selectable
+                selectedItems={selectedItems}
+                onSelectItem={onSelectItem}
+                actions={[
+                    {
+                        id: 'delete',
+                        children: 'Excluir',
+                        onClick: onUnselectAll,
+                    },
+                ]}
+            />
         </>
     )
 }

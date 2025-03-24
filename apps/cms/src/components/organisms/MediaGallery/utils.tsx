@@ -1,11 +1,18 @@
-import { Media } from '@booksuite/sdk'
+export function getGalleryDescription(
+    minItems: number | undefined,
+    maxItems: number | undefined,
+) {
+    if (minItems && maxItems) {
+        return `Selecione entre ${minItems} e ${maxItems} mídias`
+    }
 
-import { MediaImage } from './components/MediaItem/MediaImage'
-import { MediaVideo } from './components/MediaItem/MediaVideo'
+    if (minItems) {
+        return `Selecione pelo menos ${minItems} mídias`
+    }
 
-export const getMediaItem = (item: Media): React.ReactNode => {
-    if (item.metadata.mimetype.toLowerCase().startsWith('image/'))
-        return <MediaImage item={item} />
+    if (maxItems) {
+        return `Selecione até ${maxItems} mídias`
+    }
 
-    return <MediaVideo item={item} />
+    return 'Selecione mídias'
 }

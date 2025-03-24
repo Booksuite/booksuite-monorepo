@@ -1,6 +1,6 @@
 import { Media } from '@booksuite/sdk'
 
-export interface MediaItem extends Media {}
+import { MediaItemProps } from '@/components/molecules/MediaItem/types'
 
 export interface MediaUrlInfo {
     url: string
@@ -10,19 +10,15 @@ export interface MediaUrlInfo {
 
 export interface MediaGalleryProps {
     selectedItems: string[]
-    initialItems?: MediaItem[]
+    initialItems?: Media[]
     isOpen: boolean
     onClose: () => void
-    onItemsChange?: (items: MediaItem[]) => void
-    onUpload?: (file: File) => Promise<MediaItem>
+    onItemsChange?: (items: Media[]) => void
+    onUpload?: (file: File) => Promise<Media>
     minItems?: number
     maxItems?: number
     allowVideos?: boolean
     allowExternalUrls?: boolean
-}
-
-export interface MediaItemProps {
-    item: MediaItem
 }
 
 export interface MediaGalleryItemProps extends MediaItemProps {

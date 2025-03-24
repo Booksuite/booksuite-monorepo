@@ -1,7 +1,30 @@
 'use client'
 
-import { HousingUnitTypeMedia } from '@booksuite/sdk'
-import { Button, Flex, Stack, Text, VStack } from '@chakra-ui/react'
+import type { HousingUnitTypeMedia, Media } from '@booksuite/sdk'
+import {
+    Box,
+    Button,
+    Flex,
+    HStack,
+    SimpleGrid,
+    Stack,
+    Text,
+    VStack,
+} from '@chakra-ui/react'
+import {
+    closestCenter,
+    DndContext,
+    DragEndEvent,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core'
+import {
+    arrayMove,
+    rectSortingStrategy,
+    SortableContext,
+} from '@dnd-kit/sortable'
 import { FieldArray, Form, useFormikContext } from 'formik'
 import { useState } from 'react'
 
@@ -9,10 +32,10 @@ import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { MediaGallery } from '@/components/organisms/MediaGallery'
-import { MediaItem } from '@/components/organisms/MediaGallery/types'
 import { RoomsFormData } from '../utils/config'
 
 import { HousingUnitTypeFacilitiesField } from './HousingUnitTypeFacilitiesField'
+import { SortableMediaItem } from './SortableMediaItem'
 
 export const RoomsForm: React.FC = () => {
     const {
@@ -26,7 +49,12 @@ export const RoomsForm: React.FC = () => {
 
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
-    const handleMediaChange = (selectedMedia: MediaItem[]) => {
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor),
+    )
+
+    const handleMediaChange = (selectedMedia: Media[]) => {
         const formattedMedia: HousingUnitTypeMedia[] = selectedMedia.map(
             (media, index) => {
                 const sameMedia = values.medias.find(
@@ -46,6 +74,38 @@ export const RoomsForm: React.FC = () => {
 
         setFieldValue('medias', formattedMedia)
         setIsMediaGalleryOpen(false)
+    }
+
+    const handleMediaDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event
+
+        if (over && active.id !== over.id) {
+            const oldIndex = values.medias.findIndex(
+                (item) => item.media.id === active.id,
+            )
+            const newIndex = values.medias.findIndex(
+                (item) => item.media.id === over.id,
+            )
+
+            const newMedias = arrayMove(values.medias, oldIndex, newIndex).map(
+                (item, index) => ({
+                    ...item,
+                    order: index,
+                }),
+            )
+
+            setFieldValue('medias', newMedias)
+        }
+    }
+
+    const handleSetFeatured = (index: number, isFeatured: boolean) => {
+        const currentCoverIndex = values.medias.findIndex(
+            (media) => media.isFeatured,
+        )
+        if (currentCoverIndex >= 0)
+            setFieldValue(`medias.${currentCoverIndex}.isFeatured`, false)
+
+        setFieldValue(`medias.${index}.isFeatured`, isFeatured)
     }
 
     return (
@@ -246,38 +306,60 @@ export const RoomsForm: React.FC = () => {
                     </Stack>
                 </section>
                 <section>
-                    <h2>Fotos e vídeo</h2>
-                    <h4>Galeria</h4>
+                    <Box
+                        p={6}
+                        borderRadius="lg"
+                        border="1px solid"
+                        borderColor="gray.200"
+                    >
+                        <HStack gap={2} align="center" justify="space-between">
+                            <h2>Fotos e vídeos</h2>
 
-                    <Button onClick={() => setIsMediaGalleryOpen(true)} mb={4}>
-                        Selecionar Mídia
-                    </Button>
+                            <Button
+                                onClick={() => setIsMediaGalleryOpen(true)}
+                                variant="solid"
+                                size="sm"
+                                colorScheme="blue"
+                            >
+                                Selecionar Mídia
+                            </Button>
+                        </HStack>
+                        <DndContext
+                            sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragEnd={handleMediaDragEnd}
+                        >
+                            <SortableContext
+                                items={values.medias.map(
+                                    (item) => item.media.id,
+                                )}
+                                strategy={rectSortingStrategy}
+                            >
+                                <SimpleGrid columns={[2, 4, 8]} gap={3} mt={4}>
+                                    {values.medias.map((item, index) => (
+                                        <SortableMediaItem
+                                            key={item.media.id}
+                                            mediaItem={item}
+                                            index={index}
+                                            handleSetFeatured={
+                                                handleSetFeatured
+                                            }
+                                        />
+                                    ))}
+                                </SimpleGrid>
+                            </SortableContext>
+                        </DndContext>
+                    </Box>
 
-                    {values.medias.length > 0 ? (
-                        values.medias.map((item) => (
-                            <div key={item.media.id}>{item.media.url}</div>
-                        ))
-                    ) : (
-                        <Text color="red.500">
-                            {errors.medias
-                                ? 'É necessário selecionar pelo menos uma mídia'
-                                : ''}
-                        </Text>
-                    )}
-
-                    {isMediaGalleryOpen && (
-                        <MediaGallery
-                            isOpen={isMediaGalleryOpen}
-                            onClose={() => setIsMediaGalleryOpen(false)}
-                            selectedItems={values.medias.map(
-                                (item) => item.media.id,
-                            )}
-                            initialItems={values.medias.map(
-                                (item) => item.media,
-                            )}
-                            onItemsChange={handleMediaChange}
-                        />
-                    )}
+                    <MediaGallery
+                        isOpen={isMediaGalleryOpen}
+                        onClose={() => setIsMediaGalleryOpen(false)}
+                        selectedItems={values.medias.map(
+                            (item) => item.media.id,
+                        )}
+                        initialItems={values.medias.map((item) => item.media)}
+                        onItemsChange={handleMediaChange}
+                    />
                 </section>
 
                 <HousingUnitTypeFacilitiesField />
