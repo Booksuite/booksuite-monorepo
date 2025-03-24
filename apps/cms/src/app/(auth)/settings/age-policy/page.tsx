@@ -55,13 +55,17 @@ export default function PoliticaDeIdade() {
                 <PageHeader.Title>Política de Idade</PageHeader.Title>
             </PageHeader.Root>
 
-            <Formik<AgePolicyFormData>
-                initialValues={createAgePolicyInitialValues()}
-                validationSchema={agePolicyFormSchema}
-                onSubmit={handleSubmit}
-            >
-                <AgePolicyForm />
-            </Formik>
+            {!isLoading && (
+                <Formik<AgePolicyFormData>
+                    initialValues={createAgePolicyInitialValues(
+                        companyAgePolicyData,
+                    )}
+                    validationSchema={agePolicyFormSchema}
+                    onSubmit={handleSubmit}
+                >
+                    <AgePolicyForm />
+                </Formik>
+            )}
         </div>
     )
 }

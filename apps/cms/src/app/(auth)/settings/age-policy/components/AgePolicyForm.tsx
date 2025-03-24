@@ -15,6 +15,7 @@ import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { AgePolicyFormData } from '../utils/config'
+import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
 
 export const AgePolicyForm = () => {
     const {
@@ -46,7 +47,7 @@ export const AgePolicyForm = () => {
                     display={'flex'}
                     alignItems={'center'}
                 >
-                    <Flex align="center" gap={2} margin={'0 auto'}>
+                    <Flex align="center" gap={2}>
                         <Info size={23} color={'#0B1F51'} />
                         <Text fontSize={'md'} color={'#0B1F51'}>
                             <b>Importante:</b> selecione acima qual idade o
@@ -248,7 +249,9 @@ export const AgePolicyForm = () => {
                     </FieldArray>
                 )}
 
-                <Button type="submit">Salvar</Button>
+                <Button type="submit" size="lg">
+                    Salvar
+                </Button>
             </Stack>
         </Form>
     )
