@@ -19,10 +19,14 @@ import { MediaUrlInfo } from '../../types'
 
 import { validateUrlContent } from './utils'
 interface AddUrlModalProps {
+    allowVideos?: boolean
     onAddUrl: (info: MediaUrlInfo) => Promise<void> | void
 }
 
-export const AddUrlModal: React.FC<AddUrlModalProps> = ({ onAddUrl }) => {
+export const AddUrlModal: React.FC<AddUrlModalProps> = ({
+    allowVideos = true,
+    onAddUrl,
+}) => {
     const [isOpen, setIsOpen] = useState(false)
     const [urlInput, setUrlInput] = useState('')
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -34,8 +38,8 @@ export const AddUrlModal: React.FC<AddUrlModalProps> = ({ onAddUrl }) => {
             setErrorMessage(null)
             setIsValidating(true)
 
-            const info = await validateUrlContent(urlInput)
-            setIsOpen(false)
+            const info = await validateUrlContent(urlInput, allowVideos)
+            handleClose()
 
             setIsSaving(true)
             await Promise.resolve(onAddUrl(info))

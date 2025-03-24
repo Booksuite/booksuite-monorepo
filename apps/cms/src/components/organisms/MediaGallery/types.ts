@@ -15,6 +15,7 @@ export interface MediaGalleryProps {
     onClose: () => void
     onItemsChange?: (items: MediaItem[]) => void
     onUpload?: (file: File) => Promise<MediaItem>
+    minItems?: number
     maxItems?: number
     allowVideos?: boolean
     allowExternalUrls?: boolean

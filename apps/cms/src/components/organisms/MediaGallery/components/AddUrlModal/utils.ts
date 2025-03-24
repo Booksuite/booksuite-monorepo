@@ -52,11 +52,16 @@ function getFileNameFromUrl(url: string): string {
         : 'media file'
 }
 
-export async function validateUrlContent(url: string): Promise<MediaUrlInfo> {
+export async function validateUrlContent(
+    url: string,
+    allowVideos = true,
+): Promise<MediaUrlInfo> {
     try {
         new URL(url)
 
         if (isYoutubeUrl(url)) {
+            if (!allowVideos) throw new Error('Vídeos não são permitidos')
+
             const videoId = getYoutubeVideoId(url)
             return {
                 url: url,
@@ -66,6 +71,8 @@ export async function validateUrlContent(url: string): Promise<MediaUrlInfo> {
         }
 
         if (isVimeoUrl(url)) {
+            if (!allowVideos) throw new Error('Vídeos não são permitidos')
+
             const videoId = getVimeoVideoId(url)
             return {
                 url: url,

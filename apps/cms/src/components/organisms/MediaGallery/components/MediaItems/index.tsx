@@ -15,7 +15,7 @@ import { Search, X } from 'lucide-react'
 import pluralize from 'pluralize'
 import { useState } from 'react'
 
-import { MediaGalleryItem } from './MediaItem'
+import { MediaGalleryItem } from '../MediaItem'
 
 interface MediaItemsProps {
     medias: Media[]
