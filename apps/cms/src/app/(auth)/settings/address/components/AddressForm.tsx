@@ -116,31 +116,6 @@ export const AddressForm = () => {
                     />
                 </GridItem>
 
-                {/*<GridItem colSpan={{ base: 12, md: 6 }}>
-                    <InputBox
-                        label="Inscrição Estadual"
-                        error={errors.stateRegistration}
-                        formControl={{
-                            isInvalid:
-                                !!errors.stateRegistration &&
-                                touched.stateRegistration,
-                        }}
-                        {...getFieldProps('stateRegistration')}
-                    />
-                </GridItem>
-                <GridItem colSpan={{ base: 12, md: 6 }}>
-                    <InputBox
-                        label="Inscrição Municipal"
-                        error={errors.municipalRegistration}
-                        formControl={{
-                            isInvalid:
-                                !!errors.municipalRegistration &&
-                                touched.municipalRegistration,
-                        }}
-                        {...getFieldProps('municipalRegistration')}
-                    />
-                </GridItem>*/}
-
                 <GridItem colSpan={12}>
                     <Button type="submit" size="lg" width="100%">
                         Salvar
