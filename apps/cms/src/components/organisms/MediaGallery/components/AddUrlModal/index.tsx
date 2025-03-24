@@ -21,11 +21,13 @@ import { validateUrlContent } from './utils'
 interface AddUrlModalProps {
     allowVideos?: boolean
     onAddUrl: (info: MediaUrlInfo) => Promise<void> | void
+    disabled?: boolean
 }
 
 export const AddUrlModal: React.FC<AddUrlModalProps> = ({
     allowVideos = true,
     onAddUrl,
+    disabled,
 }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [urlInput, setUrlInput] = useState('')
@@ -67,6 +69,7 @@ export const AddUrlModal: React.FC<AddUrlModalProps> = ({
                 variant="outline"
                 onClick={() => setIsOpen(true)}
                 mr={2}
+                disabled={disabled}
             >
                 Adicionar URL
             </Button>

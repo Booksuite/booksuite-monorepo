@@ -42,7 +42,7 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
     onItemsChange,
     initialItems = [],
     minItems,
-    maxItems = 20,
+    maxItems,
     allowVideos = true,
     allowExternalUrls = true,
 }) => {
@@ -75,6 +75,11 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                         page: Number(pageParam),
                         itemsPerPage: ITEMS_PER_PAGE,
                     },
+                    filter: !allowVideos
+                        ? {
+                              type: 'image',
+                          }
+                        : undefined,
                     order: { orderBy: 'createdAt', direction: 'desc' },
                 },
             )
@@ -87,7 +92,6 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
         enabled: isOpen,
     })
 
-    // Update selectedItems when initialItems change
     useEffect(() => {
         setSelectedItems(initialItems.map((item) => item.id))
     }, [initialItems])
@@ -111,7 +115,6 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
         return combinedItems
     }, [data, initialItems])
 
-    // Set up scroll event for infinite loading
     useEffect(() => {
         if (!isOpen || !modalBodyRef.current) return
 
@@ -167,6 +170,17 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
         if (selectedItems.includes(itemId)) {
             setSelectedItems(selectedItems.filter((id) => id !== itemId))
         } else {
+            if (maxItems && selectedItems.length >= maxItems) {
+                toast({
+                    title: 'Máximo de mídias atingido',
+                    description:
+                        'Você pode selecionar no máximo ' +
+                        maxItems +
+                        ' mídias',
+                    status: 'error',
+                })
+                return
+            }
             setSelectedItems([...selectedItems, itemId])
         }
     }
@@ -220,8 +234,8 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
         isLoading ||
         isUpsertPending ||
         isUploadPending ||
-        (minItems && selectedItems.length < minItems) ||
-        selectedItems.length >= maxItems
+        (!!minItems && selectedItems.length < minItems) ||
+        (!!maxItems && selectedItems.length >= maxItems)
 
     return (
         <Modal
@@ -239,18 +253,20 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                         fontWeight="light"
                         fontSize="sm"
                         color="gray.600"
+                        mt={1}
+                        mb={0}
                     >
                         {getGalleryDescription(minItems, maxItems)}
                     </Text>
-                    <HStack
-                        mt={2}
-                        justifyContent="flex-end"
-                        alignItems="center"
-                    >
+                    <HStack justifyContent="flex-end" alignItems="center">
                         {allowExternalUrls && (
                             <AddUrlModal
                                 allowVideos={allowVideos}
                                 onAddUrl={handleAddUrl}
+                                disabled={
+                                    !!maxItems &&
+                                    allMediaItems.length >= maxItems
+                                }
                             />
                         )}
 
@@ -258,13 +274,14 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                             size="sm"
                             onClick={() => fileInputRef.current?.click()}
                             leftIcon={<UploadIcon size={16} />}
-                            isDisabled={
-                                allMediaItems.length >= maxItems ||
-                                isUploadPending
+                            disabled={
+                                !!maxItems && allMediaItems.length >= maxItems
                             }
+                            isLoading={isUploadPending}
+                            loadingText="Enviando..."
                             variant="outline"
                         >
-                            {isUploadPending ? 'Enviando...' : 'Fazer upload'}
+                            Fazer upload
                         </Button>
                         <input
                             ref={fileInputRef}
@@ -276,8 +293,8 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                     </HStack>
                 </ModalHeader>
                 <ModalCloseButton />
-                <ModalBody p={0} ref={modalBodyRef}>
-                    <Box bg="gray.100" p={6} borderRadius="md" overflowY="auto">
+                <ModalBody p={0} ref={modalBodyRef} overflowX="hidden">
+                    <Box bg="gray.100" p={6}>
                         {isLoading ? (
                             <SimpleGrid columns={[2, 4, 8]} gap={3}>
                                 {Array.from({ length: 8 }).map((_, index) => (

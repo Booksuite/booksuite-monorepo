@@ -275,11 +275,13 @@ export type {
   UpsertMediaMutationResponse,
   UpsertMediaMutation,
 } from './types/MediaController/UpsertMedia.ts'
+export type { MediaFilterInput } from './types/MediaFilterInput.ts'
 export type { MediaInput } from './types/MediaInput.ts'
 export type { MediaOrderBy } from './types/MediaOrderBy.ts'
 export type { MediaOrderByInput } from './types/MediaOrderByInput.ts'
 export type { MediaPaginated } from './types/MediaPaginated.ts'
 export type { MediaSearchBodyInput } from './types/MediaSearchBodyInput.ts'
+export type { MediaType } from './types/MediaType.ts'
 export type { MetadataDto } from './types/MetadataDto.ts'
 export type { OrderDirection } from './types/OrderDirection.ts'
 export type { PaginationQueryInput } from './types/PaginationQueryInput.ts'
