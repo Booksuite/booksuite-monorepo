@@ -1,7 +1,13 @@
 'use client'
 
+import {
+    useGetCompanyAgePolicy,
+    useUpsertCompanyAgePolicy,
+} from '@booksuite/sdk'
+import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
 
+import { useCurrentCompanyId } from '@/common/contexts/user'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import { AgePolicyForm } from './components/AgePolicyForm'
@@ -13,7 +19,7 @@ import {
 
 export default function PoliticaDeIdade() {
     const companyId = useCurrentCompanyId()
-      const toast = useToast()
+    const toast = useToast()
 
     const { data: companyAgePolicyData, isLoading } = useGetCompanyAgePolicy({
         companyId: companyId,
@@ -23,11 +29,19 @@ export default function PoliticaDeIdade() {
 
     async function handleSubmit(formData: AgePolicyFormData) {
         try {
-            await updateCompanyAgePolicy({ companyId: companyId, data: formData })
-            toast({title: 'Políticas de Idade modificadas com sucesso', status: 'success'})
-
+            await updateCompanyAgePolicy({
+                companyId: companyId,
+                data: formData,
+            })
+            toast({
+                title: 'Políticas de Idade modificadas com sucesso',
+                status: 'success',
+            })
         } catch (erro) {
-            toast({title: 'Erro ao modificar Políticas de Idade', status: 'error'})
+            toast({
+                title: 'Erro ao modificar Políticas de Idade',
+                status: 'error',
+            })
         }
     }
 
