@@ -49,7 +49,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <Telescope size={20} />,
         title: 'Comodidades',
-        href: `/settings/amenities`,
+        href: `/settings/facilities`,
     },
     {
         icon: <AtSign size={20} />,
