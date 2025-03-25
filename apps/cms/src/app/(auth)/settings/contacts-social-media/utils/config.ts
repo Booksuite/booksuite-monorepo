@@ -1,13 +1,16 @@
-import { CompanyContact, CompanyContactInput, CompanyContactResponseDTOType } from '@booksuite/sdk'
+import {
+    CompanyContactResponseDTOType,
+    CompanyCreateInput,
+    CompanyFull,
+} from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type ContactsFormData = CompanyContactInput
+export type ContactsData = Pick<CompanyCreateInput, 'contacts'>
 
 export const createContactsFormInitialValues = (
-    data?: CompanyContact | null,
-): ContactsFormData => ({
-    type: data?.type || 'x',
-    value: data?.value || '',
+    data?: CompanyFull | null,
+): ContactsData => ({
+    contacts: data?.contacts || [],
 })
 
 export const companyContactSchema = yup.object({
@@ -18,5 +21,5 @@ export const companyContactSchema = yup.object({
             'Tipo de contato inválido',
         )
         .required('O tipo de contato é obrigatório'),
-    value: yup.string().required('Contato é Obrigátorio')
+    value: yup.string().required('Contato é Obrigátorio'),
 })
