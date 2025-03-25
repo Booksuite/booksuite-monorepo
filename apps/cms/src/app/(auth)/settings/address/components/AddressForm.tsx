@@ -4,16 +4,15 @@ import { Button, Grid, GridItem, useToast } from '@chakra-ui/react'
 import cep from 'cep-promise'
 import { Form, useFormikContext } from 'formik'
 import { debounce } from 'radash'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
 import type { AddressFormData } from '../utils/config'
 
 export const AddressForm = () => {
-    const [searchInputValue, setSearchInputValue] = useState<string>('')
     const toast = useToast()
 
-    const { getFieldProps, setFieldValue, touched, errors } =
+    const { getFieldProps, setFieldValue, touched, values, errors } =
         useFormikContext<AddressFormData>()
 
     const debouncedSearch = useRef(
@@ -34,10 +33,8 @@ export const AddressForm = () => {
     )
 
     useEffect(() => {
-        if (searchInputValue) {
-            debouncedSearch.current(searchInputValue)
-        }
-    }, [debouncedSearch, searchInputValue])
+        debouncedSearch.current(values.zipcode)
+    }, [debouncedSearch, values.zipcode])
 
     return (
         <Form>
@@ -47,7 +44,6 @@ export const AddressForm = () => {
                         label="CEP"
                         {...getFieldProps('zipcode')}
                         onChange={(e) => {
-                            setSearchInputValue(e.target.value)
                             getFieldProps('zipcode').onChange(e)
                         }}
                     />
@@ -108,7 +104,9 @@ export const AddressForm = () => {
                 <GridItem colSpan={12}>
                     <InputBox
                         label="URL no Google Maps"
-                        /*error={errors.googleMapsUrl}
+                        /*
+                        ( TODO - Mostrar mapa)
+                        error={errors.googleMapsUrl}
                         formControl={{
                             isInvalid: !!errors.googleMapsUrl && touched.googleMapsUrl,
                         }}
