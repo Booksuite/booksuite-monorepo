@@ -15,6 +15,7 @@ import {
     createFormInitialValues,
     RoomsFormData,
     roomsFormSchema,
+    transformFormDataForSubmit,
 } from '../utils/config'
 
 interface UpdateRoomProps {
@@ -35,10 +36,13 @@ export default function UpdateRoom({ params }: UpdateRoomProps) {
 
     async function handleSubmit(formData: RoomsFormData) {
         try {
+            // Transform the form data to the format expected by the API
+            const apiData = transformFormDataForSubmit(formData)
+
             await updateHousintUnitType({
                 id: params.id,
                 companyId,
-                data: formData,
+                data: apiData,
             })
 
             toast({

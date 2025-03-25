@@ -3,6 +3,8 @@ import type { CompanyFacilityInput } from './CompanyFacilityInput.ts'
 import type { CompanySettingsInput } from './CompanySettingsInput.ts'
 import type { MapCoordinatesInput } from './MapCoordinatesInput.ts'
 
+export type CompanyUpdateDTOType = 'INN' | 'HOTEL' | 'RESORT' | 'CHALET' | 'FARM_HOTEL' | 'AIRBNB' | 'HOSTEL' | 'FLAT_APART_HOTEL' | 'CAMPING' | 'OTHER'
+
 export type CompanyUpdateInput = {
   /**
    * @type string | undefined
@@ -53,6 +55,14 @@ export type CompanyUpdateInput = {
    * @type string | undefined
    */
   responsiblePhone?: string
+  /**
+   * @type string | undefined
+   */
+  zipcode?: string
+  /**
+   * @type string | undefined
+   */
+  type?: CompanyUpdateDTOType
   /**
    * @type string | undefined
    */
