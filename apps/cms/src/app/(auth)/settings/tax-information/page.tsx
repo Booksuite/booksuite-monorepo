@@ -2,6 +2,8 @@
 
 import { PageHeader } from '@/components/organisms/PageHeader'
 
+import { TaxInformationForm } from './components/TaxInformationForm'
+
 export default function TaxInformation() {
     return (
         <div className="tax_information">
@@ -10,7 +12,9 @@ export default function TaxInformation() {
                     Configurações
                 </PageHeader.BackLink>
 
-                <PageHeader.Title>Informacoes Fiscais</PageHeader.Title>
+                <PageHeader.Title>Informações Fiscais</PageHeader.Title>
+
+                <TaxInformationForm />
             </PageHeader.Root>
         </div>
     )
