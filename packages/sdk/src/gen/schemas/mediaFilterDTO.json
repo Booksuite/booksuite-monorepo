@@ -1,0 +1,1 @@
+{"type":"object","properties":{"type":{"allOf":[{"type":"string","enum":["image","video"],"x-readme-ref-name":"MediaType"}]}},"x-readme-ref-name":"MediaFilterDTO"}

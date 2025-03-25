@@ -4,6 +4,7 @@ import 'react-date-range/dist/theme/default.css' // theme css file
 import './globals.css'
 
 import { Source_Sans_3 } from 'next/font/google'
+import pluralize from 'pluralize'
 
 import { Providers } from './providers'
 
@@ -13,6 +14,8 @@ export const metadata = {
     title: 'Booksuite',
     description: '',
 }
+
+pluralize.addPluralRule('item', 'itens')
 
 interface RootLayoutProps {
     children: React.ReactNode
