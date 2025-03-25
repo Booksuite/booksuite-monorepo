@@ -59,7 +59,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <Archive size={20} />,
         title: 'Informações Fiscais',
-        href: `/settings/informacoes-fiscais`,
+        href: `/settings/tax-information`,
     },
     {
         icon: <BadgePercent size={20} />,
