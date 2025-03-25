@@ -17,7 +17,7 @@ import {
     createAgePolicyInitialValues,
 } from './utils/config'
 
-export default function PoliticaDeIdade() {
+export default function AgePolicy() {
     const companyId = useCurrentCompanyId()
     const toast = useToast()
 
