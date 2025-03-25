@@ -12,6 +12,7 @@ import {
     createFormInitialValues,
     RoomsFormData,
     roomsFormSchema,
+    transformFormDataForSubmit,
 } from '../utils/config'
 
 export default function CreateRoom() {
@@ -23,9 +24,12 @@ export default function CreateRoom() {
 
     async function handleSubmit(formData: RoomsFormData) {
         try {
+            // Transform the form data to the format expected by the API
+            const apiData = transformFormDataForSubmit(formData)
+
             await createHousintUnitType({
                 companyId,
-                data: formData,
+                data: apiData,
             })
 
             toast({

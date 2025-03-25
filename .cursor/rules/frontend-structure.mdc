@@ -19,7 +19,8 @@ src/
   ├── components/
   │   ├── atoms/
   │   ├── molecules/
-  │   └── organisms/
+  │   ├── organisms/
+  │   └── templates/
   ├── pages/
   ├── services/
   ├── utils/

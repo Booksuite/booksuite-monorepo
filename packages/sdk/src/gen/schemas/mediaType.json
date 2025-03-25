@@ -1,0 +1,1 @@
+{"type":"string","enum":["image","video"],"x-readme-ref-name":"MediaType"}
