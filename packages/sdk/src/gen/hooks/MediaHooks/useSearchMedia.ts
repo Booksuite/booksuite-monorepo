@@ -14,7 +14,7 @@ export const searchMediaQueryKey = (
   { companyId }: { companyId: SearchMediaPathParams['companyId'] },
   data: SearchMediaMutationRequest,
   params?: SearchMediaQueryParams,
-) => [{ url: '/company/:companyId/media/search', params: { companyId: companyId } }, ...(params ? [params] : []), ...(data ? [data] : [])] as const
+) => ['searchMedia', { companyId: companyId }, ...(params ? [params] : []), ...(data ? [data] : [])] as const
 
 export type SearchMediaQueryKey = ReturnType<typeof searchMediaQueryKey>
 

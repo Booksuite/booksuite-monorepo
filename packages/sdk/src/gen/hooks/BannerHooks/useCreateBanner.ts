@@ -12,12 +12,13 @@ export type CreateBannerMutationKey = ReturnType<typeof createBannerMutationKey>
 /**
  * {@link /company/:companyId/banner/create}
  */
-export function useCreateBanner(
+export function useCreateBanner<TContext>(
   options: {
     mutation?: UseMutationOptions<
       CreateBannerMutationResponse,
       ResponseErrorConfig<Error>,
-      { companyId: CreateBannerPathParams['companyId']; data: CreateBannerMutationRequest }
+      { companyId: CreateBannerPathParams['companyId']; data: CreateBannerMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<CreateBannerMutationRequest>> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useCreateBanner(
   return useMutation<
     CreateBannerMutationResponse,
     ResponseErrorConfig<Error>,
-    { companyId: CreateBannerPathParams['companyId']; data: CreateBannerMutationRequest }
+    { companyId: CreateBannerPathParams['companyId']; data: CreateBannerMutationRequest },
+    TContext
   >({
     mutationFn: async ({ companyId, data }) => {
       return createBanner({ companyId }, data, config)

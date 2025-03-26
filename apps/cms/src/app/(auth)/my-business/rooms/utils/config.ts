@@ -21,7 +21,7 @@ export const transformFormDataForSubmit = (
         (media) => ({
             mediaId: media.media.id,
             isFeatured: media.isFeatured,
-            order: media.order || undefined,
+            order: media.order ?? undefined,
         }),
     )
 
@@ -57,7 +57,6 @@ export const roomsFormSchema = yup.object({
     name: yup.string().required('Nome é obrigatório'),
     published: yup.boolean().required('Status é obrigatório'),
     slug: yup.string().required('Slug é obrigatório'),
-    shortDescription: yup.string().required('Descrição curta é obrigatório'),
     description: yup.string().required('Descrição é obrigatório'),
     order: yup.number().required('Ordem é obrigatório'),
     minGuests: yup.number().optional(),

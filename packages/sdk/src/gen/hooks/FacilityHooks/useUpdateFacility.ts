@@ -12,12 +12,13 @@ export type UpdateFacilityMutationKey = ReturnType<typeof updateFacilityMutation
 /**
  * {@link /facility/:id}
  */
-export function useUpdateFacility(
+export function useUpdateFacility<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UpdateFacilityMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateFacilityPathParams['id']; data: UpdateFacilityMutationRequest }
+      { id: UpdateFacilityPathParams['id']; data: UpdateFacilityMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<UpdateFacilityMutationRequest>> & { client?: typeof client }
   } = {},
@@ -25,7 +26,12 @@ export function useUpdateFacility(
   const { mutation: mutationOptions, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? updateFacilityMutationKey()
 
-  return useMutation<UpdateFacilityMutationResponse, ResponseErrorConfig<Error>, { id: UpdateFacilityPathParams['id']; data: UpdateFacilityMutationRequest }>({
+  return useMutation<
+    UpdateFacilityMutationResponse,
+    ResponseErrorConfig<Error>,
+    { id: UpdateFacilityPathParams['id']; data: UpdateFacilityMutationRequest },
+    TContext
+  >({
     mutationFn: async ({ id, data }) => {
       return updateFacility({ id }, data, config)
     },

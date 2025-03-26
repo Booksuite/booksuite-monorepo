@@ -6,11 +6,15 @@ export type CompanyFacility = {
    */
   id: string
   /**
-   * @type string, date-time
+   * @type number
    */
-  updatedAt: string
+  order: number | null
   /**
    * @type object
    */
   facility: FacilityInput
+  /**
+   * @type string, date-time
+   */
+  createdAt: string
 }

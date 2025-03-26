@@ -12,12 +12,13 @@ export type UpdateServiceMutationKey = ReturnType<typeof updateServiceMutationKe
 /**
  * {@link /company/:companyId/service/:id}
  */
-export function useUpdateService(
+export function useUpdateService<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UpdateServiceMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateServicePathParams['id']; companyId: UpdateServicePathParams['companyId']; data?: UpdateServiceMutationRequest }
+      { id: UpdateServicePathParams['id']; companyId: UpdateServicePathParams['companyId']; data?: UpdateServiceMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<UpdateServiceMutationRequest>> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useUpdateService(
   return useMutation<
     UpdateServiceMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: UpdateServicePathParams['id']; companyId: UpdateServicePathParams['companyId']; data?: UpdateServiceMutationRequest }
+    { id: UpdateServicePathParams['id']; companyId: UpdateServicePathParams['companyId']; data?: UpdateServiceMutationRequest },
+    TContext
   >({
     mutationFn: async ({ id, companyId, data }) => {
       return updateService({ id, companyId }, data, config)

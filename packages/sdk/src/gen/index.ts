@@ -18,6 +18,8 @@ export type { DeleteFacilityMutationKey } from './hooks/FacilityHooks/useDeleteF
 export type { GetFacilityByIdQueryKey } from './hooks/FacilityHooks/useGetFacilityById.ts'
 export type { SearchFacilitiesQueryKey } from './hooks/FacilityHooks/useSearchFacilities.ts'
 export type { UpdateFacilityMutationKey } from './hooks/FacilityHooks/useUpdateFacility.ts'
+export type { GetCompanyHostingRulesQueryKey } from './hooks/HostingRulesHooks/useGetCompanyHostingRules.ts'
+export type { UpsertCompanyHostingRulesMutationKey } from './hooks/HostingRulesHooks/useUpsertCompanyHostingRules.ts'
 export type { CreateHousingUnitTypeMutationKey } from './hooks/HousingUnitTypeHooks/useCreateHousingUnitType.ts'
 export type { DeleteHousingUnitTypeMutationKey } from './hooks/HousingUnitTypeHooks/useDeleteHousingUnitType.ts'
 export type { GetHousingUnitTypeByIdQueryKey } from './hooks/HousingUnitTypeHooks/useGetHousingUnitTypeById.ts'
@@ -115,8 +117,9 @@ export type {
   UpsertCompanyCancellationPolicyMutationResponse,
   UpsertCompanyCancellationPolicyMutation,
 } from './types/CancellationPolicyController/UpsertCompanyCancellationPolicy.ts'
-export type { CancellationPolicyResponseFullDTODefaultPenaltyBy, CancellationPolicyFull } from './types/CancellationPolicyFull.ts'
-export type { CancellationPolicyDTODefaultPenaltyBy, CancellationPolicyInput } from './types/CancellationPolicyInput.ts'
+export type { CancellationPolicyFull } from './types/CancellationPolicyFull.ts'
+export type { CancellationPolicyInput } from './types/CancellationPolicyInput.ts'
+export type { CancellationPolicyPenalty } from './types/CancellationPolicyPenalty.ts'
 export type { CompanyResponseDTOType, Company } from './types/Company.ts'
 export type { CompanyContactResponseDTOType, CompanyContact } from './types/CompanyContact.ts'
 export type { CompanyContactDTOType, CompanyContactInput } from './types/CompanyContactInput.ts'
@@ -201,6 +204,20 @@ export type { FacilityOrderByInput } from './types/FacilityOrderByInput.ts'
 export type { FacilityPaginated } from './types/FacilityPaginated.ts'
 export type { FacilitySearchBodyInput } from './types/FacilitySearchBodyInput.ts'
 export type { FacilitySearchFilterDTOType, FacilitySearchFilterInput } from './types/FacilitySearchFilterInput.ts'
+export type {
+  GetCompanyHostingRulesPathParams,
+  GetCompanyHostingRules200,
+  GetCompanyHostingRulesQueryResponse,
+  GetCompanyHostingRulesQuery,
+} from './types/HostingRulesController/GetCompanyHostingRules.ts'
+export type {
+  UpsertCompanyHostingRulesPathParams,
+  UpsertCompanyHostingRules200,
+  UpsertCompanyHostingRulesMutationRequest,
+  UpsertCompanyHostingRulesMutationResponse,
+  UpsertCompanyHostingRulesMutation,
+} from './types/HostingRulesController/UpsertCompanyHostingRules.ts'
+export type { HostingRulesInput } from './types/HostingRulesInput.ts'
 export type { HousingUnit } from './types/HousingUnit.ts'
 export type { HousingUnitInput } from './types/HousingUnitInput.ts'
 export type { HousingUnitType } from './types/HousingUnitType.ts'
@@ -418,6 +435,9 @@ export { facilityService } from './client/FacilityService/facilityService.ts'
 export { getGetFacilityByIdUrl, getFacilityById } from './client/FacilityService/getFacilityById.ts'
 export { getSearchFacilitiesUrl, searchFacilities } from './client/FacilityService/searchFacilities.ts'
 export { getUpdateFacilityUrl, updateFacility } from './client/FacilityService/updateFacility.ts'
+export { getGetCompanyHostingRulesUrl, getCompanyHostingRules } from './client/HostingRulesService/getCompanyHostingRules.ts'
+export { hostingRulesService } from './client/HostingRulesService/hostingRulesService.ts'
+export { getUpsertCompanyHostingRulesUrl, upsertCompanyHostingRules } from './client/HostingRulesService/upsertCompanyHostingRules.ts'
 export { getCreateHousingUnitTypeUrl, createHousingUnitType } from './client/HousingUnitTypeService/createHousingUnitType.ts'
 export { getDeleteHousingUnitTypeUrl, deleteHousingUnitType } from './client/HousingUnitTypeService/deleteHousingUnitType.ts'
 export { getGetHousingUnitTypeByIdUrl, getHousingUnitTypeById } from './client/HousingUnitTypeService/getHousingUnitTypeById.ts'
@@ -475,6 +495,12 @@ export { deleteFacilityMutationKey, useDeleteFacility } from './hooks/FacilityHo
 export { getFacilityByIdQueryKey, getFacilityByIdQueryOptions, useGetFacilityById } from './hooks/FacilityHooks/useGetFacilityById.ts'
 export { searchFacilitiesQueryKey, searchFacilitiesQueryOptions, useSearchFacilities } from './hooks/FacilityHooks/useSearchFacilities.ts'
 export { updateFacilityMutationKey, useUpdateFacility } from './hooks/FacilityHooks/useUpdateFacility.ts'
+export {
+  getCompanyHostingRulesQueryKey,
+  getCompanyHostingRulesQueryOptions,
+  useGetCompanyHostingRules,
+} from './hooks/HostingRulesHooks/useGetCompanyHostingRules.ts'
+export { upsertCompanyHostingRulesMutationKey, useUpsertCompanyHostingRules } from './hooks/HostingRulesHooks/useUpsertCompanyHostingRules.ts'
 export { createHousingUnitTypeMutationKey, useCreateHousingUnitType } from './hooks/HousingUnitTypeHooks/useCreateHousingUnitType.ts'
 export { deleteHousingUnitTypeMutationKey, useDeleteHousingUnitType } from './hooks/HousingUnitTypeHooks/useDeleteHousingUnitType.ts'
 export {

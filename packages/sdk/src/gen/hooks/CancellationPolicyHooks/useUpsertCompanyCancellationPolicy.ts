@@ -16,12 +16,13 @@ export type UpsertCompanyCancellationPolicyMutationKey = ReturnType<typeof upser
 /**
  * {@link /company/:companyId/cancellationPolicy}
  */
-export function useUpsertCompanyCancellationPolicy(
+export function useUpsertCompanyCancellationPolicy<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UpsertCompanyCancellationPolicyMutationResponse,
       ResponseErrorConfig<Error>,
-      { companyId: UpsertCompanyCancellationPolicyPathParams['companyId']; data: UpsertCompanyCancellationPolicyMutationRequest }
+      { companyId: UpsertCompanyCancellationPolicyPathParams['companyId']; data: UpsertCompanyCancellationPolicyMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<UpsertCompanyCancellationPolicyMutationRequest>> & { client?: typeof client }
   } = {},
@@ -32,7 +33,8 @@ export function useUpsertCompanyCancellationPolicy(
   return useMutation<
     UpsertCompanyCancellationPolicyMutationResponse,
     ResponseErrorConfig<Error>,
-    { companyId: UpsertCompanyCancellationPolicyPathParams['companyId']; data: UpsertCompanyCancellationPolicyMutationRequest }
+    { companyId: UpsertCompanyCancellationPolicyPathParams['companyId']; data: UpsertCompanyCancellationPolicyMutationRequest },
+    TContext
   >({
     mutationFn: async ({ companyId, data }) => {
       return upsertCompanyCancellationPolicy({ companyId }, data, config)

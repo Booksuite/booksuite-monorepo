@@ -16,12 +16,13 @@ export type UpsertCompanyReservationConfigMutationKey = ReturnType<typeof upsert
 /**
  * {@link /company/:companyId/reservationConfig}
  */
-export function useUpsertCompanyReservationConfig(
+export function useUpsertCompanyReservationConfig<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UpsertCompanyReservationConfigMutationResponse,
       ResponseErrorConfig<Error>,
-      { companyId: UpsertCompanyReservationConfigPathParams['companyId']; data: UpsertCompanyReservationConfigMutationRequest }
+      { companyId: UpsertCompanyReservationConfigPathParams['companyId']; data: UpsertCompanyReservationConfigMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<UpsertCompanyReservationConfigMutationRequest>> & { client?: typeof client }
   } = {},
@@ -32,7 +33,8 @@ export function useUpsertCompanyReservationConfig(
   return useMutation<
     UpsertCompanyReservationConfigMutationResponse,
     ResponseErrorConfig<Error>,
-    { companyId: UpsertCompanyReservationConfigPathParams['companyId']; data: UpsertCompanyReservationConfigMutationRequest }
+    { companyId: UpsertCompanyReservationConfigPathParams['companyId']; data: UpsertCompanyReservationConfigMutationRequest },
+    TContext
   >({
     mutationFn: async ({ companyId, data }) => {
       return upsertCompanyReservationConfig({ companyId }, data, config)
