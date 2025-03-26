@@ -1,7 +1,13 @@
 'use client'
 
+import {
+    useGetCompanyCancellationPolicy,
+    useUpsertCompanyCancellationPolicy,
+} from '@booksuite/sdk'
+import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
 
+import { useCurrentCompanyId } from '@/common/contexts/user'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import { CancellationPolicyForm } from './components/CancellationPolicyForm'
@@ -12,8 +18,33 @@ import {
 } from './utils/config'
 
 export default function CancellationPolicy() {
-    function handleSubmit(formData: CancellationPolicyFormData) {
-        return null
+    const companyId = useCurrentCompanyId()
+    const toast = useToast()
+
+    const { data: cancellatonPolicyData, isLoading } =
+        useGetCompanyCancellationPolicy({ companyId: companyId })
+
+    const { mutateAsync: UpdateCancellationPolicy } =
+        useUpsertCompanyCancellationPolicy()
+
+
+    async function handleSubmit(formData: CancellationPolicyFormData) {
+        try {
+            await UpdateCancellationPolicy({
+                companyId: companyId,
+                data: formData,
+            })
+
+            toast({
+                title: 'Políticas de Cancelamento modificadas com sucesso',
+                status: 'success',
+            })
+        } catch (erro) {
+            toast({
+                title: 'Erro ao modificar políticas de cancelamento',
+                status: 'error',
+            })
+        }
     }
 
     return (
@@ -26,13 +57,17 @@ export default function CancellationPolicy() {
                 <PageHeader.Title>Política de Cancelamento</PageHeader.Title>
             </PageHeader.Root>
 
-            <Formik<CancellationPolicyFormData>
-                initialValues={createCancellationPolicyInitialValues()}
-                validationSchema={cancellationPolicyFormSchema}
-                onSubmit={handleSubmit}
-            >
-                <CancellationPolicyForm />
-            </Formik>
+            {!isLoading && (
+                <Formik<CancellationPolicyFormData>
+                    initialValues={createCancellationPolicyInitialValues(
+                        cancellatonPolicyData,
+                    )}
+                    validationSchema={cancellationPolicyFormSchema}
+                    onSubmit={handleSubmit}
+                >
+                    <CancellationPolicyForm />
+                </Formik>
+            )}
         </div>
     )
 }

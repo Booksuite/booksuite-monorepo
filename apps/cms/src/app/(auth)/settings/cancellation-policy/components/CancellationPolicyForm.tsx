@@ -26,6 +26,7 @@ export const CancellationPolicyForm = () => {
         values,
         handleChange,
         setFieldValue,
+        isSubmitting,
     } = useFormikContext<CancellationPolicyFormData>()
 
     return (
@@ -78,6 +79,7 @@ export const CancellationPolicyForm = () => {
                                         values.defaultPenaltyBy,
                                 )?.label || 'Valor padrão (%)'
                             }
+                            type='number'
                             error={errors.defaultValue}
                             formControl={{
                                 isInvalid:
@@ -99,8 +101,8 @@ export const CancellationPolicyForm = () => {
                                     !!errors.defaultValue &&
                                     touched.defaultValue,
                             }}
-                            {...getFieldProps('defaultValue')}
-                            onChange={handleChange('defaultValue')}
+                            {...getFieldProps('withdrawalPeriod')}
+                            onChange={handleChange('withdrawalPeriod')}
                         />
                         <Box
                             bg={'gray.100'}
@@ -189,7 +191,7 @@ export const CancellationPolicyForm = () => {
                                                         size="lg"
                                                         value={
                                                             penalty.penaltyBy
-                                                        } // Usa o valor correto para o campo de penalidade
+                                                        }
                                                         onChange={(
                                                             selectedOption,
                                                         ) =>
@@ -241,18 +243,13 @@ export const CancellationPolicyForm = () => {
                                                             )?.label ||
                                                             'Valor padrão (%)'
                                                         }
-                                                        error={
-                                                            errors
-                                                                .penaltyRanges?.[
-                                                                index
-                                                            ]?.value
-                                                        }
+                                                        type='number'
                                                         formControl={{
                                                             isInvalid:
                                                                 !!errors
                                                                     .penaltyRanges?.[
                                                                     index
-                                                                ]?.value &&
+                                                                ] &&
                                                                 touched
                                                                     .penaltyRanges?.[
                                                                     index
@@ -277,6 +274,7 @@ export const CancellationPolicyForm = () => {
                                             size={'lg'}
                                             onClick={() =>
                                                 push({
+                                                    id: '',
                                                     daysBeforeCheckIn: '',
                                                     penaltyBy:
                                                         'RESERVATION_PERCENTAGE',
@@ -397,7 +395,7 @@ export const CancellationPolicyForm = () => {
                     </Box>*/}
                 </VStack>
 
-                <Button type="submit" size={'lg'} isLoading>
+                <Button type="submit" size={'lg'} isDisabled={isSubmitting}>
                     Salvar
                 </Button>
             </Stack>
