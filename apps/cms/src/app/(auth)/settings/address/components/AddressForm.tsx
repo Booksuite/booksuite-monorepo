@@ -12,40 +12,62 @@ import type { AddressFormData } from '../utils/config'
 export const AddressForm = () => {
     const toast = useToast()
 
-    const { getFieldProps, setFieldValue, touched, values, errors } =
-        useFormikContext<AddressFormData>()
+    const {
+        getFieldProps,
+        touched,
+        values,
+        errors,
+        setValues,
+        isSubmitting,
+        handleSubmit,
+        setSubmitting,
+    } = useFormikContext<AddressFormData>()
 
     const debouncedSearch = useRef(
-        debounce({ delay: 800 }, (search: string) => {
-            cep(search)
-                .then((address) => {
-                    setFieldValue('city', address.city)
-                    setFieldValue('state', address.state)
-                    setFieldValue('address', address.street)
-                    setFieldValue('country', 'Brasil')
-                    setFieldValue('zipcode', address.cep)
-                    toast({ title: 'CEP encontrado', status: 'success' })
+        debounce({ delay: 500 }, async (search: string) => {
+            setSubmitting(true)
+
+            try {
+                const address = await cep(search)
+
+                setValues((prev) => ({
+                    ...prev,
+                    city: address.city || '',
+                    state: address.state || '',
+                    country: 'Brasil',
+                    address: address.street || '',
+                }))
+
+                toast({ title: 'CEP encontrado!', status: 'success' })
+            } catch {
+                toast({
+                    title: 'CEP inválido ou não encontrado.',
+                    status: 'error',
                 })
-                .catch(() => {
-                    toast({ title: 'CEP não encontrado' })
-                })
+            } finally {
+                setSubmitting(false)
+            }
         }),
     )
 
     useEffect(() => {
-        debouncedSearch.current(values.zipcode)
-    }, [debouncedSearch, values.zipcode])
+        if (values.zipcode.length === 8) {
+            debouncedSearch.current(values.zipcode)
+        }
+    }, [values.zipcode])
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <Grid templateColumns="repeat(12, 1fr)" gap={4}>
                 <GridItem colSpan={12}>
                     <InputBox
                         label="CEP"
-                        {...getFieldProps('zipcode')}
-                        onChange={(e) => {
-                            getFieldProps('zipcode').onChange(e)
+                        error={errors.zipcode}
+                        formControl={{
+                            isInvalid: !!errors.zipcode && touched.zipcode,
                         }}
+                        isDisabled={isSubmitting}
+                        {...getFieldProps('zipcode')}
                     />
                 </GridItem>
 
@@ -56,9 +78,11 @@ export const AddressForm = () => {
                         formControl={{
                             isInvalid: !!errors.city && touched.city,
                         }}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('city')}
                     />
                 </GridItem>
+
                 <GridItem colSpan={{ base: 12, md: 4 }}>
                     <InputBox
                         label="Estado"
@@ -66,9 +90,11 @@ export const AddressForm = () => {
                         formControl={{
                             isInvalid: !!errors.state && touched.state,
                         }}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('state')}
                     />
                 </GridItem>
+
                 <GridItem colSpan={{ base: 12, md: 4 }}>
                     <InputBox
                         label="País"
@@ -76,6 +102,7 @@ export const AddressForm = () => {
                         formControl={{
                             isInvalid: !!errors.country && touched.country,
                         }}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('country')}
                     />
                 </GridItem>
@@ -87,9 +114,11 @@ export const AddressForm = () => {
                         formControl={{
                             isInvalid: !!errors.address && touched.address,
                         }}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('address')}
                     />
                 </GridItem>
+
                 <GridItem colSpan={{ base: 12, md: 6 }}>
                     <InputBox
                         label="Número"
@@ -97,25 +126,19 @@ export const AddressForm = () => {
                         formControl={{
                             isInvalid: !!errors.number && touched.number,
                         }}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('number')}
                     />
                 </GridItem>
 
                 <GridItem colSpan={12}>
-                    <InputBox
-                        label="URL no Google Maps"
-                        /*
-                        ( TODO - Mostrar mapa)
-                        error={errors.googleMapsUrl}
-                        formControl={{
-                            isInvalid: !!errors.googleMapsUrl && touched.googleMapsUrl,
-                        }}
-                        {...getFieldProps('googleMapsUrl')}*/
-                    />
-                </GridItem>
-
-                <GridItem colSpan={12}>
-                    <Button type="submit" size="lg" width="100%">
+                    <Button
+                        type="submit"
+                        size="lg"
+                        width="100%"
+                        isLoading={isSubmitting}
+                        isDisabled={isSubmitting}
+                    >
                         Salvar
                     </Button>
                 </GridItem>
