@@ -64,7 +64,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <BadgePercent size={20} />,
         title: 'Regras de Hospedagem',
-        href: `/settings/regras-de-hospedagem`,
+        href: `/settings/hosting-rules`,
     },
     {
         icon: <CircleDollarSign size={20} />,
