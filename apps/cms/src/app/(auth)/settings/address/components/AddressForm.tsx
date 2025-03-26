@@ -4,20 +4,29 @@ import { Button, Grid, GridItem, useToast } from '@chakra-ui/react'
 import cep from 'cep-promise'
 import { Form, useFormikContext } from 'formik'
 import { debounce } from 'radash'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
 import type { AddressFormData } from '../utils/config'
 
 export const AddressForm = () => {
     const toast = useToast()
-    const { getFieldProps, touched, values, errors, setValues, isSubmitting } =
-        useFormikContext<AddressFormData>()
 
-    const [zipcodeError, setZipcodeError] = useState<string | null>(null)
+    const {
+        getFieldProps,
+        touched,
+        values,
+        errors,
+        setValues,
+        isSubmitting,
+        handleSubmit,
+        setSubmitting,
+    } = useFormikContext<AddressFormData>()
 
     const debouncedSearch = useRef(
         debounce({ delay: 800 }, async (search: string) => {
+            setSubmitting(true)
+
             try {
                 const address = await cep(search)
 
@@ -30,9 +39,13 @@ export const AddressForm = () => {
                 }))
 
                 toast({ title: 'CEP encontrado!', status: 'success' })
-                setZipcodeError(null)
             } catch {
-                setZipcodeError('CEP inválido ou não encontrado.')
+                toast({
+                    title: 'CEP inválido ou não encontrado.',
+                    status: 'error',
+                })
+            } finally {
+                setSubmitting(false)
             }
         }),
     )
@@ -44,18 +57,16 @@ export const AddressForm = () => {
     }, [values.zipcode])
 
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <Grid templateColumns="repeat(12, 1fr)" gap={4}>
                 <GridItem colSpan={12}>
                     <InputBox
                         label="CEP"
-                        error={zipcodeError || errors.zipcode}
-                        isDisabled={isSubmitting}
+                        error={errors.zipcode}
                         formControl={{
-                            isInvalid:
-                                !!zipcodeError ||
-                                (!!errors.zipcode && touched.zipcode),
+                            isInvalid: !!errors.zipcode && touched.zipcode,
                         }}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('zipcode')}
                     />
                 </GridItem>
@@ -117,16 +128,6 @@ export const AddressForm = () => {
                         }}
                         isDisabled={isSubmitting}
                         {...getFieldProps('number')}
-                    />
-                </GridItem>
-
-                <GridItem colSpan={12}>
-                    <InputBox
-                        label="URL no Google Maps"
-                        /* ( TODO - Mostrar mapa)
-                        error={errors.mapCoordinates}
-                        formControl={{ isInvalid: !!errors.mapCoordinates && touched.mapCoordinates }}
-                        {...getFieldProps('mapCoordinates')}*/
                     />
                 </GridItem>
 
