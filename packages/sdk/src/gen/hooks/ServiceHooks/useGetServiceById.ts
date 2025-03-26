@@ -6,7 +6,7 @@ import { getServiceById } from '../../client/ServiceService/getServiceById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
 export const getServiceByIdQueryKey = ({ id, companyId }: { id: GetServiceByIdPathParams['id']; companyId: GetServiceByIdPathParams['companyId'] }) =>
-  [{ url: '/company/:companyId/service/:id', params: { companyId: companyId, id: id } }] as const
+  ['getServiceById', { companyId: companyId, id: id }] as const
 
 export type GetServiceByIdQueryKey = ReturnType<typeof getServiceByIdQueryKey>
 

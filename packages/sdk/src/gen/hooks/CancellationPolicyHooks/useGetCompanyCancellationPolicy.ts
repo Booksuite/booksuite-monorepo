@@ -9,7 +9,7 @@ import { getCompanyCancellationPolicy } from '../../client/CancellationPolicySer
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
 export const getCompanyCancellationPolicyQueryKey = ({ companyId }: { companyId: GetCompanyCancellationPolicyPathParams['companyId'] }) =>
-  [{ url: '/company/:companyId/cancellationPolicy', params: { companyId: companyId } }] as const
+  ['getCompanyCancellationPolicy', { companyId: companyId }] as const
 
 export type GetCompanyCancellationPolicyQueryKey = ReturnType<typeof getCompanyCancellationPolicyQueryKey>
 

@@ -12,12 +12,13 @@ export type DeleteMediaMutationKey = ReturnType<typeof deleteMediaMutationKey>
 /**
  * {@link /company/:companyId/media/:id}
  */
-export function useDeleteMedia(
+export function useDeleteMedia<TContext>(
   options: {
     mutation?: UseMutationOptions<
       DeleteMediaMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: DeleteMediaPathParams['id']; companyId: DeleteMediaPathParams['companyId'] }
+      { id: DeleteMediaPathParams['id']; companyId: DeleteMediaPathParams['companyId'] },
+      TContext
     >
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useDeleteMedia(
   return useMutation<
     DeleteMediaMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: DeleteMediaPathParams['id']; companyId: DeleteMediaPathParams['companyId'] }
+    { id: DeleteMediaPathParams['id']; companyId: DeleteMediaPathParams['companyId'] },
+    TContext
   >({
     mutationFn: async ({ id, companyId }) => {
       return deleteMedia({ id, companyId }, config)

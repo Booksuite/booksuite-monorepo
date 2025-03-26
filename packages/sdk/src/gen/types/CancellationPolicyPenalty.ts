@@ -1,0 +1,1 @@
+export type CancellationPolicyPenalty = 'RESERVATION_PERCENTAGE' | 'FULL_DAILIES_PERCENTAGE' | 'FIRST_NIGHT_AMOUNT'

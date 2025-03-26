@@ -12,12 +12,13 @@ export type DeleteHousingUnitTypeMutationKey = ReturnType<typeof deleteHousingUn
 /**
  * {@link /company/:companyId/housingUnitType/:id}
  */
-export function useDeleteHousingUnitType(
+export function useDeleteHousingUnitType<TContext>(
   options: {
     mutation?: UseMutationOptions<
       DeleteHousingUnitTypeMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: DeleteHousingUnitTypePathParams['id']; companyId: DeleteHousingUnitTypePathParams['companyId'] }
+      { id: DeleteHousingUnitTypePathParams['id']; companyId: DeleteHousingUnitTypePathParams['companyId'] },
+      TContext
     >
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useDeleteHousingUnitType(
   return useMutation<
     DeleteHousingUnitTypeMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: DeleteHousingUnitTypePathParams['id']; companyId: DeleteHousingUnitTypePathParams['companyId'] }
+    { id: DeleteHousingUnitTypePathParams['id']; companyId: DeleteHousingUnitTypePathParams['companyId'] },
+    TContext
   >({
     mutationFn: async ({ id, companyId }) => {
       return deleteHousingUnitType({ id, companyId }, config)

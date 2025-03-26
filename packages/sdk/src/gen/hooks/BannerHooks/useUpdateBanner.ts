@@ -12,12 +12,13 @@ export type UpdateBannerMutationKey = ReturnType<typeof updateBannerMutationKey>
 /**
  * {@link /company/:companyId/banner/:id}
  */
-export function useUpdateBanner(
+export function useUpdateBanner<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UpdateBannerMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateBannerPathParams['id']; companyId: UpdateBannerPathParams['companyId']; data?: UpdateBannerMutationRequest }
+      { id: UpdateBannerPathParams['id']; companyId: UpdateBannerPathParams['companyId']; data?: UpdateBannerMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<UpdateBannerMutationRequest>> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useUpdateBanner(
   return useMutation<
     UpdateBannerMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: UpdateBannerPathParams['id']; companyId: UpdateBannerPathParams['companyId']; data?: UpdateBannerMutationRequest }
+    { id: UpdateBannerPathParams['id']; companyId: UpdateBannerPathParams['companyId']; data?: UpdateBannerMutationRequest },
+    TContext
   >({
     mutationFn: async ({ id, companyId, data }) => {
       return updateBanner({ id, companyId }, data, config)

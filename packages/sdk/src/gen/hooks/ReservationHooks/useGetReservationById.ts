@@ -11,7 +11,7 @@ export const getReservationByIdQueryKey = ({
 }: {
   id: GetReservationByIdPathParams['id']
   companyId: GetReservationByIdPathParams['companyId']
-}) => [{ url: '/company/:companyId/reservation/:id', params: { companyId: companyId, id: id } }] as const
+}) => ['getReservationById', { companyId: companyId, id: id }] as const
 
 export type GetReservationByIdQueryKey = ReturnType<typeof getReservationByIdQueryKey>
 

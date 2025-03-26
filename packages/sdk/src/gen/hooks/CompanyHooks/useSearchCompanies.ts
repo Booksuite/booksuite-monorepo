@@ -10,7 +10,7 @@ import { searchCompanies } from '../../client/CompanyService/searchCompanies.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
 export const searchCompaniesQueryKey = (data: SearchCompaniesMutationRequest, params?: SearchCompaniesQueryParams) =>
-  [{ url: '/company/search' }, ...(params ? [params] : []), ...(data ? [data] : [])] as const
+  ['searchCompanies', ...(params ? [params] : []), ...(data ? [data] : [])] as const
 
 export type SearchCompaniesQueryKey = ReturnType<typeof searchCompaniesQueryKey>
 

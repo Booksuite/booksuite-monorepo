@@ -250,6 +250,7 @@ __metadata:
     "@emotion/styled": "npm:^11.11.5"
     "@react-google-maps/api": "npm:^2.20.3"
     "@tanstack/react-query": "npm:^5.59.13"
+    "@tanstack/react-query-devtools": "npm:^5.69.0"
     "@tanstack/react-table": "npm:^8.21.2"
     "@types/node": "npm:20.14.10"
     "@types/pluralize": "npm:^0.0.33"
@@ -289,12 +290,12 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@booksuite/sdk@workspace:packages/sdk"
   dependencies:
-    "@kubb/cli": "npm:^3.6.2"
-    "@kubb/core": "npm:^3.6.2"
-    "@kubb/plugin-client": "npm:^3.6.2"
-    "@kubb/plugin-oas": "npm:^3.6.2"
-    "@kubb/plugin-react-query": "patch:@kubb/plugin-react-query@npm%3A3.6.2#~/.yarn/patches/@kubb-plugin-react-query-npm-3.6.2-446610e46f.patch"
-    "@kubb/plugin-ts": "npm:^3.6.2"
+    "@kubb/cli": "npm:^3.7.0"
+    "@kubb/core": "npm:^3.7.0"
+    "@kubb/plugin-client": "npm:^3.7.0"
+    "@kubb/plugin-oas": "npm:^3.7.0"
+    "@kubb/plugin-react-query": "patch:@kubb/plugin-react-query@npm%3A3.7.0#~/.yarn/patches/@kubb-plugin-react-query-npm-3.7.0-174dbd3a0b.patch"
+    "@kubb/plugin-ts": "npm:^3.7.0"
   languageName: unknown
   linkType: soft
 
@@ -898,15 +899,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@kubb/cli@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/cli@npm:3.6.2"
+"@kubb/cli@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/cli@npm:3.7.0"
   dependencies:
-    "@kubb/core": "npm:3.6.2"
+    "@kubb/core": "npm:3.7.0"
     chokidar: "npm:^4.0.3"
     citty: "npm:^0.1.6"
     cli-progress: "npm:^3.12.0"
-    consola: "npm:^3.4.0"
+    consola: "npm:^3.4.2"
     cosmiconfig: "npm:^9.0.0"
     execa: "npm:^9.5.2"
     jiti: "npm:^2.4.2"
@@ -917,181 +918,181 @@ __metadata:
     tinyrainbow: "npm:^1.2.0"
   bin:
     kubb: bin/kubb.cjs
-  checksum: 10c0/7a0867c97981f3e71f3c60d558212e04e4c0607377197f10a9e9ba44df2cacb6fe748a9822d86d7df3f0509acfe97a21ebada6c67cba3f5e68e1a9f51b23f0f8
+  checksum: 10c0/15421b6308339fc05ef77fd2827c6dffe6207d7b46524fec81fb1c052f2606fec6fea64c079cdc911366a5690ad7ac4ad3483e683eed6a6c64dc48add438aeb7
   languageName: node
   linkType: hard
 
-"@kubb/core@npm:3.6.2, @kubb/core@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/core@npm:3.6.2"
+"@kubb/core@npm:3.7.0, @kubb/core@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/core@npm:3.7.0"
   dependencies:
-    "@kubb/fs": "npm:3.6.2"
-    "@kubb/parser-ts": "npm:3.6.2"
-    "@kubb/types": "npm:3.6.2"
+    "@kubb/fs": "npm:3.7.0"
+    "@kubb/parser-ts": "npm:3.7.0"
+    "@kubb/types": "npm:3.7.0"
     camelcase: "npm:^8.0.0"
     find-up: "npm:^7.0.0"
     natural-orderby: "npm:^5.0.0"
     object-hash: "npm:^3.0.0"
     p-queue: "npm:^8.1.0"
-    remeda: "npm:^2.21.1"
+    remeda: "npm:^2.21.2"
     seedrandom: "npm:^3.0.5"
     semver: "npm:^7.7.1"
-  checksum: 10c0/def67ba1bca23a2e3d588b6add8ef3dd06ddeb09a62a1672a32a81e1051f7b8a5dbf6e5feeac4939d8fbe8b67c3bb6d9a0039975add8b928a0d61e0ec7fca48b
+  checksum: 10c0/0a738036f380710e12fcfe9f95c956acead5d21889d25d29ff6835f16ce0b5833f01423851047e9e7b731ab11705fbb914da4b573ff21ef25702a3284b23078e
   languageName: node
   linkType: hard
 
-"@kubb/fs@npm:3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/fs@npm:3.6.2"
+"@kubb/fs@npm:3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/fs@npm:3.7.0"
   dependencies:
     fs-extra: "npm:^11.3.0"
     js-runtime: "npm:^0.0.8"
-  checksum: 10c0/06b3222195ebb24c2dbc7e3ab5089dbf00e77077d985dac2253072cfa7d449318c3ba2494af582327d4980fedf9baf092251ccf16559ec6d27610a120cb403e1
+  checksum: 10c0/b2761d65d95c7558204b953adf64feeb6b46aa803fb5cc993abbd1c641beb331bcda7608fabdf12ec76e3ed324486f12db837a257def8629c1e09432d1e88b54
   languageName: node
   linkType: hard
 
-"@kubb/oas@npm:3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/oas@npm:3.6.2"
+"@kubb/oas@npm:3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/oas@npm:3.7.0"
   dependencies:
-    "@redocly/openapi-core": "npm:^1.33.0"
+    "@redocly/openapi-core": "npm:^1.34.0"
     hotscript: "npm:^1.0.13"
     json-schema-to-ts: "npm:^3.1.1"
     jsonpointer: "npm:^5.0.1"
     oas: "npm:^26.0.2"
     oas-normalize: "npm:^13.1.2"
     openapi-types: "npm:^12.1.3"
-    remeda: "npm:^2.21.1"
+    remeda: "npm:^2.21.2"
     swagger2openapi: "npm:^7.0.8"
     ts-toolbelt: "npm:^9.6.0"
-  checksum: 10c0/7222b15d6fd39b4ad5ef7dfa4ac2f759beb620f9c1b84aefb70e614ce7fb2f035140b50377818968a29ba8b6c7862d83d94a50a7bcf8c638efaced652279b569
+  checksum: 10c0/85ffd9b543dae7b4dfd91cc28de42bba111e9566235e29ce969af449a008e5d7a4d86d5f2573391f0681b63c9c4b1685adbcfd0cc001df6cc1050039f3a9cf85
   languageName: node
   linkType: hard
 
-"@kubb/parser-ts@npm:3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/parser-ts@npm:3.6.2"
+"@kubb/parser-ts@npm:3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/parser-ts@npm:3.7.0"
   dependencies:
     prettier: "npm:^3.5.3"
-    remeda: "npm:^2.21.1"
+    remeda: "npm:^2.21.2"
     typescript: "npm:^5.8.2"
-  checksum: 10c0/46d035927b4aaf66b64a674251a141f511a445ff23d339d62f749cf83eb2a89f6eee9aab6e61e25387006bfa917c52924dbdc9234c2907c88774efabf44e17f3
+  checksum: 10c0/2eecb968d80b898b3c7a403732d0ce0cebeb69a6a1c4cd810ef42ca7c07c0fb00269b150f9e6c2350d95c8bb793e9e48c108b00962f5615c1c359dd52b12b8f1
   languageName: node
   linkType: hard
 
-"@kubb/plugin-client@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/plugin-client@npm:3.6.2"
+"@kubb/plugin-client@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/plugin-client@npm:3.7.0"
   dependencies:
-    "@kubb/core": "npm:3.6.2"
-    "@kubb/fs": "npm:3.6.2"
-    "@kubb/oas": "npm:3.6.2"
-    "@kubb/plugin-oas": "npm:3.6.2"
-    "@kubb/plugin-ts": "npm:3.6.2"
-    "@kubb/plugin-zod": "npm:3.6.2"
-    "@kubb/react": "npm:3.6.2"
+    "@kubb/core": "npm:3.7.0"
+    "@kubb/fs": "npm:3.7.0"
+    "@kubb/oas": "npm:3.7.0"
+    "@kubb/plugin-oas": "npm:3.7.0"
+    "@kubb/plugin-ts": "npm:3.7.0"
+    "@kubb/plugin-zod": "npm:3.7.0"
+    "@kubb/react": "npm:3.7.0"
   peerDependencies:
     "@kubb/react": ^3.0.0
     axios: ^1.7.2
   peerDependenciesMeta:
     axios:
       optional: true
-  checksum: 10c0/6785a6c96bb9e08a8b9ec4cfd2f862af238fabab9c2b46927df17b240836dae72e3b9f7191e0e60c360ac10934043ef3578baeeb0438198085624015c2077286
+  checksum: 10c0/f51bfcdfc7c92ecc1447c11224984d4327ebe6f8b77650715735dab89ad57fbf03079ef19526ed8c10f47e6bab7c18ea2b407eea7d4f389be81e6fcffcbcf77f
   languageName: node
   linkType: hard
 
-"@kubb/plugin-oas@npm:3.6.2, @kubb/plugin-oas@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/plugin-oas@npm:3.6.2"
+"@kubb/plugin-oas@npm:3.7.0, @kubb/plugin-oas@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/plugin-oas@npm:3.7.0"
   dependencies:
-    "@kubb/core": "npm:3.6.2"
-    "@kubb/fs": "npm:3.6.2"
-    "@kubb/oas": "npm:3.6.2"
-    "@kubb/react": "npm:3.6.2"
+    "@kubb/core": "npm:3.7.0"
+    "@kubb/fs": "npm:3.7.0"
+    "@kubb/oas": "npm:3.7.0"
+    "@kubb/react": "npm:3.7.0"
     "@stoplight/yaml": "npm:^4.3.0"
-    remeda: "npm:^2.21.1"
+    remeda: "npm:^2.21.2"
   peerDependencies:
     "@kubb/react": ^3.0.0
-  checksum: 10c0/677e54c13e337e7330df7280872b6c80d3eb793c0023e2c105416c9f49b05b14a9349ffeac6df3a0afd6932de55550d8b7c2268d3134cca671a6811f515a6c82
+  checksum: 10c0/d1b6e1146475323ec054c1ea7737a0a693716feb22048404cbe3891e8917894d200cee746eedeceaf5bf4827713332a51a793aca131f39a1000b9ce8337e7163
   languageName: node
   linkType: hard
 
-"@kubb/plugin-react-query@npm:3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/plugin-react-query@npm:3.6.2"
+"@kubb/plugin-react-query@npm:3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/plugin-react-query@npm:3.7.0"
   dependencies:
-    "@kubb/core": "npm:3.6.2"
-    "@kubb/fs": "npm:3.6.2"
-    "@kubb/oas": "npm:3.6.2"
-    "@kubb/plugin-oas": "npm:3.6.2"
-    "@kubb/plugin-ts": "npm:3.6.2"
-    "@kubb/plugin-zod": "npm:3.6.2"
-    "@kubb/react": "npm:3.6.2"
-    remeda: "npm:^2.21.1"
+    "@kubb/core": "npm:3.7.0"
+    "@kubb/fs": "npm:3.7.0"
+    "@kubb/oas": "npm:3.7.0"
+    "@kubb/plugin-oas": "npm:3.7.0"
+    "@kubb/plugin-ts": "npm:3.7.0"
+    "@kubb/plugin-zod": "npm:3.7.0"
+    "@kubb/react": "npm:3.7.0"
+    remeda: "npm:^2.21.2"
   peerDependencies:
     "@kubb/react": ^3.0.0
-  checksum: 10c0/6052fccf4ea1429248aca8a5e8d81ef48878680c989312b975ac7708b190ba99f728001307ea0f33e2ec086d1784a9a86463dc0fd9ccf5de2a203fa4bab7b417
+  checksum: 10c0/0569fbfaad0c6e50acab5508312ddf0ee2509274533ea2a3ef7da62f769d28e15ff4dcefdeaa7bff57c13fde895e03ddd5d958182f981f0c35899a13a1e81614
   languageName: node
   linkType: hard
 
-"@kubb/plugin-react-query@patch:@kubb/plugin-react-query@npm%3A3.6.2#~/.yarn/patches/@kubb-plugin-react-query-npm-3.6.2-446610e46f.patch":
-  version: 3.6.2
-  resolution: "@kubb/plugin-react-query@patch:@kubb/plugin-react-query@npm%3A3.6.2#~/.yarn/patches/@kubb-plugin-react-query-npm-3.6.2-446610e46f.patch::version=3.6.2&hash=0ad881"
+"@kubb/plugin-react-query@patch:@kubb/plugin-react-query@npm%3A3.7.0#~/.yarn/patches/@kubb-plugin-react-query-npm-3.7.0-174dbd3a0b.patch":
+  version: 3.7.0
+  resolution: "@kubb/plugin-react-query@patch:@kubb/plugin-react-query@npm%3A3.7.0#~/.yarn/patches/@kubb-plugin-react-query-npm-3.7.0-174dbd3a0b.patch::version=3.7.0&hash=db429f"
   dependencies:
-    "@kubb/core": "npm:3.6.2"
-    "@kubb/fs": "npm:3.6.2"
-    "@kubb/oas": "npm:3.6.2"
-    "@kubb/plugin-oas": "npm:3.6.2"
-    "@kubb/plugin-ts": "npm:3.6.2"
-    "@kubb/plugin-zod": "npm:3.6.2"
-    "@kubb/react": "npm:3.6.2"
-    remeda: "npm:^2.21.1"
+    "@kubb/core": "npm:3.7.0"
+    "@kubb/fs": "npm:3.7.0"
+    "@kubb/oas": "npm:3.7.0"
+    "@kubb/plugin-oas": "npm:3.7.0"
+    "@kubb/plugin-ts": "npm:3.7.0"
+    "@kubb/plugin-zod": "npm:3.7.0"
+    "@kubb/react": "npm:3.7.0"
+    remeda: "npm:^2.21.2"
   peerDependencies:
     "@kubb/react": ^3.0.0
-  checksum: 10c0/bbba23ff6fac15a0cd8c9009d5af20596d8d87d09d80b1d32d0c35e08f9d0d57ed5bc7491d4e7bc7f91259c84b6ee413085a6f895052b8b31af7d8c36108e776
+  checksum: 10c0/dfabbb6701b4271d53c6feba30836c39e32b962683bd2241b1b27bae297487c5578c68a3e7ef5ae823d34728368bdef32f2fe91a02ad8a97a8a7f2e40345e74d
   languageName: node
   linkType: hard
 
-"@kubb/plugin-ts@npm:3.6.2, @kubb/plugin-ts@npm:^3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/plugin-ts@npm:3.6.2"
+"@kubb/plugin-ts@npm:3.7.0, @kubb/plugin-ts@npm:^3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/plugin-ts@npm:3.7.0"
   dependencies:
-    "@kubb/core": "npm:3.6.2"
-    "@kubb/fs": "npm:3.6.2"
-    "@kubb/oas": "npm:3.6.2"
-    "@kubb/parser-ts": "npm:3.6.2"
-    "@kubb/plugin-oas": "npm:3.6.2"
-    "@kubb/react": "npm:3.6.2"
+    "@kubb/core": "npm:3.7.0"
+    "@kubb/fs": "npm:3.7.0"
+    "@kubb/oas": "npm:3.7.0"
+    "@kubb/parser-ts": "npm:3.7.0"
+    "@kubb/plugin-oas": "npm:3.7.0"
+    "@kubb/react": "npm:3.7.0"
   peerDependencies:
     "@kubb/react": ^3.0.0
-  checksum: 10c0/7df7c3325bb49eefe73abefc8bcd450e47bf015c6d47522768224287e55a15961356b059377a4c3c2219d5a4b5ff36cd3b45b43bbc88e39a225f266a37413405
+  checksum: 10c0/0c2a6617c4054842ba3539d85ef62ee706a78f6c33fc61aa329c8faaa1be35c1ac675dc4ad08bb96174b8e083444b141b5703d8b13dddb6b342f9c097795bb70
   languageName: node
   linkType: hard
 
-"@kubb/plugin-zod@npm:3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/plugin-zod@npm:3.6.2"
+"@kubb/plugin-zod@npm:3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/plugin-zod@npm:3.7.0"
   dependencies:
-    "@kubb/core": "npm:3.6.2"
-    "@kubb/fs": "npm:3.6.2"
-    "@kubb/oas": "npm:3.6.2"
-    "@kubb/parser-ts": "npm:3.6.2"
-    "@kubb/plugin-oas": "npm:3.6.2"
-    "@kubb/plugin-ts": "npm:3.6.2"
-    "@kubb/react": "npm:3.6.2"
+    "@kubb/core": "npm:3.7.0"
+    "@kubb/fs": "npm:3.7.0"
+    "@kubb/oas": "npm:3.7.0"
+    "@kubb/parser-ts": "npm:3.7.0"
+    "@kubb/plugin-oas": "npm:3.7.0"
+    "@kubb/plugin-ts": "npm:3.7.0"
+    "@kubb/react": "npm:3.7.0"
   peerDependencies:
     "@kubb/react": ^3.0.0
-  checksum: 10c0/596f29b2a9354f554dde1d0227f0f96dd827e0351259b84aca822304c65c4756905e46588debe056291f30bb6a85c3aeff8cc81f97b97df4d0ba1b293eb2ed5f
+  checksum: 10c0/daef0cee5d75ed18abe144fec4f666589edd55953e7fa826fa8f1f121ef50cdbb3ebcd6ec37069e5789fa4defb48fdcc9dc6dc2510afb96fc3230a3af01aaff8
   languageName: node
   linkType: hard
 
-"@kubb/react@npm:3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/react@npm:3.6.2"
+"@kubb/react@npm:3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/react@npm:3.7.0"
   dependencies:
-    "@kubb/core": "npm:3.6.2"
-    "@kubb/fs": "npm:3.6.2"
-    "@kubb/parser-ts": "npm:3.6.2"
+    "@kubb/core": "npm:3.7.0"
+    "@kubb/fs": "npm:3.7.0"
+    "@kubb/parser-ts": "npm:3.7.0"
     execa: "npm:^9.5.2"
     natural-orderby: "npm:^4.0.0"
     react: "npm:^18.3.1"
@@ -1099,14 +1100,14 @@ __metadata:
     react-reconciler: "npm:0.29.2"
     signal-exit: "npm:^4.1.0"
     ws: "npm:^8.18.1"
-  checksum: 10c0/a75deababbf918977f85b8afa08bfe5b49be7fdf0e62aa528d651ff7bc9a998a8f0e2abad09bd75f72a783fcd18701d25e9eafcc78e93a141e70d9187106fbfb
+  checksum: 10c0/c392f8763a4f76b240401066cec79af325c2f165d27c3cfd2236745b7599bb12bc961ff06ac9389fe518b8427b4ddfac12f7216d1c24d171d8f219a868315c7c
   languageName: node
   linkType: hard
 
-"@kubb/types@npm:3.6.2":
-  version: 3.6.2
-  resolution: "@kubb/types@npm:3.6.2"
-  checksum: 10c0/98d71a3a067723ddbf635b6da118479e4f4e61f0f96847ba10e562721dd637a8c2b6305a003bc48056a6780457b18506ca3855bc48390ba695612f351379626e
+"@kubb/types@npm:3.7.0":
+  version: 3.7.0
+  resolution: "@kubb/types@npm:3.7.0"
+  checksum: 10c0/aff25a9175241d52c7e97385e702ee91975da6cdcc66144056ec4171b9fefd8021372d4741c044a073222b5a8e8f99ccf350ed27c5eafc6db99b65e2960cabcd
   languageName: node
   linkType: hard
 
@@ -2052,9 +2053,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@redocly/openapi-core@npm:^1.33.0":
-  version: 1.33.1
-  resolution: "@redocly/openapi-core@npm:1.33.1"
+"@redocly/openapi-core@npm:^1.34.0":
+  version: 1.34.0
+  resolution: "@redocly/openapi-core@npm:1.34.0"
   dependencies:
     "@redocly/ajv": "npm:^8.11.2"
     "@redocly/config": "npm:^0.22.0"
@@ -2065,7 +2066,7 @@ __metadata:
     minimatch: "npm:^5.0.1"
     pluralize: "npm:^8.0.0"
     yaml-ast-parser: "npm:0.0.43"
-  checksum: 10c0/906bb8f6c299fcfd310433024d4b902f9ee296a0e9c1587a6d369990e5aff3b81154d20bd3c5c7a750ddee7d4f0ab598f0a286da367f0a287c476c02b02257a0
+  checksum: 10c0/e069c26dc64d67ddf88939fce6d6d37d366a70ea8eb58bcdf8c09db44f271148d169a0e2c7f8540bb3d947ee95ab3907441f5efb11b93fe56e5039f5b7ce902f
   languageName: node
   linkType: hard
 
@@ -2163,6 +2164,25 @@ __metadata:
   version: 5.67.3
   resolution: "@tanstack/query-core@npm:5.67.3"
   checksum: 10c0/3f681967cd457599c1e35bbef1467150a4b96837222c299876e6d80a835a4c86eba39fb1cbfc9c7f77bde6007ffbef7369fc93417196e9c61d49c4db6111e535
+  languageName: node
+  linkType: hard
+
+"@tanstack/query-devtools@npm:5.67.2":
+  version: 5.67.2
+  resolution: "@tanstack/query-devtools@npm:5.67.2"
+  checksum: 10c0/85172bb7cbca204e62507ffb72add4ff8f204b034ea0c6bb82cc44a00756ab196bd8a688b5e857911274aa5e7c467cdda6a393ebce6ba36ce8d471d5b52060fb
+  languageName: node
+  linkType: hard
+
+"@tanstack/react-query-devtools@npm:^5.69.0":
+  version: 5.69.0
+  resolution: "@tanstack/react-query-devtools@npm:5.69.0"
+  dependencies:
+    "@tanstack/query-devtools": "npm:5.67.2"
+  peerDependencies:
+    "@tanstack/react-query": ^5.69.0
+    react: ^18 || ^19
+  checksum: 10c0/e74937f68f205227d3a1bc616daeb4908de6c09426851b64c96b48a2f7468abbfe8a9509eac5c808836f63b0ae5faaba4229e7d1fed5e00cf7dc913da05f705f
   languageName: node
   linkType: hard
 
@@ -4068,10 +4088,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"consola@npm:^3.2.3, consola@npm:^3.4.0":
+"consola@npm:^3.2.3":
   version: 3.4.0
   resolution: "consola@npm:3.4.0"
   checksum: 10c0/bc7f7ad46514375109a80f3ae8330097eb1e5d89232a24eb830f3ac383e22036a62c53d33561cd73d7cda4b3691fba85e3dcf35229ef7721b324aae291ceb40c
+  languageName: node
+  linkType: hard
+
+"consola@npm:^3.4.2":
+  version: 3.4.2
+  resolution: "consola@npm:3.4.2"
+  checksum: 10c0/7cebe57ecf646ba74b300bcce23bff43034ed6fbec9f7e39c27cee1dc00df8a21cd336b466ad32e304ea70fba04ec9e890c200270de9a526ce021ba8a7e4c11a
   languageName: node
   linkType: hard
 
@@ -8095,12 +8122,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remeda@npm:^2.21.1":
-  version: 2.21.1
-  resolution: "remeda@npm:2.21.1"
+"remeda@npm:^2.21.2":
+  version: 2.21.2
+  resolution: "remeda@npm:2.21.2"
   dependencies:
     type-fest: "npm:^4.37.0"
-  checksum: 10c0/8793e944263cd2272d4f4332fc7671e9f7fd53e57107efcb6c45d5f7ad2bafa1777a11426de5788dd98808f984ad2d41a56d26b7c7560ad57a8019e39b851edd
+  checksum: 10c0/f964ce5ddbefd181e71cd1154b24aa223188cc6b88a55a52b64a6a920377c54113a993f707b8beedb369e8ba76ef07479ad329d8e6ebad8868f0ee9e46ee0ec5
   languageName: node
   linkType: hard
 

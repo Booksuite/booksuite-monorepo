@@ -14,7 +14,7 @@ export const searchBannersQueryKey = (
   { companyId }: { companyId: SearchBannersPathParams['companyId'] },
   data: SearchBannersMutationRequest,
   params?: SearchBannersQueryParams,
-) => [{ url: '/company/:companyId/banner/search', params: { companyId: companyId } }, ...(params ? [params] : []), ...(data ? [data] : [])] as const
+) => ['searchBanners', { companyId: companyId }, ...(params ? [params] : []), ...(data ? [data] : [])] as const
 
 export type SearchBannersQueryKey = ReturnType<typeof searchBannersQueryKey>
 

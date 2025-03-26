@@ -16,7 +16,7 @@ export type ReservationControllerUpdateMutationKey = ReturnType<typeof reservati
 /**
  * {@link /company/:companyId/reservation/:id}
  */
-export function useReservationControllerUpdate(
+export function useReservationControllerUpdate<TContext>(
   options: {
     mutation?: UseMutationOptions<
       ReservationControllerUpdateMutationResponse,
@@ -25,7 +25,8 @@ export function useReservationControllerUpdate(
         companyId: ReservationControllerUpdatePathParams['companyId']
         id: ReservationControllerUpdatePathParams['id']
         data?: ReservationControllerUpdateMutationRequest
-      }
+      },
+      TContext
     >
     client?: Partial<RequestConfig<ReservationControllerUpdateMutationRequest>> & { client?: typeof client }
   } = {},
@@ -40,7 +41,8 @@ export function useReservationControllerUpdate(
       companyId: ReservationControllerUpdatePathParams['companyId']
       id: ReservationControllerUpdatePathParams['id']
       data?: ReservationControllerUpdateMutationRequest
-    }
+    },
+    TContext
   >({
     mutationFn: async ({ companyId, id, data }) => {
       return reservationControllerUpdate({ companyId, id }, data, config)

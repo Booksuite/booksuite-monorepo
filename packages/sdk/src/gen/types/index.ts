@@ -73,8 +73,9 @@ export type {
   UpsertCompanyCancellationPolicyMutationResponse,
   UpsertCompanyCancellationPolicyMutation,
 } from './CancellationPolicyController/UpsertCompanyCancellationPolicy.ts'
-export type { CancellationPolicyResponseFullDTODefaultPenaltyBy, CancellationPolicyFull } from './CancellationPolicyFull.ts'
-export type { CancellationPolicyDTODefaultPenaltyBy, CancellationPolicyInput } from './CancellationPolicyInput.ts'
+export type { CancellationPolicyFull } from './CancellationPolicyFull.ts'
+export type { CancellationPolicyInput } from './CancellationPolicyInput.ts'
+export type { CancellationPolicyPenalty } from './CancellationPolicyPenalty.ts'
 export type { CompanyResponseDTOType, Company } from './Company.ts'
 export type { CompanyContactResponseDTOType, CompanyContact } from './CompanyContact.ts'
 export type { CompanyContactDTOType, CompanyContactInput } from './CompanyContactInput.ts'
@@ -144,6 +145,20 @@ export type { FacilityOrderByInput } from './FacilityOrderByInput.ts'
 export type { FacilityPaginated } from './FacilityPaginated.ts'
 export type { FacilitySearchBodyInput } from './FacilitySearchBodyInput.ts'
 export type { FacilitySearchFilterDTOType, FacilitySearchFilterInput } from './FacilitySearchFilterInput.ts'
+export type {
+  GetCompanyHostingRulesPathParams,
+  GetCompanyHostingRules200,
+  GetCompanyHostingRulesQueryResponse,
+  GetCompanyHostingRulesQuery,
+} from './HostingRulesController/GetCompanyHostingRules.ts'
+export type {
+  UpsertCompanyHostingRulesPathParams,
+  UpsertCompanyHostingRules200,
+  UpsertCompanyHostingRulesMutationRequest,
+  UpsertCompanyHostingRulesMutationResponse,
+  UpsertCompanyHostingRulesMutation,
+} from './HostingRulesController/UpsertCompanyHostingRules.ts'
+export type { HostingRulesInput } from './HostingRulesInput.ts'
 export type { HousingUnit } from './HousingUnit.ts'
 export type { HousingUnitInput } from './HousingUnitInput.ts'
 export type { HousingUnitType } from './HousingUnitType.ts'

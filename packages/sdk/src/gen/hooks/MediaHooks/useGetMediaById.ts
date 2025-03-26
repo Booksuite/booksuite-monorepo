@@ -6,7 +6,7 @@ import { getMediaById } from '../../client/MediaService/getMediaById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
 export const getMediaByIdQueryKey = ({ id, companyId }: { id: GetMediaByIdPathParams['id']; companyId: GetMediaByIdPathParams['companyId'] }) =>
-  [{ url: '/company/:companyId/media/:id', params: { companyId: companyId, id: id } }] as const
+  ['getMediaById', { companyId: companyId, id: id }] as const
 
 export type GetMediaByIdQueryKey = ReturnType<typeof getMediaByIdQueryKey>
 

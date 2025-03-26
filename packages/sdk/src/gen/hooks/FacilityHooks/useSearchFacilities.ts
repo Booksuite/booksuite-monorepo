@@ -10,7 +10,7 @@ import { searchFacilities } from '../../client/FacilityService/searchFacilities.
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
 export const searchFacilitiesQueryKey = (data: SearchFacilitiesMutationRequest, params?: SearchFacilitiesQueryParams) =>
-  [{ url: '/facility/search' }, ...(params ? [params] : []), ...(data ? [data] : [])] as const
+  ['searchFacilities', ...(params ? [params] : []), ...(data ? [data] : [])] as const
 
 export type SearchFacilitiesQueryKey = ReturnType<typeof searchFacilitiesQueryKey>
 

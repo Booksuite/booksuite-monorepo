@@ -12,12 +12,13 @@ export type UpdateCompanyMutationKey = ReturnType<typeof updateCompanyMutationKe
 /**
  * {@link /company/:id}
  */
-export function useUpdateCompany(
+export function useUpdateCompany<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UpdateCompanyMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateCompanyPathParams['id']; data: UpdateCompanyMutationRequest }
+      { id: UpdateCompanyPathParams['id']; data: UpdateCompanyMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<UpdateCompanyMutationRequest>> & { client?: typeof client }
   } = {},
@@ -25,7 +26,12 @@ export function useUpdateCompany(
   const { mutation: mutationOptions, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? updateCompanyMutationKey()
 
-  return useMutation<UpdateCompanyMutationResponse, ResponseErrorConfig<Error>, { id: UpdateCompanyPathParams['id']; data: UpdateCompanyMutationRequest }>({
+  return useMutation<
+    UpdateCompanyMutationResponse,
+    ResponseErrorConfig<Error>,
+    { id: UpdateCompanyPathParams['id']; data: UpdateCompanyMutationRequest },
+    TContext
+  >({
     mutationFn: async ({ id, data }) => {
       return updateCompany({ id }, data, config)
     },

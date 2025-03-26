@@ -12,11 +12,11 @@
         "generate": "kubb generate"
     },
     "devDependencies": {
-        "@kubb/cli": "^3.6.2",
-        "@kubb/core": "^3.6.2",
-        "@kubb/plugin-client": "^3.6.2",
-        "@kubb/plugin-oas": "^3.6.2",
-        "@kubb/plugin-react-query": "patch:@kubb/plugin-react-query@npm%3A3.6.2#~/.yarn/patches/@kubb-plugin-react-query-npm-3.6.2-446610e46f.patch",
-        "@kubb/plugin-ts": "^3.6.2"
+        "@kubb/cli": "^3.7.0",
+        "@kubb/core": "^3.7.0",
+        "@kubb/plugin-client": "^3.7.0",
+        "@kubb/plugin-oas": "^3.7.0",
+        "@kubb/plugin-react-query": "patch:@kubb/plugin-react-query@npm%3A3.7.0#~/.yarn/patches/@kubb-plugin-react-query-npm-3.7.0-174dbd3a0b.patch",
+        "@kubb/plugin-ts": "^3.7.0"
     }
 }

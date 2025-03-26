@@ -12,12 +12,13 @@ export type DeleteServiceMutationKey = ReturnType<typeof deleteServiceMutationKe
 /**
  * {@link /company/:companyId/service/:id}
  */
-export function useDeleteService(
+export function useDeleteService<TContext>(
   options: {
     mutation?: UseMutationOptions<
       DeleteServiceMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: DeleteServicePathParams['id']; companyId: DeleteServicePathParams['companyId'] }
+      { id: DeleteServicePathParams['id']; companyId: DeleteServicePathParams['companyId'] },
+      TContext
     >
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useDeleteService(
   return useMutation<
     DeleteServiceMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: DeleteServicePathParams['id']; companyId: DeleteServicePathParams['companyId'] }
+    { id: DeleteServicePathParams['id']; companyId: DeleteServicePathParams['companyId'] },
+    TContext
   >({
     mutationFn: async ({ id, companyId }) => {
       return deleteService({ id, companyId }, config)

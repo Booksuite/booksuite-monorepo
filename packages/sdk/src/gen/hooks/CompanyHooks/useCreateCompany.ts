@@ -12,16 +12,16 @@ export type CreateCompanyMutationKey = ReturnType<typeof createCompanyMutationKe
 /**
  * {@link /company/create}
  */
-export function useCreateCompany(
+export function useCreateCompany<TContext>(
   options: {
-    mutation?: UseMutationOptions<CreateCompanyMutationResponse, ResponseErrorConfig<Error>, { data: CreateCompanyMutationRequest }>
+    mutation?: UseMutationOptions<CreateCompanyMutationResponse, ResponseErrorConfig<Error>, { data: CreateCompanyMutationRequest }, TContext>
     client?: Partial<RequestConfig<CreateCompanyMutationRequest>> & { client?: typeof client }
   } = {},
 ) {
   const { mutation: mutationOptions, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? createCompanyMutationKey()
 
-  return useMutation<CreateCompanyMutationResponse, ResponseErrorConfig<Error>, { data: CreateCompanyMutationRequest }>({
+  return useMutation<CreateCompanyMutationResponse, ResponseErrorConfig<Error>, { data: CreateCompanyMutationRequest }, TContext>({
     mutationFn: async ({ data }) => {
       return createCompany(data, config)
     },
