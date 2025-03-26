@@ -8,11 +8,7 @@ import { useCurrentCompanyId } from '@/common/contexts/user'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import CompanyContactsForm from './components/CompanyContactsForm'
-import {
-    companyContactSchema,
-    ContactsData,
-    createContactsFormInitialValues,
-} from './utils/config'
+import { ContactsData, createContactsFormInitialValues } from './utils/config'
 
 export default function ContactsSocialMediaPage() {
     const companyId = useCurrentCompanyId()
@@ -22,9 +18,27 @@ export default function ContactsSocialMediaPage() {
         id: companyId,
     })
 
-    const { mutateAsync: updateCompany } = useUpdateCompany({})
+    const { mutateAsync: updateCompanyContacts } = useUpdateCompany({})
 
-    function handleSubmit() {}
+    async function handleSubmit(formData: ContactsData) {
+        console.log(formData)
+        try {
+            await updateCompanyContacts({
+                id: companyId,
+                data: formData,
+            })
+
+            toast({
+                title: 'Formas de contato modificadas com sucesso',
+                status: 'success'
+            })
+        } catch (erro) {
+            toast({
+                title: 'Erro ao modificar formas de contato',
+                status: 'error'
+            })
+        }
+    }
 
     return (
         <div className="CompanyContact">
@@ -39,7 +53,6 @@ export default function ContactsSocialMediaPage() {
             {!isLoading && (
                 <Formik<ContactsData>
                     initialValues={createContactsFormInitialValues(companyData)}
-                    validationSchema={companyContactSchema}
                     onSubmit={handleSubmit}
                 >
                     <CompanyContactsForm />
