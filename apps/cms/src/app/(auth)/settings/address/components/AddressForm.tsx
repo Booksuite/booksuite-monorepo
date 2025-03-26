@@ -24,7 +24,7 @@ export const AddressForm = () => {
     } = useFormikContext<AddressFormData>()
 
     const debouncedSearch = useRef(
-        debounce({ delay: 800 }, async (search: string) => {
+        debounce({ delay: 500 }, async (search: string) => {
             setSubmitting(true)
 
             try {
