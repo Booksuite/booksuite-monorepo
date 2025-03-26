@@ -8,6 +8,15 @@ export const createCancellationPolicyInitialValues = (
 ): CancellationPolicyFormData => ({
     defaultPenaltyBy: data?.defaultPenaltyBy || 'RESERVATION_PERCENTAGE',
     defaultValue: data?.defaultValue || 0,
+    withdrawalPeriod: data?.withdrawalPeriod || 0,
+    applyCancellationTax: data?.applyCancellationTax || false,
+    balancedModel: data?.balancedModel || '',
+    dynamicDescription: data?.dynamicDescription || '',
+    extraCancellationTax: data?.extraCancellationTax || false,
+    flexModel: data?.flexModel || '',
+    hardModel: data?.flexModel || '',
+    moderateModel: data?.moderateModel || '',
+    otherDescription: data?.otherDescription || '',
     penaltyRanges:
         data?.penaltyRanges.map((range) => ({
             id: range.id,
@@ -34,6 +43,15 @@ export const cancellationPolicyFormSchema = yup.object({
             ),
         otherwise: (schema) => schema.optional(),
     }),
+    withdrawalPeriod: yup.number().required('Campo obrigatório'),
+    applyCancellationTax: yup.boolean().required('Campo obrigatório'),
+    balancedModel: yup.string().required('Campo obrigatório'),
+    dynamicDescription: yup.string().required('Campo obrigatório'),
+    extraCancellationTax: yup.boolean().required('Campo obrigatório'),
+    flexModel: yup.string().required('Campo obrigatório'),
+    hardModel: yup.string().required('Campo obrigatório'),
+    moderateModel: yup.string().required('Campo obrigatório'),
+    otherDescription: yup.string().required('Campo obrigatório'),
     penaltyRanges: yup.array().of(
         yup.object({
             id: yup.string().optional(),
