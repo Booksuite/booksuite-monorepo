@@ -4,7 +4,7 @@ import {
     useGetHousingUnitTypeById,
     useUpdateHousingUnitType,
 } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
+import { Stack, useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -12,6 +12,7 @@ import { useRouter } from 'next/navigation'
 import { RoomsForm } from '@/app/(auth)/my-business/rooms/components/RoomsForm'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
+import { FormButtons } from '@/components/molecules/FormButtons'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import {
     createFormInitialValues,
@@ -29,7 +30,11 @@ export default function UpdateRoom({ params }: UpdateRoomProps) {
     const companyId = useCurrentCompanyId()
     const queryClient = useQueryClient()
 
-    const { data: room, queryKey } = useGetHousingUnitTypeById({
+    const {
+        data: room,
+        queryKey,
+        isLoading,
+    } = useGetHousingUnitTypeById({
         companyId,
         id: params.id,
     })
@@ -40,7 +45,6 @@ export default function UpdateRoom({ params }: UpdateRoomProps) {
 
     async function handleSubmit(formData: RoomsFormData) {
         try {
-            // Transform the form data to the format expected by the API
             const apiData = transformFormDataForSubmit(formData)
 
             await updateHousintUnitType({
@@ -71,11 +75,12 @@ export default function UpdateRoom({ params }: UpdateRoomProps) {
     }
 
     return (
-        <div>
+        <>
             <PageHeader
                 title="Editar Acomodação"
                 backButtonHref="/my-business/rooms"
                 backLButtonLabel="Acomodações"
+                isLoading={isLoading}
             />
 
             {!!room && (
@@ -84,9 +89,17 @@ export default function UpdateRoom({ params }: UpdateRoomProps) {
                     validationSchema={roomsFormSchema}
                     onSubmit={handleSubmit}
                 >
-                    <RoomsForm />
+                    {({ isSubmitting }) => (
+                        <Stack gap={6}>
+                            <RoomsForm />
+                            <FormButtons
+                                onCancel={() => push('/my-business/rooms')}
+                                isLoading={isSubmitting}
+                            />
+                        </Stack>
+                    )}
                 </Formik>
             )}
-        </div>
+        </>
     )
 }

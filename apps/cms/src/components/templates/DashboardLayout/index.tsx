@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Flex, useDisclosure } from '@chakra-ui/react'
+import { Box, Container, Flex, useDisclosure } from '@chakra-ui/react'
 import type React from 'react'
 
 import { DashboardHeader } from '../DashboardHeader'
@@ -28,9 +28,18 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     userName="Admin Booksuite"
                     userImageSrc={avatarUrl}
                 />
-                <Box as="main" p={6}>
+                <Container
+                    as="main"
+                    maxW={{
+                        base: 'full',
+                        lg: 'container.md',
+                        xl: 'container.lg',
+                        '2xl': 'container.xl',
+                    }}
+                    p={{ base: 10, xl: 16 }}
+                >
                     {children}
-                </Box>
+                </Container>
             </Box>
         </Flex>
     )

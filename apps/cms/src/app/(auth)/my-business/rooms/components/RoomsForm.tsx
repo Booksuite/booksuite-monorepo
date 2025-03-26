@@ -363,10 +363,6 @@ export const RoomsForm: React.FC = () => {
                 </section>
 
                 <HousingUnitTypeFacilitiesField />
-
-                <Button type="submit" size="lg">
-                    Salvar
-                </Button>
             </Stack>
         </Form>
     )
