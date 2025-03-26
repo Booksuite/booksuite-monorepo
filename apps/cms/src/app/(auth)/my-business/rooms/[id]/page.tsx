@@ -4,7 +4,7 @@ import {
     useGetHousingUnitTypeById,
     useUpdateHousingUnitType,
 } from '@booksuite/sdk'
-import { Stack, useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation'
 import { RoomsForm } from '@/app/(auth)/my-business/rooms/components/RoomsForm'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
-import { FormButtons } from '@/components/molecules/FormButtons'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import {
     createFormInitialValues,
@@ -89,15 +89,11 @@ export default function UpdateRoom({ params }: UpdateRoomProps) {
                     validationSchema={roomsFormSchema}
                     onSubmit={handleSubmit}
                 >
-                    {({ isSubmitting }) => (
-                        <Stack gap={6}>
-                            <RoomsForm />
-                            <FormButtons
-                                onCancel={() => push('/my-business/rooms')}
-                                isLoading={isSubmitting}
-                            />
-                        </Stack>
-                    )}
+                    <FormikController
+                        onCancel={() => push('/my-business/rooms')}
+                    >
+                        <RoomsForm />
+                    </FormikController>
                 </Formik>
             )}
         </>
