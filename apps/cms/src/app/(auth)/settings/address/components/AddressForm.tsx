@@ -3,7 +3,6 @@
 import { Button, Grid, GridItem, useToast } from '@chakra-ui/react'
 import cep from 'cep-promise'
 import { Form, useFormikContext } from 'formik'
-import router from 'next/router'
 import { debounce } from 'radash'
 import { useEffect, useRef, useState } from 'react'
 
@@ -12,15 +11,13 @@ import type { AddressFormData } from '../utils/config'
 
 export const AddressForm = () => {
     const toast = useToast()
-    const { getFieldProps, touched, values, errors, setValues } =
+    const { getFieldProps, touched, values, errors, setValues, isSubmitting } =
         useFormikContext<AddressFormData>()
 
     const [zipcodeError, setZipcodeError] = useState<string | null>(null)
-    const [isSearching, setIsSearching] = useState(false)
 
     const debouncedSearch = useRef(
         debounce({ delay: 800 }, async (search: string) => {
-            setIsSearching(true)
             try {
                 const address = await cep(search)
 
@@ -36,8 +33,6 @@ export const AddressForm = () => {
                 setZipcodeError(null)
             } catch {
                 setZipcodeError('CEP inválido ou não encontrado.')
-            } finally {
-                setIsSearching(false)
             }
         }),
     )
@@ -48,30 +43,14 @@ export const AddressForm = () => {
         }
     }, [values.zipcode])
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setIsSearching(true)
-
-        try {
-            await new Promise((resolve) => setTimeout(resolve, 2000))
-
-            toast({
-                title: 'Formulário enviado com sucesso!',
-                status: 'success',
-            })
-            router.push('/settings')
-        } finally {
-            setIsSearching(false)
-        }
-    }
-
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form>
             <Grid templateColumns="repeat(12, 1fr)" gap={4}>
                 <GridItem colSpan={12}>
                     <InputBox
                         label="CEP"
                         error={zipcodeError || errors.zipcode}
+                        isDisabled={isSubmitting}
                         formControl={{
                             isInvalid:
                                 !!zipcodeError ||
@@ -88,7 +67,7 @@ export const AddressForm = () => {
                         formControl={{
                             isInvalid: !!errors.city && touched.city,
                         }}
-                        isDisabled={isSearching}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('city')}
                     />
                 </GridItem>
@@ -100,7 +79,7 @@ export const AddressForm = () => {
                         formControl={{
                             isInvalid: !!errors.state && touched.state,
                         }}
-                        isDisabled={isSearching}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('state')}
                     />
                 </GridItem>
@@ -112,7 +91,7 @@ export const AddressForm = () => {
                         formControl={{
                             isInvalid: !!errors.country && touched.country,
                         }}
-                        isDisabled={isSearching}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('country')}
                     />
                 </GridItem>
@@ -124,7 +103,7 @@ export const AddressForm = () => {
                         formControl={{
                             isInvalid: !!errors.address && touched.address,
                         }}
-                        isDisabled={isSearching}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('address')}
                     />
                 </GridItem>
@@ -136,7 +115,7 @@ export const AddressForm = () => {
                         formControl={{
                             isInvalid: !!errors.number && touched.number,
                         }}
-                        isDisabled={isSearching}
+                        isDisabled={isSubmitting}
                         {...getFieldProps('number')}
                     />
                 </GridItem>
@@ -156,8 +135,8 @@ export const AddressForm = () => {
                         type="submit"
                         size="lg"
                         width="100%"
-                        isLoading={isSearching}
-                        isDisabled={isSearching}
+                        isLoading={isSubmitting}
+                        isDisabled={isSubmitting}
                     >
                         Salvar
                     </Button>
