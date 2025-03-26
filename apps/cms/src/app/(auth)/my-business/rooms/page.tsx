@@ -154,6 +154,7 @@ export default function Rooms() {
                     : undefined,
         },
         { query: searchQuery.length > 0 ? searchQuery : undefined },
+        { query: { enabled: undefined } },
     )
 
     const table = useReactTable({

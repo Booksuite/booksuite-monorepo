@@ -9,7 +9,7 @@ import { getCompanyReservationConfig } from '../../client/ReservationConfigServi
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
 export const getCompanyReservationConfigQueryKey = ({ companyId }: { companyId: GetCompanyReservationConfigPathParams['companyId'] }) =>
-  [{ url: '/company/:companyId/reservationConfig', params: { companyId: companyId } }] as const
+  ['getCompanyReservationConfig', { companyId: companyId }] as const
 
 export type GetCompanyReservationConfigQueryKey = ReturnType<typeof getCompanyReservationConfigQueryKey>
 

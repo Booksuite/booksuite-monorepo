@@ -16,12 +16,13 @@ export type UpsertCompanyAgePolicyMutationKey = ReturnType<typeof upsertCompanyA
 /**
  * {@link /company/:companyId/agePolicy}
  */
-export function useUpsertCompanyAgePolicy(
+export function useUpsertCompanyAgePolicy<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UpsertCompanyAgePolicyMutationResponse,
       ResponseErrorConfig<Error>,
-      { companyId: UpsertCompanyAgePolicyPathParams['companyId']; data: UpsertCompanyAgePolicyMutationRequest }
+      { companyId: UpsertCompanyAgePolicyPathParams['companyId']; data: UpsertCompanyAgePolicyMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<UpsertCompanyAgePolicyMutationRequest>> & { client?: typeof client }
   } = {},
@@ -32,7 +33,8 @@ export function useUpsertCompanyAgePolicy(
   return useMutation<
     UpsertCompanyAgePolicyMutationResponse,
     ResponseErrorConfig<Error>,
-    { companyId: UpsertCompanyAgePolicyPathParams['companyId']; data: UpsertCompanyAgePolicyMutationRequest }
+    { companyId: UpsertCompanyAgePolicyPathParams['companyId']; data: UpsertCompanyAgePolicyMutationRequest },
+    TContext
   >({
     mutationFn: async ({ companyId, data }) => {
       return upsertCompanyAgePolicy({ companyId }, data, config)

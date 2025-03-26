@@ -12,12 +12,13 @@ export type DeleteReservationMutationKey = ReturnType<typeof deleteReservationMu
 /**
  * {@link /company/:companyId/reservation/:id}
  */
-export function useDeleteReservation(
+export function useDeleteReservation<TContext>(
   options: {
     mutation?: UseMutationOptions<
       DeleteReservationMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: DeleteReservationPathParams['id']; companyId: DeleteReservationPathParams['companyId'] }
+      { id: DeleteReservationPathParams['id']; companyId: DeleteReservationPathParams['companyId'] },
+      TContext
     >
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useDeleteReservation(
   return useMutation<
     DeleteReservationMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: DeleteReservationPathParams['id']; companyId: DeleteReservationPathParams['companyId'] }
+    { id: DeleteReservationPathParams['id']; companyId: DeleteReservationPathParams['companyId'] },
+    TContext
   >({
     mutationFn: async ({ id, companyId }) => {
       return deleteReservation({ id, companyId }, config)

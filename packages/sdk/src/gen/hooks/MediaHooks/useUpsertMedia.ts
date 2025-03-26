@@ -12,12 +12,13 @@ export type UpsertMediaMutationKey = ReturnType<typeof upsertMediaMutationKey>
 /**
  * {@link /company/:companyId/media/upsert}
  */
-export function useUpsertMedia(
+export function useUpsertMedia<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UpsertMediaMutationResponse,
       ResponseErrorConfig<Error>,
-      { companyId: UpsertMediaPathParams['companyId']; data: UpsertMediaMutationRequest }
+      { companyId: UpsertMediaPathParams['companyId']; data: UpsertMediaMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<UpsertMediaMutationRequest>> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useUpsertMedia(
   return useMutation<
     UpsertMediaMutationResponse,
     ResponseErrorConfig<Error>,
-    { companyId: UpsertMediaPathParams['companyId']; data: UpsertMediaMutationRequest }
+    { companyId: UpsertMediaPathParams['companyId']; data: UpsertMediaMutationRequest },
+    TContext
   >({
     mutationFn: async ({ companyId, data }) => {
       return upsertMedia({ companyId }, data, config)

@@ -5,7 +5,9 @@ import {
     useUpdateHousingUnitType,
 } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
 import { RoomsForm } from '@/app/(auth)/my-business/rooms/components/RoomsForm'
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -23,9 +25,11 @@ interface UpdateRoomProps {
 }
 
 export default function UpdateRoom({ params }: UpdateRoomProps) {
+    const { push } = useRouter()
     const companyId = useCurrentCompanyId()
+    const queryClient = useQueryClient()
 
-    const { data: room } = useGetHousingUnitTypeById({
+    const { data: room, queryKey } = useGetHousingUnitTypeById({
         companyId,
         id: params.id,
     })
@@ -44,6 +48,14 @@ export default function UpdateRoom({ params }: UpdateRoomProps) {
                 companyId,
                 data: apiData,
             })
+
+            await queryClient.invalidateQueries({ queryKey: queryKey })
+            await queryClient.invalidateQueries({
+                queryKey: ['searchHousingUnitTypes'],
+                refetchType: 'all',
+            })
+
+            push('/my-business/rooms')
 
             toast({
                 title: 'Acomodação editada com sucesso',

@@ -12,16 +12,16 @@ export type CreateFacilityMutationKey = ReturnType<typeof createFacilityMutation
 /**
  * {@link /facility/create}
  */
-export function useCreateFacility(
+export function useCreateFacility<TContext>(
   options: {
-    mutation?: UseMutationOptions<CreateFacilityMutationResponse, ResponseErrorConfig<Error>, { data: CreateFacilityMutationRequest }>
+    mutation?: UseMutationOptions<CreateFacilityMutationResponse, ResponseErrorConfig<Error>, { data: CreateFacilityMutationRequest }, TContext>
     client?: Partial<RequestConfig<CreateFacilityMutationRequest>> & { client?: typeof client }
   } = {},
 ) {
   const { mutation: mutationOptions, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? createFacilityMutationKey()
 
-  return useMutation<CreateFacilityMutationResponse, ResponseErrorConfig<Error>, { data: CreateFacilityMutationRequest }>({
+  return useMutation<CreateFacilityMutationResponse, ResponseErrorConfig<Error>, { data: CreateFacilityMutationRequest }, TContext>({
     mutationFn: async ({ data }) => {
       return createFacility(data, config)
     },

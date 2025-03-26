@@ -16,12 +16,13 @@ export type UpdateHousingUnitTypeMutationKey = ReturnType<typeof updateHousingUn
 /**
  * {@link /company/:companyId/housingUnitType/:id}
  */
-export function useUpdateHousingUnitType(
+export function useUpdateHousingUnitType<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UpdateHousingUnitTypeMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateHousingUnitTypePathParams['id']; companyId: UpdateHousingUnitTypePathParams['companyId']; data?: UpdateHousingUnitTypeMutationRequest }
+      { id: UpdateHousingUnitTypePathParams['id']; companyId: UpdateHousingUnitTypePathParams['companyId']; data?: UpdateHousingUnitTypeMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<UpdateHousingUnitTypeMutationRequest>> & { client?: typeof client }
   } = {},
@@ -32,7 +33,8 @@ export function useUpdateHousingUnitType(
   return useMutation<
     UpdateHousingUnitTypeMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: UpdateHousingUnitTypePathParams['id']; companyId: UpdateHousingUnitTypePathParams['companyId']; data?: UpdateHousingUnitTypeMutationRequest }
+    { id: UpdateHousingUnitTypePathParams['id']; companyId: UpdateHousingUnitTypePathParams['companyId']; data?: UpdateHousingUnitTypeMutationRequest },
+    TContext
   >({
     mutationFn: async ({ id, companyId, data }) => {
       return updateHousingUnitType({ id, companyId }, data, config)

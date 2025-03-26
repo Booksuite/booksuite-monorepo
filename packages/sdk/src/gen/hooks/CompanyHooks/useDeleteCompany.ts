@@ -12,16 +12,16 @@ export type DeleteCompanyMutationKey = ReturnType<typeof deleteCompanyMutationKe
 /**
  * {@link /company/:id}
  */
-export function useDeleteCompany(
+export function useDeleteCompany<TContext>(
   options: {
-    mutation?: UseMutationOptions<DeleteCompanyMutationResponse, ResponseErrorConfig<Error>, { id: DeleteCompanyPathParams['id'] }>
+    mutation?: UseMutationOptions<DeleteCompanyMutationResponse, ResponseErrorConfig<Error>, { id: DeleteCompanyPathParams['id'] }, TContext>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
   const { mutation: mutationOptions, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? deleteCompanyMutationKey()
 
-  return useMutation<DeleteCompanyMutationResponse, ResponseErrorConfig<Error>, { id: DeleteCompanyPathParams['id'] }>({
+  return useMutation<DeleteCompanyMutationResponse, ResponseErrorConfig<Error>, { id: DeleteCompanyPathParams['id'] }, TContext>({
     mutationFn: async ({ id }) => {
       return deleteCompany({ id }, config)
     },

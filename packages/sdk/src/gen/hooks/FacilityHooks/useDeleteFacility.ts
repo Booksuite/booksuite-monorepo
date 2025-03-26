@@ -12,16 +12,16 @@ export type DeleteFacilityMutationKey = ReturnType<typeof deleteFacilityMutation
 /**
  * {@link /facility/:id}
  */
-export function useDeleteFacility(
+export function useDeleteFacility<TContext>(
   options: {
-    mutation?: UseMutationOptions<DeleteFacilityMutationResponse, ResponseErrorConfig<Error>, { id: DeleteFacilityPathParams['id'] }>
+    mutation?: UseMutationOptions<DeleteFacilityMutationResponse, ResponseErrorConfig<Error>, { id: DeleteFacilityPathParams['id'] }, TContext>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
   const { mutation: mutationOptions, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? deleteFacilityMutationKey()
 
-  return useMutation<DeleteFacilityMutationResponse, ResponseErrorConfig<Error>, { id: DeleteFacilityPathParams['id'] }>({
+  return useMutation<DeleteFacilityMutationResponse, ResponseErrorConfig<Error>, { id: DeleteFacilityPathParams['id'] }, TContext>({
     mutationFn: async ({ id }) => {
       return deleteFacility({ id }, config)
     },

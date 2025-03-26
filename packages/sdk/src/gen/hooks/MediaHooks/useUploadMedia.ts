@@ -12,12 +12,13 @@ export type UploadMediaMutationKey = ReturnType<typeof uploadMediaMutationKey>
 /**
  * {@link /company/:companyId/media/upload}
  */
-export function useUploadMedia(
+export function useUploadMedia<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UploadMediaMutationResponse,
       ResponseErrorConfig<Error>,
-      { companyId: UploadMediaPathParams['companyId']; data?: UploadMediaMutationRequest }
+      { companyId: UploadMediaPathParams['companyId']; data?: UploadMediaMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<UploadMediaMutationRequest>> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useUploadMedia(
   return useMutation<
     UploadMediaMutationResponse,
     ResponseErrorConfig<Error>,
-    { companyId: UploadMediaPathParams['companyId']; data?: UploadMediaMutationRequest }
+    { companyId: UploadMediaPathParams['companyId']; data?: UploadMediaMutationRequest },
+    TContext
   >({
     mutationFn: async ({ companyId, data }) => {
       return uploadMedia({ companyId }, data, config)

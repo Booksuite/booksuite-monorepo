@@ -10,6 +10,10 @@ export type HousingUnitTypeFacility = {
    */
   isFeatured: boolean | null
   /**
+   * @type number
+   */
+  order: number | null
+  /**
    * @type object
    */
   facility: Facility

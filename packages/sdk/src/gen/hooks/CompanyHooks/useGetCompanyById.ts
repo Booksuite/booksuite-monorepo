@@ -5,7 +5,7 @@ import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/r
 import { getCompanyById } from '../../client/CompanyService/getCompanyById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
-export const getCompanyByIdQueryKey = ({ id }: { id: GetCompanyByIdPathParams['id'] }) => [{ url: '/company/:id', params: { id: id } }] as const
+export const getCompanyByIdQueryKey = ({ id }: { id: GetCompanyByIdPathParams['id'] }) => ['getCompanyById', { id: id }] as const
 
 export type GetCompanyByIdQueryKey = ReturnType<typeof getCompanyByIdQueryKey>
 

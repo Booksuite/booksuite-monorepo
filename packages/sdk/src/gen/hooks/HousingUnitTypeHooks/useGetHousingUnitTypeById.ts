@@ -11,7 +11,7 @@ export const getHousingUnitTypeByIdQueryKey = ({
 }: {
   id: GetHousingUnitTypeByIdPathParams['id']
   companyId: GetHousingUnitTypeByIdPathParams['companyId']
-}) => [{ url: '/company/:companyId/housingUnitType/:id', params: { companyId: companyId, id: id } }] as const
+}) => ['getHousingUnitTypeById', { companyId: companyId, id: id }] as const
 
 export type GetHousingUnitTypeByIdQueryKey = ReturnType<typeof getHousingUnitTypeByIdQueryKey>
 

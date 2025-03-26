@@ -15,12 +15,13 @@ export type DeleteCompanyCancellationPolicyMutationKey = ReturnType<typeof delet
 /**
  * {@link /company/:companyId/cancellationPolicy}
  */
-export function useDeleteCompanyCancellationPolicy(
+export function useDeleteCompanyCancellationPolicy<TContext>(
   options: {
     mutation?: UseMutationOptions<
       DeleteCompanyCancellationPolicyMutationResponse,
       ResponseErrorConfig<Error>,
-      { companyId: DeleteCompanyCancellationPolicyPathParams['companyId'] }
+      { companyId: DeleteCompanyCancellationPolicyPathParams['companyId'] },
+      TContext
     >
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
@@ -31,7 +32,8 @@ export function useDeleteCompanyCancellationPolicy(
   return useMutation<
     DeleteCompanyCancellationPolicyMutationResponse,
     ResponseErrorConfig<Error>,
-    { companyId: DeleteCompanyCancellationPolicyPathParams['companyId'] }
+    { companyId: DeleteCompanyCancellationPolicyPathParams['companyId'] },
+    TContext
   >({
     mutationFn: async ({ companyId }) => {
       return deleteCompanyCancellationPolicy({ companyId }, config)

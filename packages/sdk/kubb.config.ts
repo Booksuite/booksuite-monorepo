@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { defineConfig } from '@kubb/core'
+import { URLPath } from '@kubb/core/utils'
 import { pluginClient } from '@kubb/plugin-client'
 import { pluginOas } from '@kubb/plugin-oas'
 import { pluginReactQuery } from '@kubb/plugin-react-query'
 import { pluginTs } from '@kubb/plugin-ts'
-
 const GENERATE_FROM = 'https://api.dev.booksuite.io/api-yaml'
 
 export default defineConfig(async () => {
@@ -83,6 +84,29 @@ export default defineConfig(async () => {
                 client: {
                     importPath: '../../../axios-client',
                     dataReturnType: 'data',
+                },
+                queryKey: ({ operation, schemas, casing }) => {
+                    const path = new URLPath(operation.path, { casing })
+
+                    const operationId = operation.getOperationId()
+                    const pathParams = (
+                        path.toObject({
+                            type: 'path',
+                        }) as any
+                    ).params
+
+                    const keys = [
+                        `"${operationId}"`,
+                        JSON.stringify(pathParams)?.replace(/\"/g, ''),
+                        schemas.queryParams?.name
+                            ? '...(params ? [params] : [])'
+                            : void 0,
+                        schemas.request?.name
+                            ? '...(data ? [data] : [])'
+                            : void 0,
+                    ].filter(Boolean)
+
+                    return keys
                 },
                 query: {
                     methods: ['get'],

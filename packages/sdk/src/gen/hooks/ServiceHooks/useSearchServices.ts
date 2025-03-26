@@ -14,7 +14,7 @@ export const searchServicesQueryKey = (
   { companyId }: { companyId: SearchServicesPathParams['companyId'] },
   data: SearchServicesMutationRequest,
   params?: SearchServicesQueryParams,
-) => [{ url: '/company/:companyId/service/search', params: { companyId: companyId } }, ...(params ? [params] : []), ...(data ? [data] : [])] as const
+) => ['searchServices', { companyId: companyId }, ...(params ? [params] : []), ...(data ? [data] : [])] as const
 
 export type SearchServicesQueryKey = ReturnType<typeof searchServicesQueryKey>
 
