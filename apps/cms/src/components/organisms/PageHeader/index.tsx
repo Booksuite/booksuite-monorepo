@@ -1,15 +1,16 @@
-import { Box, HStack } from '@chakra-ui/react'
+import { Box, HStack, Spinner } from '@chakra-ui/react'
 import { Route } from 'next'
 
 import { PageHeaderBackLink } from './PageHeaderBackLink'
 import { PageHeaderRoot } from './PageHeaderRoot'
 import { PageHeaderTitle } from './PageHeaderTitle'
 
-interface PageHeaderProps {
+export interface PageHeaderProps {
     headerRight?: React.ReactNode
     backLButtonLabel?: string
     backButtonHref?: Route
     title: string
+    isLoading?: boolean
 }
 
 export const PageHeader = ({
@@ -17,6 +18,7 @@ export const PageHeader = ({
     backLButtonLabel,
     backButtonHref,
     headerRight,
+    isLoading,
 }: PageHeaderProps) => {
     return (
         <PageHeaderRoot>
@@ -28,7 +30,10 @@ export const PageHeader = ({
                 </Box>
             )}
             <HStack align="center" justify="space-between">
-                <PageHeaderTitle>{title}</PageHeaderTitle>
+                <HStack>
+                    <PageHeaderTitle>{title}</PageHeaderTitle>
+                    {isLoading && <Spinner size="sm" />}
+                </HStack>
                 {!!headerRight && <Box>{headerRight}</Box>}
             </HStack>
         </PageHeaderRoot>
