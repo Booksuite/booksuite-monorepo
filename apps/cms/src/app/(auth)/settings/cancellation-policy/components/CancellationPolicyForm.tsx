@@ -10,8 +10,9 @@ import {
     VStack,
 } from '@chakra-ui/react'
 import { FieldArray, Form, useFormikContext } from 'formik'
-import { CircleMinus, CirclePlus, ScanText } from 'lucide-react'
+import { CirclePlus, ScanText, Trash } from 'lucide-react'
 import Link from 'next/link'
+import { useState } from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
@@ -28,13 +29,28 @@ export const CancellationPolicyForm = () => {
         setFieldValue,
     } = useFormikContext<CancellationPolicyFormData>()
 
+    const [isPenaltyEnabled, setIsPenaltyEnabled] = useState(
+        values.penaltyRanges.length > 0,
+    )
+
+    const handleSwitchChange = (checked: boolean) => {
+        setIsPenaltyEnabled(checked)
+
+        if (checked && values.penaltyRanges.length === 0) {
+            setFieldValue('penaltyRanges', [
+                {
+                    daysBeforeCheckIn: '',
+                    penaltyBy: 'RESERVATION_PERCENTAGE',
+                    value: '',
+                },
+            ])
+        }
+    }
+
     return (
         <Form>
             <Stack spacing={4}>
-                <HStack justifyContent={'space-between'}>
-                    <h2 style={{ fontWeight: '600' }}>
-                        Aplicar taxa de cancelamento
-                    </h2>
+                <HStack spacing={2} alignItems={'center'}>
                     <Switch
                         isChecked={
                             values.defaultPenaltyBy !== 'FIRST_NIGHT_AMOUNT'
@@ -48,10 +64,13 @@ export const CancellationPolicyForm = () => {
                             )
                         }
                     />
+                    <h2 style={{ fontWeight: '600', marginBottom: 0 }}>
+                        Aplicar taxa de cancelamento
+                    </h2>
                 </HStack>
                 {values.defaultPenaltyBy !== 'FIRST_NIGHT_AMOUNT' && (
-                    <VStack spacing={4} alignItems={'start'}>
-                        <h2 style={{ fontWeight: 400 }}>
+                    <VStack spacing={4} alignItems={'start'} w={'100%'}>
+                        <h2 style={{ fontWeight: 400, marginBottom: 0 }}>
                             Regras de cancelamento padrão
                         </h2>
                         <SelectBox
@@ -111,41 +130,36 @@ export const CancellationPolicyForm = () => {
                     </VStack>
                 )}
 
-                <HStack justifyContent={'space-between'} mt={4}>
-                    <h2 style={{ fontWeight: '600' }}>
+                <HStack spacing={2} alignItems={'center'} mt={4}>
+                    <Switch
+                        isChecked={isPenaltyEnabled}
+                        onChange={(e) => handleSwitchChange(e.target.checked)}
+                    />
+                    <h2 style={{ fontWeight: '600', marginBottom: 0 }}>
                         Aplicar taxas de penalização personalizadas
                     </h2>
-                    <Switch
-                    /*isChecked={values.enablePenaltyRanges}
-                        onChange={(e) =>
-                            setFieldValue(
-                                'enablePenaltyRanges',
-                                e.target.checked,
-                            )
-                        }*/
-                    />
                 </HStack>
 
-                {/* add {values.enablePenaltyRanges && (*/}
-                {values.defaultPenaltyBy && (
+                {isPenaltyEnabled && (
                     <FieldArray name="penaltyRanges">
                         {({ push, remove }) => (
-                            <VStack alignItems={'start'}>
+                            <VStack alignItems={'start'} w={'100%'}>
                                 {values.penaltyRanges.map((penalty, index) => (
-                                    <Stack
-                                        key={index}
-                                        p={4}
-                                        w="100%"
-                                        spacing={4}
-                                    >
+                                    <Stack key={index} w="100%" spacing={4}>
                                         <HStack
-                                            justifyContent={'space-between'}
+                                            spacing={2}
+                                            alignItems={'center'}
                                         >
-                                            <h3>
+                                            <h2
+                                                style={{
+                                                    fontWeight: '600',
+                                                    marginBottom: 0,
+                                                }}
+                                            >
                                                 Taxa de penalização {index + 1}
-                                            </h3>
+                                            </h2>
                                             <IconButton
-                                                icon={<CircleMinus />}
+                                                icon={<Trash />}
                                                 colorScheme="red"
                                                 variant="ghost"
                                                 onClick={() => remove(index)}
@@ -177,8 +191,9 @@ export const CancellationPolicyForm = () => {
                                             mt={3}
                                             variant="outline"
                                             width={'100%'}
-                                            leftIcon={<CirclePlus size={16} />}
+                                            leftIcon={<CirclePlus />}
                                             mb={4}
+                                            size={'lg'}
                                             onClick={() =>
                                                 push({
                                                     daysBeforeCheckIn: '',
@@ -229,8 +244,8 @@ export const CancellationPolicyForm = () => {
                     </FieldArray>
                 )}
 
-                <VStack alignItems={'start'}>
-                    <h2 style={{ fontWeight: '600' }}>
+                <VStack alignItems={'start'} mt={4} w={'100%'} spacing={4}>
+                    <h2 style={{ fontWeight: '600', marginBottom: 0 }}>
                         Descrição da política de cancelamento
                     </h2>
                     <Box
@@ -340,7 +355,9 @@ export const CancellationPolicyForm = () => {
                     </Flex>
                 </VStack>
 
-                <Button type="submit">Salvar</Button>
+                <Button type="submit" size={'lg'}>
+                    Salvar
+                </Button>
             </Stack>
         </Form>
     )

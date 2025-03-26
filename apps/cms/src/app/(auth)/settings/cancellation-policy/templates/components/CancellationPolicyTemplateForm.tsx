@@ -60,7 +60,7 @@ export const CancellationPolicyTemplatesForm = () => {
         >
             {
                 <Form>
-                    <Box p={5}>
+                    <Box>
                         {models.map((model) => (
                             <Box
                                 key={model}
@@ -101,8 +101,9 @@ export const CancellationPolicyTemplatesForm = () => {
                                             mt={3}
                                             variant="outline"
                                             width={'100%'}
-                                            leftIcon={<CirclePlus size={16} />}
+                                            leftIcon={<CirclePlus />}
                                             mb={4}
+                                            size="lg"
                                         >
                                             Aplicar e Personalizar
                                         </Button>
