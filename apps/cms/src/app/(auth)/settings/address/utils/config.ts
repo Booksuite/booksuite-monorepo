@@ -1,18 +1,17 @@
-import { CompanyFull, CompanyUpdateInput } from '@booksuite/sdk'
+import { CompanyFull } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type AddressFormData = Pick<
-    CompanyUpdateInput,
-    | 'stateRegistration'
-    | 'municipalRegistration'
-    | 'address'
-    | 'number'
-    | 'country'
-    | 'state'
-    | 'city'
-    | 'zipcode'
-    | 'mapCoordinates'
->
+export type AddressFormData = {
+    stateRegistration: string
+    municipalRegistration: string
+    address: string
+    number: string
+    country: string
+    state: string
+    city: string
+    zipcode: string
+    mapCoordinates: { latitude: number; longitude: number }
+}
 
 export const createAddressInitialValues = (
     data?: Partial<CompanyFull> | null,
@@ -25,7 +24,7 @@ export const createAddressInitialValues = (
     state: data?.state || '',
     city: data?.city || '',
     zipcode: data?.zipcode || '',
-    mapCoordinates: data?.mapCoordinates || {latitude: 0, longitude: 0},
+    mapCoordinates: data?.mapCoordinates || { latitude: 0, longitude: 0 },
 })
 
 export const addressFormSchema = yup.object({
@@ -37,5 +36,5 @@ export const addressFormSchema = yup.object({
     state: yup.string().required('O estado é obrigatório'),
     city: yup.string().required('A cidade é obrigatória'),
     zipcode: yup.string().required('A cidade é obrigatória'),
-    mapCoordinates: yup.object().required('Cordenadas são obrigatórias')
+    mapCoordinates: yup.object().required('Cordenadas são obrigatórias'),
 })
