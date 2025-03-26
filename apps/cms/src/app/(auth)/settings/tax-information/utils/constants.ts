@@ -1,1 +1,1 @@
-export const DOC_TYPE = [{ value: 'cpf' }, { value: 'cnpj' }]
+export const DOC_TYPE = [{ value: 'CPF' }, { value: 'CNPJ' }]

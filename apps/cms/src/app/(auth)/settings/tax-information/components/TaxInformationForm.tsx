@@ -99,7 +99,7 @@ export const TaxInformationForm = () => {
                         label={
                             DOC_TYPE.find(
                                 (option) => option.value === values.docType,
-                            )?.value || 'cpf'
+                            )?.value || 'CPF'
                         }
                         error={errors.identification}
                         formControl={{

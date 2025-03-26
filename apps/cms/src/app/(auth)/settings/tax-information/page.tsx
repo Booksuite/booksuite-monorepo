@@ -1,7 +1,9 @@
 'use client'
 
-import { useUpdateCompany } from '@booksuite/sdk'
+import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
+import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { PageHeader } from '@/components/organisms/PageHeader'
@@ -15,10 +17,33 @@ import {
 
 export default function TaxInformation() {
     const companyId = useCurrentCompanyId()
+    const toast = useToast()
 
-    const { data: TaxInformationData } = useUpdateCompany()
+    const router = useRouter()
 
-    async function handleSubmit(formData: TaxInformationData) {}
+    const { data: TaxInformationData } = useGetCompanyById({ id: companyId })
+
+    const { mutateAsync: updateCompanyTaxInformation } = useUpdateCompany()
+
+    async function handleSubmit(formData: TaxInformationData) {
+        try {
+            await updateCompanyTaxInformation({
+                id: companyId,
+                data: formData,
+            })
+            toast({
+                title: 'Informações Fiscais modificadas com sucesso',
+                status: 'success',
+            })
+
+            router.push('/settings')
+        } catch (erro) {
+            toast({
+                title: 'Erro ao modificar informações fiscais',
+                status: 'error',
+            })
+        }
+    }
 
     return (
         <div className="tax_information">
