@@ -12,12 +12,13 @@ export type CreateServiceMutationKey = ReturnType<typeof createServiceMutationKe
 /**
  * {@link /company/:companyId/service/create}
  */
-export function useCreateService(
+export function useCreateService<TContext>(
   options: {
     mutation?: UseMutationOptions<
       CreateServiceMutationResponse,
       ResponseErrorConfig<Error>,
-      { companyId: CreateServicePathParams['companyId']; data: CreateServiceMutationRequest }
+      { companyId: CreateServicePathParams['companyId']; data: CreateServiceMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<CreateServiceMutationRequest>> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useCreateService(
   return useMutation<
     CreateServiceMutationResponse,
     ResponseErrorConfig<Error>,
-    { companyId: CreateServicePathParams['companyId']; data: CreateServiceMutationRequest }
+    { companyId: CreateServicePathParams['companyId']; data: CreateServiceMutationRequest },
+    TContext
   >({
     mutationFn: async ({ companyId, data }) => {
       return createService({ companyId }, data, config)

@@ -12,12 +12,13 @@ export type DeleteBannerMutationKey = ReturnType<typeof deleteBannerMutationKey>
 /**
  * {@link /company/:companyId/banner/:id}
  */
-export function useDeleteBanner(
+export function useDeleteBanner<TContext>(
   options: {
     mutation?: UseMutationOptions<
       DeleteBannerMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: DeleteBannerPathParams['id']; companyId: DeleteBannerPathParams['companyId'] }
+      { id: DeleteBannerPathParams['id']; companyId: DeleteBannerPathParams['companyId'] },
+      TContext
     >
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
@@ -28,7 +29,8 @@ export function useDeleteBanner(
   return useMutation<
     DeleteBannerMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: DeleteBannerPathParams['id']; companyId: DeleteBannerPathParams['companyId'] }
+    { id: DeleteBannerPathParams['id']; companyId: DeleteBannerPathParams['companyId'] },
+    TContext
   >({
     mutationFn: async ({ id, companyId }) => {
       return deleteBanner({ id, companyId }, config)

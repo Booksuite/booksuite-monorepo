@@ -6,7 +6,7 @@ import { getCompanyAgePolicy } from '../../client/AgePolicyService/getCompanyAge
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
 export const getCompanyAgePolicyQueryKey = ({ companyId }: { companyId: GetCompanyAgePolicyPathParams['companyId'] }) =>
-  [{ url: '/company/:companyId/agePolicy', params: { companyId: companyId } }] as const
+  ['getCompanyAgePolicy', { companyId: companyId }] as const
 
 export type GetCompanyAgePolicyQueryKey = ReturnType<typeof getCompanyAgePolicyQueryKey>
 

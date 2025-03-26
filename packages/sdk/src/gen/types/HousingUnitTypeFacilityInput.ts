@@ -7,4 +7,8 @@ export type HousingUnitTypeFacilityInput = {
    * @type string
    */
   facilityId: string
+  /**
+   * @type number | undefined
+   */
+  order?: number
 }

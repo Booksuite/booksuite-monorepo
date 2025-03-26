@@ -5,7 +5,7 @@ import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/r
 import { getFacilityById } from '../../client/FacilityService/getFacilityById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
-export const getFacilityByIdQueryKey = ({ id }: { id: GetFacilityByIdPathParams['id'] }) => [{ url: '/facility/:id', params: { id: id } }] as const
+export const getFacilityByIdQueryKey = ({ id }: { id: GetFacilityByIdPathParams['id'] }) => ['getFacilityById', { id: id }] as const
 
 export type GetFacilityByIdQueryKey = ReturnType<typeof getFacilityByIdQueryKey>
 

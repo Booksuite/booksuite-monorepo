@@ -6,7 +6,7 @@ import { getBannerById } from '../../client/BannerService/getBannerById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
 export const getBannerByIdQueryKey = ({ id, companyId }: { id: GetBannerByIdPathParams['id']; companyId: GetBannerByIdPathParams['companyId'] }) =>
-  [{ url: '/company/:companyId/banner/:id', params: { companyId: companyId, id: id } }] as const
+  ['getBannerById', { companyId: companyId, id: id }] as const
 
 export type GetBannerByIdQueryKey = ReturnType<typeof getBannerByIdQueryKey>
 

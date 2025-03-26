@@ -18,6 +18,8 @@ export type { DeleteFacilityMutationKey } from './FacilityHooks/useDeleteFacilit
 export type { GetFacilityByIdQueryKey } from './FacilityHooks/useGetFacilityById.ts'
 export type { SearchFacilitiesQueryKey } from './FacilityHooks/useSearchFacilities.ts'
 export type { UpdateFacilityMutationKey } from './FacilityHooks/useUpdateFacility.ts'
+export type { GetCompanyHostingRulesQueryKey } from './HostingRulesHooks/useGetCompanyHostingRules.ts'
+export type { UpsertCompanyHostingRulesMutationKey } from './HostingRulesHooks/useUpsertCompanyHostingRules.ts'
 export type { CreateHousingUnitTypeMutationKey } from './HousingUnitTypeHooks/useCreateHousingUnitType.ts'
 export type { DeleteHousingUnitTypeMutationKey } from './HousingUnitTypeHooks/useDeleteHousingUnitType.ts'
 export type { GetHousingUnitTypeByIdQueryKey } from './HousingUnitTypeHooks/useGetHousingUnitTypeById.ts'
@@ -64,6 +66,8 @@ export { deleteFacilityMutationKey, useDeleteFacility } from './FacilityHooks/us
 export { getFacilityByIdQueryKey, getFacilityByIdQueryOptions, useGetFacilityById } from './FacilityHooks/useGetFacilityById.ts'
 export { searchFacilitiesQueryKey, searchFacilitiesQueryOptions, useSearchFacilities } from './FacilityHooks/useSearchFacilities.ts'
 export { updateFacilityMutationKey, useUpdateFacility } from './FacilityHooks/useUpdateFacility.ts'
+export { getCompanyHostingRulesQueryKey, getCompanyHostingRulesQueryOptions, useGetCompanyHostingRules } from './HostingRulesHooks/useGetCompanyHostingRules.ts'
+export { upsertCompanyHostingRulesMutationKey, useUpsertCompanyHostingRules } from './HostingRulesHooks/useUpsertCompanyHostingRules.ts'
 export { createHousingUnitTypeMutationKey, useCreateHousingUnitType } from './HousingUnitTypeHooks/useCreateHousingUnitType.ts'
 export { deleteHousingUnitTypeMutationKey, useDeleteHousingUnitType } from './HousingUnitTypeHooks/useDeleteHousingUnitType.ts'
 export {

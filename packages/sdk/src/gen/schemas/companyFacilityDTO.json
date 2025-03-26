@@ -1,1 +1,1 @@
-{"type":"object","properties":{"facilityId":{"type":"string","example":"123e4567-e89b-12d3-a456-426614174000"}},"required":["facilityId"],"x-readme-ref-name":"CompanyFacilityDTO"}
+{"type":"object","properties":{"facilityId":{"type":"string","example":"123e4567-e89b-12d3-a456-426614174000"},"order":{"type":"number","example":1}},"required":["facilityId"],"x-readme-ref-name":"CompanyFacilityDTO"}

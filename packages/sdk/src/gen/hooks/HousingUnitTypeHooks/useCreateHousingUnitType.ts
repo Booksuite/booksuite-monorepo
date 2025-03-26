@@ -16,12 +16,13 @@ export type CreateHousingUnitTypeMutationKey = ReturnType<typeof createHousingUn
 /**
  * {@link /company/:companyId/housingUnitType/create}
  */
-export function useCreateHousingUnitType(
+export function useCreateHousingUnitType<TContext>(
   options: {
     mutation?: UseMutationOptions<
       CreateHousingUnitTypeMutationResponse,
       ResponseErrorConfig<Error>,
-      { companyId: CreateHousingUnitTypePathParams['companyId']; data: CreateHousingUnitTypeMutationRequest }
+      { companyId: CreateHousingUnitTypePathParams['companyId']; data: CreateHousingUnitTypeMutationRequest },
+      TContext
     >
     client?: Partial<RequestConfig<CreateHousingUnitTypeMutationRequest>> & { client?: typeof client }
   } = {},
@@ -32,7 +33,8 @@ export function useCreateHousingUnitType(
   return useMutation<
     CreateHousingUnitTypeMutationResponse,
     ResponseErrorConfig<Error>,
-    { companyId: CreateHousingUnitTypePathParams['companyId']; data: CreateHousingUnitTypeMutationRequest }
+    { companyId: CreateHousingUnitTypePathParams['companyId']; data: CreateHousingUnitTypeMutationRequest },
+    TContext
   >({
     mutationFn: async ({ companyId, data }) => {
       return createHousingUnitType({ companyId }, data, config)
