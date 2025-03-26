@@ -1,8 +1,8 @@
-import { CompanyFull, CompanyUpdateInput } from '@booksuite/sdk'
+import { CompanyFull } from '@booksuite/sdk'
 import * as yup from 'yup'
 
 export type TaxInformationData = Pick<
-    CompanyUpdateInput,
+    CompanyFull,
     | 'responsible'
     | 'responsibleEmail'
     | 'responsiblePhone'
@@ -13,8 +13,8 @@ export type TaxInformationData = Pick<
     | 'state'
     | 'city'
     | 'country'
+    | 'zipcode'
 >
-
 
 export const createTaxInformationInitialValues = (
     data?: Partial<CompanyFull> | null,
@@ -29,13 +29,18 @@ export const createTaxInformationInitialValues = (
     state: data?.state || '',
     city: data?.city || '',
     country: data?.country || '',
-});
-
+    zipcode: data?.zipcode || '',
+})
 
 export const taxInformationSchema = yup.object({
     responsible: yup.string().required('Responsável é obrigatório'),
-    responsibleEmail: yup.string().email('E-mail inválido').required('E-mail do responsável é obrigatório'),
-    responsiblePhone: yup.string().required('Telefone do responsável é obrigatório'),
+    responsibleEmail: yup
+        .string()
+        .email('E-mail inválido')
+        .required('E-mail do responsável é obrigatório'),
+    responsiblePhone: yup
+        .string()
+        .required('Telefone do responsável é obrigatório'),
     municipalRegistration: yup.string().nullable(),
     stateRegistration: yup.string().nullable(),
     docType: yup.string().required('Tipo de documento é obrigatório'),
@@ -43,5 +48,5 @@ export const taxInformationSchema = yup.object({
     state: yup.string().required('Estado é obrigatório'),
     city: yup.string().required('Cidade é obrigatória'),
     country: yup.string().required('País é obrigatório'),
-});
-
+    zipcode: yup.string().required('CEP é obrigátorio'),
+})
