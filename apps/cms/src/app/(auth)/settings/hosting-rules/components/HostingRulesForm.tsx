@@ -1,6 +1,8 @@
 import {
     Box,
     Button,
+    Checkbox,
+    CheckboxGroup,
     Flex,
     HStack,
     IconButton,
@@ -9,21 +11,18 @@ import {
 } from '@chakra-ui/react'
 import { Form, useFormikContext } from 'formik'
 import { Info, PlusCircle, Trash } from 'lucide-react'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import { DateRangeBox } from '@/components/atoms/DateRangeBox'
-import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { HostingRulesData } from '../utils/config'
+import { AVAILABLE_WEEK_DAYS, HOSTING_SPECIFIC_DAYS } from '../utils/contants'
 
 export const HostingRulesForm = () => {
     const { getFieldProps, values, setFieldValue } =
         useFormikContext<HostingRulesData>()
-
-    const availableWeekDays: number[] = []
-    let availableWeekendDays: number[] = []
 
     const checkInOptions = [
         { label: '14:00', value: 14 },
@@ -74,7 +73,9 @@ export const HostingRulesForm = () => {
                         value={checkInOptions.find(
                             (o) => o.value === getFieldProps('checkIn').value,
                         )}
-                        onChange={(e) => setFieldValue('checkIn', e.value)}
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                            setFieldValue('checkIn', e.target.value)
+                        }
                     />
                     <SelectBox
                         label="Horário do Check-out"
@@ -83,7 +84,9 @@ export const HostingRulesForm = () => {
                         value={checkOutOptions.find(
                             (o) => o.value === getFieldProps('checkIn').value,
                         )}
-                        onChange={(e) => setFieldValue('checkOut', e.value)}
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                            setFieldValue('checkOut', e.target.value)
+                        }
                     />
                     <InputNumberBox
                         label="Mínimo de diárias"
@@ -98,50 +101,23 @@ export const HostingRulesForm = () => {
                     <h3 style={{ fontWeight: '600', marginBottom: '0' }}>
                         Noites do fim de semana
                     </h3>
-                    <Flex justifyContent={'space-between'}>
-                        <InputCheckboxBox
-                            name="sunday"
-                            value="0"
-                            onChange={(e) => {
-                                if (e.target.checked) {
-                                    availableWeekendDays.push(0)
-                                    setFieldValue(
-                                        'availableWeekend',
-                                        availableWeekendDays,
-                                    )
-                                } else {
-                                    availableWeekendDays =
-                                        availableWeekendDays.filter(
-                                            (day) => day !== 0,
-                                        )
-                                    setFieldValue(
-                                        'availableWeekend',
-                                        availableWeekendDays,
-                                    )
-                                }
-                            }}
-                        >
-                            Domingo
-                        </InputCheckboxBox>
-                        <InputCheckboxBox name="monday" value="1">
-                            Segunda
-                        </InputCheckboxBox>
-                        <InputCheckboxBox name="tuesday" value="2">
-                            Terça
-                        </InputCheckboxBox>
-                        <InputCheckboxBox name="wednesday" value="3">
-                            Quarta
-                        </InputCheckboxBox>
-                        <InputCheckboxBox name="thursday" value="4">
-                            Quinta
-                        </InputCheckboxBox>
-                        <InputCheckboxBox name="friday" value="5">
-                            Sexta
-                        </InputCheckboxBox>
-                        <InputCheckboxBox name="saturday" value="6">
-                            Sábado
-                        </InputCheckboxBox>
-                    </Flex>
+                    <CheckboxGroup
+                        value={values.availableWeekend}
+                        onChange={(newValue) => {
+                            setFieldValue(
+                                'availableWeekend',
+                                newValue.map(Number),
+                            )
+                        }}
+                    >
+                        <Stack spacing={2} justifyContent={'space-between'}>
+                            {AVAILABLE_WEEK_DAYS.map((night) => (
+                                <Checkbox key={night.name} value={night.value}>
+                                    {night.name}`
+                                </Checkbox>
+                            ))}
+                        </Stack>
+                    </CheckboxGroup>
                     <Box
                         bg={'gray.100'}
                         p={3}
@@ -216,42 +192,26 @@ export const HostingRulesForm = () => {
                         </h3>
                     </Flex>
                     {values.hostingOnSpecificDays && (
-                        <Flex
-                            justifyContent={'space-between'}
-                            wrap="wrap"
-                            gap={2}
+                        <CheckboxGroup
+                            value={values.hostingOnSpecificDays}
+                            onChange={(newValue) => {
+                                setFieldValue(
+                                    'hostingOnSpecificDays',
+                                    newValue.map(Number),
+                                )
+                            }}
                         >
-                            <InputCheckboxBox name="sunday2" value="sunday2">
-                                Domingo
-                            </InputCheckboxBox>
-                            <InputCheckboxBox name="monday2" value="monday2">
-                                Segunda
-                            </InputCheckboxBox>
-                            <InputCheckboxBox name="tuesday2" value="tuesday2">
-                                Terça
-                            </InputCheckboxBox>
-                            <InputCheckboxBox
-                                name="wednesday2"
-                                value="wednesday2"
-                            >
-                                Quarta
-                            </InputCheckboxBox>
-                            <InputCheckboxBox
-                                name="thursday2"
-                                value="thursday2"
-                            >
-                                Quinta
-                            </InputCheckboxBox>
-                            <InputCheckboxBox name="friday2" value="friday2">
-                                Sexta
-                            </InputCheckboxBox>
-                            <InputCheckboxBox
-                                name="saturday2"
-                                value="saturday2"
-                            >
-                                Sábado
-                            </InputCheckboxBox>
-                        </Flex>
+                            <Stack spacing={2} justifyContent={'space-between'}>
+                                {HOSTING_SPECIFIC_DAYS.map((night) => (
+                                    <Checkbox
+                                        key={night.name}
+                                        value={night.value}
+                                    >
+                                        {night.name}`
+                                    </Checkbox>
+                                ))}
+                            </Stack>
+                        </CheckboxGroup>
                     )}
                 </Stack>
                 <Stack mt={8}>
