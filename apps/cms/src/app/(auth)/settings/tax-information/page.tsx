@@ -6,6 +6,8 @@ import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import { TaxInformationForm } from './components/TaxInformationForm'
@@ -18,10 +20,13 @@ import {
 export default function TaxInformation() {
     const companyId = useCurrentCompanyId()
     const toast = useToast()
+    const { back } = useRouter()
 
     const router = useRouter()
 
-    const { data: TaxInformationData } = useGetCompanyById({ id: companyId })
+    const { data: TaxInformationData, isLoading } = useGetCompanyById({
+        id: companyId,
+    })
 
     const { mutateAsync: updateCompanyTaxInformation } = useUpdateCompany()
 
@@ -37,9 +42,10 @@ export default function TaxInformation() {
             })
 
             router.push('/settings')
-        } catch (erro) {
+        } catch (error) {
             toast({
                 title: 'Erro ao modificar informações fiscais',
+                description: getErrorMessage(error),
                 status: 'error',
             })
         }
@@ -47,23 +53,23 @@ export default function TaxInformation() {
 
     return (
         <div className="tax_information">
-            <PageHeader.Root>
-                <PageHeader.BackLink href="/settings">
-                    Configurações
-                </PageHeader.BackLink>
+            <PageHeader
+                title="Informações Fiscais"
+                backLButtonLabel="Configurações"
+                isLoading={isLoading}
+            />
 
-                <PageHeader.Title>Informações Fiscais</PageHeader.Title>
-
-                <Formik<TaxInformationData>
-                    initialValues={createTaxInformationInitialValues(
-                        TaxInformationData,
-                    )}
-                    validationSchema={taxInformationSchema}
-                    onSubmit={handleSubmit}
-                >
+            <Formik<TaxInformationData>
+                initialValues={createTaxInformationInitialValues(
+                    TaxInformationData,
+                )}
+                validationSchema={taxInformationSchema}
+                onSubmit={handleSubmit}
+            >
+                <FormikController onCancel={() => back()}>
                     <TaxInformationForm />
-                </Formik>
-            </PageHeader.Root>
+                </FormikController>
+            </Formik>
         </div>
     )
 }

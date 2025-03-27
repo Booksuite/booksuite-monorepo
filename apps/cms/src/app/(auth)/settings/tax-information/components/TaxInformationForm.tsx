@@ -1,6 +1,5 @@
 import {
     Box,
-    Button,
     Flex,
     Grid,
     GridItem,
@@ -222,11 +221,6 @@ export const TaxInformationForm = () => {
                             />
                         </GridItem>
                     </Grid>
-                </Stack>
-                <Stack mt={8}>
-                    <Button type="submit" size="lg">
-                        Salvar
-                    </Button>
                 </Stack>
             </div>
         </Form>
