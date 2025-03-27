@@ -273,7 +273,6 @@ export const CancellationPolicyForm = () => {
                                             size={'lg'}
                                             onClick={() =>
                                                 push({
-                                                    id: '',
                                                     daysBeforeCheckIn: '',
                                                     penaltyBy:
                                                         'RESERVATION_PERCENTAGE',

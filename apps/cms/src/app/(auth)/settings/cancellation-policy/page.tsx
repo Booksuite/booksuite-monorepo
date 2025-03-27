@@ -5,6 +5,7 @@ import {
     useUpsertCompanyCancellationPolicy,
 } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 
@@ -24,8 +25,9 @@ export default function CancellationPolicy() {
     const companyId = useCurrentCompanyId()
     const toast = useToast()
     const { back } = useRouter()
+    const queryClient = useQueryClient()
 
-    const { data: cancellatonPolicyData, isLoading } =
+    const { data: cancellatonPolicyData, isLoading, queryKey } =
         useGetCompanyCancellationPolicy({ companyId: companyId })
 
     const { mutateAsync: UpdateCancellationPolicy } =
@@ -41,6 +43,12 @@ export default function CancellationPolicy() {
             toast({
                 title: 'Políticas de Cancelamento modificadas com sucesso',
                 status: 'success',
+            })
+
+            await queryClient.invalidateQueries({ queryKey: queryKey })
+            await queryClient.invalidateQueries({
+                queryKey: ['searchHousingUnitTypes'],
+                refetchType: 'all',
             })
 
             back()
