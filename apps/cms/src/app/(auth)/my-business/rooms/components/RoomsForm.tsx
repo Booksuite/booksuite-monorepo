@@ -25,7 +25,7 @@ import {
     rectSortingStrategy,
     SortableContext,
 } from '@dnd-kit/sortable'
-import { FieldArray, Form, useFormikContext } from 'formik'
+import { FieldArray, useFormikContext } from 'formik'
 import { useState } from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
@@ -109,7 +109,7 @@ export const RoomsForm: React.FC = () => {
     }
 
     return (
-        <Form>
+        <>
             <Stack gap={8}>
                 <Flex direction="column" gap={2}>
                     <InputBox
@@ -363,11 +363,7 @@ export const RoomsForm: React.FC = () => {
                 </section>
 
                 <HousingUnitTypeFacilitiesField />
-
-                <Button type="submit" size="lg">
-                    Salvar
-                </Button>
             </Stack>
-        </Form>
+        </>
     )
 }

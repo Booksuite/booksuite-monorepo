@@ -2,10 +2,13 @@
 
 import { useCreateHousingUnitType } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { RoomsForm } from '../components/RoomsForm'
 import {
@@ -14,9 +17,10 @@ import {
     roomsFormSchema,
     transformFormDataForSubmit,
 } from '../utils/config'
-
 export default function CreateRoom() {
+    const { push } = useRouter()
     const companyId = useCurrentCompanyId()
+    const queryClient = useQueryClient()
 
     const { mutateAsync: createHousintUnitType } = useCreateHousingUnitType()
 
@@ -24,13 +28,19 @@ export default function CreateRoom() {
 
     async function handleSubmit(formData: RoomsFormData) {
         try {
-            // Transform the form data to the format expected by the API
             const apiData = transformFormDataForSubmit(formData)
 
             await createHousintUnitType({
                 companyId,
                 data: apiData,
             })
+
+            await queryClient.invalidateQueries({
+                queryKey: ['searchHousingUnitTypes'],
+                refetchType: 'all',
+            })
+
+            push('/my-business/rooms')
 
             toast({
                 title: 'Acomodação criada com sucesso',
@@ -49,7 +59,6 @@ export default function CreateRoom() {
         <div>
             <PageHeader
                 title="Criar Acomodação"
-                backButtonHref="/my-business/rooms"
                 backLButtonLabel="Acomodações"
             />
 
@@ -58,7 +67,9 @@ export default function CreateRoom() {
                 validationSchema={roomsFormSchema}
                 onSubmit={handleSubmit}
             >
-                <RoomsForm />
+                <FormikController onCancel={() => push('/my-business/rooms')}>
+                    <RoomsForm />
+                </FormikController>
             </Formik>
         </div>
     )

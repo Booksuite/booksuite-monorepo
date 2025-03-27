@@ -189,7 +189,7 @@ export default function Rooms() {
     }
 
     return (
-        <div className="Acomodacoes">
+        <div>
             <PageHeader
                 title="Acomodações"
                 backLButtonLabel="Meu Negócio"
