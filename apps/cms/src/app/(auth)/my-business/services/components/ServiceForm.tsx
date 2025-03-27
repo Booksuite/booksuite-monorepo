@@ -328,7 +328,7 @@ export const ServiceForm: React.FC = () => {
                         <Flex justifyContent={'space-between'}>
                             {VALID_NIGHTS.map((night) => (
                                 <Checkbox key={night.name} value={night.value}>
-                                    {night.name}`
+                                    {night.name}
                                 </Checkbox>
                             ))}
                         </Flex>
