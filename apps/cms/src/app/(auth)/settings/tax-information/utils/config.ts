@@ -31,7 +31,7 @@ export const createTaxInformationInitialValues = (
     city: data?.city || '',
     country: data?.country || '',
     zipcode: data?.zipcode || '',
-    companyName: data?.zipcode || ''
+    companyName: data?.companyName || ''
 })
 
 export const taxInformationSchema = yup.object({

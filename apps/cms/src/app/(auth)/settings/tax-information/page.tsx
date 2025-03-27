@@ -32,6 +32,7 @@ export default function TaxInformation() {
     const { mutateAsync: updateCompanyTaxInformation } = useUpdateCompany()
 
     async function handleSubmit(formData: TaxInformationData) {
+        console.log(formData)
         try {
             await updateCompanyTaxInformation({
                 id: companyId,

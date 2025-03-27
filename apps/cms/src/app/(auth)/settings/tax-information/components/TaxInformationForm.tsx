@@ -132,7 +132,7 @@ export const TaxInformationForm = () => {
                                             touched.companyName,
                                     }}
                                     {...getFieldProps('companyName')}
-                                    onChange={handleChange('companyName')}
+                                    onChange={(e) => setFieldValue('companyName', e.target.value)}
                                 />
                             </GridItem>
                             <GridItem colSpan={{ base: 12, md: 4 }}>
