@@ -96,7 +96,7 @@ export const TaxInformationForm = () => {
                                 }
                             >
                                 <option value="" disabled selected hidden>
-                                    Selecione um tipo de cobrança
+                                    Selecione o tipo de documento
                                 </option>
                                 {DOC_TYPE.map(({ value }, index) => (
                                     <option key={index} value={value}>
@@ -128,16 +128,16 @@ export const TaxInformationForm = () => {
                                 <GridItem colSpan={{ base: 12, md: 4 }}>
                                     <InputBox
                                         label="Razão Social"
-                                        /*error={errors.}
+                                        error={errors.companyName}
                                         formControl={{
                                             isInvalid:
-                                                !!errors. &&
-                                                touched.,
+                                                !!errors.companyName &&
+                                                touched.companyName,
                                         }}
-                                        {...getFieldProps('')}
+                                        {...getFieldProps('companyName')}
                                         onChange={handleChange(
-                                            '',
-                                        )}*/
+                                            'companyName',
+                                        )}
                                     />
                                 </GridItem>
                                 <GridItem colSpan={{ base: 12, md: 4 }}>

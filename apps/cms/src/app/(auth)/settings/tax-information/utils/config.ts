@@ -14,6 +14,7 @@ export type TaxInformationData = Pick<
     | 'city'
     | 'country'
     | 'zipcode'
+    | 'companyName'
 >
 
 export const createTaxInformationInitialValues = (
@@ -30,6 +31,7 @@ export const createTaxInformationInitialValues = (
     city: data?.city || '',
     country: data?.country || '',
     zipcode: data?.zipcode || '',
+    companyName: data?.zipcode || ''
 })
 
 export const taxInformationSchema = yup.object({
@@ -49,4 +51,5 @@ export const taxInformationSchema = yup.object({
     city: yup.string().required('Cidade é obrigatória'),
     country: yup.string().required('País é obrigatório'),
     zipcode: yup.string().required('CEP é obrigátorio'),
+    companyName: yup.string().optional(),
 })
