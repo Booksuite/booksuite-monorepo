@@ -22,7 +22,7 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import { Plus, Search, X } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { debounce } from 'radash'
 import { useEffect, useRef, useState } from 'react'
 
@@ -80,6 +80,7 @@ const columnsDefinition: ColumnDef<ServiceFull>[] = [
 ]
 
 export default function Services() {
+    const { push } = useRouter()
     const [selectedFilters, setSelectedFilters] = useState<string[]>([])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
@@ -89,6 +90,10 @@ export default function Services() {
             defaultOrder: 'name',
             currentPath: '/my-business/services',
         })
+
+    const handleRowClick = (row: ServiceFull) => {
+        push(`/my-business/services/${row.id}`)
+    }
 
     const { page, itemsPerPage, setPage, setItemsPerPage } =
         useSearchParamsPagination({
@@ -104,9 +109,6 @@ export default function Services() {
     useEffect(() => {
         debouncedSearch.current(searchInputValue)
     }, [debouncedSearch, searchInputValue])
-
-    const { push } = useRouter()
-    const searchParams = useSearchParams()
 
     const companyId = useCurrentCompanyId()
     const {
@@ -212,7 +214,12 @@ export default function Services() {
                     </InputGroup>
                 </HStack>
 
-                <Table table={table} error={error} isLoading={isLoading} />
+                <Table
+                    table={table}
+                    error={error}
+                    isLoading={isLoading}
+                    onRowClick={handleRowClick}
+                />
 
                 <HStack justifyContent="flex-end">
                     <PaginationControls

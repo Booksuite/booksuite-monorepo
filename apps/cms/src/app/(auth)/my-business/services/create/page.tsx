@@ -2,42 +2,54 @@
 
 import { useCreateService } from '@booksuite/sdk'
 import { Flex, useToast } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import type { Status } from '@/common/types/Status'
 import { getErrorMessage } from '@/common/utils'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { ServiceForm } from '../components/ServiceForm'
 import {
     createFormInitialValues,
     ServiceFormData,
     serviceFormSchema,
+    transformFormDataForSubmit,
 } from '../utils/config'
 
 export default function CreateServicePage() {
     const [status, setStatus] = useState<Status>('Ativo')
     const companyId = useCurrentCompanyId()
-
+    const { back } = useRouter()
+    const queryClient = useQueryClient()
     const { mutateAsync: createService } = useCreateService()
 
     const toast = useToast()
 
     async function handleSubmit(formData: ServiceFormData) {
-        console.log(formData)
+        const apiData = transformFormDataForSubmit(formData)
 
         try {
             await createService({
                 companyId,
-                data: formData,
+                data: apiData,
             })
 
             toast({
                 title: 'Experiência Criada com sucesso',
                 status: 'success',
             })
+
+            await queryClient.invalidateQueries({
+                queryKey: ['createService'],
+                refetchType: 'all',
+            })
+
+            back()
         } catch (error) {
             toast({
                 title: 'Erro ao criar experiência',
@@ -81,7 +93,9 @@ export default function CreateServicePage() {
                 validationSchema={serviceFormSchema}
                 onSubmit={handleSubmit}
             >
-                <ServiceForm />
+                <FormikController onCancel={() => back()}>
+                    <ServiceForm />
+                </FormikController>
             </Formik>
         </div>
     )
