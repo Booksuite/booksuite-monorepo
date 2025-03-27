@@ -257,6 +257,7 @@ __metadata:
     "@types/react-input-mask": "npm:^3.0.5"
     "@typescript-eslint/parser": "npm:^8.26.0"
     axios: "npm:^1.7.2"
+    cep-promise: "npm:^4.4.1"
     chakra-react-select: "npm:^4.8.0"
     cookies-next: "npm:^4.3.0"
     eslint: "npm:^8"
@@ -3843,6 +3844,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cep-promise@npm:^4.4.1":
+  version: 4.4.1
+  resolution: "cep-promise@npm:4.4.1"
+  dependencies:
+    node-fetch: "npm:2.6.7"
+    unfetch: "npm:4.1.0"
+  checksum: 10c0/0edc926cc2e7c46a521ec5fa3bac62e06d47d5dd1b6fdbc2d7d7f7f2accc11894c0d0bb781e19f266f21e26723b1ce633c99c823a8d0d6278ea7da05cf3e94e5
+  languageName: node
+  linkType: hard
+
 "chakra-react-select@npm:^4.8.0":
   version: 4.10.1
   resolution: "chakra-react-select@npm:4.10.1"
@@ -6970,6 +6981,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"node-fetch@npm:2.6.7":
+  version: 2.6.7
+  resolution: "node-fetch@npm:2.6.7"
+  dependencies:
+    whatwg-url: "npm:^5.0.0"
+  peerDependencies:
+    encoding: ^0.1.0
+  peerDependenciesMeta:
+    encoding:
+      optional: true
+  checksum: 10c0/fcae80f5ac52fbf5012f5e19df2bd3915e67d3b3ad51cb5942943df2238d32ba15890fecabd0e166876a9f98a581ab50f3f10eb942b09405c49ef8da36b826c7
+  languageName: node
+  linkType: hard
+
 "node-fetch@npm:^2.6.1":
   version: 2.7.0
   resolution: "node-fetch@npm:2.7.0"
@@ -9227,6 +9252,13 @@ __metadata:
   version: 6.19.8
   resolution: "undici-types@npm:6.19.8"
   checksum: 10c0/078afa5990fba110f6824823ace86073b4638f1d5112ee26e790155f481f2a868cc3e0615505b6f4282bdf74a3d8caad715fd809e870c2bb0704e3ea6082f344
+  languageName: node
+  linkType: hard
+
+"unfetch@npm:4.1.0":
+  version: 4.1.0
+  resolution: "unfetch@npm:4.1.0"
+  checksum: 10c0/36ac46e654648acb227a739b30afd303121985613ae043b794d9daf39fb2888b5d013927e5803e6ea28d154ae1dabfa0dfd8cbcb91d839f765ec03979848e06c
   languageName: node
   linkType: hard
 
