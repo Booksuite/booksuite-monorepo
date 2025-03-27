@@ -12,9 +12,8 @@ import {
 } from '@chakra-ui/react'
 import { Form, useFormikContext } from 'formik'
 import { Info, PlusCircle, Trash } from 'lucide-react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
-import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import { HostingRulesData } from '../utils/config'
@@ -27,6 +26,8 @@ import {
     PERIODS,
     SPECIFIC_DAYS,
 } from '../utils/contants'
+
+import DateInput from './DateInput'
 
 export const HostingRulesForm = () => {
     const { getFieldProps, values, setFieldValue } =
@@ -68,6 +69,13 @@ export const HostingRulesForm = () => {
         setPeriods(periods.filter((period) => period.id !== id))
     }
 
+    useEffect(() => {
+        if (getDaysForPeriod(values.fixedWindowPeriod) == '') {
+            setSelectedOpening(0)
+            setSelectedPeriods(4)
+        }
+    }, [])
+
     return (
         <Form>
             <div>
@@ -75,14 +83,21 @@ export const HostingRulesForm = () => {
                     <Select
                         size="lg"
                         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                            setFieldValue('checkIn', e.target.value)
+                            setFieldValue('checkIn', Number(e.target.value))
+                        }
+                        value={
+                            CHECKIN_OPTIONS.find(
+                                (option) =>
+                                    option.value ===
+                                    getFieldProps('checkIn').value,
+                            )?.value
                         }
                     >
                         <option value="" disabled selected hidden>
                             Horário do Check-In
                         </option>
-                        {CHECKIN_OPTIONS.map(({ label }, index) => (
-                            <option key={index} value={index}>
+                        {CHECKIN_OPTIONS.map(({ label, value }, index) => (
+                            <option key={index} value={value}>
                                 {label}
                             </option>
                         ))}
@@ -91,14 +106,21 @@ export const HostingRulesForm = () => {
                     <Select
                         size="lg"
                         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                            setFieldValue('checkOut', e.target.value)
+                            setFieldValue('checkOut', Number(e.target.value))
+                        }
+                        value={
+                            CHECKOUT_OPTIONS.find(
+                                (option) =>
+                                    option.value ===
+                                    getFieldProps('checkOut').value,
+                            )?.value
                         }
                     >
                         <option value="" disabled selected hidden>
                             Horário do Check-Out
                         </option>
-                        {CHECKOUT_OPTIONS.map(({ label }, index) => (
-                            <option key={index} value={index}>
+                        {CHECKOUT_OPTIONS.map(({ label, value }, index) => (
+                            <option key={index} value={value}>
                                 {label}
                             </option>
                         ))}
@@ -106,7 +128,7 @@ export const HostingRulesForm = () => {
 
                     <InputNumberBox
                         label="Mínimo de diárias"
-                        {...getFieldProps('minDaily').value}
+                        {...getFieldProps('minDaily')}
                         onChange={(e) =>
                             setFieldValue('minDaily', e.target.value)
                         }
@@ -162,6 +184,11 @@ export const HostingRulesForm = () => {
                         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                             const value = Number(e.target.value)
                             setSelectedOpening(value)
+
+                            if (value == 0) {
+                                values.reservationWindowStart = ''
+                                values.reservationWindowEnd = ''
+                            }
                         }}
                     >
                         <option value="" disabled selected hidden>
@@ -234,13 +261,22 @@ export const HostingRulesForm = () => {
                                     />
                                 </Flex>
                                 <HStack mt={3} spacing={3}>
-                                    <DateRangeBox
-                                        label="Início do Período de Hospedagem"
-                                        name={`startDate-${period.id}`}
+                                    <DateInput
+                                        onChange={(isoDate) =>
+                                            setFieldValue(
+                                                'reservationWindowStart',
+                                                isoDate,
+                                            )
+                                        }
                                     />
-                                    <DateRangeBox
-                                        label="Fim do Período de Hospedagem"
-                                        name={`endDate-${period.id}`}
+
+                                    <DateInput
+                                        onChange={(isoDate) =>
+                                            setFieldValue(
+                                                'reservationWindowEnd',
+                                                isoDate,
+                                            )
+                                        }
                                     />
                                 </HStack>
                             </Box>
@@ -265,6 +301,12 @@ export const HostingRulesForm = () => {
                             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                                 const value = Number(e.target.value)
                                 setSelectedSpecificDays(value)
+
+                                if (value == 0)
+                                    setFieldValue(
+                                        'availableWeekDays',
+                                        [0, 1, 2, 3, 4, 5, 6],
+                                    )
                             }}
                         >
                             <option value="" disabled selected hidden>
