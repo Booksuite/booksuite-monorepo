@@ -59,7 +59,6 @@ export default function CreateRoom() {
         <div>
             <PageHeader
                 title="Criar Acomodação"
-                backButtonHref="/my-business/rooms"
                 backLButtonLabel="Acomodações"
             />
 
