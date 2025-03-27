@@ -54,7 +54,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <AtSign size={20} />,
         title: 'Contato e Redes Sociais',
-        href: `/settings/contato-e-redes-sociais`,
+        href: `/settings/contacts-social-media`,
     },
     {
         icon: <Archive size={20} />,
