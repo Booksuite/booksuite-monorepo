@@ -17,7 +17,6 @@ import { ChangeEvent, useState } from 'react'
 import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
-import SelectBox from '@/components/atoms/SelectBox'
 import { HostingRulesData } from '../utils/config'
 import {
     AVAILABLE_WEEK_DAYS,
@@ -73,27 +72,38 @@ export const HostingRulesForm = () => {
         <Form>
             <div>
                 <Stack spacing={4}>
-                    <SelectBox
-                        label="Horário do Check-in"
-                        options={CHECKIN_OPTIONS}
-                        value={CHECKIN_OPTIONS.find(
-                            (o) => o.value === getFieldProps('checkIn').value,
-                        )}
+                    <Select
+                        size="lg"
                         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                             setFieldValue('checkIn', e.target.value)
                         }
-                    />
-                    <SelectBox
-                        label="Horário do Check-out"
-                        name="checkoutTime"
-                        options={CHECKOUT_OPTIONS}
-                        value={CHECKOUT_OPTIONS.find(
-                            (o) => o.value === getFieldProps('checkIn').value,
-                        )}
+                    >
+                        <option value="" disabled selected hidden>
+                            Horário do Check-In
+                        </option>
+                        {CHECKIN_OPTIONS.map(({ label }, index) => (
+                            <option key={index} value={index}>
+                                {label}
+                            </option>
+                        ))}
+                    </Select>
+
+                    <Select
+                        size="lg"
                         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
                             setFieldValue('checkOut', e.target.value)
                         }
-                    />
+                    >
+                        <option value="" disabled selected hidden>
+                            Horário do Check-Out
+                        </option>
+                        {CHECKOUT_OPTIONS.map(({ label }, index) => (
+                            <option key={index} value={index}>
+                                {label}
+                            </option>
+                        ))}
+                    </Select>
+
                     <InputNumberBox
                         label="Mínimo de diárias"
                         {...getFieldProps('minDaily').value}
