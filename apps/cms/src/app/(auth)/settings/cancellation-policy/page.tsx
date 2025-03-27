@@ -27,8 +27,11 @@ export default function CancellationPolicy() {
     const { back } = useRouter()
     const queryClient = useQueryClient()
 
-    const { data: cancellatonPolicyData, isLoading, queryKey } =
-        useGetCompanyCancellationPolicy({ companyId: companyId })
+    const {
+        data: cancellatonPolicyData,
+        isLoading,
+        queryKey,
+    } = useGetCompanyCancellationPolicy({ companyId: companyId })
 
     const { mutateAsync: UpdateCancellationPolicy } =
         useUpsertCompanyCancellationPolicy()
@@ -40,15 +43,11 @@ export default function CancellationPolicy() {
                 data: formData,
             })
 
+            await queryClient.invalidateQueries({ queryKey: queryKey })
+
             toast({
                 title: 'Políticas de Cancelamento modificadas com sucesso',
                 status: 'success',
-            })
-
-            await queryClient.invalidateQueries({ queryKey: queryKey })
-            await queryClient.invalidateQueries({
-                queryKey: ['searchHousingUnitTypes'],
-                refetchType: 'all',
             })
 
             back()
