@@ -6,8 +6,11 @@ import {
 } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import { CancellationPolicyForm } from './components/CancellationPolicyForm'
@@ -20,13 +23,13 @@ import {
 export default function CancellationPolicy() {
     const companyId = useCurrentCompanyId()
     const toast = useToast()
+    const { back } = useRouter()
 
     const { data: cancellatonPolicyData, isLoading } =
         useGetCompanyCancellationPolicy({ companyId: companyId })
 
     const { mutateAsync: UpdateCancellationPolicy } =
         useUpsertCompanyCancellationPolicy()
-
 
     async function handleSubmit(formData: CancellationPolicyFormData) {
         try {
@@ -39,9 +42,12 @@ export default function CancellationPolicy() {
                 title: 'Políticas de Cancelamento modificadas com sucesso',
                 status: 'success',
             })
-        } catch (erro) {
+
+            back()
+        } catch (error) {
             toast({
                 title: 'Erro ao modificar políticas de cancelamento',
+                description: getErrorMessage(error),
                 status: 'error',
             })
         }
@@ -49,13 +55,11 @@ export default function CancellationPolicy() {
 
     return (
         <div className="cancellation_policy">
-            <PageHeader.Root>
-                <PageHeader.BackLink href="/settings">
-                    Configurações
-                </PageHeader.BackLink>
-
-                <PageHeader.Title>Política de Cancelamento</PageHeader.Title>
-            </PageHeader.Root>
+            <PageHeader
+                title="Políticas de Cancelamento"
+                backLButtonLabel="Configurações"
+                isLoading={isLoading}
+            />
 
             {!isLoading && (
                 <Formik<CancellationPolicyFormData>
@@ -65,7 +69,9 @@ export default function CancellationPolicy() {
                     validationSchema={cancellationPolicyFormSchema}
                     onSubmit={handleSubmit}
                 >
-                    <CancellationPolicyForm />
+                    <FormikController onCancel={() => back()}>
+                        <CancellationPolicyForm />
+                    </FormikController>
                 </Formik>
             )}
         </div>

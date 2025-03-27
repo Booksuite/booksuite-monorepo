@@ -26,7 +26,6 @@ export const CancellationPolicyForm = () => {
         values,
         handleChange,
         setFieldValue,
-        isSubmitting,
     } = useFormikContext<CancellationPolicyFormData>()
 
     return (
@@ -79,7 +78,7 @@ export const CancellationPolicyForm = () => {
                                         values.defaultPenaltyBy,
                                 )?.label || 'Valor padrão (%)'
                             }
-                            type='number'
+                            type="number"
                             error={errors.defaultValue}
                             formControl={{
                                 isInvalid:
@@ -243,7 +242,7 @@ export const CancellationPolicyForm = () => {
                                                             )?.label ||
                                                             'Valor padrão (%)'
                                                         }
-                                                        type='number'
+                                                        type="number"
                                                         formControl={{
                                                             isInvalid:
                                                                 !!errors
@@ -394,10 +393,6 @@ export const CancellationPolicyForm = () => {
                         </Link>
                     </Box>*/}
                 </VStack>
-
-                <Button type="submit" size={'lg'} isDisabled={isSubmitting}>
-                    Salvar
-                </Button>
             </Stack>
         </Form>
     )
