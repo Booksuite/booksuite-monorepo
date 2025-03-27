@@ -26,7 +26,7 @@ interface UpdateRoomProps {
 }
 
 export default function UpdateRoom({ params }: UpdateRoomProps) {
-    const { push } = useRouter()
+    const { back } = useRouter()
     const companyId = useCurrentCompanyId()
     const queryClient = useQueryClient()
 
@@ -59,7 +59,7 @@ export default function UpdateRoom({ params }: UpdateRoomProps) {
                 refetchType: 'all',
             })
 
-            push('/my-business/rooms')
+            back()
 
             toast({
                 title: 'Acomodação editada com sucesso',
@@ -78,7 +78,6 @@ export default function UpdateRoom({ params }: UpdateRoomProps) {
         <>
             <PageHeader
                 title="Editar Acomodação"
-                backButtonHref="/my-business/rooms"
                 backLButtonLabel="Acomodações"
                 isLoading={isLoading}
             />
@@ -89,9 +88,7 @@ export default function UpdateRoom({ params }: UpdateRoomProps) {
                     validationSchema={roomsFormSchema}
                     onSubmit={handleSubmit}
                 >
-                    <FormikController
-                        onCancel={() => push('/my-business/rooms')}
-                    >
+                    <FormikController onCancel={() => back()}>
                         <RoomsForm />
                     </FormikController>
                 </Formik>
