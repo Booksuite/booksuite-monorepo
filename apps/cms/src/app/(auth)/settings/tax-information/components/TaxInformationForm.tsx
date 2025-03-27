@@ -1,4 +1,13 @@
-import { Box, Button, Flex, Select, Stack, Text } from '@chakra-ui/react'
+import {
+    Box,
+    Button,
+    Flex,
+    Grid,
+    GridItem,
+    Select,
+    Stack,
+    Text,
+} from '@chakra-ui/react'
 import { Form, useFormikContext } from 'formik'
 import { Info } from 'lucide-react'
 
@@ -76,118 +85,143 @@ export const TaxInformationForm = () => {
                     <h2 style={{ fontWeight: '600', marginBottom: '0' }}>
                         Informações do Negócio
                     </h2>
-                    <Select
-                        size="lg"
-                        onChange={(selectedOption) =>
-                            setFieldValue(
-                                'docType',
-                                selectedOption.target.value,
-                            )
-                        }
-                    >
-                        <option value="" disabled selected hidden>
-                            Selecione um tipo de cobrança
-                        </option>
-                        {DOC_TYPE.map(({ value }, index) => (
-                            <option key={index} value={value}>
-                                {value}
-                            </option>
-                        ))}
-                    </Select>
-
-                    <InputBox
-                        label={
-                            DOC_TYPE.find(
-                                (option) => option.value === values.docType,
-                            )?.value || 'CPF'
-                        }
-                        error={errors.identification}
-                        formControl={{
-                            isInvalid:
-                                !!errors.identification &&
-                                touched.identification,
-                        }}
-                        {...getFieldProps('identification')}
-                        onChange={handleChange('identification')}
-                    />
-
-                    {isCNPJ && (
-                        <>
-                            {/*<InputBox label="Razão Social" 
-                                error={errors.}
-                                formControl={{
-                                    isInvalid:
-                                        !!errors.&&
-                                        touched.,
-                                }}
-                                {...getFieldProps('')}
-                                onChange={handleChange('')}
-                            /> */}
+                    <Grid templateColumns="repeat(12, 1fr)" gap={4}>
+                        <GridItem colSpan={{ base: 12, md: 6 }}>
+                            <Select
+                                size="lg"
+                                onChange={(selectedOption) =>
+                                    setFieldValue(
+                                        'docType',
+                                        selectedOption.target.value,
+                                    )
+                                }
+                            >
+                                <option value="" disabled selected hidden>
+                                    Selecione um tipo de cobrança
+                                </option>
+                                {DOC_TYPE.map(({ value }, index) => (
+                                    <option key={index} value={value}>
+                                        {value}
+                                    </option>
+                                ))}
+                            </Select>
+                        </GridItem>
+                        <GridItem colSpan={{ base: 12, md: 6 }}>
                             <InputBox
-                                label="Incrição Estadual (opcional)"
-                                error={errors.stateRegistration}
+                                label={
+                                    DOC_TYPE.find(
+                                        (option) =>
+                                            option.value === values.docType,
+                                    )?.value || 'CPF'
+                                }
+                                error={errors.identification}
                                 formControl={{
                                     isInvalid:
-                                        !!errors.stateRegistration &&
-                                        touched.stateRegistration,
+                                        !!errors.identification &&
+                                        touched.identification,
                                 }}
-                                {...getFieldProps('stateRegistration')}
-                                onChange={handleChange('stateRegistration')}
+                                {...getFieldProps('identification')}
+                                onChange={handleChange('identification')}
                             />
-
+                        </GridItem>
+                        {isCNPJ && (
+                            <>
+                                <GridItem colSpan={{ base: 12, md: 4 }}>
+                                    <InputBox
+                                        label="Razão Social"
+                                        /*error={errors.}
+                                        formControl={{
+                                            isInvalid:
+                                                !!errors. &&
+                                                touched.,
+                                        }}
+                                        {...getFieldProps('')}
+                                        onChange={handleChange(
+                                            '',
+                                        )}*/
+                                    />
+                                </GridItem>
+                                <GridItem colSpan={{ base: 12, md: 4 }}>
+                                    <InputBox
+                                        label="Incrição Estadual (opcional)"
+                                        error={errors.stateRegistration}
+                                        formControl={{
+                                            isInvalid:
+                                                !!errors.stateRegistration &&
+                                                touched.stateRegistration,
+                                        }}
+                                        {...getFieldProps('stateRegistration')}
+                                        onChange={handleChange(
+                                            'stateRegistration',
+                                        )}
+                                    />
+                                </GridItem>
+                                <GridItem colSpan={{ base: 12, md: 4 }}>
+                                    <InputBox
+                                        label="Incrição Municipal (opcional)"
+                                        error={errors.municipalRegistration}
+                                        formControl={{
+                                            isInvalid:
+                                                !!errors.municipalRegistration &&
+                                                touched.municipalRegistration,
+                                        }}
+                                        {...getFieldProps(
+                                            'municipalRegistration',
+                                        )}
+                                        onChange={handleChange(
+                                            'municipalRegistration',
+                                        )}
+                                    />
+                                </GridItem>
+                            </>
+                        )}
+                        <GridItem colSpan={{ base: 12, md: 8 }}>
                             <InputBox
-                                label="Incrição Municipal (opcional)"
-                                error={errors.municipalRegistration}
+                                label="CEP"
+                                error={errors.zipcode}
                                 formControl={{
                                     isInvalid:
-                                        !!errors.municipalRegistration &&
-                                        touched.municipalRegistration,
+                                        !!errors.zipcode && touched.zipcode,
                                 }}
-                                {...getFieldProps('municipalRegistration')}
-                                onChange={handleChange('municipalRegistration')}
+                                {...getFieldProps('zipcode')}
+                                onChange={handleChange('zipcode')}
                             />
-                        </>
-                    )}
-
-                    <InputBox
-                        label="CEP"
-                        error={errors.zipcode}
-                        formControl={{
-                            isInvalid: !!errors.zipcode && touched.zipcode,
-                        }}
-                        {...getFieldProps('zipcode')}
-                        onChange={handleChange('zipcode')}
-                    />
-
-                    <InputBox
-                        label="Estado"
-                        error={errors.state}
-                        formControl={{
-                            isInvalid: !!errors.state && touched.state,
-                        }}
-                        {...getFieldProps('state')}
-                        onChange={handleChange('state')}
-                    />
-
-                    <InputBox
-                        label="Cidade"
-                        error={errors.city}
-                        formControl={{
-                            isInvalid: !!errors.city && touched.city,
-                        }}
-                        {...getFieldProps('city')}
-                        onChange={handleChange('city')}
-                    />
-
-                    <InputBox
-                        label="País"
-                        error={errors.country}
-                        formControl={{
-                            isInvalid: !!errors.country && touched.country,
-                        }}
-                        {...getFieldProps('country')}
-                        onChange={handleChange('country')}
-                    />
+                        </GridItem>
+                        <GridItem colSpan={{ base: 12, md: 4 }}>
+                            <InputBox
+                                label="Estado"
+                                error={errors.state}
+                                formControl={{
+                                    isInvalid: !!errors.state && touched.state,
+                                }}
+                                {...getFieldProps('state')}
+                                onChange={handleChange('state')}
+                            />
+                        </GridItem>
+                        <GridItem colSpan={{ base: 12, md: 6 }}>
+                            <InputBox
+                                label="Cidade"
+                                error={errors.city}
+                                formControl={{
+                                    isInvalid: !!errors.city && touched.city,
+                                }}
+                                {...getFieldProps('city')}
+                                onChange={handleChange('city')}
+                            />
+                        </GridItem>
+                        <GridItem colSpan={{ base: 12, md: 6 }}>
+                            <InputBox
+                                label="País"
+                                error={errors.country}
+                                formControl={{
+                                    isInvalid:
+                                        !!errors.country && touched.country,
+                                }}
+                                {...getFieldProps('country')}
+                                onChange={handleChange('country')}
+                            />
+                        </GridItem>
+                    </Grid>
                 </Stack>
                 <Stack mt={8}>
                     <Button type="submit" size="lg">
