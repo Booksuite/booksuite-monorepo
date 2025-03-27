@@ -3,8 +3,10 @@
 import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import CompanyContactsForm from './components/CompanyContactsForm'
@@ -13,6 +15,7 @@ import { ContactsData, createContactsFormInitialValues } from './utils/config'
 export default function ContactsSocialMediaPage() {
     const companyId = useCurrentCompanyId()
     const toast = useToast()
+    const { back } = useRouter()
 
     const { data: companyData, isLoading } = useGetCompanyById({
         id: companyId,
@@ -30,12 +33,12 @@ export default function ContactsSocialMediaPage() {
 
             toast({
                 title: 'Formas de contato modificadas com sucesso',
-                status: 'success'
+                status: 'success',
             })
         } catch (erro) {
             toast({
                 title: 'Erro ao modificar formas de contato',
-                status: 'error'
+                status: 'error',
             })
         }
     }
@@ -52,10 +55,14 @@ export default function ContactsSocialMediaPage() {
 
             {!isLoading && (
                 <Formik<ContactsData>
-                    initialValues={createContactsFormInitialValues(companyData)}
+                    initialValues={createContactsFormInitialValues(
+                        companyData?.contacts,
+                    )}
                     onSubmit={handleSubmit}
                 >
-                    <CompanyContactsForm />
+                    <FormikController onCancel={() => back()}>
+                        <CompanyContactsForm />
+                    </FormikController>
                 </Formik>
             )}
         </div>

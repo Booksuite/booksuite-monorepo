@@ -8,14 +8,8 @@ import { ContactsData } from '../utils/config'
 import { companysocialMedias } from '../utils/constants'
 
 export default function CompanyContactsForm() {
-    const {
-        getFieldProps,
-        touched,
-        errors,
-        values,
-        handleChange,
-        setFieldValue,
-    } = useFormikContext<ContactsData>()
+    const { getFieldProps, values, handleChange, setFieldValue } =
+        useFormikContext<ContactsData>()
 
     useEffect(() => {
         if (values.contacts?.length === 0) {
@@ -165,7 +159,8 @@ export default function CompanyContactsForm() {
                                 Redes Sociais (Opcional)
                             </h3>
 
-                            {values.contacts?.filter((contact) =>
+                            {values.contacts
+                                ?.filter((contact) =>
                                     companysocialMedias.includes(contact.type),
                                 )
                                 .map((contact, index) => (
@@ -187,12 +182,6 @@ export default function CompanyContactsForm() {
                         </Stack>
                     )}
                 </FieldArray>
-
-                <Stack spacing={4} marginTop={5}>
-                    <Button type="submit" size="lg">
-                        Salvar
-                    </Button>
-                </Stack>
             </div>
         </Form>
     )
