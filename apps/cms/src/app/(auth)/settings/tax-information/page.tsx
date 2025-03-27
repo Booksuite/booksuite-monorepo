@@ -2,6 +2,7 @@
 
 import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 
@@ -22,9 +23,9 @@ export default function TaxInformation() {
     const toast = useToast()
     const { back } = useRouter()
 
-    const router = useRouter()
+    const queryClient = useQueryClient()
 
-    const { data: TaxInformationData, isLoading } = useGetCompanyById({
+    const { data: TaxInformationData, queryKey, isLoading } = useGetCompanyById({
         id: companyId,
     })
 
@@ -41,7 +42,13 @@ export default function TaxInformation() {
                 status: 'success',
             })
 
-            router.push('/settings')
+            await queryClient.invalidateQueries({ queryKey: queryKey })
+            await queryClient.invalidateQueries({
+                queryKey: ['getCompanyById'],
+                refetchType: 'all',
+            })
+
+            back()
         } catch (error) {
             toast({
                 title: 'Erro ao modificar informações fiscais',
