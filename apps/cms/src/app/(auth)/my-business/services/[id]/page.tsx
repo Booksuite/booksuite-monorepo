@@ -3,15 +3,18 @@
 import { updateService, useGetServiceById } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
 import { ServiceForm } from '@/app/(auth)/my-business/services/components/ServiceForm'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import {
     createFormInitialValues,
     ServiceFormData,
     serviceFormSchema,
+    transformFormDataForSubmit,
 } from '../utils/config'
 
 interface UpdateServiceProps {
@@ -20,6 +23,7 @@ interface UpdateServiceProps {
 
 export default function UpdateService({ params }: UpdateServiceProps) {
     const companyId = useCurrentCompanyId()
+    const { back } = useRouter()
 
     const { data: service } = useGetServiceById({
         companyId,
@@ -29,8 +33,10 @@ export default function UpdateService({ params }: UpdateServiceProps) {
     const toast = useToast()
 
     async function handleSubmit(formData: ServiceFormData) {
+        const apiData = transformFormDataForSubmit(formData)
+
         try {
-            await updateService({ id: params.id, companyId }, formData)
+            await updateService({ id: params.id, companyId }, apiData)
 
             toast({
                 title: 'Serviço modificado com sucesso',
@@ -59,7 +65,9 @@ export default function UpdateService({ params }: UpdateServiceProps) {
                     validationSchema={serviceFormSchema}
                     onSubmit={handleSubmit}
                 >
-                    <ServiceForm />
+                    <FormikController onCancel={() => back()}>
+                        <ServiceForm />
+                    </FormikController>
                 </Formik>
             )}
         </div>

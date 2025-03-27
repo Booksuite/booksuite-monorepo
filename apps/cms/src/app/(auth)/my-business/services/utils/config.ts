@@ -1,7 +1,27 @@
-import { ServiceCreateInput, ServiceFull } from '@booksuite/sdk'
+import { ServiceCreateInput, ServiceFull, ServiceMedia, ServiceMediaInput } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type ServiceFormData = ServiceCreateInput
+export type ServiceFormData = Omit<ServiceCreateInput, 'medias'> & {
+    medias: ServiceMedia[]
+}
+
+export const transformFormDataForSubmit = (
+    formData: ServiceFormData,
+): ServiceCreateInput => {
+    const { medias, ...rest } = formData
+
+    const transformedMedias: ServiceMediaInput[] = medias.map(
+        (media) => ({
+            mediaId: media.media.id,
+            order: media.order ?? null,
+        }),
+    )
+
+    return {
+        ...rest,
+        medias: transformedMedias,
+    }
+}
 
 export const createFormInitialValues = (
     data?: ServiceFull,
@@ -24,52 +44,47 @@ export const createFormInitialValues = (
     seasonEnd: data?.seasonEnd || '',
     seasonStart: data?.seasonStart || '',
     coverMediaId: '',
-    availableHousingUnitTypes: []
+    availableHousingUnitTypes: [],
 })
 
-export const serviceFormSchema = yup.object({
-    name: yup.string().required('Nome é obrigatório'),
-    published: yup.boolean().required('Status é obrigatório'),
-    adults: yup.number().min(0),
-    billingType: yup.string().required('Tipo de cobrança é obrigatório'),
-    availableHousingUnitTypes: yup
-        .array()
-        .of(
-            yup.object(),
-        )
-        .optional(),
-    medias: yup
-        .array()
-        .of(
-            yup.object({
-                mediaId: yup.string().required('Mídia é obrigatório'),
-                isFeatured: yup.boolean().optional(),
-                order: yup.number().optional(),
-            }),
-        )
-        .optional(),
-    description: yup.string().required('Descrição é obrigatória'),
-    minDaily: yup
-        .number()
-        .min(1, 'Mínimo de diárias deve ser pelo menos 1')
-        .required('Mínimo de diárias é obrigatório'),
-    minNotice: yup
-        .number()
-        .min(1, 'Mínimo de aviso deve ser pelo menos 1')
-        .required('Mínimo de aviso é obrigatório'),
+// export const serviceFormSchema = yup.object({
+//     name: yup.string().required('Nome é obrigatório'),
+//     published: yup.boolean().required('Status é obrigatório'),
+//     adults: yup.number().min(0),
+//     billingType: yup.string().required('Tipo de cobrança é obrigatório'),
+//     availableHousingUnitTypes: yup.array().of(yup.object()).optional(),
+//     medias: yup
+//         .array()
+//         .of(
+//             yup.object({
+//                 mediaId: yup.string().required('Mídia é obrigatório'),
+//                 isFeatured: yup.boolean().optional(),
+//                 order: yup.number().optional(),
+//             }),
+//         )
+//         .optional(),
+//     description: yup.string().required('Descrição é obrigatória'),
+//     minDaily: yup
+//         .number()
+//         .min(1, 'Mínimo de diárias deve ser pelo menos 1')
+//         .required('Mínimo de diárias é obrigatório'),
+//     minNotice: yup
+//         .number()
+//         .min(1, 'Mínimo de aviso deve ser pelo menos 1')
+//         .required('Mínimo de aviso é obrigatório'),
 
-    availableWeekDays: yup.array().required('Noites são obrigatórias'),
-    included: yup.string().optional(),
-    notes: yup.string().optional(),
-    onlineSale: yup.boolean().required('Status da Venda online é obrigatória'),
-    panelSale: yup
-        .boolean()
-        .required('Status da Venda no painel é obrigatória'),
-    seasonalSale: yup
-        .boolean()
-        .required('Status da Venda sazonal é obrigatória'),
-    price: yup.number().min(0).required('Preço é obrigatório'),
-    seasonStart: yup.string().optional(),
-    seasonEnd: yup.string().optional(),
-    coverMediaId: yup.string().optional(),
-})
+//     availableWeekDays: yup.array().required('Noites são obrigatórias'),
+//     included: yup.string().optional(),
+//     notes: yup.string().optional(),
+//     onlineSale: yup.boolean().required('Status da Venda online é obrigatória'),
+//     panelSale: yup
+//         .boolean()
+//         .required('Status da Venda no painel é obrigatória'),
+//     seasonalSale: yup
+//         .boolean()
+//         .required('Status da Venda sazonal é obrigatória'),
+//     price: yup.number().min(0).required('Preço é obrigatório'),
+//     seasonStart: yup.string().optional(),
+//     seasonEnd: yup.string().optional(),
+//     coverMediaId: yup.string().optional(),
+// })

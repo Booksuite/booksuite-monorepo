@@ -37,6 +37,7 @@ import { Table } from '@/components/organisms/Table'
 import { PaginationControls } from '../../../../components/molecules/PaginationControl'
 
 import { HousingUnitTypeRowActionsMenu } from './components/RowActionsMenu'
+import { useCurrentCompanyId } from '@/common/contexts/user'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },

@@ -1,19 +1,36 @@
 'use client'
 
-import { useSearchHousingUnitTypes } from '@booksuite/sdk'
+import { Media, ServiceMedia, useSearchHousingUnitTypes } from '@booksuite/sdk'
 import {
+    Box,
     Button,
     Checkbox,
     CheckboxGroup,
     Flex,
+    HStack,
     Select,
+    SimpleGrid,
     Stack,
     Switch,
     Text,
 } from '@chakra-ui/react'
-import { FieldArray, Form, useFormikContext } from 'formik'
-import { CirclePlus } from 'lucide-react'
+import {
+    closestCenter,
+    DndContext,
+    DragEndEvent,
+    KeyboardSensor,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core'
+import {
+    arrayMove,
+    rectSortingStrategy,
+    SortableContext,
+} from '@dnd-kit/sortable'
+import { Form, useFormikContext } from 'formik'
 import type React from 'react'
+import { useState } from 'react'
 
 import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -22,7 +39,8 @@ import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
-import { Gallery } from '@/components/organisms/Gallery'
+import { MediaGallery } from '@/components/organisms/MediaGallery'
+import { SortableMediaItem } from '../../rooms/components/SortableMediaItem'
 import type { ServiceFormData } from '../utils/config'
 import { VALID_NIGHTS } from '../utils/constants'
 
@@ -36,16 +54,55 @@ export const ServiceForm: React.FC = () => {
         setFieldValue,
     } = useFormikContext<ServiceFormData>()
 
-    const companyId = useCurrentCompanyId()
-    const { data: housingUnitTypes, isLoading: isLoadingHousingUnitTypes } =
-        useSearchHousingUnitTypes(
-            {
-                companyId: companyId,
-            },
-            {
-                pagination: { itemsPerPage: 100, page: 1 },
+    const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
+
+    const sensors = useSensors(
+        useSensor(PointerSensor),
+        useSensor(KeyboardSensor),
+    )
+
+    const handleMediaChange = (selectedMedia: Media[]) => {
+        const formattedMedia: ServiceMedia[] = selectedMedia.map(
+            (media, index) => {
+                const sameMedia = values.medias.find(
+                    (item) => item.media.id === media.id,
+                )
+                const order = sameMedia?.order || index
+                values.coverMediaId = media.id
+
+                return {
+                    id: media.id,
+                    order,
+                    media,
+                }
             },
         )
+
+        setFieldValue('medias', formattedMedia)
+        setIsMediaGalleryOpen(false)
+    }
+
+    const handleMediaDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event
+
+        if (over && active.id !== over.id) {
+            const oldIndex = values.medias.findIndex(
+                (item) => item.media.id === active.id,
+            )
+            const newIndex = values.medias.findIndex(
+                (item) => item.media.id === over.id,
+            )
+
+            const newMedias = arrayMove(values.medias, oldIndex, newIndex).map(
+                (item, index) => ({
+                    ...item,
+                    order: index,
+                }),
+            )
+
+            setFieldValue('medias', newMedias)
+        }
+    }
 
     const companyId = useCurrentCompanyId()
     const { data: housingUnitTypes, isLoading: isLoadingHousingUnitTypes } =
@@ -54,9 +111,11 @@ export const ServiceForm: React.FC = () => {
                 companyId: companyId,
             },
             {
-                pagination: { itemsPerPage: 100, page: 1 },
+                pagination: { itemsPerPage: 1000, page: 1 },
             },
         )
+
+    const availableHousingUnitTypes = housingUnitTypes?.items
 
     return (
         <Form>
@@ -233,28 +292,13 @@ export const ServiceForm: React.FC = () => {
                             }}
                         >
                             <Stack spacing={2} direction="column">
-                                {availablehousingUnitTypes.map((housing) => (
+                                {availableHousingUnitTypes?.map((housing) => (
                                     <InputCheckboxBox
                                         key={housing.id}
                                         value={housing.id}
                                         isChecked={values.availableHousingUnitTypes.includes(
-                                            {housingUnitTypeId: housing.id},
+                                            { housingUnitTypeId: housing.id },
                                         )}
-                                        onChange={(e) => {
-                                            const isChecked = e.target.checked
-                                            const updatedHousingTypes = isChecked
-                                                ? [
-                                                      ...values.availableHousingUnitTypes,
-                                                      housing.id,
-                                                  ]
-                                                : values.availableHousingUnitTypes.filter(
-                                                      (id) => id.housingUnitTypeId !== housing.id,
-                                                  )
-                                            setFieldValue(
-                                                'availableHousingUnitTypes',
-                                                updatedHousingTypes,
-                                            )
-                                        }}
                                     >
                                         {housing.name}
                                     </InputCheckboxBox>
@@ -269,7 +313,6 @@ export const ServiceForm: React.FC = () => {
                     <CheckboxGroup
                         value={values.availableWeekDays}
                         onChange={(newValue) => {
-                            console.log(newValue)
                             setFieldValue(
                                 'availableWeekDays',
                                 newValue.map(Number),
@@ -284,31 +327,6 @@ export const ServiceForm: React.FC = () => {
                             ))}
                         </Stack>
                     </CheckboxGroup>
-                </section> */}
-
-                <section>
-                    <Text as="h2">Descrição e Informação</Text>
-                    <TextAreaBox
-                        label="Descrição"
-                        maxLength={250}
-                        error={errors.description}
-                        formControl={{
-                            isInvalid:
-                                !!errors.description && touched.description,
-                        }}
-                        {...getFieldProps('description')}
-                    />
-
-                    <TextAreaBox
-                        mt={2}
-                        label="Informações gerais e observações"
-                        maxLength={500}
-                        error={errors.notes}
-                        formControl={{
-                            isInvalid: !!errors.notes && touched.notes,
-                        }}
-                        {...getFieldProps('notes')}
-                    />
                 </section>
 
                 <section>
@@ -337,59 +355,60 @@ export const ServiceForm: React.FC = () => {
                 </section>
 
                 <section>
-                    <Text as="h2">Fotos e vídeo</Text>
-                    <Text as="h2" mt={2}>
-                        Galeria
-                    </Text>
+                    <h2>Fotos e Vídeos</h2>
 
-                    <FieldArray name="medias">
-                        {({ push }) => (
-                            <>
-                                <Gallery.Root
-                                    items={values.medias.map(
-                                        (media) =>
-                                            `/placeholder.svg?height=200&width=300&mediaId=${media.mediaId}`,
-                                    )}
-                                />
+                    <Box
+                        p={6}
+                        borderRadius="lg"
+                        border="1px solid"
+                        borderColor="gray.200"
+                    >
+                        <HStack gap={2} align="center" justify="space-between">
+                            <h2>Galeria de Fotos</h2>
 
-                                <Button
-                                    mt={3}
-                                    variant="outline"
-                                    width={'100%'}
-                                    leftIcon={<CirclePlus size={16} />}
-                                    mb={4}
-                                    onClick={() =>
-                                        push({
-                                            mediaId: `media-${Date.now()}`,
-                                            isFeatured: false,
-                                            order: values.medias.length,
-                                        })
-                                    }
-                                >
-                                    Adicionar Imagem
-                                </Button>
-                            </>
+                            <Button
+                                onClick={() => setIsMediaGalleryOpen(true)}
+                                variant="solid"
+                                size="sm"
+                                colorScheme="blue"
+                            >
+                                Selecionar Mídia
+                            </Button>
+                        </HStack>
+                        <DndContext
+                            sensors={sensors}
+                            collisionDetection={closestCenter}
+                            onDragEnd={handleMediaDragEnd}
+                        >
+                            <SortableContext
+                                items={values.medias.map(
+                                    (item) => item.media.id,
+                                )}
+                                strategy={rectSortingStrategy}
+                            >
+                                <SimpleGrid columns={[2, 4, 8]} gap={3} mt={4}>
+                                    {values.medias.map((item, index) => (
+                                        <SortableMediaItem
+                                            key={item.media.id}
+                                            mediaItem={item}
+                                            index={index}
+                                        />
+                                    ))}
+                                </SimpleGrid>
+                            </SortableContext>
+                        </DndContext>
+                    </Box>
+
+                    <MediaGallery
+                        isOpen={isMediaGalleryOpen}
+                        onClose={() => setIsMediaGalleryOpen(false)}
+                        selectedItems={values.medias.map(
+                            (item) => item.media.id,
                         )}
-                    </FieldArray>
-
-                    <Text as="h2" mt={2}>
-                        Vídeo
-                    </Text>
-
-                    <InputBox
-                        label="URL do Vídeo (Youtube somente)"
-                        error={errors.coverMediaId}
-                        formControl={{
-                            isInvalid:
-                                !!errors.coverMediaId && touched.coverMediaId,
-                        }}
-                        {...getFieldProps('coverMediaId')}
+                        initialItems={values.medias.map((item) => item.media)}
+                        onItemsChange={handleMediaChange}
                     />
                 </section>
-
-                <Button type="submit" size="lg">
-                    Salvar
-                </Button>
             </Stack>
         </Form>
     )
