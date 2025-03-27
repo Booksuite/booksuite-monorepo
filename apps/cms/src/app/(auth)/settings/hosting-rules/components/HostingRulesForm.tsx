@@ -6,6 +6,7 @@ import {
     Flex,
     HStack,
     IconButton,
+    Select,
     Stack,
     Text,
 } from '@chakra-ui/react'
@@ -14,39 +15,44 @@ import { Info, PlusCircle, Trash } from 'lucide-react'
 import { ChangeEvent, useState } from 'react'
 
 import { DateRangeBox } from '@/components/atoms/DateRangeBox'
+import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import SelectBox from '@/components/atoms/SelectBox'
-import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { HostingRulesData } from '../utils/config'
-import { AVAILABLE_WEEK_DAYS, HOSTING_SPECIFIC_DAYS } from '../utils/contants'
+import {
+    AVAILABLE_WEEK_DAYS,
+    CHECKIN_OPTIONS,
+    CHECKOUT_OPTIONS,
+    HOSTING_SPECIFIC_DAYS,
+    OPENING_WINDOW,
+    PERIODS,
+    SPECIFIC_DAYS,
+} from '../utils/contants'
 
 export const HostingRulesForm = () => {
     const { getFieldProps, values, setFieldValue } =
         useFormikContext<HostingRulesData>()
 
-    const checkInOptions = [
-        { label: '14:00', value: 14 },
-        { label: '15:00', value: 15 },
-        { label: '16:00', value: 16 },
-        { label: '17:00', value: 17 },
-        { label: '18:00', value: 18 },
-        { label: '19:00', value: 19 },
-        { label: '20:00', value: 20 },
-        { label: '21:00', value: 21 },
-        { label: '22:00', value: 22 },
-        { label: '23:00', value: 23 },
-    ]
+    const [selectedOpening, setSelectedOpening] = useState<number | null>(null)
+    const [selectedPeriods, setSelectedPeriods] = useState<number | null>(null)
+    const [selectedSpecificDays, setSelectedSpecificDays] = useState<
+        number | null
+    >(null)
 
-    const checkOutOptions = [
-        { label: '06:00', value: 6 },
-        { label: '07:00', value: 7 },
-        { label: '08:00', value: 8 },
-        { label: '09:00', value: 9 },
-        { label: '10:00', value: 10 },
-        { label: '11:00', value: 11 },
-        { label: '12:00', value: 12 },
-        { label: '13:00', value: 13 },
-    ]
+    const getDaysForPeriod = (selectedPeriods: number | null) => {
+        switch (selectedPeriods) {
+            case 0:
+                return 90
+            case 1:
+                return 180
+            case 2:
+                return 365
+            case 3:
+                return 730
+            default:
+                return ''
+        }
+    }
 
     const [periods, setPeriods] = useState([
         { id: 1, startDate: '', endDate: '' },
@@ -69,8 +75,8 @@ export const HostingRulesForm = () => {
                 <Stack spacing={4}>
                     <SelectBox
                         label="Horário do Check-in"
-                        options={checkInOptions}
-                        value={checkInOptions.find(
+                        options={CHECKIN_OPTIONS}
+                        value={CHECKIN_OPTIONS.find(
                             (o) => o.value === getFieldProps('checkIn').value,
                         )}
                         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
@@ -80,8 +86,8 @@ export const HostingRulesForm = () => {
                     <SelectBox
                         label="Horário do Check-out"
                         name="checkoutTime"
-                        options={checkOutOptions}
-                        value={checkOutOptions.find(
+                        options={CHECKOUT_OPTIONS}
+                        value={CHECKOUT_OPTIONS.find(
                             (o) => o.value === getFieldProps('checkIn').value,
                         )}
                         onChange={(e: ChangeEvent<HTMLSelectElement>) =>
@@ -110,13 +116,13 @@ export const HostingRulesForm = () => {
                             )
                         }}
                     >
-                        <Stack spacing={2} justifyContent={'space-between'}>
+                        <Flex gap={2} justifyContent={'space-between'}>
                             {AVAILABLE_WEEK_DAYS.map((night) => (
                                 <Checkbox key={night.name} value={night.value}>
                                     {night.name}`
                                 </Checkbox>
                             ))}
-                        </Stack>
+                        </Flex>
                     </CheckboxGroup>
                     <Box
                         bg={'gray.100'}
@@ -137,71 +143,141 @@ export const HostingRulesForm = () => {
 
                 <Stack mt={8} spacing={4}>
                     <h2 style={{ fontWeight: '600', marginBottom: '0' }}>
-                        Períodos de hospedagem
+                        Janela de Disponibilidade
                     </h2>
-                    {periods.map((period, index) => (
-                        <Box key={period.id} w="100%">
-                            <Flex gap={4} alignItems="center">
-                                <h3 style={{ fontWeight: '600', margin: '0' }}>
-                                    Período de Hospedagem {index + 1}
-                                </h3>
-                                <IconButton
-                                    aria-label="Remover período"
-                                    icon={<Trash />}
-                                    colorScheme="red"
-                                    variant="ghost"
-                                    onClick={() => removePeriod(period.id)}
-                                />
-                            </Flex>
-                            <HStack mt={3} spacing={3}>
-                                <DateRangeBox
-                                    label="Início do Período de Hospedagem"
-                                    name={`startDate-${period.id}`}
-                                />
-                                <DateRangeBox
-                                    label="Fim do Período de Hospedagem"
-                                    name={`endDate-${period.id}`}
-                                />
-                            </HStack>
-                        </Box>
-                    ))}
-                    <Button
-                        leftIcon={<PlusCircle />}
-                        colorScheme="blue"
-                        variant="outline"
-                        onClick={addPeriod}
-                        size={'lg'}
+
+                    <Select
+                        size="lg"
+                        value={selectedOpening || ''}
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                            const value = Number(e.target.value)
+                            setSelectedOpening(value)
+                        }}
                     >
-                        Adicionar período
-                    </Button>
-                </Stack>
-                <Stack mt={8} spacing={4}>
-                    <Flex alignItems="center" gap={2}>
-                        <SwitchBox
-                            name="specificDays"
-                            isChecked={values.hostingOnSpecificDays}
+                        <option value="" disabled selected hidden>
+                            Selecione a janela de abertura de hospedagem
+                        </option>
+                        {OPENING_WINDOW.map(({ label }, index) => (
+                            <option key={index} value={index}>
+                                {label}
+                            </option>
+                        ))}
+                    </Select>
+
+                    {selectedOpening === 0 && (
+                        <Select
+                            size="lg"
+                            value={selectedPeriods || ''}
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                                const value = Number(e.target.value)
+                                setSelectedPeriods(value)
+                            }}
+                        >
+                            <option value="" disabled selected hidden>
+                                Selecione o período
+                            </option>
+                            {PERIODS.map(({ label }, index) => (
+                                <option key={index} value={index}>
+                                    {label}
+                                </option>
+                            ))}
+                        </Select>
+                    )}
+
+                    {selectedPeriods !== 4 ? (
+                        <InputBox
+                            label="Janela de abertura (dias)"
+                            value={getDaysForPeriod(selectedPeriods)}
+                            isDisabled
+                        />
+                    ) : (
+                        <InputNumberBox
+                            label="Janela de abertura (dias)"
+                            {...getFieldProps('fixedWindowPeriod')}
                             onChange={(e) =>
                                 setFieldValue(
-                                    'hostingOnSpecificDays',
-                                    e.target.checked,
+                                    'fixedWindowPeriod',
+                                    e.target.value,
                                 )
                             }
                         />
-                        <h3 style={{ fontWeight: '600', marginBottom: '0' }}>
-                            Hospedar somente em dias específicos?
-                        </h3>
+                    )}
+
+                    {selectedOpening === 1 &&
+                        periods.map((period, index) => (
+                            <Box key={period.id} w="100%">
+                                <Flex gap={4} alignItems="center">
+                                    <h3
+                                        style={{
+                                            fontWeight: '600',
+                                            margin: '0',
+                                        }}
+                                    >
+                                        Período de Hospedagem {index + 1}
+                                    </h3>
+                                    <IconButton
+                                        aria-label="Remover período"
+                                        icon={<Trash />}
+                                        colorScheme="red"
+                                        variant="ghost"
+                                        onClick={() => removePeriod(period.id)}
+                                    />
+                                </Flex>
+                                <HStack mt={3} spacing={3}>
+                                    <DateRangeBox
+                                        label="Início do Período de Hospedagem"
+                                        name={`startDate-${period.id}`}
+                                    />
+                                    <DateRangeBox
+                                        label="Fim do Período de Hospedagem"
+                                        name={`endDate-${period.id}`}
+                                    />
+                                </HStack>
+                            </Box>
+                        ))}
+                    {selectedOpening === 1 && (
+                        <Button
+                            leftIcon={<PlusCircle />}
+                            colorScheme="blue"
+                            variant="outline"
+                            onClick={addPeriod}
+                            size={'lg'}
+                        >
+                            Adicionar período
+                        </Button>
+                    )}
+                </Stack>
+                <Stack mt={8} spacing={4}>
+                    <Flex alignItems="center" gap={2}>
+                        <Select
+                            size="lg"
+                            value={selectedSpecificDays || ''}
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                                const value = Number(e.target.value)
+                                setSelectedSpecificDays(value)
+                            }}
+                        >
+                            <option value="" disabled selected hidden>
+                                Dias de Funcionamento
+                            </option>
+                            {SPECIFIC_DAYS.map(({ label }, index) => (
+                                <option key={index} value={index}>
+                                    {label}
+                                </option>
+                            ))}
+                        </Select>
                     </Flex>
-                    {values.hostingOnSpecificDays && (
+                    {selectedSpecificDays === 1 && (
                         <CheckboxGroup
-                            value={values.hostingOnSpecificDays}
+                            value={values.availableWeekDays}
                             onChange={(newValue) => {
                                 setFieldValue(
-                                    'hostingOnSpecificDays',
+                                    'availableWeekDays',
                                     newValue.map(Number),
                                 )
                             }}
                         >
-                            <Stack spacing={2} justifyContent={'space-between'}>
+                            <Flex gap={2} justifyContent={'space-between'}>
                                 {HOSTING_SPECIFIC_DAYS.map((night) => (
                                     <Checkbox
                                         key={night.name}
@@ -210,14 +286,9 @@ export const HostingRulesForm = () => {
                                         {night.name}`
                                     </Checkbox>
                                 ))}
-                            </Stack>
+                            </Flex>
                         </CheckboxGroup>
                     )}
-                </Stack>
-                <Stack mt={8}>
-                    <Button type="submit" size="lg">
-                        Salvar
-                    </Button>
                 </Stack>
             </div>
         </Form>

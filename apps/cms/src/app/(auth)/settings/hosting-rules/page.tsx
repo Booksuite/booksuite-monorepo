@@ -3,8 +3,10 @@
 import { useGetCompanyHostingRules } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import { HostingRulesForm } from './components/HostingRulesForm'
@@ -15,45 +17,45 @@ import {
 
 export default function HostingRules() {
     const companyId = useCurrentCompanyId()
+    const { back } = useRouter()
 
     const { data: companyHostingRulesData, isLoading } =
         useGetCompanyHostingRules({
             companyId: companyId,
         })
 
-    // const { mutateAsync: updateCompanyHostingRules } = upsertCompanyHostingRules({companyId: companyId}, {})
+    /*const { mutateAsync: updateCompanyHostingRules } =
+        upsertCompanyHostingRules({ companyId: companyId }, {})*/
 
     const toast = useToast()
 
     async function handleSubmit(formData: HostingRulesData) {
-        console.log(formData)
-        // try {
-        //     await updateCompany({
-        //         id: companyId,
-        //         data: formData,
-        //     })
-        //     toast({
-        //         title: 'Dados gerais modificados com sucesso ',
-        //         status: 'success',
-        //     })
-        // } catch (error) {
-        //     toast({
-        //         title: 'Erro ao editar dados gerais',
-        //         description: getErrorMessage(error),
-        //         status: 'error',
-        //     })
-        // }
+        /*try {
+            await updateCompany({
+                id: companyId,
+                data: formData,
+            })
+            toast({
+                title: 'Dados gerais modificados com sucesso ',
+                status: 'success',
+            })
+            back()
+        } catch (error) {
+            toast({
+                title: 'Erro ao editar dados gerais',
+                description: getErrorMessage(error),
+                status: 'error',
+            })
+        }*/
     }
 
     return (
         <div className="hosting_rules">
-            <PageHeader.Root>
-                <PageHeader.BackLink href="/settings">
-                    Configurações
-                </PageHeader.BackLink>
-
-                <PageHeader.Title>Regras de Hospedagem</PageHeader.Title>
-            </PageHeader.Root>
+            <PageHeader
+                title="Regras de Hospedagem"
+                backLButtonLabel="Configurações"
+                isLoading={isLoading}
+            />
 
             {!isLoading && (
                 <Formik<HostingRulesData>
@@ -62,7 +64,9 @@ export default function HostingRules() {
                     )}
                     onSubmit={handleSubmit}
                 >
-                    <HostingRulesForm />
+                    <FormikController onCancel={() => back()}>
+                        <HostingRulesForm />
+                    </FormikController>
                 </Formik>
             )}
         </div>
