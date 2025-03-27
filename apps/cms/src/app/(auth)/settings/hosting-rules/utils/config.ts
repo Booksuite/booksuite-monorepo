@@ -10,27 +10,43 @@ export const createHostingRulesInitialValues = (
     availableWeekend: data?.availableWeekend || [],
     checkIn: data?.checkIn || 0,
     checkOut: data?.checkOut || 0,
-    hostingOnSpecificDays: data?.hostingOnSpecificDays || false,
     minDaily: data?.minDaily || 0,
-    seasonEnd: data?.seasonEnd || '',
-    seasonStart: data?.seasonStart || '',
+    fixedWindowPeriod: data?.fixedWindowPeriod || 0,
+    reservationWindowEnd: data?.reservationWindowEnd || '',
+    reservationWindowStart: data?.reservationWindowStart || '',
 })
 
-// export const hostingRulesDataSchema = yup.object({
-//     name: yup.string().required('Nome é obrigatório'),
-//     timezone: yup.string().required('Fuso horário é obrigatório'),
-//     type: yup.string().required('Tipo é obrigatório'),
+export const hostingRulesDataSchema = yup.object({
+    availableWeekDays: yup
+        .array()
+        .of(yup.string())
+        .required('Dias de semana disponíveis são obrigatórios'),
+    availableWeekend: yup
+        .array()
+        .of(yup.string())
+        .required('Fins de semana disponíveis são obrigatórios'),
 
-//     availableWeekDays: yup.array().of(yup.string()).required('Dias de semana disponíveis são obrigatórios'),
-//     availableWeekend: yup.array().of(yup.string()).required('Fins de semana disponíveis são obrigatórios'),
-    
-//     checkIn: yup.number().min(0, 'Check-in deve ser maior ou igual a 0').required('Check-in é obrigatório'),
-//     checkOut: yup.number().min(0, 'Check-out deve ser maior ou igual a 0').required('Check-out é obrigatório'),
-    
-//     hostingOnSpecificDays: yup.boolean().required('Definição de hospedagem em dias específicos é obrigatória'),
-    
-//     minDaily: yup.number().min(0, 'Mínimo de diárias deve ser maior ou igual a 0').required('Mínimo de diárias é obrigatório'),
-    
-//     seasonStart: yup.string().required('Data de início da temporada é obrigatória'),
-//     seasonEnd: yup.string().required('Data de fim da temporada é obrigatória'),
-// });
+    checkIn: yup
+        .number()
+        .min(0, 'Check-in deve ser maior ou igual a 0')
+        .required('Check-in é obrigatório'),
+    checkOut: yup
+        .number()
+        .min(0, 'Check-out deve ser maior ou igual a 0')
+        .required('Check-out é obrigatório'),
+    fixedWindowPeriod: yup
+        .number()
+        .min(1, 'Janela de dias deve ser um valor maior que 1')
+        .required('Janela de dias obrigatória'),
+    hostingOnSpecificDays: yup
+        .boolean()
+        .required('Definição de hospedagem em dias específicos é obrigatória'),
+
+    minDaily: yup
+        .number()
+        .min(0, 'Mínimo de diárias deve ser maior ou igual a 0')
+        .required('Mínimo de diárias é obrigatório'),
+
+    reservationWindowStart: yup.string().optional(),
+    reservationWindowEnd: yup.string().optional(),
+})
