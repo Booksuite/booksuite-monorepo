@@ -188,8 +188,7 @@ export const ServiceForm: React.FC = () => {
                 <section>
                     <Text as="h2">Configurações de Venda</Text>
                     <Stack gap={2}>
-                        <Flex justify="space-between" align="center">
-                            <Text>Vender online no site</Text>
+                        <Flex gap={2} align="center">
                             <Switch
                                 {...getFieldProps('onlineSale')}
                                 isChecked={values.onlineSale}
@@ -200,9 +199,11 @@ export const ServiceForm: React.FC = () => {
                                     )
                                 }
                             />
+                            <h3 style={{ marginBottom: 0 }}>
+                                Vender online no site
+                            </h3>
                         </Flex>
-                        <Flex justify="space-between" align="center">
-                            <Text>Vender online no painel</Text>
+                        <Flex gap={2} align="center">
                             <Switch
                                 {...getFieldProps('panelSale')}
                                 isChecked={values.panelSale}
@@ -210,9 +211,11 @@ export const ServiceForm: React.FC = () => {
                                     setFieldValue('panelSale', e.target.checked)
                                 }
                             />
+                            <h3 style={{ marginBottom: 0 }}>
+                                Vender online no painel
+                            </h3>
                         </Flex>
-                        <Flex justify="space-between" align="center">
-                            <Text>Vender em períodos específicos</Text>
+                        <Flex gap={2} align="center">
                             <Switch
                                 {...getFieldProps('seasonalSale')}
                                 isChecked={values.seasonalSale}
@@ -223,6 +226,9 @@ export const ServiceForm: React.FC = () => {
                                     )
                                 }
                             />
+                            <h3 style={{ marginBottom: 0 }}>
+                                Vender em períodos específicos
+                            </h3>
                         </Flex>
                     </Stack>
                 </section>
@@ -291,7 +297,7 @@ export const ServiceForm: React.FC = () => {
                                 )
                             }}
                         >
-                            <Stack spacing={2} direction="column">
+                            <Stack spacing={2}>
                                 {availableHousingUnitTypes?.map((housing) => (
                                     <InputCheckboxBox
                                         key={housing.id}
@@ -319,13 +325,13 @@ export const ServiceForm: React.FC = () => {
                             )
                         }}
                     >
-                        <Stack spacing={2} direction="column">
+                        <Flex justifyContent={'space-between'}>
                             {VALID_NIGHTS.map((night) => (
                                 <Checkbox key={night.name} value={night.value}>
                                     {night.name}`
                                 </Checkbox>
                             ))}
-                        </Stack>
+                        </Flex>
                     </CheckboxGroup>
                 </section>
 
