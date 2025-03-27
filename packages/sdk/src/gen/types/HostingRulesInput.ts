@@ -12,21 +12,21 @@ export type HostingRulesInput = {
    */
   minDaily: number
   /**
+   * @type number
+   */
+  fixedWindowPeriod: number
+  /**
    * @type array
    */
   availableWeekend: number[]
   /**
-   * @type string, date-time
+   * @type string
    */
-  seasonStart: string
+  reservationWindowStart: string
   /**
-   * @type string, date-time
+   * @type string
    */
-  seasonEnd: string
-  /**
-   * @type boolean
-   */
-  hostingOnSpecificDays: boolean
+  reservationWindowEnd: string
   /**
    * @type array
    */

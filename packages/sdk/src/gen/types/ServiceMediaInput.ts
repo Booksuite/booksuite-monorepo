@@ -1,8 +1,8 @@
 export type ServiceMediaInput = {
   /**
-   * @type object
+   * @type number
    */
-  order: object
+  order: number | null
   /**
    * @type string
    */
