@@ -1,6 +1,32 @@
-import { Button, Stack } from '@chakra-ui/react'
-import { Form, useFormikContext } from 'formik'
+import {
+    Alert,
+    AlertDescription,
+    AlertIcon,
+    AlertTitle,
+    Button,
+    Stack,
+} from '@chakra-ui/react'
+import { Form, FormikErrors, useFormikContext } from 'formik'
 import { PropsWithChildren } from 'react'
+
+export const extractErrorMessages = (
+    errors: FormikErrors<unknown>,
+): string[] => {
+    if (typeof errors === 'string') {
+        return [errors]
+    }
+    if (Array.isArray(errors)) {
+        return errors.flatMap((error) =>
+            extractErrorMessages(error as FormikErrors<unknown>),
+        )
+    }
+    if (typeof errors === 'object' && errors !== null) {
+        return Object.values(errors).flatMap((error) =>
+            extractErrorMessages(error as FormikErrors<unknown>),
+        )
+    }
+    return []
+}
 
 export interface FormikControllerProps {
     onSubmit?: () => void
@@ -20,7 +46,12 @@ export const FormikController: React.FC<
     cancelText = 'Cancelar',
     loadingText = 'Carregando',
 }) => {
-    const { isSubmitting } = useFormikContext()
+    const { isSubmitting, errors } = useFormikContext()
+    const errorMessages = extractErrorMessages(errors)
+    const alertMessage =
+        errorMessages.length > 2
+            ? `${errorMessages.length} problemas encontrados`
+            : errorMessages.join(', ')
 
     return (
         <Form>
@@ -42,8 +73,22 @@ export const FormikController: React.FC<
                         borderRadius="lg"
                         boxShadow="0 0 3px 0 rgba(0, 0, 0, .2)"
                         justifyContent="flex-end"
+                        alignItems="center"
                         p={4}
                     >
+                        {errorMessages.length > 0 && (
+                            <Alert
+                                status="warning"
+                                bg="transparent"
+                                maxH="30px"
+                            >
+                                <AlertIcon />
+                                <AlertTitle>Confira o formulário</AlertTitle>
+                                <AlertDescription fontSize="xs">
+                                    {alertMessage}
+                                </AlertDescription>
+                            </Alert>
+                        )}
                         {!!onCancel && (
                             <Button
                                 disabled={isSubmitting}
