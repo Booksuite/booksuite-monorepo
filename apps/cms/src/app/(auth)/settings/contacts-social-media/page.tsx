@@ -6,6 +6,7 @@ import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
@@ -24,7 +25,6 @@ export default function ContactsSocialMediaPage() {
     const { mutateAsync: updateCompanyContacts } = useUpdateCompany({})
 
     async function handleSubmit(formData: ContactsData) {
-        console.log(formData)
         try {
             await updateCompanyContacts({
                 id: companyId,
@@ -35,9 +35,10 @@ export default function ContactsSocialMediaPage() {
                 title: 'Formas de contato modificadas com sucesso',
                 status: 'success',
             })
-        } catch (erro) {
+        } catch (error) {
             toast({
                 title: 'Erro ao modificar formas de contato',
+                description: getErrorMessage(error),
                 status: 'error',
             })
         }
