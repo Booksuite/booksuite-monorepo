@@ -14,6 +14,7 @@ import { Form, useFormikContext } from 'formik'
 import { Info, PlusCircle, Trash } from 'lucide-react'
 import { ChangeEvent, useEffect, useState } from 'react'
 
+import { DatePickerBox } from '@/components/atoms/DatePickerBox'
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import { HostingRulesData } from '../utils/config'
@@ -27,10 +28,8 @@ import {
     SPECIFIC_DAYS,
 } from '../utils/contants'
 
-import DateInput from './DateInput'
-
 export const HostingRulesForm = () => {
-    const { getFieldProps, values, setFieldValue } =
+    const { getFieldProps, values, setFieldValue, touched, errors } =
         useFormikContext<HostingRulesData>()
 
     const [selectedOpening, setSelectedOpening] = useState<number | null>(null)
@@ -75,7 +74,7 @@ export const HostingRulesForm = () => {
             setSelectedPeriods(4)
         }
 
-        if(values.availableWeekDays.length < 7){
+        if (values.availableWeekDays.length < 7) {
             setSelectedSpecificDays(1)
         }
     }, [])
@@ -270,23 +269,47 @@ export const HostingRulesForm = () => {
                                     />
                                 </Flex>
                                 <HStack mt={3} spacing={3}>
-                                    <DateInput
-                                        onChange={(isoDate) =>
-                                            setFieldValue(
-                                                'reservationWindowStart',
-                                                isoDate,
-                                            )
-                                        }
-                                    />
+                                    <Stack w={'100%'}>
+                                        <h4>Início da Janela de Venda</h4>
+                                        <DatePickerBox
+                                            value={
+                                                values.reservationWindowStart
+                                            }
+                                            onChange={(date) =>
+                                                setFieldValue(
+                                                    'reservationWindowStart',
+                                                    date,
+                                                )
+                                            }
+                                            error={
+                                                errors.reservationWindowStart
+                                            }
+                                            formControl={{
+                                                isInvalid:
+                                                    !!errors.reservationWindowStart &&
+                                                    touched.reservationWindowStart,
+                                            }}
+                                        />
+                                    </Stack>
 
-                                    <DateInput
-                                        onChange={(isoDate) =>
-                                            setFieldValue(
-                                                'reservationWindowEnd',
-                                                isoDate,
-                                            )
-                                        }
-                                    />
+                                    <Stack w={'100%'}>
+                                        <h4>Fim da Janela de Venda</h4>
+                                        <DatePickerBox
+                                            value={values.reservationWindowEnd}
+                                            onChange={(date) =>
+                                                setFieldValue(
+                                                    'reservationWindowEnd',
+                                                    date,
+                                                )
+                                            }
+                                            error={errors.reservationWindowEnd}
+                                            formControl={{
+                                                isInvalid:
+                                                    !!errors.reservationWindowEnd &&
+                                                    touched.reservationWindowEnd,
+                                            }}
+                                        />
+                                    </Stack>
                                 </HStack>
                             </Box>
                         ))}
