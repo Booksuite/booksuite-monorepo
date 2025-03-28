@@ -54,8 +54,7 @@ export const ServiceForm: React.FC = () => {
         setFieldValue,
     } = useFormikContext<ServiceFormData>()
 
-    console.log(errors)
-
+    console.log(values)
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
     const sensors = useSensors(
@@ -121,7 +120,7 @@ export const ServiceForm: React.FC = () => {
     return (
         <Form>
             <Stack gap={8}>
-                <Flex gap={2} alignSelf={'flex-end'} alignItems="center">
+                <Flex gap={2} alignSelf={'flex-start'} marginTop={5} marginBottom={-4} alignItems="center">
                     <h2 style={{ marginBottom: 0 }}>Publicado</h2>
                     <Switch
                         {...getFieldProps('published')}
@@ -156,6 +155,7 @@ export const ServiceForm: React.FC = () => {
 
                     <Select
                         size="lg"
+                        {...getFieldProps('billingType')}
                         onChange={(selectedOption) =>
                             setFieldValue(
                                 'billingType',
@@ -301,7 +301,7 @@ export const ServiceForm: React.FC = () => {
                             isInvalid: !!errors.adults && touched.adults,
                         }}
                         {...getFieldProps('adults')}
-                        onChange={handleChange('adults')}
+                        onChange={(e) => setFieldValue('adults', e.target.value)}
                     />
                 </section>
 

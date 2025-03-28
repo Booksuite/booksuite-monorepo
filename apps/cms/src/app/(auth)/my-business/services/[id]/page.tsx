@@ -1,7 +1,8 @@
 'use client'
 
-import { updateService, useGetServiceById } from '@booksuite/sdk'
+import { useGetServiceById, useUpdateService } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 
@@ -24,23 +25,34 @@ interface UpdateServiceProps {
 export default function UpdateService({ params }: UpdateServiceProps) {
     const companyId = useCurrentCompanyId()
     const { back } = useRouter()
+    const queryClient = useQueryClient()
 
-    const { data: service } = useGetServiceById({
+    const { data: service, queryKey } = useGetServiceById({
         companyId,
         id: params.id,
     })
+
+    const { mutateAsync: updateServiceData } = useUpdateService()
 
     const toast = useToast()
 
     async function handleSubmit(formData: ServiceFormData) {
         try {
             const apiData = transformFormDataForSubmit(formData)
-            await updateService({ id: params.id, companyId }, apiData)
+            await updateServiceData({ id: params.id, companyId, data: apiData })
 
             toast({
                 title: 'Serviço modificado com sucesso',
                 status: 'success',
             })
+
+            await queryClient.invalidateQueries({ queryKey: queryKey })
+            await queryClient.invalidateQueries({
+                queryKey: ['searchServices'],
+                refetchType: 'all',
+            })
+
+            back()
         } catch (error) {
             toast({
                 title: 'Erro ao editar Serviço',

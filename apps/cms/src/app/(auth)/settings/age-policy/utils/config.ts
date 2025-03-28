@@ -9,7 +9,7 @@ export const createAgePolicyInitialValues = (
     acceptChildren: data?.acceptChildren || false,
     adultMinAge: data?.adultMinAge || 0,
     ageGroups:
-        data?.ageGroups.map((group) => ({
+        data?.ageGroups?.map((group) => ({
             id: group.id,
             initialAge: group.initialAge,
             finalAge: group.finalAge,

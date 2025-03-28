@@ -1,7 +1,7 @@
 import {
     ServiceCreateInput,
     ServiceFull,
-    ServiceHousingUnitType,
+    ServiceHousingUnitTypeInput,
     ServiceMedia,
     ServiceMediaInput,
 } from '@booksuite/sdk'
@@ -12,7 +12,7 @@ export type ServiceFormData = Omit<
     'medias' | 'availableHousingUnitTypes'
 > & {
     medias: ServiceMedia[]
-    availableHousingUnitTypes: ServiceHousingUnitType[]
+    availableHousingUnitTypes: ServiceHousingUnitTypeInput[]
 }
 
 export const transformFormDataForSubmit = (
@@ -30,7 +30,7 @@ export const transformFormDataForSubmit = (
         coverMediaId: medias[0]?.media.id,
         medias: transformedMedias,
         availableHousingUnitTypes: formData.availableHousingUnitTypes.map(
-            (item) => ({ housingUnitTypeId: item.housingUnitType.id }),
+            (item) => ({ housingUnitTypeId: item.housingUnitTypeId }),
         ),
     }
 }
@@ -40,7 +40,7 @@ export const createFormInitialValues = (
 ): ServiceFormData => ({
     name: data?.name || '',
     published: false,
-    adults: 0,
+    adults: data?.adults || 0,
     billingType: data?.billingType || 'DAILY',
     availableWeekDays: data?.availableWeekDays || [],
     medias: data?.medias || [],
@@ -56,7 +56,10 @@ export const createFormInitialValues = (
     seasonEnd: data?.seasonEnd || '',
     seasonStart: data?.seasonStart || '',
     coverMediaId: data?.coverMedia?.id || '',
-    availableHousingUnitTypes: data?.availableHousingUnitTypes || [],
+    availableHousingUnitTypes:
+        data?.availableHousingUnitTypes?.map((h) => ({
+            housingUnitTypeId: h.housingUnitType.id,
+        })) || [],
 })
 
 export const serviceFormSchema = yup.object({
