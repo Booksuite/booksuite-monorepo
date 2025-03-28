@@ -119,6 +119,19 @@ export const ServiceForm: React.FC = () => {
 
     return (
         <Form>
+            <Stack gap={2}>
+                <Flex gap={2} align="center">
+                    <Switch
+                        {...getFieldProps('published')}
+                        isChecked={values.published}
+                        onChange={(e) =>
+                            setFieldValue('published', e.target.checked)
+                        }
+                    />
+                    <h3 style={{ marginBottom: 0 }}>Publicado</h3>
+                </Flex>
+            </Stack>
+
             <Stack gap={8}>
                 <Stack gap={4}>
                     <Flex justifyContent={'space-between'} w={'100%'} gap={2}>
@@ -338,7 +351,7 @@ export const ServiceForm: React.FC = () => {
                             )
                         }}
                     >
-                        <Flex justifyContent={'space-between'}>
+                        <Flex gap={2} justifyContent={'space-between'}>
                             {VALID_NIGHTS.map((night) => (
                                 <Checkbox key={night.name} value={night.value}>
                                     {night.name}
