@@ -68,7 +68,7 @@ export const ServiceForm: React.FC = () => {
                     (item) => item.media.id === media.id,
                 )
                 const order = sameMedia?.order || index
-                values.coverMediaId = media.id
+                setFieldValue('coverMediaId', media.id)
 
                 return {
                     id: media.id,
