@@ -5,12 +5,9 @@ import { Flex, useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import type { Status } from '@/common/types/Status'
 import { getErrorMessage } from '@/common/utils'
-import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { ServiceForm } from '../components/ServiceForm'
@@ -22,7 +19,6 @@ import {
 } from '../utils/config'
 
 export default function CreateServicePage() {
-    const [status, setStatus] = useState<Status>('Ativo')
     const companyId = useCurrentCompanyId()
     const { back } = useRouter()
     const queryClient = useQueryClient()
@@ -70,19 +66,6 @@ export default function CreateServicePage() {
                     <PageHeader.BackLink href="/my-business/services">
                         Serviços
                     </PageHeader.BackLink>
-
-                    <SwitchBox
-                        label="Ativo"
-                        id="status"
-                        name="status"
-                        defaultChecked
-                        onChange={() =>
-                            status === 'Ativo'
-                                ? setStatus('Inativo')
-                                : setStatus('Ativo')
-                        }
-                        isChecked={status === 'Ativo'}
-                    />
                 </Flex>
 
                 <PageHeader.Title>Criar Serviço</PageHeader.Title>
