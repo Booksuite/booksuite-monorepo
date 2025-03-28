@@ -345,7 +345,7 @@ export const ServiceForm: React.FC = () => {
                         onChange={(newValue) => {
                             setFieldValue(
                                 'availableWeekDays',
-                                newValue.map(Number),
+                                newValue.map(String),
                             )
                         }}
                     >

@@ -9,10 +9,11 @@ import * as yup from 'yup'
 
 export type ServiceFormData = Omit<
     ServiceCreateInput,
-    'medias' | 'availableHousingUnitTypes'
+    'medias' | 'availableHousingUnitTypes' | 'availableWeekDays'
 > & {
     medias: ServiceMedia[]
     availableHousingUnitTypes: ServiceHousingUnitTypeInput[]
+    availableWeekDays: string[]
 }
 
 export const transformFormDataForSubmit = (
@@ -29,6 +30,7 @@ export const transformFormDataForSubmit = (
         ...rest,
         coverMediaId: medias[0]?.media.id,
         medias: transformedMedias,
+        availableWeekDays: formData.availableWeekDays.map(Number),
         availableHousingUnitTypes: formData.availableHousingUnitTypes.map(
             (item) => ({ housingUnitTypeId: item.housingUnitTypeId }),
         ),
@@ -42,7 +44,7 @@ export const createFormInitialValues = (
     published: false,
     adults: data?.adults || 0,
     billingType: data?.billingType || 'DAILY',
-    availableWeekDays: data?.availableWeekDays || [],
+    availableWeekDays: data?.availableWeekDays.map(String) || [],
     medias: data?.medias || [],
     description: data?.name || '',
     minDaily: data?.minDaily || 1,
