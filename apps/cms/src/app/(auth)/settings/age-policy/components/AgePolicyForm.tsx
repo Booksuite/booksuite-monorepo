@@ -248,10 +248,6 @@ export const AgePolicyForm = () => {
                         )}
                     </FieldArray>
                 )}
-
-                <Button type="submit" size="lg">
-                    Salvar
-                </Button>
             </Stack>
         </Form>
     )

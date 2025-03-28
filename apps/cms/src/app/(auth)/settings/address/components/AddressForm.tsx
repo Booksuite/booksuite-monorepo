@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Grid, GridItem, useToast } from '@chakra-ui/react'
+import { Grid, GridItem, useToast } from '@chakra-ui/react'
 import cep from 'cep-promise'
 import { Form, useFormikContext } from 'formik'
 import { debounce } from 'radash'
@@ -129,18 +129,6 @@ export const AddressForm = () => {
                         isDisabled={isSubmitting}
                         {...getFieldProps('number')}
                     />
-                </GridItem>
-
-                <GridItem colSpan={12}>
-                    <Button
-                        type="submit"
-                        size="lg"
-                        width="100%"
-                        isLoading={isSubmitting}
-                        isDisabled={isSubmitting}
-                    >
-                        Salvar
-                    </Button>
                 </GridItem>
             </Grid>
         </Form>
