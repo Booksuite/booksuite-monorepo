@@ -79,7 +79,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <File size={20} />,
         title: 'Políticas de Cancelamento',
-        href: `/settings/politicas-de-cancelamento`,
+        href: `/settings/cancellation-policy`,
     },
     {
         icon: <Baby size={20} />,
