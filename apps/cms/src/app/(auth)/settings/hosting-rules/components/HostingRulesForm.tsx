@@ -15,7 +15,6 @@ import { Info, PlusCircle, Trash } from 'lucide-react'
 import { ChangeEvent, useEffect, useState } from 'react'
 
 import { DatePickerBox } from '@/components/atoms/DatePickerBox'
-import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import { HostingRulesData } from '../utils/config'
 import {
@@ -69,14 +68,21 @@ export const HostingRulesForm = () => {
     }
 
     useEffect(() => {
-        if (getDaysForPeriod(values.fixedWindowPeriod) == '') {
+        if (!getDaysForPeriod(values.fixedWindowPeriod)) {
             setSelectedOpening(0)
             setSelectedPeriods(4)
         }
 
-        if (values.availableWeekDays.length < 7) {
-            setSelectedSpecificDays(1)
+        if (values.availableWeekDays.length < 7) setSelectedSpecificDays(1)
+
+        if (values.reservationWindowStart) {
+            setSelectedOpening(1)
         }
+
+        const foundPeriod = PERIODS.find(
+            (period) => period.days == values.fixedWindowPeriod,
+        )
+        setSelectedPeriods(foundPeriod?.days || 4)
     }, [])
 
     return (
@@ -152,7 +158,7 @@ export const HostingRulesForm = () => {
                         onChange={(newValue) => {
                             setFieldValue(
                                 'availableWeekend',
-                                newValue.map(Number),
+                                newValue.map(String),
                             )
                         }}
                     >
@@ -192,11 +198,6 @@ export const HostingRulesForm = () => {
                         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                             const value = Number(e.target.value)
                             setSelectedOpening(value)
-
-                            if (value == 0) {
-                                values.reservationWindowStart = ''
-                                values.reservationWindowEnd = ''
-                            }
                         }}
                     >
                         <option value="" disabled selected hidden>
@@ -216,6 +217,8 @@ export const HostingRulesForm = () => {
                             onChange={(e: ChangeEvent<HTMLSelectElement>) => {
                                 const value = Number(e.target.value)
                                 setSelectedPeriods(value)
+                                setFieldValue('reservationWindowStart', null)
+                                setFieldValue('reservationWindowEnd', null)
                             }}
                         >
                             <option value="" disabled selected hidden>
@@ -229,25 +232,20 @@ export const HostingRulesForm = () => {
                         </Select>
                     )}
 
-                    {selectedPeriods !== 4 ? (
-                        <InputBox
-                            label="Janela de abertura (dias)"
-                            value={getDaysForPeriod(selectedPeriods)}
-                            isDisabled
-                        />
-                    ) : (
-                        <InputNumberBox
-                            label="Janela de abertura (dias)"
-                            {...getFieldProps('fixedWindowPeriod')}
-                            onChange={(e) =>
+                    <InputNumberBox
+                        label="Janela de abertura (dias)"
+                        value={getFieldProps('fixedWindowPeriod').value}
+                        onChange={(e) => {
+                            setFieldValue('fixedWindowPeriod', e.target.value)
+
+                            if (selectedPeriods !== 4) {
                                 setFieldValue(
                                     'fixedWindowPeriod',
-                                    e.target.value,
+                                    getDaysForPeriod(selectedPeriods),
                                 )
                             }
-                        />
-                    )}
-
+                        }}
+                    />
                     {selectedOpening === 1 &&
                         periods.map((period, index) => (
                             <Box key={period.id} w="100%">
@@ -357,7 +355,7 @@ export const HostingRulesForm = () => {
                             onChange={(newValue) => {
                                 setFieldValue(
                                     'availableWeekDays',
-                                    newValue.map(Number),
+                                    newValue.map(String),
                                 )
                             }}
                         >

@@ -1,21 +1,21 @@
 export const HOSTING_SPECIFIC_DAYS = [
-    { value: 0, name: 'Domingo' },
-    { value: 1, name: 'Segunda' },
-    { value: 2, name: 'Terça' },
-    { value: 3, name: 'Quarta' },
-    { value: 4, name: 'Quinta' },
-    { value: 5, name: 'Sexta' },
-    { value: 6, name: 'Sábado' },
+    { value: '0', name: 'Domingo' },
+    { value: '1', name: 'Segunda' },
+    { value: '2', name: 'Terça' },
+    { value: '3', name: 'Quarta' },
+    { value: '4', name: 'Quinta' },
+    { value: '5', name: 'Sexta' },
+    { value: '6', name: 'Sábado' },
 ]
 
 export const AVAILABLE_WEEK_DAYS = [
-    { value: 0, name: 'Domingo' },
-    { value: 1, name: 'Segunda' },
-    { value: 2, name: 'Terça' },
-    { value: 3, name: 'Quarta' },
-    { value: 4, name: 'Quinta' },
-    { value: 5, name: 'Sexta' },
-    { value: 6, name: 'Sábado' },
+    { value: '0', name: 'Domingo' },
+    { value: '1', name: 'Segunda' },
+    { value: '2', name: 'Terça' },
+    { value: '3', name: 'Quarta' },
+    { value: '4', name: 'Quinta' },
+    { value: '5', name: 'Sexta' },
+    { value: '6', name: 'Sábado' },
 ]
 
 export const CHECKIN_OPTIONS = [
@@ -48,10 +48,10 @@ export const OPENING_WINDOW = [
 ]
 
 export const PERIODS = [
-    { label: '3 meses', value: 0 },
-    { label: '6 meses', value: 1 },
-    { label: '1 ano', value: 2 },
-    { label: '2 ano', value: 3 },
+    { label: '3 meses', value: 0, days: 90 },
+    { label: '6 meses', value: 1, days: 180 },
+    { label: '1 ano', value: 2, days: 365 },
+    { label: '2 ano', value: 3, days: 730 },
     { label: 'Personalizado', value: 4 },
 ]
 

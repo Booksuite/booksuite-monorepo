@@ -19,6 +19,7 @@ import {
     createHostingRulesInitialValues,
     HostingRulesData,
     hostingRulesDataSchema,
+    transformFormDataForSubmit,
 } from './utils/config'
 
 export default function HostingRules() {
@@ -37,12 +38,11 @@ export default function HostingRules() {
     const toast = useToast()
 
     async function handleSubmit(formData: HostingRulesData) {
-        
-
         try {
+            const apiData = transformFormDataForSubmit(formData)
             await updateCompanyHostingRules({
-                companyId: companyId, 
-                data: formData,
+                companyId: companyId,
+                data: apiData,
             })
             toast({
                 title: 'Dados gerais modificados com sucesso ',
