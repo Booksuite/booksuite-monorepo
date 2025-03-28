@@ -120,26 +120,28 @@ export const ServiceForm: React.FC = () => {
     return (
         <Form>
             <Stack gap={8}>
-                <Flex direction="column" gap={2}>
-                    <InputBox
-                        label="Nome da Experiência"
-                        error={errors.name}
-                        formControl={{
-                            isInvalid: !!errors.name && touched.name,
-                        }}
-                        {...getFieldProps('name')}
-                    />
+                <Stack gap={4}>
+                    <Flex justifyContent={'space-between'} w={'100%'} gap={2}>
+                        <InputBox
+                            label="Nome da Experiência"
+                            error={errors.name}
+                            formControl={{
+                                isInvalid: !!errors.name && touched.name,
+                            }}
+                            {...getFieldProps('name')}
+                        />
 
-                    <InputBox
-                        label="Preço Final da Experiência"
-                        type="currency"
-                        error={errors.price}
-                        formControl={{
-                            isInvalid: !!errors.price && touched.price,
-                        }}
-                        {...getFieldProps('price')}
-                        onChange={handleChange('price')}
-                    />
+                        <InputBox
+                            label="Preço Final da Experiência"
+                            type="currency"
+                            error={errors.price}
+                            formControl={{
+                                isInvalid: !!errors.price && touched.price,
+                            }}
+                            {...getFieldProps('price')}
+                            onChange={handleChange('price')}
+                        />
+                    </Flex>
 
                     <Select
                         size="lg"
@@ -161,29 +163,32 @@ export const ServiceForm: React.FC = () => {
                             ),
                         )}
                     </Select>
+                    <Flex justifyContent={'space-between'} w={'100%'} gap={2}>
+                        <InputNumberBox
+                            label="Mínimo de Diárias"
+                            min={1}
+                            error={errors.minDaily}
+                            formControl={{
+                                isInvalid:
+                                    !!errors.minDaily && touched.minDaily,
+                            }}
+                            {...getFieldProps('minDaily')}
+                            onChange={handleChange('minDaily')}
+                        />
 
-                    <InputNumberBox
-                        label="Mínimo de Diárias"
-                        min={1}
-                        error={errors.minDaily}
-                        formControl={{
-                            isInvalid: !!errors.minDaily && touched.minDaily,
-                        }}
-                        {...getFieldProps('minDaily')}
-                        onChange={handleChange('minDaily')}
-                    />
-
-                    <InputNumberBox
-                        label="Antecedência mínima"
-                        min={1}
-                        error={errors.minNotice}
-                        formControl={{
-                            isInvalid: !!errors.minNotice && touched.minNotice,
-                        }}
-                        {...getFieldProps('minNotice')}
-                        onChange={handleChange('minNotice')}
-                    />
-                </Flex>
+                        <InputNumberBox
+                            label="Antecedência mínima"
+                            min={1}
+                            error={errors.minNotice}
+                            formControl={{
+                                isInvalid:
+                                    !!errors.minNotice && touched.minNotice,
+                            }}
+                            {...getFieldProps('minNotice')}
+                            onChange={handleChange('minNotice')}
+                        />
+                    </Flex>
+                </Stack>
 
                 <section>
                     <Text as="h2">Configurações de Venda</Text>
@@ -236,39 +241,47 @@ export const ServiceForm: React.FC = () => {
                 {values.seasonalSale && (
                     <section>
                         <Text as="h2">Períodos de Venda</Text>
-                        <Stack gap={2}>
-                            <h4>Início do Período de Venda</h4>
-                            <DatePickerBox
-                                value={values.seasonStart}
-                                onChange={(date) =>
-                                    setFieldValue('seasonStart', date)
-                                }
-                                error={errors.seasonStart}
-                                formControl={{
-                                    isInvalid:
-                                        !!errors.seasonStart &&
-                                        touched.seasonStart,
-                                }}
-                            />
-
-                            <h4>Fim do Período de Venda</h4>
-                            <DatePickerBox
-                                value={values.seasonEnd}
-                                onChange={(date) =>
-                                    setFieldValue('seasonEnd', date)
-                                }
-                                error={errors.seasonEnd}
-                                formControl={{
-                                    isInvalid:
-                                        !!errors.seasonEnd && touched.seasonEnd,
-                                }}
-                            />
-                        </Stack>
+                        <Flex
+                            justifyContent={'space-between'}
+                            w={'100%'}
+                            gap={2}
+                        >
+                            <Stack w={'100%'}>
+                                <h4>Início do Período de Venda</h4>
+                                <DatePickerBox
+                                    value={values.seasonStart}
+                                    onChange={(date) =>
+                                        setFieldValue('seasonStart', date)
+                                    }
+                                    error={errors.seasonStart}
+                                    formControl={{
+                                        isInvalid:
+                                            !!errors.seasonStart &&
+                                            touched.seasonStart,
+                                    }}
+                                />
+                            </Stack>
+                            <Stack w={'100%'}>
+                                <h4>Fim do Período de Venda</h4>
+                                <DatePickerBox
+                                    value={values.seasonEnd}
+                                    onChange={(date) =>
+                                        setFieldValue('seasonEnd', date)
+                                    }
+                                    error={errors.seasonEnd}
+                                    formControl={{
+                                        isInvalid:
+                                            !!errors.seasonEnd &&
+                                            touched.seasonEnd,
+                                    }}
+                                />
+                            </Stack>
+                        </Flex>
                     </section>
                 )}
 
                 <section>
-                    <Text as="h2">Adultos</Text>
+                    <h2>Adultos</h2>
                     <InputNumberBox
                         label="Número de adultos"
                         error={errors.adults}

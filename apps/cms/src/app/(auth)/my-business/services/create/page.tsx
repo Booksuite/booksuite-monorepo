@@ -72,7 +72,7 @@ export default function CreateServicePage() {
                     </PageHeader.BackLink>
 
                     <SwitchBox
-                        label="Ativa"
+                        label="Ativo"
                         id="status"
                         name="status"
                         defaultChecked
