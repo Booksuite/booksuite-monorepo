@@ -1,1 +1,0 @@
-{"type":"object","properties":{"order":{"type":"object","example":1},"mediaId":{"type":"string","example":"8c8ab0cb-7689-4357-b446-1348cfe3842d"}},"required":["order","mediaId"],"x-readme-ref-name":"ServiceMediaDTO"}
