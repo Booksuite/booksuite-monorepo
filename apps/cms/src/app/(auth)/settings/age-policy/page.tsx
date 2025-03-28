@@ -6,8 +6,11 @@ import {
 } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import { AgePolicyForm } from './components/AgePolicyForm'
@@ -20,6 +23,7 @@ import {
 export default function AgePolicy() {
     const companyId = useCurrentCompanyId()
     const toast = useToast()
+    const { back } = useRouter()
 
     const { data: companyAgePolicyData, isLoading } = useGetCompanyAgePolicy({
         companyId: companyId,
@@ -37,9 +41,11 @@ export default function AgePolicy() {
                 title: 'Políticas de Idade modificadas com sucesso',
                 status: 'success',
             })
-        } catch (erro) {
+            back()
+        } catch (error) {
             toast({
                 title: 'Erro ao modificar Políticas de Idade',
+                description: getErrorMessage(error),
                 status: 'error',
             })
         }
@@ -63,7 +69,9 @@ export default function AgePolicy() {
                     validationSchema={agePolicyFormSchema}
                     onSubmit={handleSubmit}
                 >
-                    <AgePolicyForm />
+                    <FormikController onCancel={() => back()}>
+                        <AgePolicyForm />
+                    </FormikController>
                 </Formik>
             )}
         </div>

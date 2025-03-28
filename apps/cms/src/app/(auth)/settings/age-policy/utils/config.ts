@@ -4,7 +4,7 @@ import * as yup from 'yup'
 export type AgePolicyFormData = AgePolicyInput
 
 export const createAgePolicyInitialValues = (
-    data?: Partial<AgePolicyFull>, 
+    data?: Partial<AgePolicyFull>,
 ): AgePolicyFormData => ({
     acceptChildren: data?.acceptChildren || false,
     adultMinAge: data?.adultMinAge || 0,
@@ -14,7 +14,7 @@ export const createAgePolicyInitialValues = (
             initialAge: group.initialAge,
             finalAge: group.finalAge,
             chargeType: group.chargeType,
-            value: group.value || 0
+            value: group.value || 0,
         })) || [],
 })
 
