@@ -74,6 +74,10 @@ export const HostingRulesForm = () => {
             setSelectedOpening(0)
             setSelectedPeriods(4)
         }
+
+        if(values.availableWeekDays.length < 7){
+            setSelectedSpecificDays(1)
+        }
     }, [])
 
     return (

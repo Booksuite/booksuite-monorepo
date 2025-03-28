@@ -41,7 +41,7 @@ export default function HostingRules() {
 
         try {
             await updateCompanyHostingRules({
-                companyId: companyId,
+                companyId: companyId, 
                 data: formData,
             })
             toast({
@@ -50,7 +50,7 @@ export default function HostingRules() {
             })
 
             await queryClient.invalidateQueries({
-                queryKey: ['updateHostingRules'],
+                queryKey: ['getCompanyHostingRules'],
                 refetchType: 'all',
             })
 
