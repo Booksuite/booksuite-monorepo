@@ -3,9 +3,11 @@
 import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import { AddressForm } from './components/AddressForm'
@@ -18,6 +20,7 @@ import {
 export default function Address() {
     const companyId = useCurrentCompanyId()
     const toast = useToast()
+    const { back } = useRouter()
 
     const { data: companyData, isLoading } = useGetCompanyById({
         id: companyId,
@@ -36,6 +39,8 @@ export default function Address() {
                 title: 'Endereço modificado com sucesso',
                 status: 'success',
             })
+
+            back()
         } catch (error) {
             toast({
                 title: 'Erro ao editar Endereço',
@@ -61,7 +66,9 @@ export default function Address() {
                     validationSchema={addressFormSchema}
                     onSubmit={handleSubmit}
                 >
-                    <AddressForm />
+                    <FormikController onCancel={() => back()}>
+                        <AddressForm />
+                    </FormikController>
                 </Formik>
             )}
         </div>

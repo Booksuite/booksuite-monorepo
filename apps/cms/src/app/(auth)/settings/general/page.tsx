@@ -3,9 +3,11 @@
 import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
 import { GeneralForm } from './components/GeneralDataForm'
@@ -17,6 +19,7 @@ import {
 
 export default function GeneralDataPage() {
     const companyId = useCurrentCompanyId()
+    const { back } = useRouter()
 
     const { data: companyGeneralData, isLoading } = useGetCompanyById({
         id: companyId,
@@ -37,6 +40,8 @@ export default function GeneralDataPage() {
                 title: 'Dados gerais modificados com sucesso ',
                 status: 'success',
             })
+
+            back()
         } catch (error) {
             toast({
                 title: 'Erro ao editar dados gerais',
@@ -60,7 +65,9 @@ export default function GeneralDataPage() {
                     validationSchema={generalDataSchema}
                     onSubmit={handleSubmit}
                 >
-                    <GeneralForm />
+                    <FormikController onCancel={() => back()}>
+                        <GeneralForm />
+                    </FormikController>
                 </Formik>
             )}
         </div>

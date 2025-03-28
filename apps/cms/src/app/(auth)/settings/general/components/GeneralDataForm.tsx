@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Flex, Select, Stack } from '@chakra-ui/react'
+import { Flex, Select, Stack } from '@chakra-ui/react'
 import { Form, useFormikContext } from 'formik'
 import React from 'react'
 
@@ -9,12 +9,8 @@ import { GeneralDataForm } from '../utils/config'
 import { BRAZIL_TIMEZONES, COMPANY_TYPES } from '../utils/constants'
 
 export const GeneralForm: React.FC = () => {
-    const {
-        getFieldProps,
-        touched,
-        errors,
-        setFieldValue,
-    } = useFormikContext<GeneralDataForm>()
+    const { getFieldProps, touched, errors, setFieldValue } =
+        useFormikContext<GeneralDataForm>()
 
     return (
         <Form>
@@ -30,7 +26,7 @@ export const GeneralForm: React.FC = () => {
                     />
                 </Flex>
 
-                <Flex direction="column">
+                <Flex justifyContent={'space-between'} w={'100%'} gap={2}>
                     <Select
                         value={getFieldProps('type').value}
                         onChange={(selectedOption) =>
@@ -43,9 +39,7 @@ export const GeneralForm: React.FC = () => {
                             </option>
                         ))}
                     </Select>
-                </Flex>
 
-                <Flex direction="column">
                     <Select
                         value={getFieldProps('timezone').value}
                         onChange={(selectedOption) => {
@@ -64,9 +58,6 @@ export const GeneralForm: React.FC = () => {
                         )}
                     </Select>
                 </Flex>
-                <Button type="submit" size="lg">
-                    Salvar
-                </Button>
             </Stack>
         </Form>
     )
