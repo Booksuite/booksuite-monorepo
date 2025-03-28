@@ -36,6 +36,8 @@ import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Table } from '@/components/organisms/Table'
 
+import { ServiceRowActionsMenu } from './components/RowActionsMenu'
+
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
     { key: 'unpublished', label: 'Não publicadas' },
@@ -76,6 +78,11 @@ const columnsDefinition: ColumnDef<ServiceFull>[] = [
         id: 'published',
         header: 'Status',
         accessorFn: (row) => (row.published ? 'Ativo' : 'Inativo'),
+    },
+    {
+        id: 'actions',
+        size: 50,
+        cell: ({ row }) => <ServiceRowActionsMenu item={row.original} />,
     },
 ]
 

@@ -1,4 +1,4 @@
-import { HousingUnitTypeFull, useUpdateHousingUnitType } from '@booksuite/sdk'
+import { ServiceFull, useUpdateService } from '@booksuite/sdk'
 import {
     IconButton,
     Menu,
@@ -14,16 +14,15 @@ import { useCurrentCompanyId } from '@/common/contexts/user'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
 
 interface RowActionsMenuProps {
-    item: HousingUnitTypeFull
+    item: ServiceFull
 }
 
-export const HousingUnitTypeRowActionsMenu: React.FC<RowActionsMenuProps> = ({
+export const ServiceRowActionsMenu: React.FC<RowActionsMenuProps> = ({
     item,
 }) => {
     const { push } = useRouter()
-
     const companyId = useCurrentCompanyId()
-    const { mutate: updateHousingUnitType, } = useUpdateHousingUnitType()
+    const { mutate: updateServiceData } = useUpdateService()
     const { showDialog } = useConfirmationDialog()
 
     const handleDuplicate = () => {
@@ -39,32 +38,35 @@ export const HousingUnitTypeRowActionsMenu: React.FC<RowActionsMenuProps> = ({
             confirmButtonText: 'Confirmar',
             variant: item.published ? 'warning' : 'info',
             onConfirm: () => {
-                updateHousingUnitType({
+                updateServiceData({
                     companyId,
                     id: item.id,
                     data: {
-                        published: !item.published,
+                        adults: item.adults,
+                        availableHousingUnitTypes:
+                            item?.availableHousingUnitTypes?.map((h) => ({
+                                housingUnitTypeId: h.housingUnitType.id,
+                            })),
+                        availableWeekDays: item.availableWeekDays,
+                        billingType: item.billingType,
+                        description: item.description,
+                        included: item.included,
+                        minDaily: item.minDaily,
+                        minNotice: item.minNotice,
                         name: item.name,
-                        slug: item.slug,
-                        order: item.order,
-                        weekdaysPrice: item.weekdaysPrice ?? 0,
-                        weekendPrice: item.weekendPrice ?? 0,
-                        extraAdultPrice: item.extraAdultPrice ?? 0,
-                        chargeExtraAdultHigherThan:
-                            item.chargeExtraAdultHigherThan ?? 0,
-                        housingUnits: item.housingUnits.map((housingUnit) => ({
-                            id: housingUnit.id,
-                            name: housingUnit.name,
-                            housingUnitId: housingUnit.id,
-                        })),
-                        facilities: item.facilities.map((facility) => ({
-                            facilityId: facility.id,
-                            isFeatured: facility.isFeatured ?? undefined,
-                        })),
+                        notes: item.notes,
+                        onlineSale: item.onlineSale,
+                        panelSale: item.panelSale,
+                        price: item.price,
+                        seasonalSale: item.seasonalSale,
+                        seasonEnd: item.seasonEnd,
+                        seasonStart: item.seasonStart,
+                        published: !item.published,
                         medias: item.medias.map((media) => ({
-                            mediaId: media.id,
-                            isFeatured: media.isFeatured,
+                            mediaId: media.media.id,
+                            order: media.order,
                         })),
+                        coverMediaId: item.medias[0]?.media.id,
                     },
                 })
             },
@@ -85,7 +87,7 @@ export const HousingUnitTypeRowActionsMenu: React.FC<RowActionsMenuProps> = ({
     }
 
     const handleEdit = () => {
-        push(`/my-business/rooms/${item.id}`)
+        push(`/my-business/services/${item.id}`)
     }
 
     return (
