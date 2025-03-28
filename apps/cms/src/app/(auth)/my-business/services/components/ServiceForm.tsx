@@ -54,7 +54,6 @@ export const ServiceForm: React.FC = () => {
         setFieldValue,
     } = useFormikContext<ServiceFormData>()
 
-    console.log(values)
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
     const sensors = useSensors(
