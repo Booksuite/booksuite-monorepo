@@ -54,6 +54,8 @@ export const ServiceForm: React.FC = () => {
         setFieldValue,
     } = useFormikContext<ServiceFormData>()
 
+    console.log(errors)
+
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
     const sensors = useSensors(
@@ -68,8 +70,7 @@ export const ServiceForm: React.FC = () => {
                     (item) => item.media.id === media.id,
                 )
                 const order = sameMedia?.order || index
-                setFieldValue('coverMediaId', media.id)
-
+                
                 return {
                     id: media.id,
                     order,

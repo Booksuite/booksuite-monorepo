@@ -33,9 +33,8 @@ export default function UpdateService({ params }: UpdateServiceProps) {
     const toast = useToast()
 
     async function handleSubmit(formData: ServiceFormData) {
-        const apiData = transformFormDataForSubmit(formData)
-
         try {
+            const apiData = transformFormDataForSubmit(formData)
             await updateService({ id: params.id, companyId }, apiData)
 
             toast({

@@ -1,15 +1,18 @@
 import {
-    HousingUnitType,
     ServiceCreateInput,
     ServiceFull,
-    ServiceHousingUnitTypeInput,
+    ServiceHousingUnitType,
     ServiceMedia,
     ServiceMediaInput,
 } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type ServiceFormData = Omit<ServiceCreateInput, 'medias'> & {
+export type ServiceFormData = Omit<
+    ServiceCreateInput,
+    'medias' | 'availableHousingUnitTypes'
+> & {
     medias: ServiceMedia[]
+    availableHousingUnitTypes: ServiceHousingUnitType[]
 }
 
 export const transformFormDataForSubmit = (
@@ -24,18 +27,12 @@ export const transformFormDataForSubmit = (
 
     return {
         ...rest,
+        coverMediaId: medias[0]?.media.id,
         medias: transformedMedias,
+        availableHousingUnitTypes: formData.availableHousingUnitTypes.map(
+            (item) => ({ housingUnitTypeId: item.housingUnitType.id }),
+        ),
     }
-}
-
-export const transformHousingUnitType = (
-    data: HousingUnitType[],
-): ServiceHousingUnitTypeInput[] => {
-    return data.map(
-        ({ id }): ServiceHousingUnitTypeInput => ({
-            housingUnitTypeId: id,
-        }),
-    )
 }
 
 export const createFormInitialValues = (
@@ -59,8 +56,7 @@ export const createFormInitialValues = (
     seasonEnd: data?.seasonEnd || '',
     seasonStart: data?.seasonStart || '',
     coverMediaId: data?.coverMedia?.id || '',
-    availableHousingUnitTypes:
-        transformHousingUnitType(data?.availableHousingUnitTypes ?? []) || [],
+    availableHousingUnitTypes: data?.availableHousingUnitTypes || [],
 })
 
 export const serviceFormSchema = yup.object({
@@ -68,7 +64,7 @@ export const serviceFormSchema = yup.object({
     published: yup.boolean().required('Status é obrigatório'),
     adults: yup.number().min(0),
     billingType: yup.string().required('Tipo de cobrança é obrigatório'),
-    availableHousingUnitTypes: yup.array().of(yup.object()).optional(),
+    availableHousingUnitTypes: yup.array().min(1),
     medias: yup.array().min(1),
     description: yup.string().required('Descrição é obrigatória'),
     minDaily: yup
