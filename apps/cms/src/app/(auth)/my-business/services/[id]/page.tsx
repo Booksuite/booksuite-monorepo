@@ -1,92 +1,85 @@
 'use client'
 
-import { useGetServiceById } from '@booksuite/sdk'
-import { Flex, Spinner, useToast } from '@chakra-ui/react'
-import { type FormEvent, useState } from 'react'
+import { useGetServiceById, useUpdateService } from '@booksuite/sdk'
+import { useToast } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
+import { Formik } from 'formik'
+import { useRouter } from 'next/navigation'
 
+import { ServiceForm } from '@/app/(auth)/my-business/services/components/ServiceForm'
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { updateExtra } from '@/common/services/extra/updateExtra'
-import { UpdateExtraDTO } from '@/common/types/Extra'
-import { SwitchBox } from '@/components/atoms/SwitchBox'
-import { toastGenericPatchMessages } from '@/components/molecules/ToastMessages'
+import { getErrorMessage } from '@/common/utils'
+import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { DashboardExtraForm } from '@/components/templates/DashboardExtraForm'
+import {
+    createFormInitialValues,
+    ServiceFormData,
+    serviceFormSchema,
+    transformFormDataForSubmit,
+} from '../utils/config'
 
-export default function ExtraDetailPage({
-    params,
-}: {
+interface UpdateServiceProps {
     params: { id: string }
-}) {
-    const companyId = useCurrentCompanyId()
-    const {
-        data: extra,
-        isLoading,
-        error,
-    } = useGetServiceById({ id: params.id, companyId })
+}
 
-    const [isSaving, setIsSaving] = useState<boolean>(false)
+export default function UpdateService({ params }: UpdateServiceProps) {
+    const companyId = useCurrentCompanyId()
+    const { back } = useRouter()
+    const queryClient = useQueryClient()
+
+    const { data: service, queryKey } = useGetServiceById({
+        companyId,
+        id: params.id,
+    })
+
+    const { mutateAsync: updateServiceData } = useUpdateService()
 
     const toast = useToast()
 
-    function saveExtra(
-        e: FormEvent<HTMLFormElement>,
-        formData: UpdateExtraDTO,
-    ) {
-        e.preventDefault()
+    async function handleSubmit(formData: ServiceFormData) {
+        try {
+            const apiData = transformFormDataForSubmit(formData)
+            await updateServiceData({ id: params.id, companyId, data: apiData })
 
-        if (isSaving) {
-            return
+            toast({
+                title: 'Serviço modificado com sucesso',
+                status: 'success',
+            })
+
+            await queryClient.invalidateQueries({ queryKey: queryKey })
+            await queryClient.invalidateQueries({
+                queryKey: ['searchServices'],
+                refetchType: 'all',
+            })
+
+            back()
+        } catch (error) {
+            toast({
+                title: 'Erro ao editar Serviço',
+                description: getErrorMessage(error),
+                status: 'error',
+            })
         }
-
-        setIsSaving(true)
-
-        const payload = {
-            ...formData,
-            // status: status,
-        } as UpdateExtraDTO
-
-        const response = new Promise((resolve) => {
-            resolve(updateExtra(params.id, payload))
-        }).finally(() => {
-            setIsSaving(false)
-        })
-
-        toast.promise(response, toastGenericPatchMessages)
     }
 
     return (
         <div>
-            <PageHeader.Root>
-                <Flex
-                    alignItems="center"
-                    justifyContent="space-between"
-                    gap={2}
+            <PageHeader
+                title="Editar Experiências"
+                backButtonHref="/my-business/services"
+                backLButtonLabel="Meu Negócio"
+            />
+
+            {!!service && (
+                <Formik<ServiceFormData>
+                    initialValues={createFormInitialValues(service)}
+                    validationSchema={serviceFormSchema}
+                    onSubmit={handleSubmit}
                 >
-                    <PageHeader.BackLink href="/my-business/extras">
-                        Extras
-                    </PageHeader.BackLink>
-
-                    <SwitchBox
-                        label="Ativa"
-                        id="status"
-                        name="status"
-                        defaultChecked
-                    />
-                </Flex>
-
-                <PageHeader.Title>Detalhes do Extra</PageHeader.Title>
-            </PageHeader.Root>
-
-            {isLoading ? (
-                <Spinner />
-            ) : error ? (
-                <p>{error}</p>
-            ) : (
-                <DashboardExtraForm
-                    onSubmit={saveExtra}
-                    data={extra}
-                    isSaving={isSaving}
-                />
+                    <FormikController onCancel={() => back()}>
+                        <ServiceForm />
+                    </FormikController>
+                </Formik>
             )}
         </div>
     )

@@ -1,66 +1,246 @@
-import { Button, Link } from '@chakra-ui/react'
+'use client'
 
+import {
+    ServiceFull,
+    ServiceOrderByDTOOrderBy,
+    useSearchServices,
+} from '@booksuite/sdk'
+import {
+    HStack,
+    IconButton,
+    Image,
+    Input,
+    InputGroup,
+    InputRightElement,
+    Text,
+    VStack,
+} from '@chakra-ui/react'
+import {
+    ColumnDef,
+    functionalUpdate,
+    getCoreRowModel,
+    useReactTable,
+} from '@tanstack/react-table'
+import { Plus, Search, X } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { debounce } from 'radash'
+import { useEffect, useRef, useState } from 'react'
+
+import { useCurrentCompanyId } from '@/common/contexts/user'
+import { useSearchParamsOrder } from '@/common/hooks/useOrder'
+import { useSearchParamsPagination } from '@/common/hooks/usePagination'
+import { formatCurrency } from '@/common/utils/currency'
+import { LinkButton } from '@/components/atoms/LinkButton'
+import { PaginationControls } from '@/components/molecules/PaginationControl'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-//import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { Icons } from '@/components/svgs/icons'
+import { Table } from '@/components/organisms/Table'
 
-export default async function Experiencias() {
-    const chipItems = [
-        { key: '1', label: 'Ativas' },
-        { key: '2', label: 'Inativas' },
-        { key: '3', label: 'Todas' },
-    ]
+import { ServiceRowActionsMenu } from './components/RowActionsMenu'
+
+const chipItems = [
+    { key: 'published', label: 'Publicadas' },
+    { key: 'unpublished', label: 'Não publicadas' },
+]
+
+const columnsDefinition: ColumnDef<ServiceFull>[] = [
+    {
+        id: 'image',
+        size: 85,
+        cell: ({ row }) => (
+            <Image
+                src={row.original.medias[0]?.media.url}
+                alt={row.original.name}
+                objectFit="cover"
+                borderRadius="lg"
+                width="72px"
+                height="72px"
+            />
+        ),
+    },
+    {
+        id: 'name',
+        header: 'Nome',
+        accessorKey: 'name',
+        enableSorting: true,
+        cell: ({ row }) => (
+            <Text fontWeight="bold" fontSize="md" color="#486581">
+                {row.original.name}
+            </Text>
+        ),
+    },
+    {
+        id: 'price',
+        header: 'Preço',
+        accessorFn: (row) => (row.price ? formatCurrency(row.price) : '-'),
+    },
+    {
+        id: 'published',
+        header: 'Status',
+        accessorFn: (row) => (row.published ? 'Ativo' : 'Inativo'),
+    },
+    {
+        id: 'actions',
+        size: 50,
+        cell: ({ row }) => <ServiceRowActionsMenu item={row.original} />,
+    },
+]
+
+export default function Services() {
+    const { push } = useRouter()
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+    const [searchQuery, setSearchQuery] = useState<string>('')
+    const [searchInputValue, setSearchInputValue] = useState<string>('')
+
+    const { orderBy, orderDirection, setOrder } =
+        useSearchParamsOrder<ServiceOrderByDTOOrderBy>({
+            defaultOrder: 'name',
+            currentPath: '/my-business/services',
+        })
+
+    const handleRowClick = (row: ServiceFull) => {
+        push(`/my-business/services/${row.id}`)
+    }
+
+    const { page, itemsPerPage, setPage, setItemsPerPage } =
+        useSearchParamsPagination({
+            currentPath: '/my-business/services',
+        })
+
+    const debouncedSearch = useRef(
+        debounce({ delay: 350 }, (search: string) => {
+            setSearchQuery(search)
+        }),
+    )
+
+    useEffect(() => {
+        debouncedSearch.current(searchInputValue)
+    }, [debouncedSearch, searchInputValue])
+
+    const companyId = useCurrentCompanyId()
+    const {
+        data: services,
+        isLoading,
+        error,
+    } = useSearchServices(
+        { companyId },
+        {
+            pagination: { page, itemsPerPage },
+            order: {
+                orderBy,
+                direction: orderDirection,
+            },
+            filter:
+                selectedFilters.length > 0
+                    ? {
+                          published: selectedFilters.includes('published'),
+                      }
+                    : undefined,
+        },
+        { query: searchQuery.length > 0 ? searchQuery : undefined },
+    )
+
+    const table = useReactTable({
+        data: services?.items ?? [],
+        columns: columnsDefinition,
+        getCoreRowModel: getCoreRowModel(),
+        manualSorting: true,
+        state: {
+            sorting: [
+                {
+                    id: orderBy,
+                    desc: orderDirection === 'desc',
+                },
+            ],
+        },
+        onSortingChange: (sorting) => {
+            const newValue = functionalUpdate(sorting, [
+                {
+                    id: orderBy,
+                    desc: orderDirection === 'desc',
+                },
+            ])
+
+            setOrder(
+                newValue[0]?.id ?? 'name',
+                newValue[0]?.desc ? 'desc' : 'asc',
+            )
+        },
+    })
 
     return (
-        <div className="Experiencias">
-            <PageHeader.Root>
-                <PageHeader.BackLink href="/my-business">
-                    Meu Negócio
-                </PageHeader.BackLink>
+        <div className="Services">
+            <PageHeader
+                title="Serviços"
+                backLButtonLabel="Meu Negócio"
+                backButtonHref="/my-business"
+                headerRight={
+                    <LinkButton
+                        href="/my-business/services/create"
+                        leftIcon={<Plus size={16} />}
+                    >
+                        Adicionar
+                    </LinkButton>
+                }
+            />
 
-                <PageHeader.Title>Experiências</PageHeader.Title>
-            </PageHeader.Root>
+            <VStack gap={4} alignItems="stretch">
+                <HStack flex={1} justifyContent="space-between">
+                    <ChipFilter
+                        items={chipItems}
+                        value={selectedFilters}
+                        onChange={setSelectedFilters}
+                    />
 
-            <div>
-                <ChipFilter items={chipItems} />
-
-                {/*<List.Root>
-                    {experiences &&
-                        experiences.map((experience: Experience) => (
-                            <Link
-                                href={`experiencias/${experience.id}`}
-                                key={experience.id}
+                    <InputGroup w="300px">
+                        <Input
+                            type="text"
+                            placeholder="Pesquisar"
+                            value={searchInputValue}
+                            onChange={(e) =>
+                                setSearchInputValue(e.target.value)
+                            }
+                        />
+                        <InputRightElement>
+                            <IconButton
+                                variant="ghost"
+                                aria-label="Pesquisar"
+                                size="sm"
+                                onClick={() => {
+                                    setSearchInputValue('')
+                                    setSearchQuery('')
+                                }}
                             >
-                                <List.Item
-                                    title={experience.name}
-                                    subtitle={
-                                        <>
-                                            {experience.price.toLocaleString(
-                                                'pt-BR',
-                                                {
-                                                    style: 'currency',
-                                                    currency: 'BRL',
-                                                },
-                                            )}{' '}
-                                            <br /> {getSales(experience)}
-                                        </>
-                                    }
-                                    status={experience.status}
-                                />
-                            </Link>
-                        ))}
-                </List.Root>*/}
+                                {searchQuery.length > 0 ? (
+                                    <X size={16} />
+                                ) : (
+                                    <Search size={16} />
+                                )}
+                            </IconButton>
+                        </InputRightElement>
+                    </InputGroup>
+                </HStack>
 
-                <Button
-                    as={Link}
-                    href="experiencias/criar"
-                    className="mt-[2.5rem] w-full"
-                    leftIcon={<Icons.Plus />}
-                >
-                    Adicionar Experiência
-                </Button>
-            </div>
+                <Table
+                    table={table}
+                    error={error}
+                    isLoading={isLoading}
+                    onRowClick={handleRowClick}
+                />
+
+                <HStack justifyContent="flex-end">
+                    <PaginationControls
+                        page={page}
+                        prevPage={services?.prevPage ?? null}
+                        nextPage={services?.nextPage ?? null}
+                        totalPages={services?.totalPages ?? 0}
+                        totalItems={services?.totalItems ?? 0}
+                        itemsPerPage={itemsPerPage}
+                        onItemsPerPageChange={setItemsPerPage}
+                        onPageChange={setPage}
+                    />
+                </HStack>
+            </VStack>
         </div>
     )
 }
