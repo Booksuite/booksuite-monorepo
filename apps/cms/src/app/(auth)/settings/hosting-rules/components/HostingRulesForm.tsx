@@ -80,51 +80,56 @@ export const HostingRulesForm = () => {
         <Form>
             <div>
                 <Stack spacing={4}>
-                    <Select
-                        size="lg"
-                        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                            setFieldValue('checkIn', Number(e.target.value))
-                        }
-                        value={
-                            CHECKIN_OPTIONS.find(
-                                (option) =>
-                                    option.value ===
-                                    getFieldProps('checkIn').value,
-                            )?.value
-                        }
-                    >
-                        <option value="" disabled selected hidden>
-                            Horário do Check-In
-                        </option>
-                        {CHECKIN_OPTIONS.map(({ label, value }, index) => (
-                            <option key={index} value={value}>
-                                {label}
+                    <Flex gap={2} justifyContent={'space-between'} w={'100%'}>
+                        <Select
+                            size="lg"
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                                setFieldValue('checkIn', Number(e.target.value))
+                            }
+                            value={
+                                CHECKIN_OPTIONS.find(
+                                    (option) =>
+                                        option.value ===
+                                        getFieldProps('checkIn').value,
+                                )?.value
+                            }
+                        >
+                            <option value="" disabled selected hidden>
+                                Horário do Check-In
                             </option>
-                        ))}
-                    </Select>
+                            {CHECKIN_OPTIONS.map(({ label, value }, index) => (
+                                <option key={index} value={value}>
+                                    {label}
+                                </option>
+                            ))}
+                        </Select>
 
-                    <Select
-                        size="lg"
-                        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                            setFieldValue('checkOut', Number(e.target.value))
-                        }
-                        value={
-                            CHECKOUT_OPTIONS.find(
-                                (option) =>
-                                    option.value ===
-                                    getFieldProps('checkOut').value,
-                            )?.value
-                        }
-                    >
-                        <option value="" disabled selected hidden>
-                            Horário do Check-Out
-                        </option>
-                        {CHECKOUT_OPTIONS.map(({ label, value }, index) => (
-                            <option key={index} value={value}>
-                                {label}
+                        <Select
+                            size="lg"
+                            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                                setFieldValue(
+                                    'checkOut',
+                                    Number(e.target.value),
+                                )
+                            }
+                            value={
+                                CHECKOUT_OPTIONS.find(
+                                    (option) =>
+                                        option.value ===
+                                        getFieldProps('checkOut').value,
+                                )?.value
+                            }
+                        >
+                            <option value="" disabled selected hidden>
+                                Horário do Check-Out
                             </option>
-                        ))}
-                    </Select>
+                            {CHECKOUT_OPTIONS.map(({ label, value }, index) => (
+                                <option key={index} value={value}>
+                                    {label}
+                                </option>
+                            ))}
+                        </Select>
+                    </Flex>
 
                     <InputNumberBox
                         label="Mínimo de diárias"
@@ -151,7 +156,7 @@ export const HostingRulesForm = () => {
                         <Flex gap={2} justifyContent={'space-between'}>
                             {AVAILABLE_WEEK_DAYS.map((night) => (
                                 <Checkbox key={night.name} value={night.value}>
-                                    {night.name}`
+                                    {night.name}
                                 </Checkbox>
                             ))}
                         </Flex>
@@ -335,7 +340,7 @@ export const HostingRulesForm = () => {
                                         key={night.name}
                                         value={night.value}
                                     >
-                                        {night.name}`
+                                        {night.name}
                                     </Checkbox>
                                 ))}
                             </Flex>
