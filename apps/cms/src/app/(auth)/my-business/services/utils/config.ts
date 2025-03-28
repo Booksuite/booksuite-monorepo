@@ -69,16 +69,7 @@ export const serviceFormSchema = yup.object({
     adults: yup.number().min(0),
     billingType: yup.string().required('Tipo de cobrança é obrigatório'),
     availableHousingUnitTypes: yup.array().of(yup.object()).optional(),
-    medias: yup
-        .array()
-        .of(
-            yup.object({
-                mediaId: yup.string().required('Mídia é obrigatório'),
-                isFeatured: yup.boolean().optional(),
-                order: yup.number().optional(),
-            }),
-        )
-        .optional(),
+    medias: yup.array().min(1),
     description: yup.string().required('Descrição é obrigatória'),
     minDaily: yup
         .number()
