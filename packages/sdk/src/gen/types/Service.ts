@@ -63,5 +63,9 @@ export type Service = {
    * @type string
    */
   notes: string
+  /**
+   * @type array
+   */
+  availableWeekDays: number[]
   coverMedia: Media | null
 }

@@ -22,11 +22,11 @@ export type HostingRulesInput = {
   /**
    * @type string
    */
-  reservationWindowStart: string
+  reservationWindowStart: string | null
   /**
    * @type string
    */
-  reservationWindowEnd: string
+  reservationWindowEnd: string | null
   /**
    * @type array
    */

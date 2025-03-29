@@ -258,7 +258,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^8.26.0"
     axios: "npm:^1.7.2"
     cep-promise: "npm:^4.4.1"
-    chakra-react-select: "npm:^4.8.0"
+    chakra-react-select: "npm:^5.0.4"
     cookies-next: "npm:^4.3.0"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.4"
@@ -3914,6 +3914,20 @@ __metadata:
     react: ^18.0.0
     react-dom: ^18.0.0
   checksum: 10c0/3dd696c49687afc1fe83e79bd11b36623badb23c2029f1e2cfeb6e6fe2d83dbd83ed69b492623941df1398cad785b878c88f72859bb8a16d56dfbcae67b32a9d
+  languageName: node
+  linkType: hard
+
+"chakra-react-select@npm:^5.0.4":
+  version: 5.0.4
+  resolution: "chakra-react-select@npm:5.0.4"
+  dependencies:
+    react-select: "npm:5.10.x"
+  peerDependencies:
+    "@chakra-ui/react": 2.x
+    "@emotion/react": ^11.8.1
+    react: ">=18"
+    react-dom: ">=18"
+  checksum: 10c0/1cca9449990be36473f107fd5c563aed826919249228c585b3d3d4da642b66f9fe4d9ccb7a317bb7f7bf0b4f155b9de2db9cb85960632da5f83786da9666aae7
   languageName: node
   linkType: hard
 
@@ -8035,6 +8049,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-select@npm:5.10.x":
+  version: 5.10.1
+  resolution: "react-select@npm:5.10.1"
+  dependencies:
+    "@babel/runtime": "npm:^7.12.0"
+    "@emotion/cache": "npm:^11.4.0"
+    "@emotion/react": "npm:^11.8.1"
+    "@floating-ui/dom": "npm:^1.0.1"
+    "@types/react-transition-group": "npm:^4.4.0"
+    memoize-one: "npm:^6.0.0"
+    prop-types: "npm:^15.6.0"
+    react-transition-group: "npm:^4.3.0"
+    use-isomorphic-layout-effect: "npm:^1.2.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/0d10a249b96150bd648f2575d59c848b8fac7f4d368a97ae84e4aaba5bbc1035deba4cdc82e49a43904b79ec50494505809618b0e98022b2d51e7629551912ed
+  languageName: node
+  linkType: hard
+
 "react-select@npm:5.8.x":
   version: 5.8.3
   resolution: "react-select@npm:5.8.3"
@@ -9388,7 +9422,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"use-isomorphic-layout-effect@npm:^1.1.2":
+"use-isomorphic-layout-effect@npm:^1.1.2, use-isomorphic-layout-effect@npm:^1.2.0":
   version: 1.2.0
   resolution: "use-isomorphic-layout-effect@npm:1.2.0"
   peerDependencies:

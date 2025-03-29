@@ -107,7 +107,7 @@ export type CompanyUpdateInput = {
    * @type string | undefined
    */
   city?: string
-  mapCoordinates: MapCoordinatesInput
+  mapCoordinates?: MapCoordinatesInput
   /**
    * @type string
    */

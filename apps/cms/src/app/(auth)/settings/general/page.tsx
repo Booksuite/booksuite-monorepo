@@ -2,6 +2,7 @@
 
 import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 
@@ -15,13 +16,19 @@ import {
     createFormInitialValues,
     GeneralDataForm,
     generalDataSchema,
+    transformFormDataForSubmit,
 } from './utils/config'
 
 export default function GeneralDataPage() {
+    const queryClient = useQueryClient()
     const companyId = useCurrentCompanyId()
     const { back } = useRouter()
 
-    const { data: companyGeneralData, isLoading } = useGetCompanyById({
+    const {
+        data: companyGeneralData,
+        isLoading,
+        queryKey,
+    } = useGetCompanyById({
         id: companyId,
     })
 
@@ -31,9 +38,21 @@ export default function GeneralDataPage() {
 
     async function handleSubmit(formData: GeneralDataForm) {
         try {
+            if (!companyGeneralData) return
+
+            const transformedFormData = transformFormDataForSubmit(
+                formData,
+                companyGeneralData,
+            )
+
             await updateCompany({
                 id: companyId,
-                data: formData,
+                data: transformedFormData,
+            })
+
+            await queryClient.invalidateQueries({
+                queryKey: queryKey,
+                refetchType: 'all',
             })
 
             toast({
@@ -57,9 +76,10 @@ export default function GeneralDataPage() {
                 title="Dados Gerais"
                 backLButtonLabel="Configurações"
                 backButtonHref="/settings"
+                isLoading={isLoading}
             />
 
-            {!isLoading && (
+            {companyGeneralData && (
                 <Formik<GeneralDataForm>
                     initialValues={createFormInitialValues(companyGeneralData)}
                     validationSchema={generalDataSchema}
