@@ -1,4 +1,4 @@
-import type { FacilityInput } from './FacilityInput.ts'
+import type { Facility } from './Facility.ts'
 
 export type CompanyFacility = {
   /**
@@ -12,7 +12,7 @@ export type CompanyFacility = {
   /**
    * @type object
    */
-  facility: FacilityInput
+  facility: Facility
   /**
    * @type string, date-time
    */

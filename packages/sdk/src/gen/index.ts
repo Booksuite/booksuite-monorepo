@@ -400,6 +400,7 @@ export type {
 } from './types/ServiceController/UpdateService.ts'
 export type { ServiceCreateInput } from './types/ServiceCreateInput.ts'
 export type { ServiceFull } from './types/ServiceFull.ts'
+export type { ServiceHousingUnitType } from './types/ServiceHousingUnitType.ts'
 export type { ServiceHousingUnitTypeInput } from './types/ServiceHousingUnitTypeInput.ts'
 export type { ServiceMedia } from './types/ServiceMedia.ts'
 export type { ServiceMediaInput } from './types/ServiceMediaInput.ts'

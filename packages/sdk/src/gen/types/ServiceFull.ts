@@ -1,6 +1,6 @@
 import type { BillingType } from './BillingType.ts'
-import type { HousingUnitType } from './HousingUnitType.ts'
 import type { Media } from './Media.ts'
+import type { ServiceHousingUnitType } from './ServiceHousingUnitType.ts'
 import type { ServiceMedia } from './ServiceMedia.ts'
 
 export type ServiceFull = {
@@ -65,6 +65,10 @@ export type ServiceFull = {
    * @type string
    */
   notes: string
+  /**
+   * @type array
+   */
+  availableWeekDays: number[]
   coverMedia: Media | null
   /**
    * @type array
@@ -73,5 +77,5 @@ export type ServiceFull = {
   /**
    * @type array
    */
-  availableHousingUnitTypes: HousingUnitType[] | null
+  availableHousingUnitTypes: ServiceHousingUnitType[] | null
 }
