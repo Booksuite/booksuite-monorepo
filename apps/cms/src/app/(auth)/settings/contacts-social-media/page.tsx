@@ -2,6 +2,7 @@
 
 import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useToast } from '@chakra-ui/react'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 
@@ -17,8 +18,13 @@ export default function ContactsSocialMediaPage() {
     const companyId = useCurrentCompanyId()
     const toast = useToast()
     const { back } = useRouter()
+    const queryClient = useQueryClient()
 
-    const { data: companyData, isLoading } = useGetCompanyById({
+    const {
+        data: companyData,
+        isLoading,
+        queryKey,
+    } = useGetCompanyById({
         id: companyId,
     })
 
@@ -28,8 +34,17 @@ export default function ContactsSocialMediaPage() {
         try {
             await updateCompanyContacts({
                 id: companyId,
-                data: formData,
+                data: {
+                    contacts: [
+                        ...formData.email,
+                        ...formData.phone,
+                        ...formData.socialMedias,
+                    ],
+                },
             })
+            await queryClient.invalidateQueries({ queryKey: queryKey })
+
+            back()
 
             toast({
                 title: 'Formas de contato modificadas com sucesso',

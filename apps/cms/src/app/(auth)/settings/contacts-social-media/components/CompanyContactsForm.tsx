@@ -12,11 +12,7 @@ import { useState } from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
 import { ContactsData } from '../utils/config'
-import {
-    companysocialMedias,
-    PHONE_TYPES,
-    TYPES_OPTIONS,
-} from '../utils/constants'
+import { PHONE_TYPES, TYPES_OPTIONS } from '../utils/constants'
 
 export default function CompanyContactsForm() {
     const { getFieldProps, values, handleChange, setFieldValue } =
@@ -30,7 +26,7 @@ export default function CompanyContactsForm() {
     return (
         <Form>
             <div className="CompanyContactForm">
-                <FieldArray name="emails">
+                <FieldArray name="email">
                     {({ push, remove }) => (
                         <Stack spacing={4}>
                             <h3
@@ -38,8 +34,8 @@ export default function CompanyContactsForm() {
                             >
                                 E-mails de Contato
                             </h3>
-                            {values.emails?.length ? (
-                                values.emails.map((email, index) => (
+                            {values.email?.length ? (
+                                values.email.map((email, index) => (
                                     <HStack
                                         key={index}
                                         spacing={2}
@@ -47,13 +43,13 @@ export default function CompanyContactsForm() {
                                         width="100%"
                                     >
                                         <InputBox
-                                            label={`E-mail de ${email.type}`}
+                                            label={`E-mail de ${email.category}`}
                                             type="email"
                                             {...getFieldProps(
-                                                `emails.${index}.value`,
+                                                `email.${index}.value`,
                                             )}
                                             onChange={handleChange(
-                                                `emails.${index}.value`,
+                                                `email.${index}.value`,
                                             )}
                                         />
                                         <IconButton
@@ -95,9 +91,10 @@ export default function CompanyContactsForm() {
                                     onClick={() => {
                                         if (selectedType !== null) {
                                             push({
-                                                type: TYPES_OPTIONS[
-                                                    selectedType
-                                                ].label,
+                                                type: 'email',
+                                                category:
+                                                    TYPES_OPTIONS[selectedType]
+                                                        ?.label || '',
                                                 value: '',
                                             })
                                             setSelectedType(null)
@@ -111,7 +108,7 @@ export default function CompanyContactsForm() {
                     )}
                 </FieldArray>
 
-                <FieldArray name="phones">
+                <FieldArray name="phone">
                     {({ push, remove }) => (
                         <Stack spacing={4}>
                             <h3
@@ -119,8 +116,8 @@ export default function CompanyContactsForm() {
                             >
                                 Telefones (Opcional)
                             </h3>
-                            {values.phones?.length ? (
-                                values.phones.map((phone, index) => (
+                            {values.phone?.length ? (
+                                values.phone.map((phone, index) => (
                                     <HStack
                                         key={index}
                                         spacing={2}
@@ -128,13 +125,13 @@ export default function CompanyContactsForm() {
                                         width="100%"
                                     >
                                         <InputBox
-                                            label={`Telefone - ${phone.type}`}
+                                            label={`Telefone - ${phone.category}`}
                                             type="tel"
                                             {...getFieldProps(
-                                                `phones.${index}.value`,
+                                                `phone.${index}.value`,
                                             )}
                                             onChange={handleChange(
-                                                `phones.${index}.value`,
+                                                `phone.${index}.value`,
                                             )}
                                         />
                                         <IconButton
@@ -178,9 +175,11 @@ export default function CompanyContactsForm() {
                                     onClick={() => {
                                         if (selectedPhoneType !== null) {
                                             push({
-                                                type: PHONE_TYPES[
-                                                    selectedPhoneType
-                                                ].label,
+                                                type: 'phone',
+                                                category:
+                                                    PHONE_TYPES[
+                                                        selectedPhoneType
+                                                    ]?.label || '',
                                                 value: '',
                                             })
                                             setSelectedPhoneType(null)
@@ -194,7 +193,7 @@ export default function CompanyContactsForm() {
                     )}
                 </FieldArray>
 
-                <FieldArray name="contacts">
+                <FieldArray name="socialMedias">
                     {({ remove }) => (
                         <Stack spacing={4}>
                             <h3
@@ -202,40 +201,36 @@ export default function CompanyContactsForm() {
                             >
                                 Redes Sociais (Opcional)
                             </h3>
-                            {values.contacts
-                                ?.filter((contact) =>
-                                    companysocialMedias.includes(contact.type),
-                                )
-                                .map((contact, index) => (
-                                    <HStack
-                                        key={index}
-                                        spacing={2}
-                                        alignItems="center"
-                                        width="100%"
-                                    >
-                                        <InputBox
-                                            label={contact.type}
-                                            type="text"
-                                            {...getFieldProps(
-                                                `contacts.${index}.value`,
-                                            )}
-                                            onChange={(e) =>
-                                                setFieldValue(
-                                                    `contacts.${index}.value`,
-                                                    e.target.value,
-                                                )
-                                            }
-                                        />
-                                        <IconButton
-                                            icon={<Trash />}
-                                            colorScheme="red"
-                                            variant="ghost"
-                                            onClick={() => remove(index)}
-                                            aria-label={'Remover'}
-                                            size={'lg'}
-                                        />
-                                    </HStack>
-                                ))}
+                            {values.socialMedias.map((contact, index) => (
+                                <HStack
+                                    key={index}
+                                    spacing={2}
+                                    alignItems="center"
+                                    width="100%"
+                                >
+                                    <InputBox
+                                        label={contact.type}
+                                        type="text"
+                                        {...getFieldProps(
+                                            `socialMedias.${index}.value`,
+                                        )}
+                                        onChange={(e) =>
+                                            setFieldValue(
+                                                `socialMedias.${index}.value`,
+                                                e.target.value,
+                                            )
+                                        }
+                                    />
+                                    <IconButton
+                                        icon={<Trash />}
+                                        colorScheme="red"
+                                        variant="ghost"
+                                        onClick={() => remove(index)}
+                                        aria-label={'Remover'}
+                                        size={'lg'}
+                                    />
+                                </HStack>
+                            ))}
                         </Stack>
                     )}
                 </FieldArray>
