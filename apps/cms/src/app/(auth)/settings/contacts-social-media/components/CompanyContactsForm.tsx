@@ -8,7 +8,7 @@ import {
 } from '@chakra-ui/react'
 import { FieldArray, Form, useFormikContext } from 'formik'
 import { CirclePlus, Trash } from 'lucide-react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
 import { ContactsData } from '../utils/config'
@@ -27,21 +27,10 @@ export default function CompanyContactsForm() {
         null,
     )
 
-    useEffect(() => {
-        if (values.contacts?.length === 0) {
-            setFieldValue('contacts', [
-                ...companysocialMedias.map((social) => ({
-                    type: social,
-                    value: '',
-                })),
-            ])
-        }
-    }, [values.contacts, setFieldValue])
-
     return (
         <Form>
             <div className="CompanyContactForm">
-                <FieldArray name="contacts">
+                <FieldArray name="emails">
                     {({ push, remove }) => (
                         <Stack spacing={4}>
                             <h3
@@ -49,59 +38,44 @@ export default function CompanyContactsForm() {
                             >
                                 E-mails de Contato
                             </h3>
-                            {values.contacts?.filter((contact) =>
-                                TYPES_OPTIONS.some(
-                                    (option) => option.label === contact.type,
-                                ),
-                            ).length ? (
-                                values.contacts.map(
-                                    (contact, index) =>
-                                        TYPES_OPTIONS.some(
-                                            (option) =>
-                                                option.label === contact.type,
-                                        ) && (
-                                            <HStack
-                                                key={index}
-                                                spacing={2}
-                                                alignItems="center"
-                                                width="100%"
-                                            >
-                                                <InputBox
-                                                    label={`E-mail de ${contact.type}`}
-                                                    type="email"
-                                                    {...getFieldProps(
-                                                        `contacts.${index}.value`,
-                                                    )}
-                                                    onChange={handleChange(
-                                                        `contacts.${index}.value`,
-                                                    )}
-                                                />
-                                                <IconButton
-                                                    icon={<Trash />}
-                                                    colorScheme="red"
-                                                    variant="ghost"
-                                                    onClick={() =>
-                                                        remove(index)
-                                                    }
-                                                    aria-label={'Remover'}
-                                                    size={'lg'}
-                                                />
-                                            </HStack>
-                                        ),
-                                )
+                            {values.emails?.length ? (
+                                values.emails.map((email, index) => (
+                                    <HStack
+                                        key={index}
+                                        spacing={2}
+                                        alignItems="center"
+                                        width="100%"
+                                    >
+                                        <InputBox
+                                            label={`E-mail de ${email.type}`}
+                                            type="email"
+                                            {...getFieldProps(
+                                                `emails.${index}.value`,
+                                            )}
+                                            onChange={handleChange(
+                                                `emails.${index}.value`,
+                                            )}
+                                        />
+                                        <IconButton
+                                            icon={<Trash />}
+                                            colorScheme="red"
+                                            variant="ghost"
+                                            onClick={() => remove(index)}
+                                            aria-label={'Remover'}
+                                            size={'lg'}
+                                        />
+                                    </HStack>
+                                ))
                             ) : (
                                 <h2>Nenhum Email encontrado</h2>
                             )}
-
                             <Flex gap={2}>
                                 <Select
                                     size="lg"
                                     value={selectedType || ''}
-                                    onChange={(
-                                        e: ChangeEvent<HTMLSelectElement>,
-                                    ) => {
+                                    onChange={(e) =>
                                         setSelectedType(Number(e.target.value))
-                                    }}
+                                    }
                                 >
                                     <option value="" disabled hidden>
                                         Selecione o tipo de email
@@ -112,7 +86,6 @@ export default function CompanyContactsForm() {
                                         </option>
                                     ))}
                                 </Select>
-
                                 <Button
                                     variant="outline"
                                     width={'100%'}
@@ -134,68 +107,58 @@ export default function CompanyContactsForm() {
                                     Adicionar Email
                                 </Button>
                             </Flex>
+                        </Stack>
+                    )}
+                </FieldArray>
 
+                <FieldArray name="phones">
+                    {({ push, remove }) => (
+                        <Stack spacing={4}>
                             <h3
                                 style={{ fontWeight: '600', marginTop: '20px' }}
                             >
                                 Telefones (Opcional)
                             </h3>
-                            {values.contacts?.filter((contact) =>
-                                PHONE_TYPES.some(
-                                    (option: { label: string }) =>
-                                        option.label === contact.type,
-                                ),
-                            ).length ? (
-                                values.contacts.map(
-                                    (contact, index) =>
-                                        PHONE_TYPES.some(
-                                            (option: { label: string }) =>
-                                                option.label === contact.type,
-                                        ) && (
-                                            <HStack
-                                                key={index}
-                                                spacing={2}
-                                                alignItems="center"
-                                                width="100%"
-                                            >
-                                                <InputBox
-                                                    label={`Telefone - ${contact.type}`}
-                                                    type="tel"
-                                                    {...getFieldProps(
-                                                        `contacts.${index}.value`,
-                                                    )}
-                                                    onChange={handleChange(
-                                                        `contacts.${index}.value`,
-                                                    )}
-                                                />
-                                                <IconButton
-                                                    icon={<Trash />}
-                                                    colorScheme="red"
-                                                    variant="ghost"
-                                                    onClick={() =>
-                                                        remove(index)
-                                                    }
-                                                    aria-label={'Remover'}
-                                                    size={'lg'}
-                                                />
-                                            </HStack>
-                                        ),
-                                )
+                            {values.phones?.length ? (
+                                values.phones.map((phone, index) => (
+                                    <HStack
+                                        key={index}
+                                        spacing={2}
+                                        alignItems="center"
+                                        width="100%"
+                                    >
+                                        <InputBox
+                                            label={`Telefone - ${phone.type}`}
+                                            type="tel"
+                                            {...getFieldProps(
+                                                `phones.${index}.value`,
+                                            )}
+                                            onChange={handleChange(
+                                                `phones.${index}.value`,
+                                            )}
+                                        />
+                                        <IconButton
+                                            icon={<Trash />}
+                                            colorScheme="red"
+                                            variant="ghost"
+                                            onClick={() => remove(index)}
+                                            aria-label={'Remover'}
+                                            size={'lg'}
+                                        />
+                                    </HStack>
+                                ))
                             ) : (
                                 <h2>Nenhum telefone encontrado</h2>
                             )}
-
                             <Flex gap={2}>
                                 <Select
                                     size="lg"
                                     value={selectedPhoneType || ''}
-                                    onChange={(
-                                        e: ChangeEvent<HTMLSelectElement>,
-                                    ) => {
+                                    onChange={(e) =>
                                         setSelectedPhoneType(
                                             Number(e.target.value),
                                         )
-                                    }}
+                                    }
                                 >
                                     <option value="" disabled hidden>
                                         Selecione o tipo de telefone
@@ -206,7 +169,6 @@ export default function CompanyContactsForm() {
                                         </option>
                                     ))}
                                 </Select>
-
                                 <Button
                                     variant="outline"
                                     width={'100%'}
@@ -228,32 +190,51 @@ export default function CompanyContactsForm() {
                                     Adicionar Telefone
                                 </Button>
                             </Flex>
+                        </Stack>
+                    )}
+                </FieldArray>
 
+                <FieldArray name="contacts">
+                    {({ remove }) => (
+                        <Stack spacing={4}>
                             <h3
                                 style={{ fontWeight: '600', marginTop: '20px' }}
                             >
                                 Redes Sociais (Opcional)
                             </h3>
-
                             {values.contacts
                                 ?.filter((contact) =>
                                     companysocialMedias.includes(contact.type),
                                 )
                                 .map((contact, index) => (
-                                    <InputBox
+                                    <HStack
                                         key={index}
-                                        label={contact.type}
-                                        type="text"
-                                        {...getFieldProps(
-                                            `contacts.${index}.value`,
-                                        )}
-                                        onChange={(e) =>
-                                            setFieldValue(
+                                        spacing={2}
+                                        alignItems="center"
+                                        width="100%"
+                                    >
+                                        <InputBox
+                                            label={contact.type}
+                                            type="text"
+                                            {...getFieldProps(
                                                 `contacts.${index}.value`,
-                                                e.target.value,
-                                            )
-                                        }
-                                    />
+                                            )}
+                                            onChange={(e) =>
+                                                setFieldValue(
+                                                    `contacts.${index}.value`,
+                                                    e.target.value,
+                                                )
+                                            }
+                                        />
+                                        <IconButton
+                                            icon={<Trash />}
+                                            colorScheme="red"
+                                            variant="ghost"
+                                            onClick={() => remove(index)}
+                                            aria-label={'Remover'}
+                                            size={'lg'}
+                                        />
+                                    </HStack>
                                 ))}
                         </Stack>
                     )}
