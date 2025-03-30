@@ -34,7 +34,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <Hotel size={20} />,
         title: 'Descrição do Negócio',
-        href: `/settings/descricao-do-negocio`,
+        href: `/settings/business-description`,
     },
     {
         icon: <MapPin size={20} />,
