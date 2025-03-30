@@ -6,23 +6,19 @@ import {
     Flex,
     FormControl,
     Image,
+    Select,
     Stack,
     Text,
 } from '@chakra-ui/react'
 import { ChangeEvent, useRef, useState } from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
-import SelectBox from '@/components/atoms/SelectBox'
+import { OPTIONS } from '../utils/constants'
 
 export default function VisualIdentityForm() {
     const [logo, setLogo] = useState<string | null>(null)
     const [favicon, setFavicon] = useState<string | null>(null)
     const [mainColor, setMainColor] = useState('#714C3B')
-
-    const options = [
-        { value: 'Quadrada', label: 'Quadrada' },
-        { value: 'Retangulo', label: 'Retangulo' },
-    ]
 
     const logoInputRef = useRef<HTMLInputElement>(null)
     const faviconInputRef = useRef<HTMLInputElement>(null)
@@ -54,14 +50,25 @@ export default function VisualIdentityForm() {
         }
     }
 
+    const [selectedType, setSelectedType] = useState<number | null>(null)
+
     return (
         <Box mx="auto" p={4} bg="white" borderRadius="lg">
             <Stack spacing={4}>
-                <SelectBox
-                    label="Prorção do logotipo"
-                    options={options}
-                    value={options}
-                ></SelectBox>
+                <Select
+                    size="lg"
+                    value={selectedType || ''}
+                    onChange={(e) => setSelectedType(Number(e.target.value))}
+                >
+                    <option value="" disabled hidden>
+                        Proporção da Logotipo
+                    </option>
+                    {OPTIONS.map(({ label }, index) => (
+                        <option key={index} value={index}>
+                            {label}
+                        </option>
+                    ))}
+                </Select>
 
                 <FormControl
                     border={'1px solid'}
@@ -168,6 +175,7 @@ export default function VisualIdentityForm() {
                                 src={favicon || '/placeholder.svg'}
                                 alt="Favicon"
                                 boxSize="70px"
+                                borderRadius="full"
                             />
                         ) : (
                             <Text color="gray.500">
