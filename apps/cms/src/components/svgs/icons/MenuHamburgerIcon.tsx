@@ -1,6 +1,7 @@
-"use client";
-import { HamburgerIcon } from "@chakra-ui/icons";
+'use client'
+
+import { HamIcon } from 'lucide-react'
 
 export default function MenuHamburgerIcon() {
-  return <HamburgerIcon />;
+    return <HamIcon />
 }

@@ -6,16 +6,17 @@ import {
     useSearchHousingUnitTypes,
     useUpdateHousingUnitType,
 } from '@booksuite/sdk'
+import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
 import {
-    IconButton,
-    InputAdornment,
-    ListItemIcon,
-    ListItemText,
-    MenuItem,
-    Stack,
-    TextField,
-} from '@mui/material'
-import { Copy, Edit, Plus, Search, Trash, X } from 'lucide-react'
+    Check,
+    CheckCheck,
+    Copy,
+    Edit,
+    Plus,
+    Search,
+    Trash,
+    X,
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { debounce } from 'radash'
 import { useEffect, useRef, useState } from 'react'
@@ -25,6 +26,7 @@ import { useSearchParamsOrder } from '@/common/hooks/useOrder'
 import { useSearchParamsPagination } from '@/common/hooks/usePagination'
 import { LinkButton } from '@/components/atoms/LinkButton'
 import { PaginationControls } from '@/components/molecules/PaginationControl'
+import { TableRowActionItem } from '@/components/molecules/TableRowActionItem'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Table } from '@/components/organisms/Table'
@@ -105,16 +107,20 @@ export default function Rooms() {
             description: `Tem certeza que deseja ${
                 item.published ? 'despublicar' : 'publicar'
             } "${item.name}"?`,
-            confirmButtonText: 'Confirmar',
-            variant: item.published ? 'warning' : 'info',
-            onConfirm: () => {
-                updateHousingUnitType({
-                    companyId,
-                    id: item.id,
-                    data: {
-                        published: !item.published,
-                    },
-                })
+            confirmButton: {
+                children: 'Confirmar',
+                onClick: () => {
+                    updateHousingUnitType({
+                        companyId,
+                        id: item.id,
+                        data: {
+                            published: !item.published,
+                        },
+                    })
+                },
+            },
+            cancelButton: {
+                children: 'Cancelar',
             },
         })
     }
@@ -123,12 +129,14 @@ export default function Rooms() {
         showDialog({
             title: 'Confirmar exclusão',
             description: `Tem certeza que deseja excluir "${item.name}"? Esta ação não pode ser desfeita.`,
-            confirmButtonText: 'Excluir',
-            variant: 'error',
-            onConfirm: () => {
-                // TODO: implement actual delete functionality
-                // console.log('Deleted:', item.id)
+            confirmButton: {
+                children: 'Excluir',
+                onClick: () => {
+                    console.log('Excluir', item.id)
+                    // TODO: implement actual delete functionality
+                },
             },
+            variant: 'error',
         })
     }
 
@@ -196,62 +204,52 @@ export default function Rooms() {
                 <Table
                     columns={COLUMNS_DEFINITION}
                     data={housingUnitTypes?.items ?? []}
+                    error={error}
                     enableRowActions
                     renderRowActionMenuItems={({ row, closeMenu }) => [
-                        <MenuItem
+                        <TableRowActionItem
                             key="edit"
+                            label="Editar"
+                            Icon={Edit}
                             onClick={() => {
                                 handleEdit(row.original)
                                 closeMenu()
                             }}
-                        >
-                            <ListItemIcon>
-                                <Edit size={16} />
-                            </ListItemIcon>
-                            <ListItemText>Editar</ListItemText>
-                        </MenuItem>,
-                        <MenuItem
+                        />,
+                        <TableRowActionItem
                             key="toggle-published"
+                            label={
+                                row.original.published
+                                    ? 'Despublicar'
+                                    : 'Publicar'
+                            }
+                            Icon={row.original.published ? CheckCheck : Check}
                             onClick={() => {
                                 handleTogglePublished(row.original)
                                 closeMenu()
                             }}
-                        >
-                            <ListItemIcon>
-                                <Edit size={16} />
-                            </ListItemIcon>
-                            <ListItemText>
-                                {row.original.published
-                                    ? 'Despublicar'
-                                    : 'Publicar'}
-                            </ListItemText>
-                        </MenuItem>,
-                        <MenuItem
+                        />,
+                        <TableRowActionItem
                             key="duplicate"
+                            label="Duplicar"
+                            Icon={Copy}
                             onClick={() => {
                                 handleDuplicate(row.original)
                                 closeMenu()
                             }}
-                        >
-                            <ListItemIcon>
-                                <Copy size={16} />
-                            </ListItemIcon>
-                            <ListItemText>Duplicar</ListItemText>
-                        </MenuItem>,
-                        <MenuItem
+                        />,
+                        <TableRowActionItem
                             key="delete"
+                            label="Excluir"
+                            Icon={Trash}
                             onClick={() => {
                                 handleDelete(row.original)
                                 closeMenu()
                             }}
-                        >
-                            <ListItemIcon>
-                                <Trash size={16} />
-                            </ListItemIcon>
-                            <ListItemText>Excluir</ListItemText>
-                        </MenuItem>,
+                        />,
                     ]}
                     state={{
+                        isLoading,
                         sorting: [
                             {
                                 id: orderBy,
