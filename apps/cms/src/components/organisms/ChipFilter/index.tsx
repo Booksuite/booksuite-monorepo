@@ -1,8 +1,6 @@
 'use client'
 
-import { Box } from '@chakra-ui/react'
-
-import { Chip } from '@/components/atoms/Chip'
+import { Box, Chip } from '@mui/material'
 
 import { ChipFilterProps } from './types'
 
@@ -25,15 +23,25 @@ export const ChipFilter: React.FC<ChipFilterProps> = ({
     }
 
     return (
-        <Box display="flex" gap={2}>
-            {items.map((item) => (
-                <Chip
-                    key={item.key}
-                    label={item.label}
-                    isSelected={value.includes(item.key)}
-                    onClick={() => toggleSelection(item.key)}
-                />
-            ))}
+        <Box display="flex" gap={1}>
+            {items.map((item) => {
+                const isSelected = value.includes(item.key)
+
+                return (
+                    <Chip
+                        key={item.key}
+                        label={item.label}
+                        variant={isSelected ? 'filled' : 'outlined'}
+                        sx={{
+                            backgroundColor: isSelected
+                                ? '#E6F6FF'
+                                : 'transparent',
+                            color: '#002159',
+                        }}
+                        onClick={() => toggleSelection(item.key)}
+                    />
+                )
+            })}
         </Box>
     )
 }
