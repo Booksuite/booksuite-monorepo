@@ -1,6 +1,5 @@
 'use client'
 
-import { SearchIcon } from '@chakra-ui/icons'
 import {
     Box,
     Button,
@@ -20,6 +19,7 @@ import {
     SimpleGrid,
     Text,
 } from '@chakra-ui/react'
+import { Search } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { SelectBoxModalProps } from './types'
@@ -142,7 +142,7 @@ export const SelectBoxModal = <T extends { name: string; id: string }>({
 
                     <InputGroup maxW={300} size="sm">
                         <InputLeftElement pointerEvents="none">
-                            <SearchIcon color="gray.300" />
+                            <Search size={16} color="gray.300" />
                         </InputLeftElement>
                         <Input
                             borderRadius={6}

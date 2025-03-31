@@ -1,43 +1,27 @@
-import { ButtonProps } from '@chakra-ui/react'
 import { create } from 'zustand'
 
-export type ConfirmationDialogVariant = ButtonProps['variant']
+import { OpenDialogParams } from './types'
 
-export interface DialogButton extends ButtonProps {
-    text: string
-    variant?: string
-    onClick: () => void
+export interface ConfirmationDialogState extends OpenDialogParams {
+    isOpen: boolean
+    openDialog: (params: OpenDialogParams) => void
+    closeDialog: () => void
 }
 
-export interface ConfirmationDialogState {
-    isOpen: boolean
-    title: string
-    description: string
-    confirmButton?: DialogButton
-    cancelButton?: DialogButton
-    isCancelable: boolean
-    variant: ConfirmationDialogVariant
-
-    openDialog: (params: {
-        title: string
-        description: string
-        confirmButton?: DialogButton
-        cancelButton?: DialogButton
-        isCancelable?: boolean
-        variant?: ConfirmationDialogVariant
-    }) => void
-    closeDialog: () => void
+const initialState: Omit<
+    ConfirmationDialogState,
+    'openDialog' | 'closeDialog'
+> = {
+    isOpen: false,
+    title: '',
+    description: '',
+    confirmButton: {},
+    cancelButton: {},
 }
 
 export const useConfirmationDialogStore = create<ConfirmationDialogState>(
     (set) => ({
-        isOpen: false,
-        title: '',
-        description: '',
-        confirmButton: undefined,
-        cancelButton: undefined,
-        isCancelable: true,
-        variant: 'info',
+        ...initialState,
 
         openDialog: ({
             title,
@@ -59,15 +43,7 @@ export const useConfirmationDialogStore = create<ConfirmationDialogState>(
         },
 
         closeDialog: () => {
-            set({
-                isOpen: false,
-                title: '',
-                description: '',
-                confirmButton: undefined,
-                cancelButton: undefined,
-                isCancelable: true,
-                variant: 'info',
-            })
+            set({ isOpen: false })
         },
     }),
 )

@@ -12,8 +12,8 @@ import {
     MenuList,
     useToken,
 } from '@chakra-ui/react'
+import { Check, ChevronDown } from 'lucide-react'
 import { PropsWithChildren } from 'react'
-import { FiCheck, FiMoreVertical } from 'react-icons/fi'
 
 import { MediaItemProps } from './types'
 import { getMediaItem } from './utils'
@@ -121,7 +121,7 @@ export const MediaItem: React.FC<PropsWithChildren<MediaItemProps>> = ({
                         minW="20px"
                         h="20px"
                     >
-                        {isSelected && <FiCheck size={12} />}
+                        {isSelected && <Check size={12} />}
                     </Button>
                 )}
 
@@ -134,7 +134,7 @@ export const MediaItem: React.FC<PropsWithChildren<MediaItemProps>> = ({
                             top={1}
                             right={1}
                             as={IconButton}
-                            icon={<FiMoreVertical />}
+                            icon={<ChevronDown size={16} />}
                             variant="solid"
                             aria-label="Opções"
                             size="xs"

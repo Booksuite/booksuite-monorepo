@@ -1,16 +1,16 @@
-import {
-    ConfirmationDialogVariant,
-    DialogButton,
-    useConfirmationDialogStore,
-} from './store'
+import { useConfirmationDialogStore } from './store'
+import { OpenDialogParams } from './types'
 
-interface OpenDialogParams {
-    title: string
-    description: string
-    confirmButton?: DialogButton
-    cancelButton?: DialogButton
-    isCancelable?: boolean
-    variant?: ConfirmationDialogVariant
+export function isOpenDialogParams(
+    params: unknown,
+): params is OpenDialogParams {
+    return (
+        typeof params === 'object' &&
+        params !== null &&
+        'title' in params &&
+        'description' in params &&
+        'confirmButton' in params
+    )
 }
 
 export const openDialog = (params: OpenDialogParams) => {
