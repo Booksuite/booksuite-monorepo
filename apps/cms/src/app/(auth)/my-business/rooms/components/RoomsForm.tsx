@@ -1,16 +1,7 @@
 'use client'
 
 import type { HousingUnitTypeMedia, Media } from '@booksuite/sdk'
-import {
-    Box,
-    Button,
-    Flex,
-    HStack,
-    SimpleGrid,
-    Stack,
-    Text,
-    VStack,
-} from '@chakra-ui/react'
+import { Box, Button, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import {
     closestCenter,
     DndContext,
@@ -25,12 +16,12 @@ import {
     rectSortingStrategy,
     SortableContext,
 } from '@dnd-kit/sortable'
+import { Stack, TextField } from '@mui/material'
 import { FieldArray, useFormikContext } from 'formik'
 import { useState } from 'react'
 
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
-import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { MediaGallery } from '@/components/organisms/MediaGallery'
 import { RoomsFormData } from '../utils/config'
 
@@ -110,27 +101,24 @@ export const RoomsForm: React.FC = () => {
 
     return (
         <>
-            <Stack gap={8}>
-                <Flex direction="column" gap={2}>
-                    <InputBox
+            <Stack gap={4}>
+                <Stack direction="column" gap={2}>
+                    <TextField
                         label="Nome da Acomodação"
-                        error={errors.name}
-                        formControl={{
-                            isInvalid: !!errors.name && touched.name,
-                        }}
+                        error={!!errors.name}
+                        helperText={errors.name}
                         {...getFieldProps('name')}
                     />
-                    <TextAreaBox
+
+                    <TextField
+                        multiline
+                        rows={4}
                         label="Descrição"
-                        maxLength={250}
-                        error={errors.description}
-                        formControl={{
-                            isInvalid:
-                                !!errors.description && touched.description,
-                        }}
+                        error={!!errors.description}
+                        helperText={errors.description}
                         {...getFieldProps('description')}
                     />
-                </Flex>
+                </Stack>
                 <section>
                     <Stack gap={2}>
                         <FieldArray name="housingUnits">
@@ -139,11 +127,17 @@ export const RoomsForm: React.FC = () => {
                                     <InputNumberBox
                                         label="Unidades disponíveis"
                                         value={values.housingUnits.length}
-                                        onChange={({
-                                            target: { value: newValue },
-                                        }) => {
+                                        min={1}
+                                        readOnly
+                                        onChange={(e) => {
+                                            const newValueNumber = Number(
+                                                e.target.value,
+                                            )
+                                            if (Number.isNaN(newValueNumber))
+                                                return
+
                                             if (
-                                                newValue >
+                                                newValueNumber >
                                                 values.housingUnits.length
                                             ) {
                                                 push({
@@ -153,7 +147,7 @@ export const RoomsForm: React.FC = () => {
                                                     ).toString(),
                                                 })
                                             } else if (
-                                                newValue <
+                                                newValueNumber <
                                                 values.housingUnits.length
                                             ) {
                                                 remove(

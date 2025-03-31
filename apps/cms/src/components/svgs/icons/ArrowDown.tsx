@@ -1,7 +1,7 @@
-"use client";
+'use client'
 
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { ChevronDown } from 'lucide-react'
 
 export default function ArrowDown() {
-  return <ChevronDownIcon />;
+    return <ChevronDown />
 }
