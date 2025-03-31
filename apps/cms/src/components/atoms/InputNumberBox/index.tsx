@@ -1,126 +1,155 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import {
     FormControl,
     FormControlProps,
-    FormErrorMessage,
+    FormHelperText,
     FormLabel,
-    NumberDecrementStepper,
-    NumberIncrementStepper,
-    NumberInput,
-    NumberInputField,
-    NumberInputProps,
-    NumberInputStepper,
-} from '@chakra-ui/react'
+    IconButton,
+    TextField,
+    TextFieldProps,
+} from '@mui/material'
 import { CircleMinus, CirclePlus } from 'lucide-react'
-import { ChangeEvent, useRef } from 'react'
+import { ChangeEvent, ReactNode, useRef } from 'react'
 
 export interface InputNumberBoxProps
-    extends Omit<NumberInputProps, 'onChange'> {
-    onChange?: (e: ChangeEvent<any>) => void
-    label?: string | React.ReactNode
-    error?: string
-    formControl?: FormControlProps
+    extends Omit<TextFieldProps, 'onChange' | 'error'> {
+    onChange?: (value: number | ChangeEvent<HTMLInputElement>) => void
+    label?: string | ReactNode
+    error?: string | ReactNode
+    formControl?: {
+        isInvalid?: boolean
+    } & Omit<FormControlProps, 'error'>
+    min?: number
 }
 
 export const InputNumberBox: React.FC<InputNumberBoxProps> = ({
     label,
     error,
     formControl,
+    onChange,
+    min = 0,
+    value,
     ...props
 }) => {
     const inputRef = useRef<HTMLInputElement>(null)
+    const { isInvalid, ...formControlProps } = formControl || {}
+
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        const newValue = event.target.value
+        const numericValue = newValue === '' ? NaN : Number(newValue)
+
+        if (onChange) {
+            if (onChange.length === 1) {
+                // Se o callback espera apenas um valor, passa o número
+                onChange(!isNaN(numericValue) ? numericValue : 0)
+            } else {
+                // Se o callback espera um evento, passa o evento
+                onChange({
+                    ...event,
+                    target: { ...event.target, value: newValue },
+                    currentTarget: { ...event.currentTarget, value: newValue },
+                } as ChangeEvent<HTMLInputElement>)
+            }
+        }
+    }
+
+    const handleDecrement = () => {
+        if (inputRef.current) {
+            const minValue =
+                typeof min === 'string' ? parseFloat(min) : min || 0
+            const currentValue = Number(inputRef.current.value || 0)
+            const newValue = Math.max(currentValue - 1, minValue)
+            inputRef.current.value = String(newValue)
+            triggerChange(newValue)
+        }
+    }
+
+    const handleIncrement = () => {
+        if (inputRef.current) {
+            const currentValue = Number(inputRef.current.value || 0)
+            const newValue = currentValue + 1
+            inputRef.current.value = String(newValue)
+            triggerChange(newValue)
+        }
+    }
+
+    const triggerChange = (value: number) => {
+        if (onChange) {
+            if (onChange.length === 1) {
+                onChange(value)
+            } else {
+                const event = {
+                    target: { value: String(value) },
+                    currentTarget: { value: String(value) },
+                } as unknown as ChangeEvent<HTMLInputElement>
+                onChange(event)
+            }
+        }
+    }
 
     return (
         <FormControl
-            display={'flex'}
-            variant="number"
-            isInvalid={!!error}
-            onClick={() => {
-                inputRef.current?.focus()
-            }}
-            sx={{
-                pl: 4,
-                display: 'flex',
-                alignItems: 'center',
-                border: '1px solid #D9E2EC',
-                borderRadius: '8px',
-                _focusWithin: {
-                    borderColor: 'blue.500',
-                    boxShadow: '0 0 0 1px #3182ce;',
-                },
-            }}
-            {...formControl}
+            error={isInvalid ?? !!error}
+            fullWidth
+            {...formControlProps}
         >
-            <FormLabel flex={1} m={0}>
-                {label ?? ' '}
-            </FormLabel>
-
-            <NumberInput
-                min={props.min ?? 0}
-                {...props}
-                onChange={(_, newValue) => {
-                    props.onChange?.({
-                        target: {
-                            value: newValue,
-                        },
-                        currentTarget: {
-                            value: newValue,
-                        },
-                    } as ChangeEvent<any>)
-                }}
-                sx={{
+            <div
+                style={{
                     display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
                     alignItems: 'center',
+                    border: '1px solid #D9E2EC',
+                    borderRadius: '8px',
+                    padding: '10px',
+                    justifyContent: 'space-between',
+                    gap: '16px',
                 }}
             >
-                <NumberInputField
-                    ref={inputRef}
-                    sx={{
-                        textAlign: 'center',
-                        paddingLeft:
-                            'calc(100% - var(--number-input-input-padding) - 35px)',
-                        backgroundColor: 'transparent',
-                        outline: 0,
-                        boxShadow: 'none !important',
-                        border: 'none !important',
-                    }}
-                />
-                <NumberInputStepper
-                    width={'100px'}
-                    flexDirection={'row'}
-                    gap={'30px'}
-                    sx={{
-                        pointerEvents: 'none',
+                {label && (
+                    <FormLabel style={{ flex: 1, color: '#0B1F51' }}>
+                        {label}
+                    </FormLabel>
+                )}
+                <div
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        color: '#01337D',
                     }}
                 >
-                    <NumberDecrementStepper
+                    <IconButton onClick={handleDecrement} size="small">
+                        <CircleMinus size={23} color={'#0B1F51'} />
+                    </IconButton>
+                    <TextField
+                        type="number"
+                        inputRef={inputRef}
+                        variant="standard"
+                        margin="none"
+                        value={value}
                         sx={{
-                            pointerEvents: 'auto',
-                            border: '0 !important',
-                            _active: { backgroundColor: 'inherit' },
-                            color: 'blue.900',
+                            width: '60px',
+                            '& input': {
+                                textAlign: 'center',
+                                padding: 0,
+                            },
                         }}
-                    >
-                        <CircleMinus />
-                    </NumberDecrementStepper>
-                    <NumberIncrementStepper
-                        sx={{
-                            pointerEvents: 'auto',
-                            border: '0 !important',
-                            _active: { backgroundColor: 'inherit' },
-                            color: 'blue.900',
+                        InputProps={{
+                            disableUnderline: true,
                         }}
-                    >
-                        <CirclePlus />
-                    </NumberIncrementStepper>
-                </NumberInputStepper>
-            </NumberInput>
-
-            <FormErrorMessage>{error}</FormErrorMessage>
+                        inputProps={{
+                            min:
+                                typeof min === 'string' ? parseFloat(min) : min,
+                        }}
+                        {...props}
+                        onChange={handleChange}
+                    />
+                    <IconButton onClick={handleIncrement} size="small">
+                        <CirclePlus size={23} color={'#0B1F51'} />
+                    </IconButton>
+                </div>
+            </div>
+            {error && <FormHelperText>{error}</FormHelperText>}
         </FormControl>
     )
 }

@@ -4,10 +4,11 @@ import {
     useGetCompanyCancellationPolicy,
     useUpsertCompanyCancellationPolicy,
 } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { SnackbarProvider, useSnackbar } from 'notistack'
+import { useEffect } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
@@ -21,9 +22,9 @@ import {
     createCancellationPolicyInitialValues,
 } from './utils/config'
 
-export default function CancellationPolicy() {
+function CancellationPolicyContent() {
     const companyId = useCurrentCompanyId()
-    const toast = useToast()
+    const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
     const queryClient = useQueryClient()
 
@@ -31,34 +32,55 @@ export default function CancellationPolicy() {
         data: cancellatonPolicyData,
         isLoading,
         queryKey,
-    } = useGetCompanyCancellationPolicy({ companyId: companyId })
+    } = useGetCompanyCancellationPolicy({ companyId })
 
-    const { mutateAsync: UpdateCancellationPolicy } =
+    const { mutateAsync: updateCancellationPolicy } =
         useUpsertCompanyCancellationPolicy()
 
     async function handleSubmit(formData: CancellationPolicyFormData) {
         try {
-            await UpdateCancellationPolicy({
-                companyId: companyId,
+            await updateCancellationPolicy({
+                companyId,
                 data: formData,
             })
 
-            await queryClient.invalidateQueries({ queryKey: queryKey })
+            await queryClient.invalidateQueries({ queryKey })
 
-            toast({
-                title: 'Políticas de Cancelamento modificadas com sucesso',
-                status: 'success',
-            })
+            enqueueSnackbar(
+                'Políticas de Cancelamento modificadas com sucesso',
+                {
+                    variant: 'success',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 3000,
+                },
+            )
 
             back()
         } catch (error) {
-            toast({
-                title: 'Erro ao modificar políticas de cancelamento',
-                description: getErrorMessage(error),
-                status: 'error',
-            })
+            enqueueSnackbar(
+                `Erro ao modificar políticas: ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
+                },
+            )
         }
     }
+
+    useEffect(() => {
+        if (!isLoading && !cancellatonPolicyData) {
+            enqueueSnackbar('Erro ao cargar políticas de cancelamento', {
+                variant: 'error',
+            })
+        }
+    }, [isLoading, cancellatonPolicyData, enqueueSnackbar])
 
     return (
         <div className="cancellation_policy">
@@ -75,6 +97,7 @@ export default function CancellationPolicy() {
                     )}
                     validationSchema={cancellationPolicyFormSchema}
                     onSubmit={handleSubmit}
+                    enableReinitialize
                 >
                     <FormikController onCancel={() => back()}>
                         <CancellationPolicyForm />
@@ -82,5 +105,13 @@ export default function CancellationPolicy() {
                 </Formik>
             )}
         </div>
+    )
+}
+
+export default function CancellationPolicy() {
+    return (
+        <SnackbarProvider maxSnack={3}>
+            <CancellationPolicyContent />
+        </SnackbarProvider>
     )
 }
