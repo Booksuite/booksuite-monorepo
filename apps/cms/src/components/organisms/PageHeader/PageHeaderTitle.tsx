@@ -1,10 +1,10 @@
-import { Heading } from '@chakra-ui/react'
+import { Typography } from '@mui/material'
 import { PropsWithChildren } from 'react'
 
 export const PageHeaderTitle: React.FC<PropsWithChildren> = (props) => {
     return (
-        <Heading as="h1" fontSize={24} fontWeight="bold" mb={0}>
+        <Typography variant="h6" fontWeight="bold">
             {props.children}
-        </Heading>
+        </Typography>
     )
 }

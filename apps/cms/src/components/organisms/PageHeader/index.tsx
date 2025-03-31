@@ -1,4 +1,4 @@
-import { Box, HStack, Spinner } from '@chakra-ui/react'
+import { Box, CircularProgress, Stack } from '@mui/material'
 import { Route } from 'next'
 
 import { PageHeaderBackLink } from './PageHeaderBackLink'
@@ -23,19 +23,21 @@ export const PageHeader = ({
     return (
         <PageHeaderRoot>
             {!!backLButtonLabel && (
-                <Box>
-                    <PageHeaderBackLink w="fit-content" href={backButtonHref}>
-                        {backLButtonLabel}
-                    </PageHeaderBackLink>
-                </Box>
+                <PageHeaderBackLink href={backButtonHref}>
+                    {backLButtonLabel}
+                </PageHeaderBackLink>
             )}
-            <HStack align="center" justify="space-between">
-                <HStack>
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                <Stack>
                     <PageHeaderTitle>{title}</PageHeaderTitle>
-                    {isLoading && <Spinner size="sm" />}
-                </HStack>
+                    {isLoading && <CircularProgress size={16} />}
+                </Stack>
                 {!!headerRight && <Box>{headerRight}</Box>}
-            </HStack>
+            </Stack>
         </PageHeaderRoot>
     )
 }

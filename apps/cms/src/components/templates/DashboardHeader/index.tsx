@@ -1,20 +1,19 @@
 import {
+    AppBar,
     Avatar,
     Box,
     Button,
-    Center,
-    Flex,
     IconButton,
-    Input,
-    InputGroup,
-    InputLeftElement,
+    InputAdornment,
     Menu,
-    MenuButton,
     MenuItem,
-    MenuList,
-    Text,
-    useBreakpointValue,
-} from '@chakra-ui/react'
+    Stack,
+    TextField,
+    Toolbar,
+    Typography,
+    useMediaQuery,
+    useTheme,
+} from '@mui/material'
 import {
     Bell,
     ChevronDown,
@@ -22,6 +21,7 @@ import {
     Menu as MenuIcon,
     Search,
 } from 'lucide-react'
+import { useState } from 'react'
 
 import { Logo } from '@/components/atoms/Logo'
 
@@ -31,134 +31,136 @@ export const DashboardHeader = ({
     onToggleSidebar,
     userImageSrc,
 }: DashboardHeaderProps) => {
-    const isMobile = useBreakpointValue({ base: true, md: false })
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const open = Boolean(anchorEl)
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
 
     if (isMobile) {
         return (
-            <Flex
-                as="header"
-                align="center"
-                justify="space-between"
-                h="64px"
-                px={4}
-                bg="primary.900"
-                color="white"
-            >
-                <IconButton
-                    icon={<MenuIcon size={24} />}
-                    aria-label="Toggle Sidebar"
-                    onClick={onToggleSidebar}
-                    variant="ghost"
-                    color="white"
-                    _hover={{ bg: 'whiteAlpha.200' }}
-                />
-
-                <Box fontSize="2xl" fontWeight="regular" color="white">
-                    <Logo.LogoText />
-                </Box>
-
-                <Flex gap={2}>
+            <AppBar position="static">
+                <Toolbar sx={{ justifyContent: 'space-between' }}>
                     <IconButton
-                        icon={<Bell size={24} />}
-                        aria-label="Notifications"
-                        variant="ghost"
-                        color="white"
-                        _hover={{ bg: 'whiteAlpha.200' }}
-                    />
-                    <Avatar
-                        size="sm"
-                        bg="blue.900"
-                        color="white"
-                        src={userImageSrc}
-                        alignSelf="center"
-                    />
-                </Flex>
-            </Flex>
+                        color="inherit"
+                        onClick={onToggleSidebar}
+                        edge="start"
+                        sx={{
+                            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.2)' },
+                        }}
+                    >
+                        <MenuIcon size={24} />
+                    </IconButton>
+
+                    <Box
+                        sx={{
+                            fontSize: '2xl',
+                            fontWeight: 'regular',
+                            color: 'white',
+                        }}
+                    >
+                        <Logo.LogoText />
+                    </Box>
+
+                    <Stack direction="row" spacing={1}>
+                        <IconButton
+                            color="inherit"
+                            sx={{
+                                '&:hover': {
+                                    bgcolor: 'rgba(255, 255, 255, 0.2)',
+                                },
+                            }}
+                        >
+                            <Bell size={24} />
+                        </IconButton>
+                        <Avatar
+                            sx={{
+                                width: 32,
+                                height: 32,
+                                bgcolor: 'primary.900',
+                                color: 'white',
+                            }}
+                            src={userImageSrc}
+                        />
+                    </Stack>
+                </Toolbar>
+            </AppBar>
         )
     }
 
     return (
-        <Flex
-            as="header"
-            align="center"
-            justify="space-between"
-            h="64px"
-            px={4}
-            bg="white"
-            boxShadow="sm"
-            flexWrap="wrap"
-        >
-            <Flex align="center" h="full">
-                <Center h="full">
+        <AppBar position="static">
+            <Toolbar sx={{ justifyContent: 'space-between' }}>
+                <Stack direction="row" alignItems="center" spacing={2}>
                     <IconButton
-                        icon={<MenuIcon size={24} />}
-                        aria-label="Toggle Sidebar"
                         onClick={onToggleSidebar}
-                        variant="ghost"
-                        size="md"
-                    />
-                </Center>
-                <Center h="full" ml={4}>
-                    <InputGroup maxW="400px">
-                        <InputLeftElement pointerEvents="none" h="40px">
-                            <Search color="gray" size={20} />
-                        </InputLeftElement>
-                        <Input
-                            type="text"
-                            placeholder="Pesquisar"
-                            h="40px"
-                            borderRadius="md"
-                        />
-                    </InputGroup>
-                </Center>
-            </Flex>
-
-            <Flex align="center" h="full" gap={4}>
-                <Menu>
-                    <MenuButton
-                        as={Button}
-                        rightIcon={<ChevronDown size={20} />}
-                        variant="ghost"
-                        h="40px"
-                        display="flex"
-                        alignItems="center"
-                        _hover={{ bg: 'transparent' }}
-                        _active={{ bg: 'transparent' }}
+                        edge="start"
+                        size="medium"
                     >
-                        <Text
-                            fontWeight="medium"
-                            display={{ base: 'none', md: 'block' }}
+                        <MenuIcon size={24} />
+                    </IconButton>
+                    <TextField
+                        placeholder="Pesquisar"
+                        size="small"
+                        sx={{ maxWidth: '400px' }}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search color="gray" size={20} />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </Stack>
+
+                <Stack direction="row" alignItems="center" spacing={2}>
+                    <Button
+                        endIcon={<ChevronDown size={20} />}
+                        onClick={handleClick}
+                        variant="text"
+                        disableRipple
+                    >
+                        <Typography
+                            variant="body1"
+                            sx={{
+                                fontWeight: 500,
+                                display: { xs: 'none', md: 'block' },
+                            }}
                         >
                             BookSuite Admin
-                        </Text>
-                    </MenuButton>
-                    <MenuList>
-                        <MenuItem>Perfil</MenuItem>
-                        <MenuItem>Sair</MenuItem>
-                    </MenuList>
-                </Menu>
+                        </Typography>
+                    </Button>
+                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                        <MenuItem onClick={handleClose}>Perfil</MenuItem>
+                        <MenuItem onClick={handleClose}>Sair</MenuItem>
+                    </Menu>
 
-                <Avatar
-                    size="sm"
-                    bg="blue.900"
-                    color="white"
-                    src={userImageSrc}
-                />
+                    <Avatar
+                        sx={{
+                            width: 32,
+                            height: 32,
+                            bgcolor: 'primary.900',
+                            color: 'white',
+                        }}
+                        src={userImageSrc}
+                    />
 
-                <IconButton
-                    icon={<ExternalLink size={20} />}
-                    aria-label="External Link"
-                    variant="ghost"
-                    size="md"
-                />
+                    <IconButton size="medium">
+                        <ExternalLink size={20} />
+                    </IconButton>
 
-                <IconButton
-                    icon={<Bell size={20} />}
-                    aria-label="Notifications"
-                    variant="ghost"
-                    size="md"
-                />
-            </Flex>
-        </Flex>
+                    <IconButton size="medium">
+                        <Bell size={20} />
+                    </IconButton>
+                </Stack>
+            </Toolbar>
+        </AppBar>
     )
 }
