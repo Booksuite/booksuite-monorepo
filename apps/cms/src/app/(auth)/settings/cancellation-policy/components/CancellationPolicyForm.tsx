@@ -2,6 +2,7 @@ import {
     Box,
     Button,
     FormControl,
+    FormControlLabel,
     IconButton,
     MenuItem,
     Select,
@@ -25,18 +26,20 @@ export const CancellationPolicyForm = () => {
         <Form>
             <Stack spacing={4}>
                 <Stack direction="row" spacing={2} alignItems="center">
-                    <Switch
-                        checked={values.applyCancellationTax === true}
-                        onChange={(e) =>
-                            setFieldValue(
-                                'applyCancellationTax',
-                                e.target.checked,
-                            )
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={values.applyCancellationTax === true}
+                                onChange={(e) =>
+                                    setFieldValue(
+                                        'applyCancellationTax',
+                                        e.target.checked,
+                                    )
+                                }
+                            />
                         }
+                        label="Aplicar taxa de cancelamento"
                     />
-                    <h2 style={{ fontWeight: '600' }}>
-                        Aplicar taxa de cancelamento
-                    </h2>
                 </Stack>
                 {values.applyCancellationTax === true && (
                     <Stack spacing={2} alignItems="flex-start" width="100%">
@@ -140,18 +143,22 @@ export const CancellationPolicyForm = () => {
                             alignItems="center"
                             mt={4}
                         >
-                            <Switch
-                                checked={values.extraCancellationTax === true}
-                                onChange={(e) =>
-                                    setFieldValue(
-                                        'extraCancellationTax',
-                                        e.target.checked,
-                                    )
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={
+                                            values.extraCancellationTax === true
+                                        }
+                                        onChange={(e) =>
+                                            setFieldValue(
+                                                'extraCancellationTax',
+                                                e.target.checked,
+                                            )
+                                        }
+                                    />
                                 }
+                                label="Aplicar taxas de penalização personalizadas"
                             />
-                            <h3 style={{ fontWeight: '600' }}>
-                                Aplicar taxas de penalização personalizadas
-                            </h3>
                         </Stack>
 
                         {values.extraCancellationTax === true && (
