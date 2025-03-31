@@ -19,8 +19,14 @@ import { CancellationPolicyFormData } from '../utils/config'
 import { DEFAULT_PENALTY_OPTIONS } from '../utils/constants'
 
 export const CancellationPolicyForm = () => {
-    const { getFieldProps, touched, errors, values, setFieldValue } =
-        useFormikContext<CancellationPolicyFormData>()
+    const {
+        getFieldProps,
+        touched,
+        values,
+        setFieldValue,
+        handleChange,
+        errors,
+    } = useFormikContext<CancellationPolicyFormData>()
 
     return (
         <Form>
@@ -76,44 +82,45 @@ export const CancellationPolicyForm = () => {
                                 )}
                             </Select>
                         </FormControl>
-                        <InputNumberBox
-                            label={
-                                DEFAULT_PENALTY_OPTIONS.find(
-                                    (option) =>
-                                        option.value ===
-                                        values.defaultPenaltyBy,
-                                )?.label || 'Valor padrão (%)'
-                            }
-                            error={errors.defaultValue}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.defaultValue &&
-                                    touched.defaultValue,
-                            }}
-                            {...getFieldProps('defaultValue')}
-                            value={values.defaultValue}
-                            onChange={(value) =>
-                                setFieldValue('defaultValue', value)
-                            }
-                            disabled={
-                                values.defaultPenaltyBy === 'FIRST_NIGHT_AMOUNT'
-                            }
-                        />
 
-                        <InputNumberBox
-                            label="Período de desistência (dias)"
-                            error={errors.withdrawalPeriod}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.withdrawalPeriod &&
-                                    touched.withdrawalPeriod,
-                            }}
-                            {...getFieldProps('withdrawalPeriod')}
-                            value={values.withdrawalPeriod}
-                            onChange={(value) =>
-                                setFieldValue('withdrawalPeriod', value)
-                            }
-                        />
+                        <Stack width={'100%'} spacing={2}>
+                            <InputNumberBox
+                                label={
+                                    DEFAULT_PENALTY_OPTIONS.find(
+                                        (option) =>
+                                            option.value ===
+                                            values.defaultPenaltyBy,
+                                    )?.label || 'Valor padrão (%)'
+                                }
+                                error={errors.defaultValue}
+                                min={1}
+                                formControl={{
+                                    isInvalid:
+                                        !!errors.defaultValue &&
+                                        touched.defaultValue,
+                                }}
+                                {...getFieldProps('defaultValue')}
+                                onChange={handleChange('defaultValue')}
+                                disabled={
+                                    values.defaultPenaltyBy ===
+                                    'FIRST_NIGHT_AMOUNT'
+                                }
+                            />
+
+                            <InputNumberBox
+                                label="Período de desistência (dias)"
+                                error={errors.withdrawalPeriod}
+                                min={1}
+                                formControl={{
+                                    isInvalid:
+                                        !!errors.withdrawalPeriod &&
+                                        touched.withdrawalPeriod,
+                                }}
+                                {...getFieldProps('withdrawalPeriod')}
+                                onChange={handleChange('withdrawalPeriod')}
+                            />
+                        </Stack>
+
                         <Box
                             bgcolor="grey.100"
                             p={3}
@@ -205,6 +212,7 @@ export const CancellationPolicyForm = () => {
                                                                 index
                                                             ]?.daysBeforeCheckIn
                                                         }
+                                                        min={1}
                                                         formControl={{
                                                             isInvalid:
                                                                 !!errors
@@ -221,18 +229,9 @@ export const CancellationPolicyForm = () => {
                                                         {...getFieldProps(
                                                             `penaltyRanges.${index}.daysBeforeCheckIn`,
                                                         )}
-                                                        value={
-                                                            values
-                                                                .penaltyRanges?.[
-                                                                index
-                                                            ]?.daysBeforeCheckIn
-                                                        }
-                                                        onChange={(value) =>
-                                                            setFieldValue(
-                                                                `penaltyRanges.${index}.daysBeforeCheckIn`,
-                                                                value,
-                                                            )
-                                                        }
+                                                        onChange={handleChange(
+                                                            `penaltyRanges.${index}.daysBeforeCheckIn`,
+                                                        )}
                                                     />
 
                                                     <FormControl fullWidth>
@@ -304,6 +303,8 @@ export const CancellationPolicyForm = () => {
                                                                 index
                                                             ]?.value
                                                         }
+                                                        min={0}
+                                                        max={100}
                                                         formControl={{
                                                             isInvalid:
                                                                 !!errors
@@ -318,18 +319,9 @@ export const CancellationPolicyForm = () => {
                                                         {...getFieldProps(
                                                             `penaltyRanges.${index}.value`,
                                                         )}
-                                                        value={
-                                                            values
-                                                                .penaltyRanges?.[
-                                                                index
-                                                            ]?.value
-                                                        }
-                                                        onChange={(value) =>
-                                                            setFieldValue(
-                                                                `penaltyRanges.${index}.value`,
-                                                                value,
-                                                            )
-                                                        }
+                                                        onChange={handleChange(
+                                                            `penaltyRanges.${index}.value`,
+                                                        )}
                                                     />
                                                 </Stack>
                                             ),
@@ -395,25 +387,25 @@ export const CancellationPolicyForm = () => {
                         Descrição da política de cancelamento
                     </Typography>
 
-                    <TextField
-                        multiline
-                        rows={4}
-                        fullWidth
-                        inputProps={{ maxLength: 650 }}
-                        label="Descrição dinâmica (exibida para o hóspede)"
-                        variant="outlined"
-                        {...getFieldProps('dynamicDescription')}
-                    />
+                    <Stack width={'100%'} spacing={2}>
+                        <TextField
+                            multiline
+                            rows={4}
+                            label="Descrição dinâmica (exibida para o hóspede)"
+                            error={!!errors.dynamicDescription}
+                            helperText={errors.dynamicDescription}
+                            {...getFieldProps('dynamicDescription')}
+                        />
 
-                    <TextField
-                        multiline
-                        rows={4}
-                        fullWidth
-                        inputProps={{ maxLength: 650 }}
-                        label="Demais regras e observações"
-                        variant="outlined"
-                        {...getFieldProps('otherDescription')}
-                    />
+                        <TextField
+                            multiline
+                            rows={4}
+                            label="Demais regras e observações"
+                            error={!!errors.otherDescription}
+                            helperText={errors.otherDescription}
+                            {...getFieldProps('otherDescription')}
+                        />
+                    </Stack>
                 </Stack>
             </Stack>
         </Form>
