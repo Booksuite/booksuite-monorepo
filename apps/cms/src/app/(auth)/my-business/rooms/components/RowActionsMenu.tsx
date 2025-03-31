@@ -1,17 +1,11 @@
 import { HousingUnitTypeFull, useUpdateHousingUnitType } from '@booksuite/sdk'
-import {
-    IconButton,
-    Menu,
-    MenuButton,
-    MenuDivider,
-    MenuItem,
-    MenuList,
-} from '@chakra-ui/react'
-import { Copy, Edit, EllipsisVertical, Trash } from 'lucide-react'
+
+import { Copy, Edit, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
+import { Box, MenuItem } from '@mui/material'
 
 interface RowActionsMenuProps {
     item: HousingUnitTypeFull
@@ -23,7 +17,7 @@ export const HousingUnitTypeRowActionsMenu: React.FC<RowActionsMenuProps> = ({
     const { push } = useRouter()
 
     const companyId = useCurrentCompanyId()
-    const { mutate: updateHousingUnitType, } = useUpdateHousingUnitType()
+    const { mutate: updateHousingUnitType } = useUpdateHousingUnitType()
     const { showDialog } = useConfirmationDialog()
 
     const handleDuplicate = () => {
@@ -89,32 +83,23 @@ export const HousingUnitTypeRowActionsMenu: React.FC<RowActionsMenuProps> = ({
     }
 
     return (
-        <Menu>
-            <MenuButton
-                rounded="full"
-                variant="ghost"
-                size="sm"
-                as={IconButton}
-                icon={<EllipsisVertical size={16} />}
-            />
-            <MenuList>
-                <MenuItem icon={<Edit size={16} />} onClick={handleEdit}>
-                    Editar
-                </MenuItem>
-                <MenuItem
-                    icon={<Edit size={16} />}
-                    onClick={handleTogglePublished}
-                >
-                    {item.published ? 'Despublicar' : 'Publicar'}
-                </MenuItem>
-                <MenuItem icon={<Copy size={16} />} onClick={handleDuplicate}>
-                    Duplicar
-                </MenuItem>
-                <MenuDivider />
-                <MenuItem icon={<Trash size={16} />} onClick={handleDelete}>
-                    Excluir
-                </MenuItem>
-            </MenuList>
-        </Menu>
+        <Box>
+            <MenuItem onClick={handleEdit}>
+                <Edit size={16} />
+                Editar
+            </MenuItem>
+            <MenuItem onClick={handleTogglePublished}>
+                <Edit size={16} />
+                {item.published ? 'Despublicar' : 'Publicar'}
+            </MenuItem>
+            <MenuItem onClick={handleDuplicate}>
+                <Copy size={16} />
+                Duplicar
+            </MenuItem>
+            <MenuItem onClick={handleDelete}>
+                <Trash size={16} />
+                Excluir
+            </MenuItem>
+        </Box>
     )
 }

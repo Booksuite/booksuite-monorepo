@@ -1,126 +1,102 @@
+import { useTheme } from '@mui/material'
 import {
-    Alert,
-    AlertDescription,
-    AlertIcon,
-    AlertTitle,
-    Button,
-    Table as ChakraTable,
-    Text,
-    Th,
-    Thead,
-    Tr,
-} from '@chakra-ui/react'
-import { flexRender, type RowData } from '@tanstack/react-table'
-import { ChevronDown, ChevronUp } from 'lucide-react'
-import { useMemo } from 'react'
-
-import { getErrorMessage } from '@/common/utils'
-
-import { TableRows, TableRowsProps } from './components/TableRows'
-import {
-    getTableColumnType,
-    getTableHeaderCellProps,
-    getTableProps,
-} from './utils'
-
-interface TableProps<T extends RowData> extends TableRowsProps<T> {
-    error?: unknown
-    errorTitle?: string
-    errorFallbackMessage?: string
+    MaterialReactTable,
+    MaterialReactTableProps,
+    MRT_RowData,
+} from 'material-react-table'
+type TableProps<T extends MRT_RowData> = MaterialReactTableProps<T> & {
+    onRowClick?: (item: T) => void
 }
 
-export const Table = <T extends RowData>({
-    table,
-    error,
-    isLoading,
-    errorFallbackMessage = 'Erro desconhecido',
-    errorTitle = 'Erro ao carregar tabela',
-    emptyMessage = 'Nenhum resultado encontrado',
+export const Table = <T extends MRT_RowData>({
+    onRowClick,
     ...props
 }: TableProps<T>) => {
-    const withDragHandle = useMemo(
-        () =>
-            table
-                .getFlatHeaders()
-                .some((header) => getTableColumnType(header) === 'drag-handle'),
-        [table],
-    )
+    const theme = useTheme()
 
     return (
-        <>
-            <ChakraTable {...getTableProps(withDragHandle)}>
-                <Thead>
-                    <Tr>
-                        {table.getFlatHeaders().map((header) => {
-                            const isSorted =
-                                table.getState().sorting[0]?.id ===
-                                header.column.id
-                            const orderDirectionDesc =
-                                table.getState().sorting[0]?.desc ?? false
-
-                            return (
-                                <Th
-                                    key={header.id}
-                                    className={getTableColumnType(header)}
-                                    {...getTableHeaderCellProps(header)}
-                                >
-                                    {header.column.columnDef.enableSorting ? (
-                                        <Button
-                                            variant="link"
-                                            onClick={header.column.getToggleSortingHandler()}
-                                            rightIcon={
-                                                isSorted ? (
-                                                    orderDirectionDesc ? (
-                                                        <ChevronDown
-                                                            size={16}
-                                                        />
-                                                    ) : (
-                                                        <ChevronUp size={16} />
-                                                    )
-                                                ) : undefined
-                                            }
-                                        >
-                                            {header.isPlaceholder
-                                                ? null
-                                                : flexRender(
-                                                      header.column.columnDef
-                                                          .header,
-                                                      header.getContext(),
-                                                  )}
-                                        </Button>
-                                    ) : (
-                                        <Text color="gray.500">
-                                            {flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext(),
-                                            )}
-                                        </Text>
-                                    )}
-                                </Th>
-                            )
-                        })}
-                    </Tr>
-                </Thead>
-
-                {!error && (
-                    <TableRows
-                        isLoading={isLoading}
-                        table={table}
-                        emptyMessage={emptyMessage}
-                        {...props}
-                    />
-                )}
-            </ChakraTable>
-
-            {!!error && (
-                <Alert status="error">
-                    <AlertIcon />
-                    <AlertTitle>{errorTitle}</AlertTitle>
-                    <AlertDescription>
-                        {getErrorMessage(error, errorFallbackMessage)}
-                    </AlertDescription>
-                </Alert>
-            )}
-        </>
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        <MaterialReactTable<T>
+            enableBottomToolbar={false}
+            enableTopToolbar={false}
+            enableColumnActions={false}
+            positionActionsColumn="last"
+            defaultColumn={{
+                size: 40,
+                enableSorting: false,
+                ...props.defaultColumn,
+            }}
+            displayColumnDefOptions={{
+                'mrt-row-actions': { header: '' },
+                'mrt-row-drag': { header: '' },
+            }}
+            muiTableProps={{
+                sx: {
+                    borderCollapse: 'separate',
+                    borderSpacing: `0 ${theme.spacing(2)}`,
+                },
+                ...props.muiTableProps,
+            }}
+            muiTableHeadRowProps={{
+                sx: {
+                    boxShadow: '0',
+                },
+            }}
+            muiTableBodyRowProps={({ row }) => ({
+                onClick: () => {
+                    onRowClick?.(row.original)
+                },
+                sx: {
+                    backgroundColor: 'transparent',
+                    '& td': {
+                        border: 'none',
+                        padding: theme.spacing(2),
+                        [`&${props.enableRowDragging ? ':not(:first-child)' : ''}`]:
+                            {
+                                backgroundColor: '#F0F2F8',
+                                [`&:nth-child(${props.enableRowDragging ? '2' : '1'})`]:
+                                    {
+                                        borderTopLeftRadius: '16px',
+                                        borderBottomLeftRadius: '16px',
+                                    },
+                                '&:last-child': {
+                                    borderTopRightRadius: '16px',
+                                    borderBottomRightRadius: '16px',
+                                },
+                            },
+                    },
+                    ...(onRowClick
+                        ? {
+                              cursor: 'pointer',
+                              [`&:hover td${props.enableRowDragging ? ':not(:first-child)' : ''}`]:
+                                  {
+                                      backgroundColor: '#ecefF4',
+                                  },
+                          }
+                        : {}),
+                    '&:hover td:after': {
+                        backgroundColor: 'transparent',
+                    },
+                },
+            })}
+            muiTableBodyCellProps={{
+                sx: {
+                    color: '#486581',
+                },
+            }}
+            muiTableHeadCellProps={{
+                sx: {
+                    color: '#486581',
+                    fontWeight: 'normal',
+                    border: 'none',
+                },
+            }}
+            muiTablePaperProps={{
+                elevation: 0,
+                sx: { boxShadow: 'none' },
+            }}
+            {...props}
+        />
     )
 }

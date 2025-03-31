@@ -1,5 +1,5 @@
 ---
-description: Structure
+description: This defines the structure and rules for this project
 globs: 
 alwaysApply: false
 ---
