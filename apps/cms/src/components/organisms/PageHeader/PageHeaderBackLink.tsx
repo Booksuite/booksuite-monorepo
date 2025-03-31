@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Link, LinkProps, Text } from '@chakra-ui/react'
+import { Box, Link, LinkProps, Typography } from '@mui/material'
 import { ChevronLeft } from 'lucide-react'
 import { Route } from 'next'
 import NextLink from 'next/link'
@@ -14,21 +14,23 @@ export const PageHeaderBackLink: React.FC<PageHeaderBackLinkProps> = (
     props,
 ) => {
     const { back } = useRouter()
+
     return (
         <Link
-            as={props.href ? NextLink : 'button'}
-            variant="primary"
+            component={props.href ? NextLink : 'button'}
             display="flex"
+            flexGrow={0}
             alignItems="center"
-            fontSize="sm"
-            fontWeight="medium"
             onClick={props.href ? undefined : back}
+            maxWidth="fit-content"
             {...props}
         >
-            <Box mb={0.5}>
+            <Box>
                 <ChevronLeft size={18} />
             </Box>
-            <Text>{props.children}</Text>
+            <Typography variant="body2" fontWeight="medium" fontSize={14}>
+                {props.children}
+            </Typography>
         </Link>
     )
 }
