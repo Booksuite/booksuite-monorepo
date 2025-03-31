@@ -199,13 +199,37 @@ export const CancellationPolicyForm = () => {
 
                                                     <InputNumberBox
                                                         label="Dias antes do check-in"
+                                                        error={
+                                                            errors
+                                                                .penaltyRanges?.[
+                                                                index
+                                                            ]?.daysBeforeCheckIn
+                                                        }
+                                                        formControl={{
+                                                            isInvalid:
+                                                                !!errors
+                                                                    .penaltyRanges?.[
+                                                                    index
+                                                                ]
+                                                                    ?.daysBeforeCheckIn &&
+                                                                touched
+                                                                    .penaltyRanges?.[
+                                                                    index
+                                                                ]
+                                                                    ?.daysBeforeCheckIn,
+                                                        }}
                                                         {...getFieldProps(
                                                             `penaltyRanges.${index}.daysBeforeCheckIn`,
                                                         )}
-                                                        value={`penaltyRanges.${index}.daysBeforeCheckIn`}
+                                                        value={
+                                                            values
+                                                                .penaltyRanges?.[
+                                                                index
+                                                            ]?.daysBeforeCheckIn
+                                                        }
                                                         onChange={(value) =>
                                                             setFieldValue(
-                                                                '`penaltyRanges.${index}.daysBeforeCheckIn`',
+                                                                `penaltyRanges.${index}.daysBeforeCheckIn`,
                                                                 value,
                                                             )
                                                         }
@@ -227,6 +251,13 @@ export const CancellationPolicyForm = () => {
                                                                 )
                                                             }
                                                             displayEmpty
+                                                            style={{
+                                                                border: '1px solid #D9E2EC',
+                                                                borderRadius:
+                                                                    '8px',
+                                                                padding: '6px',
+                                                                color: '#01337D',
+                                                            }}
                                                         >
                                                             <MenuItem
                                                                 value=""
@@ -267,12 +298,18 @@ export const CancellationPolicyForm = () => {
                                                             )?.label ||
                                                             'Valor padrão (%)'
                                                         }
+                                                        error={
+                                                            errors
+                                                                .penaltyRanges?.[
+                                                                index
+                                                            ]?.value
+                                                        }
                                                         formControl={{
                                                             isInvalid:
                                                                 !!errors
                                                                     .penaltyRanges?.[
                                                                     index
-                                                                ] &&
+                                                                ]?.value &&
                                                                 touched
                                                                     .penaltyRanges?.[
                                                                     index
@@ -281,7 +318,12 @@ export const CancellationPolicyForm = () => {
                                                         {...getFieldProps(
                                                             `penaltyRanges.${index}.value`,
                                                         )}
-                                                        value={`penaltyRanges.${index}.value`}
+                                                        value={
+                                                            values
+                                                                .penaltyRanges?.[
+                                                                index
+                                                            ]?.value
+                                                        }
                                                         onChange={(value) =>
                                                             setFieldValue(
                                                                 `penaltyRanges.${index}.value`,
