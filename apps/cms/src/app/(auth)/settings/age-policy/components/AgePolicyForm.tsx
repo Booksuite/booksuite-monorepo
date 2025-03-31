@@ -1,20 +1,22 @@
 import {
     Box,
     Button,
-    Flex,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
     Grid,
-    GridItem,
     IconButton,
+    MenuItem,
+    Select,
     Stack,
     Switch,
-    Text,
-} from '@chakra-ui/react'
+    Typography,
+} from '@mui/material'
 import { FieldArray, Form, useFormikContext } from 'formik'
 import { CirclePlus, Info, Trash } from 'lucide-react'
 
 import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
-import SelectBox from '@/components/atoms/SelectBox'
 import { AgePolicyFormData } from '../utils/config'
 import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
 
@@ -30,9 +32,9 @@ export const AgePolicyForm = () => {
 
     return (
         <Form>
-            <Stack spacing={8} mt={4}>
-                <Stack spacing={4}>
-                    <h2 style={{ marginBottom: '0' }}>Adultos</h2>
+            <Stack spacing={4} mt={2}>
+                <Stack spacing={2}>
+                    <Typography variant="h6">Adultos</Typography>
                     <InputNumberBox
                         label="Idade inicial para adultos"
                         error={errors.adultMinAge}
@@ -44,45 +46,51 @@ export const AgePolicyForm = () => {
                         onChange={handleChange('adultMinAge')}
                     />
                     <Box
-                        bg={'gray.100'}
-                        p={3}
-                        borderRadius={'md'}
+                        bgcolor={'grey.100'}
+                        p={2}
+                        borderRadius={1}
                         display={'flex'}
                         alignItems={'center'}
                     >
-                        <Flex align="center" gap={2}>
+                        <Box display="flex" alignItems="center" gap={1}>
                             <Info size={23} color={'#0B1F51'} />
-                            <Text fontSize={'md'} color={'#0B1F51'}>
+                            <Typography variant="body1" color={'#0B1F51'}>
                                 <b>Importante:</b> selecione acima qual idade o
                                 sistema deve considerar adulto (cobrando valor
                                 integral).
-                            </Text>
-                        </Flex>
+                            </Typography>
+                        </Box>
                     </Box>
                 </Stack>
 
-                <Stack gap={4} mt={4}>
-                    <h2 style={{ marginBottom: '0' }}>Crianças</h2>
-                    <Flex alignItems={'center'} gap={2}>
-                        <Switch
-                            isChecked={values.acceptChildren}
-                            onChange={(e) =>
-                                setFieldValue(
-                                    'acceptChildren',
-                                    e.target.checked,
-                                )
-                            }
-                        />
-                        <h2 style={{ fontWeight: '400', marginBottom: '0' }}>
-                            Aceitar Crianças
-                        </h2>
-                    </Flex>
+                <Stack gap={2} mt={2}>
+                    <Typography variant="h6">Crianças</Typography>
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={values.acceptChildren}
+                                onChange={(e) =>
+                                    setFieldValue(
+                                        'acceptChildren',
+                                        e.target.checked,
+                                    )
+                                }
+                            />
+                        }
+                        label="Aceitar Crianças"
+                    />
                 </Stack>
 
                 {values.acceptChildren && (
                     <FieldArray name="ageGroups">
                         {({ push, remove }) => (
-                            <Grid templateColumns="1fr" gap={8}>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: 3,
+                                }}
+                            >
                                 {values.ageGroups.map((_, index) => {
                                     const error =
                                         typeof errors.ageGroups?.[index] ===
@@ -91,36 +99,41 @@ export const AgePolicyForm = () => {
                                             : undefined
 
                                     return (
-                                        <Grid
-                                            key={index}
-                                            templateColumns="1fr"
-                                            gap={2}
-                                        >
-                                            <Flex alignItems="center" gap={2}>
-                                                <h2
-                                                    style={{
-                                                        fontWeight: '400',
-                                                        marginBottom: '0',
-                                                    }}
+                                        <Box key={index} sx={{ mb: 3 }}>
+                                            <Box
+                                                display="flex"
+                                                alignItems="center"
+                                                gap={1}
+                                                mb={2}
+                                            >
+                                                <Typography
+                                                    variant="h6"
+                                                    gutterBottom
+                                                    fontWeight={400}
                                                 >
                                                     Faixa Etária - Crianças{' '}
                                                     {index + 1}
-                                                </h2>
+                                                </Typography>
                                                 <IconButton
-                                                    icon={<Trash />}
-                                                    colorScheme="red"
-                                                    variant="ghost"
                                                     onClick={() =>
                                                         remove(index)
                                                     }
                                                     aria-label="Remove"
-                                                />
-                                            </Flex>
+                                                    color="error"
+                                                >
+                                                    <Trash />
+                                                </IconButton>
+                                            </Box>
                                             <Grid
-                                                templateColumns="repeat(2, 1fr)"
-                                                gap={2}
+                                                container
+                                                rowSpacing={1}
+                                                columnSpacing={{
+                                                    xs: 1,
+                                                    sm: 2,
+                                                    md: 3,
+                                                }}
                                             >
-                                                <GridItem>
+                                                <Grid size={6}>
                                                     <InputNumberBox
                                                         label="Idade Inicial"
                                                         error={
@@ -141,8 +154,8 @@ export const AgePolicyForm = () => {
                                                             `ageGroups.${index}.initialAge`,
                                                         )}
                                                     />
-                                                </GridItem>
-                                                <GridItem>
+                                                </Grid>
+                                                <Grid size={6}>
                                                     <InputNumberBox
                                                         label="Idade Final"
                                                         error={error?.finalAge}
@@ -161,80 +174,85 @@ export const AgePolicyForm = () => {
                                                             `ageGroups.${index}.finalAge`,
                                                         )}
                                                     />
-                                                </GridItem>
-                                                <GridItem>
-                                                    <SelectBox
-                                                        label="Tipo de cobrança"
+                                                </Grid>
+                                                <Grid size={6}>
+                                                    <FormControl
+                                                        fullWidth
                                                         error={
-                                                            error?.chargeType
-                                                        }
-                                                        formControl={{
-                                                            isInvalid:
-                                                                !!error?.chargeType &&
-                                                                touched
-                                                                    .ageGroups?.[
-                                                                    index
-                                                                ]?.chargeType,
-                                                        }}
-                                                        options={Object.entries(
-                                                            AGE_GROUP_CHARGE_TYPE,
-                                                        ).map(
-                                                            ([
-                                                                value,
-                                                                label,
-                                                            ]) => ({
-                                                                label,
-                                                                value,
-                                                            }),
-                                                        )}
-                                                        placeholder="Tipo de Cobrança"
-                                                        isSearchable={false}
-                                                        closeMenuOnSelect
-                                                        value={
-                                                            values.ageGroups?.[
+                                                            !!error?.chargeType &&
+                                                            touched
+                                                                ?.ageGroups?.[
                                                                 index
                                                             ]?.chargeType
-                                                                ? Object.entries(
-                                                                      AGE_GROUP_CHARGE_TYPE,
-                                                                  )
-                                                                      .map(
-                                                                          ([
-                                                                              value,
-                                                                              label,
-                                                                          ]) => ({
-                                                                              label,
-                                                                              value,
-                                                                          }),
-                                                                      )
-                                                                      .find(
-                                                                          (
-                                                                              opt,
-                                                                          ) =>
-                                                                              opt.value ===
-                                                                              (values
-                                                                                  .ageGroups[
-                                                                                  index
-                                                                              ]
-                                                                                  ?.chargeType as string),
-                                                                      ) || null
-                                                                : null
                                                         }
-                                                        onChange={(
-                                                            option: {
-                                                                value: string
-                                                            } | null,
-                                                        ) =>
-                                                            setFieldValue(
-                                                                `ageGroups.${index}.chargeType`,
-                                                                option?.value ||
-                                                                    '',
-                                                            )
-                                                        }
-                                                    />
-                                                </GridItem>
+                                                    >
+                                                        <Select
+                                                            value={
+                                                                values
+                                                                    .ageGroups?.[
+                                                                    index
+                                                                ]?.chargeType ||
+                                                                ''
+                                                            }
+                                                            onChange={(event) =>
+                                                                setFieldValue(
+                                                                    `ageGroups.${index}.chargeType`,
+                                                                    event.target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                            displayEmpty
+                                                            variant="outlined"
+                                                            style={{
+                                                                border: '1px solid #D9E2EC',
+                                                                borderRadius:
+                                                                    '8px',
+                                                                padding: '6px',
+                                                                color: '#01337D',
+                                                            }}
+                                                        >
+                                                            <MenuItem
+                                                                value=""
+                                                                disabled
+                                                            >
+                                                                Tipo de Cobrança
+                                                            </MenuItem>
+                                                            {Object.entries(
+                                                                AGE_GROUP_CHARGE_TYPE,
+                                                            ).map(
+                                                                ([
+                                                                    value,
+                                                                    label,
+                                                                ]) => (
+                                                                    <MenuItem
+                                                                        key={
+                                                                            value
+                                                                        }
+                                                                        value={
+                                                                            value
+                                                                        }
+                                                                    >
+                                                                        {label}
+                                                                    </MenuItem>
+                                                                ),
+                                                            )}
+                                                        </Select>
+                                                        {error?.chargeType &&
+                                                            touched
+                                                                ?.ageGroups?.[
+                                                                index
+                                                            ]?.chargeType && (
+                                                                <FormHelperText>
+                                                                    {
+                                                                        error.chargeType
+                                                                    }
+                                                                </FormHelperText>
+                                                            )}
+                                                    </FormControl>
+                                                </Grid>
                                                 {values.ageGroups[index]
                                                     ?.chargeType !== 'FREE' && (
-                                                    <GridItem>
+                                                    <Grid size={6}>
                                                         <InputBox
                                                             label="Valor a ser cobrado"
                                                             type="currency"
@@ -254,19 +272,18 @@ export const AgePolicyForm = () => {
                                                                 `ageGroups.${index}.value`,
                                                             )}
                                                         />
-                                                    </GridItem>
+                                                    </Grid>
                                                 )}
                                             </Grid>
-                                        </Grid>
+                                        </Box>
                                     )
                                 })}
                                 <Button
-                                    mt={3}
-                                    variant="outline"
-                                    width={'100%'}
-                                    leftIcon={<CirclePlus size={16} />}
-                                    mb={4}
-                                    size={'lg'}
+                                    variant="outlined"
+                                    fullWidth
+                                    startIcon={<CirclePlus size={16} />}
+                                    sx={{ mt: 2, mb: 2 }}
+                                    size="large"
                                     onClick={() =>
                                         push({
                                             initialAge: 0,
@@ -278,7 +295,7 @@ export const AgePolicyForm = () => {
                                 >
                                     Adicionar Faixa Etária
                                 </Button>
-                            </Grid>
+                            </Box>
                         )}
                     </FieldArray>
                 )}
