@@ -1,71 +1,67 @@
 import {
     Box,
     Button,
-    Flex,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
     Grid,
-    GridItem,
     IconButton,
+    InputAdornment,
+    MenuItem,
+    Select,
     Stack,
     Switch,
-    Text,
-} from '@chakra-ui/react'
-import { FieldArray, Form, useFormikContext } from 'formik'
+    TextField,
+    Typography,
+} from '@mui/material'
+import { FieldArray, useFormikContext } from 'formik'
 import { CirclePlus, Info, Trash } from 'lucide-react'
 
-import InputBox from '@/components/atoms/InputBox'
+import { FormContainer } from '@/components/atoms/FormContainer'
+import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
-import SelectBox from '@/components/atoms/SelectBox'
 import { AgePolicyFormData } from '../utils/config'
 import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
 
 export const AgePolicyForm = () => {
-    const {
-        getFieldProps,
-        touched,
-        errors,
-        values,
-        handleChange,
-        setFieldValue,
-    } = useFormikContext<AgePolicyFormData>()
+    const { touched, errors, values, setFieldValue } =
+        useFormikContext<AgePolicyFormData>()
 
     return (
-        <Form>
-            <Stack spacing={8} mt={4}>
-                <Stack spacing={4}>
-                    <h2 style={{ marginBottom: '0' }}>Adultos</h2>
-                    <NumberInput
-                        label="Idade inicial para adultos"
-                        error={errors.adultMinAge}
-                        formControl={{
-                            isInvalid:
-                                !!errors.adultMinAge && touched.adultMinAge,
-                        }}
-                        {...getFieldProps('adultMinAge')}
-                        onChange={handleChange('adultMinAge')}
-                    />
-                    <Box
-                        bg={'gray.100'}
-                        p={3}
-                        borderRadius={'md'}
-                        display={'flex'}
-                        alignItems={'center'}
-                    >
-                        <Flex align="center" gap={2}>
-                            <Info size={23} color={'#0B1F51'} />
-                            <Text fontSize={'md'} color={'#0B1F51'}>
-                                <b>Importante:</b> selecione acima qual idade o
-                                sistema deve considerar adulto (cobrando valor
-                                integral).
-                            </Text>
-                        </Flex>
+        <FormContainer>
+            <FormSection title="Adultos">
+                <NumberInput
+                    label="Idade inicial para adultos"
+                    value={values.adultMinAge}
+                    onChange={(e) => {
+                        const newValueNumber = Number(e.target.value)
+                        if (Number.isNaN(newValueNumber)) return
+                        setFieldValue('adultMinAge', newValueNumber)
+                    }}
+                />
+                <Box
+                    bgcolor={'grey.100'}
+                    p={2}
+                    borderRadius={1}
+                    display={'flex'}
+                    alignItems={'center'}
+                >
+                    <Box display="flex" alignItems="center" gap={1}>
+                        <Info size={23} color={'#0B1F51'} />
+                        <Typography variant="body1" color={'#0B1F51'}>
+                            <b>Importante:</b> selecione acima qual idade o
+                            sistema deve considerar adulto (cobrando valor
+                            integral).
+                        </Typography>
                     </Box>
-                </Stack>
+                </Box>
+            </FormSection>
 
-                <Stack gap={4} mt={4}>
-                    <h2 style={{ marginBottom: '0' }}>Crianças</h2>
-                    <Flex alignItems={'center'} gap={2}>
+            <FormSection title="Crianças">
+                <FormControlLabel
+                    control={
                         <Switch
-                            isChecked={values.acceptChildren}
+                            checked={values.acceptChildren}
                             onChange={(e) =>
                                 setFieldValue(
                                     'acceptChildren',
@@ -73,17 +69,23 @@ export const AgePolicyForm = () => {
                                 )
                             }
                         />
-                        <h2 style={{ fontWeight: '400', marginBottom: '0' }}>
-                            Aceitar Crianças
-                        </h2>
-                    </Flex>
-                </Stack>
+                    }
+                    label="Aceitar Crianças"
+                />
+            </FormSection>
 
+            <FormSection>
                 {values.acceptChildren && (
                     <FieldArray name="ageGroups">
                         {({ push, remove }) => (
-                            <Grid templateColumns="1fr" gap={8}>
-                                {values.ageGroups.map((_, index) => {
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: 3,
+                                }}
+                            >
+                                {values.ageGroups.map((ageGroup, index) => {
                                     const error =
                                         typeof errors.ageGroups?.[index] ===
                                         'object'
@@ -91,182 +93,230 @@ export const AgePolicyForm = () => {
                                             : undefined
 
                                     return (
-                                        <Grid
-                                            key={index}
-                                            templateColumns="1fr"
-                                            gap={2}
-                                        >
-                                            <Flex alignItems="center" gap={2}>
-                                                <h2
-                                                    style={{
-                                                        fontWeight: '400',
-                                                        marginBottom: '0',
-                                                    }}
-                                                >
+                                        <Box key={index} sx={{ mb: 3 }}>
+                                            <Box
+                                                display="flex"
+                                                alignItems="center"
+                                                gap={1}
+                                                mb={2}
+                                            >
+                                                <Typography fontWeight={400}>
                                                     Faixa Etária - Crianças{' '}
                                                     {index + 1}
-                                                </h2>
+                                                </Typography>
                                                 <IconButton
-                                                    icon={<Trash />}
-                                                    colorScheme="red"
-                                                    variant="ghost"
                                                     onClick={() =>
                                                         remove(index)
                                                     }
                                                     aria-label="Remove"
-                                                />
-                                            </Flex>
+                                                    color="error"
+                                                >
+                                                    <Trash />
+                                                </IconButton>
+                                            </Box>
                                             <Grid
-                                                templateColumns="repeat(2, 1fr)"
-                                                gap={2}
+                                                container
+                                                rowSpacing={4}
+                                                columnSpacing={{
+                                                    xs: 1,
+                                                    sm: 2,
+                                                    md: 3,
+                                                }}
                                             >
-                                                <GridItem>
-                                                    <NumberInput
-                                                        label="Idade Inicial"
+                                                <Grid size={6}>
+                                                    <Stack width={'100%'}>
+                                                        <NumberInput
+                                                            label="Idade Inicial"
+                                                            value={
+                                                                ageGroup.initialAge
+                                                            }
+                                                            min={0}
+                                                            max={
+                                                                values.adultMinAge -
+                                                                2
+                                                            }
+                                                            onChange={(e) => {
+                                                                const newValueNumber =
+                                                                    Number(
+                                                                        e.target
+                                                                            .value,
+                                                                    )
+                                                                if (
+                                                                    Number.isNaN(
+                                                                        newValueNumber,
+                                                                    )
+                                                                )
+                                                                    return
+                                                                setFieldValue(
+                                                                    `ageGroups.${index}.initialAge`,
+                                                                    newValueNumber,
+                                                                )
+                                                            }}
+                                                        />
+                                                    </Stack>
+                                                </Grid>
+                                                <Grid size={6}>
+                                                    <Stack width={'100%'}>
+                                                        <NumberInput
+                                                            label="Idade Final"
+                                                            value={
+                                                                ageGroup.finalAge
+                                                            }
+                                                            min={
+                                                                ageGroup.initialAge +
+                                                                1
+                                                            }
+                                                            max={
+                                                                values.adultMinAge -
+                                                                1
+                                                            }
+                                                            onChange={(e) => {
+                                                                const newValueNumber =
+                                                                    Number(
+                                                                        e.target
+                                                                            .value,
+                                                                    )
+                                                                if (
+                                                                    Number.isNaN(
+                                                                        newValueNumber,
+                                                                    )
+                                                                )
+                                                                    return
+                                                                setFieldValue(
+                                                                    `ageGroups.${index}.finalAge`,
+                                                                    newValueNumber,
+                                                                )
+                                                            }}
+                                                        />
+                                                    </Stack>
+                                                </Grid>
+                                                <Grid size={6}>
+                                                    <FormControl
+                                                        fullWidth
                                                         error={
-                                                            error?.initialAge
-                                                        }
-                                                        formControl={{
-                                                            isInvalid:
-                                                                !!error?.initialAge &&
-                                                                touched
-                                                                    .ageGroups?.[
-                                                                    index
-                                                                ]?.initialAge,
-                                                        }}
-                                                        {...getFieldProps(
-                                                            `ageGroups.${index}.initialAge`,
-                                                        )}
-                                                        onChange={handleChange(
-                                                            `ageGroups.${index}.initialAge`,
-                                                        )}
-                                                    />
-                                                </GridItem>
-                                                <GridItem>
-                                                    <NumberInput
-                                                        label="Idade Final"
-                                                        error={error?.finalAge}
-                                                        formControl={{
-                                                            isInvalid:
-                                                                !!error?.finalAge &&
-                                                                touched
-                                                                    .ageGroups?.[
-                                                                    index
-                                                                ]?.finalAge,
-                                                        }}
-                                                        {...getFieldProps(
-                                                            `ageGroups.${index}.finalAge`,
-                                                        )}
-                                                        onChange={handleChange(
-                                                            `ageGroups.${index}.finalAge`,
-                                                        )}
-                                                    />
-                                                </GridItem>
-                                                <GridItem>
-                                                    <SelectBox
-                                                        label="Tipo de cobrança"
-                                                        error={
-                                                            error?.chargeType
-                                                        }
-                                                        formControl={{
-                                                            isInvalid:
-                                                                !!error?.chargeType &&
-                                                                touched
-                                                                    .ageGroups?.[
-                                                                    index
-                                                                ]?.chargeType,
-                                                        }}
-                                                        options={Object.entries(
-                                                            AGE_GROUP_CHARGE_TYPE,
-                                                        ).map(
-                                                            ([
-                                                                value,
-                                                                label,
-                                                            ]) => ({
-                                                                label,
-                                                                value,
-                                                            }),
-                                                        )}
-                                                        placeholder="Tipo de Cobrança"
-                                                        isSearchable={false}
-                                                        closeMenuOnSelect
-                                                        value={
-                                                            values.ageGroups?.[
+                                                            !!error?.chargeType &&
+                                                            touched
+                                                                ?.ageGroups?.[
                                                                 index
                                                             ]?.chargeType
-                                                                ? Object.entries(
-                                                                      AGE_GROUP_CHARGE_TYPE,
-                                                                  )
-                                                                      .map(
-                                                                          ([
-                                                                              value,
-                                                                              label,
-                                                                          ]) => ({
-                                                                              label,
-                                                                              value,
-                                                                          }),
-                                                                      )
-                                                                      .find(
-                                                                          (
-                                                                              opt,
-                                                                          ) =>
-                                                                              opt.value ===
-                                                                              (values
-                                                                                  .ageGroups[
-                                                                                  index
-                                                                              ]
-                                                                                  ?.chargeType as string),
-                                                                      ) || null
-                                                                : null
                                                         }
-                                                        onChange={(
-                                                            option: {
-                                                                value: string
-                                                            } | null,
-                                                        ) =>
-                                                            setFieldValue(
-                                                                `ageGroups.${index}.chargeType`,
-                                                                option?.value ||
-                                                                    '',
-                                                            )
-                                                        }
-                                                    />
-                                                </GridItem>
-                                                {values.ageGroups[index]
-                                                    ?.chargeType !== 'FREE' && (
-                                                    <GridItem>
-                                                        <InputBox
+                                                    >
+                                                        <Select
+                                                            value={
+                                                                ageGroup.chargeType ||
+                                                                ''
+                                                            }
+                                                            onChange={(event) =>
+                                                                setFieldValue(
+                                                                    `ageGroups.${index}.chargeType`,
+                                                                    event.target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                            displayEmpty
+                                                        >
+                                                            <MenuItem
+                                                                value=""
+                                                                disabled
+                                                            >
+                                                                Tipo de Cobrança
+                                                            </MenuItem>
+                                                            {Object.entries(
+                                                                AGE_GROUP_CHARGE_TYPE,
+                                                            ).map(
+                                                                ([
+                                                                    value,
+                                                                    label,
+                                                                ]) => (
+                                                                    <MenuItem
+                                                                        key={
+                                                                            value
+                                                                        }
+                                                                        value={
+                                                                            value
+                                                                        }
+                                                                    >
+                                                                        {label}
+                                                                    </MenuItem>
+                                                                ),
+                                                            )}
+                                                        </Select>
+                                                        {error?.chargeType &&
+                                                            touched
+                                                                ?.ageGroups?.[
+                                                                index
+                                                            ]?.chargeType && (
+                                                                <FormHelperText>
+                                                                    {
+                                                                        error.chargeType
+                                                                    }
+                                                                </FormHelperText>
+                                                            )}
+                                                    </FormControl>
+                                                </Grid>
+                                                {ageGroup.chargeType !==
+                                                    'FREE' && (
+                                                    <Grid size={6}>
+                                                        <TextField
                                                             label="Valor a ser cobrado"
-                                                            type="currency"
-                                                            error={error?.value}
-                                                            formControl={{
-                                                                isInvalid:
-                                                                    !!error?.value &&
-                                                                    touched
-                                                                        .ageGroups?.[
-                                                                        index
-                                                                    ]?.value,
+                                                            type="text"
+                                                            error={
+                                                                !!error?.value &&
+                                                                touched
+                                                                    ?.ageGroups?.[
+                                                                    index
+                                                                ]?.value
+                                                            }
+                                                            helperText={
+                                                                error?.value &&
+                                                                touched
+                                                                    ?.ageGroups?.[
+                                                                    index
+                                                                ]?.value
+                                                                    ? error.value
+                                                                    : ''
+                                                            }
+                                                            value={
+                                                                ageGroup.value
+                                                            }
+                                                            onChange={(e) => {
+                                                                const newValue =
+                                                                    e.target
+                                                                        .value
+                                                                setFieldValue(
+                                                                    `ageGroups.${index}.value`,
+                                                                    newValue,
+                                                                )
                                                             }}
-                                                            {...getFieldProps(
-                                                                `ageGroups.${index}.value`,
-                                                            )}
-                                                            onChange={handleChange(
-                                                                `ageGroups.${index}.value`,
-                                                            )}
+                                                            fullWidth
+                                                            variant="outlined"
+                                                            InputProps={{
+                                                                startAdornment:
+                                                                    (
+                                                                        <InputAdornment position="start">
+                                                                            R$
+                                                                        </InputAdornment>
+                                                                    ),
+                                                                inputMode:
+                                                                    'numeric',
+                                                                inputProps: {
+                                                                    pattern:
+                                                                        '[0-9]*',
+                                                                },
+                                                            }}
                                                         />
-                                                    </GridItem>
+                                                    </Grid>
                                                 )}
                                             </Grid>
-                                        </Grid>
+                                        </Box>
                                     )
                                 })}
                                 <Button
-                                    mt={3}
-                                    variant="outline"
-                                    width={'100%'}
-                                    leftIcon={<CirclePlus size={16} />}
-                                    mb={4}
-                                    size={'lg'}
+                                    variant="outlined"
+                                    fullWidth
+                                    startIcon={<CirclePlus size={16} />}
+                                    sx={{ mt: 2, mb: 2 }}
+                                    size="large"
                                     onClick={() =>
                                         push({
                                             initialAge: 0,
@@ -278,11 +328,11 @@ export const AgePolicyForm = () => {
                                 >
                                     Adicionar Faixa Etária
                                 </Button>
-                            </Grid>
+                            </Box>
                         )}
                     </FieldArray>
                 )}
-            </Stack>
-        </Form>
+            </FormSection>
+        </FormContainer>
     )
 }
