@@ -14,9 +14,11 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
-import { FieldArray, Form, useFormikContext } from 'formik'
+import { FieldArray, useFormikContext } from 'formik'
 import { CirclePlus, Info, Trash } from 'lucide-react'
 
+import { FormContainer } from '@/components/atoms/FormContainer'
+import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { AgePolicyFormData } from '../utils/config'
 import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
@@ -32,56 +34,53 @@ export const AgePolicyForm = () => {
     } = useFormikContext<AgePolicyFormData>()
 
     return (
-        <Form>
-            <Stack spacing={4} mt={2}>
-                <Stack spacing={2}>
-                    <Typography variant="h6">Adultos</Typography>
-                    <NumberInput
-                        label="Idade inicial para adultos"
-                        error={errors.adultMinAge}
-                        formControl={{
-                            isInvalid:
-                                !!errors.adultMinAge && touched.adultMinAge,
-                        }}
-                        {...getFieldProps('adultMinAge')}
-                        onChange={handleChange('adultMinAge')}
-                    />
-                    <Box
-                        bgcolor={'grey.100'}
-                        p={2}
-                        borderRadius={1}
-                        display={'flex'}
-                        alignItems={'center'}
-                    >
-                        <Box display="flex" alignItems="center" gap={1}>
-                            <Info size={23} color={'#0B1F51'} />
-                            <Typography variant="body1" color={'#0B1F51'}>
-                                <b>Importante:</b> selecione acima qual idade o
-                                sistema deve considerar adulto (cobrando valor
-                                integral).
-                            </Typography>
-                        </Box>
+        <FormContainer>
+            <FormSection title="Adultos">
+                <NumberInput
+                    label="Idade inicial para adultos"
+                    error={errors.adultMinAge}
+                    formControl={{
+                        isInvalid: !!errors.adultMinAge && touched.adultMinAge,
+                    }}
+                    {...getFieldProps('adultMinAge')}
+                    onChange={handleChange('adultMinAge')}
+                />
+                <Box
+                    bgcolor={'grey.100'}
+                    p={2}
+                    borderRadius={1}
+                    display={'flex'}
+                    alignItems={'center'}
+                >
+                    <Box display="flex" alignItems="center" gap={1}>
+                        <Info size={23} color={'#0B1F51'} />
+                        <Typography variant="body1" color={'#0B1F51'}>
+                            <b>Importante:</b> selecione acima qual idade o
+                            sistema deve considerar adulto (cobrando valor
+                            integral).
+                        </Typography>
                     </Box>
-                </Stack>
+                </Box>
+            </FormSection>
 
-                <Stack gap={2} mt={2}>
-                    <Typography variant="h6">Crianças</Typography>
-                    <FormControlLabel
-                        control={
-                            <Switch
-                                checked={values.acceptChildren}
-                                onChange={(e) =>
-                                    setFieldValue(
-                                        'acceptChildren',
-                                        e.target.checked,
-                                    )
-                                }
-                            />
-                        }
-                        label="Aceitar Crianças"
-                    />
-                </Stack>
+            <FormSection title="Crianças">
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={values.acceptChildren}
+                            onChange={(e) =>
+                                setFieldValue(
+                                    'acceptChildren',
+                                    e.target.checked,
+                                )
+                            }
+                        />
+                    }
+                    label="Aceitar Crianças"
+                />
+            </FormSection>
 
+            <FormSection>
                 {values.acceptChildren && (
                     <FieldArray name="ageGroups">
                         {({ push, remove }) => (
@@ -107,11 +106,7 @@ export const AgePolicyForm = () => {
                                                 gap={1}
                                                 mb={2}
                                             >
-                                                <Typography
-                                                    variant="h6"
-                                                    gutterBottom
-                                                    fontWeight={400}
-                                                >
+                                                <Typography fontWeight={400}>
                                                     Faixa Etária - Crianças{' '}
                                                     {index + 1}
                                                 </Typography>
@@ -127,7 +122,7 @@ export const AgePolicyForm = () => {
                                             </Box>
                                             <Grid
                                                 container
-                                                rowSpacing={1}
+                                                rowSpacing={4}
                                                 columnSpacing={{
                                                     xs: 1,
                                                     sm: 2,
@@ -332,7 +327,7 @@ export const AgePolicyForm = () => {
                         )}
                     </FieldArray>
                 )}
-            </Stack>
-        </Form>
+            </FormSection>
+        </FormContainer>
     )
 }
