@@ -10,6 +10,7 @@ import {
     MenuItem,
     Select,
     Stack,
+    TextField,
     Typography,
     useTheme,
 } from '@mui/material'
@@ -17,7 +18,6 @@ import { useFormikContext } from 'formik'
 import { Info, PlusCircle, Trash } from 'lucide-react'
 import { ChangeEvent, useEffect, useState } from 'react'
 
-import { DatePickerBox } from '@/components/atoms/DatePickerBox'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
@@ -162,7 +162,7 @@ export const HostingRulesForm = () => {
 
             <FormSection title="Noites do fim de semana">
                 <FormGroup>
-                    <Grid container spacing={2}>
+                    <Grid container justifyContent={'space-between'}>
                         {AVAILABLE_WEEK_DAYS.map((night) => (
                             <Grid key={night.name}>
                                 <FormControlLabel
@@ -197,14 +197,14 @@ export const HostingRulesForm = () => {
                 </FormGroup>
                 <Box
                     bgcolor="grey.100"
-                    p={2}
-                    borderRadius={4}
+                    p={4}
+                    borderRadius={2}
                     display="flex"
                     alignItems="center"
                 >
-                    <Box display="flex" alignItems="center" gap={1}>
-                        <Info size={20} color={theme.palette.primary.main} />
-                        <Typography variant="body2" color="primary.dark">
+                    <Box display="flex" alignItems="center" gap={2}>
+                        <Info color={theme.palette.blue[900]} />
+                        <Typography variant="body2" color="blue.900">
                             <b>Atenção:</b> as noites não selecionadas serão
                             automaticamente consideradas dia de semana.
                         </Typography>
@@ -271,59 +271,83 @@ export const HostingRulesForm = () => {
                     }}
                 />
 
-                {selectedOpening === 1 &&
-                    periods.map((period, index) => (
-                        <Box key={period.id} width="100%">
-                            <Stack
-                                direction="row"
-                                alignItems="center"
-                                spacing={1}
-                            >
-                                <Typography variant="h6" fontWeight={600}>
-                                    Período de Hospedagem {index + 1}
-                                </Typography>
-                                <IconButton
-                                    aria-label="Remover período"
-                                    color="error"
-                                    onClick={() => removePeriod(period.id)}
+                <FormSection>
+                    {selectedOpening === 1 &&
+                        periods.map((period, index) => (
+                            <Box key={period.id} width="100%">
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    spacing={1}
                                 >
-                                    <Trash size={20} />
-                                </IconButton>
-                            </Stack>
-                            <Grid container spacing={2} mt={1}>
-                                <Grid size={6}>
-                                    <Typography variant="subtitle2">
-                                        Início da Janela de Venda
+                                    <Typography fontWeight={400}>
+                                        Período de Hospedagem {index + 1}
                                     </Typography>
-                                    <DatePickerBox
-                                        value={values.reservationWindowStart}
-                                        onChange={(date) =>
-                                            setFieldValue(
-                                                'reservationWindowStart',
-                                                date,
-                                            )
-                                        }
-                                        error={errors.reservationWindowStart}
-                                    />
+                                    <IconButton
+                                        aria-label="Remover período"
+                                        color="error"
+                                        onClick={() => removePeriod(period.id)}
+                                    >
+                                        <Trash size={20} />
+                                    </IconButton>
+                                </Stack>
+                                <Grid container spacing={2} mt={1}>
+                                    <Grid size={6}>
+                                        <TextField
+                                            label="Início da Janela de Venda"
+                                            type="date"
+                                            fullWidth
+                                            value={
+                                                values.reservationWindowStart ||
+                                                ''
+                                            }
+                                            onChange={(e) =>
+                                                setFieldValue(
+                                                    'reservationWindowStart',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            error={
+                                                !!errors.reservationWindowStart
+                                            }
+                                            helperText={
+                                                errors.reservationWindowStart
+                                            }
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </Grid>
+                                    <Grid size={6}>
+                                        <TextField
+                                            label="Fim da Janela de Venda"
+                                            type="date"
+                                            fullWidth
+                                            value={
+                                                values.reservationWindowEnd ||
+                                                ''
+                                            }
+                                            onChange={(e) =>
+                                                setFieldValue(
+                                                    'reservationWindowEnd',
+                                                    e.target.value,
+                                                )
+                                            }
+                                            error={
+                                                !!errors.reservationWindowEnd
+                                            }
+                                            helperText={
+                                                errors.reservationWindowEnd
+                                            }
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                    </Grid>
                                 </Grid>
-                                <Grid size={6}>
-                                    <Typography variant="subtitle2">
-                                        Fim da Janela de Venda
-                                    </Typography>
-                                    <DatePickerBox
-                                        value={values.reservationWindowEnd}
-                                        onChange={(date) =>
-                                            setFieldValue(
-                                                'reservationWindowEnd',
-                                                date,
-                                            )
-                                        }
-                                        error={errors.reservationWindowEnd}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    ))}
+                            </Box>
+                        ))}
+                </FormSection>
 
                 {selectedOpening === 1 && (
                     <Button
@@ -366,7 +390,7 @@ export const HostingRulesForm = () => {
 
                 {selectedSpecificDays === 1 && (
                     <FormGroup>
-                        <Grid container spacing={2}>
+                        <Grid container justifyContent={'space-between'}>
                             {HOSTING_SPECIFIC_DAYS.map((night) => (
                                 <Grid key={night.name}>
                                     <FormControlLabel
