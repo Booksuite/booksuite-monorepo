@@ -29,7 +29,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                     userName="Admin Booksuite"
                     userImageSrc={avatarUrl}
                 />
-                <Box py={{ xs: 4, md: 6, lg: 8 }} px={{ xs: 10, md: 20 }}>
+                <Box py={{ xs: 8, md: 12, lg: 16 }} px={{ xs: 20, md: 40 }}>
                     <Container component="main" disableGutters fixed>
                         {children}
                     </Container>

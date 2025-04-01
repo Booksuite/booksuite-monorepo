@@ -1,22 +1,64 @@
 'use client'
 
 import {
-    AspectRatio,
     Box,
     Button,
-    Flex,
     IconButton,
+    ListItemIcon,
+    ListItemText,
     Menu,
-    MenuButton,
     MenuItem,
-    MenuList,
-    useToken,
-} from '@chakra-ui/react'
+    styled,
+    useTheme,
+} from '@mui/material'
 import { Check, ChevronDown } from 'lucide-react'
-import { PropsWithChildren } from 'react'
+import React, { PropsWithChildren } from 'react'
+
+import { AspectRatioBox } from '@/components/atoms/AscpectRatio'
 
 import { MediaItemProps } from './types'
 import { getMediaItem } from './utils'
+
+const MediaContainer = styled(Box, {
+    shouldForwardProp: (prop) => prop !== 'hoverable' && prop !== 'isSelected',
+})<{ hoverable?: boolean; isSelected?: boolean }>(
+    ({ theme, hoverable, isSelected }) => ({
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        '& .container': {
+            outline: 'none',
+            transition: 'all 0.2s',
+        },
+        ...(isSelected && {
+            '& .container': {
+                outline: `3px solid ${theme.palette.primary.main}`,
+            },
+            '& .checkbox': {
+                opacity: 1,
+            },
+        }),
+        '& .hideable': {
+            opacity: 0,
+        },
+        ...(hoverable && {
+            '&:hover': {
+                '& .hideable': {
+                    opacity: 1,
+                },
+                '& .container': {
+                    outline: `3px solid ${theme.palette.primary.main}`,
+                    backgroundColor: `${theme.palette.blueGrey[900]}30`,
+                },
+                '& .checkbox': {
+                    opacity: 1,
+                },
+                '& .menu-button': {
+                    opacity: 1,
+                },
+            },
+        }),
+    }),
+)
 
 export const MediaItem: React.FC<PropsWithChildren<MediaItemProps>> = ({
     onSelect,
@@ -27,10 +69,10 @@ export const MediaItem: React.FC<PropsWithChildren<MediaItemProps>> = ({
     children,
     ...props
 }) => {
-    const [blue, blackAlpha] = useToken('colors', [
-        'blue.500',
-        'blackAlpha.300',
-    ])
+    const theme = useTheme()
+    const hoverable = !!actions || selectable
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+    const open = Boolean(anchorEl)
 
     const handleClick = () => {
         if (selectable) {
@@ -38,117 +80,132 @@ export const MediaItem: React.FC<PropsWithChildren<MediaItemProps>> = ({
         }
     }
 
-    const hoverable = !!actions || selectable
+    const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.stopPropagation()
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleMenuClose = () => {
+        setAnchorEl(null)
+    }
 
     return (
-        <Box
-            position="relative"
-            borderRadius="md"
-            className={`${hoverable ? 'hoverable' : ''} ${isSelected ? 'selected' : ''}`}
+        <MediaContainer
+            hoverable={hoverable}
+            isSelected={isSelected}
             {...props}
-            css={{
-                '& .container': {
-                    outline: 'transparent',
-                },
-
-                '&.selected': {
-                    '& .container': {
-                        outline: `3px solid ${blue}`,
-                    },
-
-                    '& .checkbox': {
-                        opacity: 1,
-                    },
-                },
-
-                '& .hideable': {
-                    opacity: 0,
-                },
-
-                '&.hoverable:hover': {
-                    '& .hideable': {
-                        opacity: 1,
-                    },
-
-                    '& .container': {
-                        outline: `3px solid ${blue}`,
-                        backgroundColor: blackAlpha,
-                    },
-
-                    '& .checkbox': {
-                        opacity: 1,
-                    },
-
-                    '& .menu-button': {
-                        opacity: 1,
-                    },
-                },
-            }}
         >
-            <AspectRatio ratio={1} borderRadius="md" overflow="hidden">
+            <AspectRatioBox borderRadius={1} overflow="hidden">
                 {getMediaItem(item)}
-            </AspectRatio>
+            </AspectRatioBox>
 
-            <Flex
-                borderRadius="md"
-                position="absolute"
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    p: 1.5,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    borderRadius: 1,
+                    bgcolor: 'transparent',
+                }}
                 onClick={handleClick}
                 className="container"
-                top={0}
-                left={0}
-                right={0}
-                bottom={0}
-                p={1.5}
-                bg="transparent"
-                flexDirection="column"
-                justifyContent="space-between"
-                transition="all 0.2s"
             >
                 {selectable && (
                     <Button
-                        size="xs"
+                        size="small"
                         className="checkbox"
-                        variant="solid"
-                        colorScheme={isSelected ? 'blue' : 'gray'}
+                        variant="contained"
+                        color={isSelected ? 'primary' : 'inherit'}
                         onClick={handleClick}
-                        opacity={0}
-                        position="absolute"
-                        top={1}
-                        left={1}
-                        transition="opacity 0.2s"
-                        borderRadius="sm"
-                        p={0}
-                        minW="20px"
-                        h="20px"
+                        sx={{
+                            opacity: 0,
+                            position: 'absolute',
+                            top: 8,
+                            left: 8,
+                            transition: 'opacity 0.2s',
+                            borderRadius: 0.5,
+                            p: 0,
+                            minWidth: '20px',
+                            height: '20px',
+                        }}
                     >
                         {isSelected && <Check size={12} />}
                     </Button>
                 )}
 
                 {!!actions && (
-                    <Menu>
-                        <MenuButton
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: theme.spacing(1),
+                            right: theme.spacing(1),
+                        }}
+                    >
+                        <IconButton
                             className="menu-button"
-                            opacity={0}
-                            position="absolute"
-                            top={1}
-                            right={1}
-                            as={IconButton}
-                            icon={<ChevronDown size={16} />}
-                            variant="solid"
-                            aria-label="Opções"
-                            size="xs"
-                        />
-                        <MenuList p={0}>
+                            size="small"
+                            sx={{
+                                borderRadius: 0.8,
+                                opacity: 0,
+                                bgcolor: 'background.paper',
+                                '&:hover': {
+                                    bgcolor: 'background.default',
+                                },
+                            }}
+                            aria-label="Options"
+                            onClick={handleMenuClick}
+                            aria-controls={open ? 'media-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={open ? 'true' : undefined}
+                        >
+                            <ChevronDown size={16} />
+                        </IconButton>
+                        <Menu
+                            id="media-menu"
+                            anchorEl={anchorEl}
+                            open={open}
+                            onClose={handleMenuClose}
+                            onClick={handleMenuClose}
+                        >
                             {actions?.map((action) => (
-                                <MenuItem key={action.id} {...action} />
+                                <MenuItem
+                                    key={action.id}
+                                    sx={{
+                                        '& .MuiListItemIcon-root': {
+                                            minWidth: 25,
+                                        },
+                                        '& .MuiTypography-root  ': {
+                                            fontSize: 12,
+                                        },
+                                    }}
+                                    onClick={(e) => {
+                                        e.stopPropagation()
+                                        action.onClick?.()
+                                        handleMenuClose()
+                                    }}
+                                >
+                                    {action.icon && (
+                                        <ListItemIcon>
+                                            {action.icon}
+                                        </ListItemIcon>
+                                    )}
+                                    <ListItemText>
+                                        {action.children}
+                                    </ListItemText>
+                                </MenuItem>
                             ))}
-                        </MenuList>
-                    </Menu>
+                        </Menu>
+                    </Box>
                 )}
 
                 {children}
-            </Flex>
-        </Box>
+            </Box>
+        </MediaContainer>
     )
 }

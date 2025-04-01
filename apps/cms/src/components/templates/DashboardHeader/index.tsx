@@ -107,6 +107,7 @@ export const DashboardHeader = ({
                         <MenuIcon size={24} />
                     </IconButton>
                     <TextField
+                        variant="outlined"
                         placeholder="Pesquisar"
                         size="small"
                         sx={{ maxWidth: '400px' }}

@@ -37,7 +37,7 @@ import { useCurrentCompanyId } from '@/common/contexts/user'
 import { DatePickerBox } from '@/components/atoms/DatePickerBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import { NumberInput } from '@/components/atoms/NumberInput'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { MediaGallery } from '@/components/organisms/MediaGallery'
 import { SortableMediaItem } from '../../rooms/components/SortableMediaItem'
@@ -68,7 +68,7 @@ export const ServiceForm: React.FC = () => {
                     (item) => item.media.id === media.id,
                 )
                 const order = sameMedia?.order || index
-                
+
                 return {
                     id: media.id,
                     order,
@@ -119,7 +119,13 @@ export const ServiceForm: React.FC = () => {
     return (
         <Form>
             <Stack gap={8}>
-                <Flex gap={2} alignSelf={'flex-start'} marginTop={5} marginBottom={-4} alignItems="center">
+                <Flex
+                    gap={2}
+                    alignSelf={'flex-start'}
+                    marginTop={5}
+                    marginBottom={-4}
+                    alignItems="center"
+                >
                     <h2 style={{ marginBottom: 0 }}>Publicado</h2>
                     <Switch
                         {...getFieldProps('published')}
@@ -174,7 +180,7 @@ export const ServiceForm: React.FC = () => {
                         )}
                     </Select>
                     <Flex justifyContent={'space-between'} w={'100%'} gap={2}>
-                        <InputNumberBox
+                        <NumberInput
                             label="Mínimo de Diárias"
                             min={1}
                             error={errors.minDaily}
@@ -186,7 +192,7 @@ export const ServiceForm: React.FC = () => {
                             onChange={handleChange('minDaily')}
                         />
 
-                        <InputNumberBox
+                        <NumberInput
                             label="Antecedência mínima"
                             min={1}
                             error={errors.minNotice}
@@ -292,7 +298,7 @@ export const ServiceForm: React.FC = () => {
 
                 <section>
                     <h2>Adultos</h2>
-                    <InputNumberBox
+                    <NumberInput
                         label="Número de adultos"
                         error={errors.adults}
                         min={0}
@@ -300,7 +306,9 @@ export const ServiceForm: React.FC = () => {
                             isInvalid: !!errors.adults && touched.adults,
                         }}
                         {...getFieldProps('adults')}
-                        onChange={(e) => setFieldValue('adults', e.target.value)}
+                        onChange={(e) =>
+                            setFieldValue('adults', e.target.value)
+                        }
                     />
                 </section>
 

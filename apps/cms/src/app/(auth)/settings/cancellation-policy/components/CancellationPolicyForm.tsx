@@ -13,7 +13,7 @@ import { FieldArray, Form, useFormikContext } from 'formik'
 import { CirclePlus, Trash } from 'lucide-react'
 
 import InputBox from '@/components/atoms/InputBox'
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import { NumberInput } from '@/components/atoms/NumberInput'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { CancellationPolicyFormData } from '../utils/config'
 import { DEFAULT_PENALTY_OPTIONS } from '../utils/constants'
@@ -92,7 +92,7 @@ export const CancellationPolicyForm = () => {
                             }
                         />
 
-                        <InputNumberBox
+                        <NumberInput
                             label="Período de desistência (dias)"
                             error={errors.defaultValue}
                             formControl={{
@@ -176,7 +176,7 @@ export const CancellationPolicyForm = () => {
                                                         />
                                                     </HStack>
 
-                                                    <InputNumberBox
+                                                    <NumberInput
                                                         label="Dias antes do check-in"
                                                         {...getFieldProps(
                                                             `penaltyRanges.${index}.daysBeforeCheckIn`,
