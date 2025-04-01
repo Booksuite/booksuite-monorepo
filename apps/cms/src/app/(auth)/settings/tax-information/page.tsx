@@ -1,10 +1,10 @@
 'use client'
 
 import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
@@ -20,27 +20,34 @@ import {
 
 export default function TaxInformation() {
     const companyId = useCurrentCompanyId()
-    const toast = useToast()
+    const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
 
     const queryClient = useQueryClient()
 
-    const { data: TaxInformationData, queryKey, isLoading } = useGetCompanyById({
+    const {
+        data: TaxInformationData,
+        queryKey,
+        isLoading,
+    } = useGetCompanyById({
         id: companyId,
     })
 
     const { mutateAsync: updateCompanyTaxInformation } = useUpdateCompany()
 
     async function handleSubmit(formData: TaxInformationData) {
-        console.log(formData)
         try {
             await updateCompanyTaxInformation({
                 id: companyId,
                 data: formData,
             })
-            toast({
-                title: 'Informações Fiscais modificadas com sucesso',
-                status: 'success',
+            enqueueSnackbar('Informações fiscais modificadas com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
             })
 
             await queryClient.invalidateQueries({ queryKey: queryKey })
@@ -51,11 +58,17 @@ export default function TaxInformation() {
 
             back()
         } catch (error) {
-            toast({
-                title: 'Erro ao modificar informações fiscais',
-                description: getErrorMessage(error),
-                status: 'error',
-            })
+            enqueueSnackbar(
+                `Erro ao modificar informações: ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
+                },
+            )
         }
     }
 
