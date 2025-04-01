@@ -9,7 +9,7 @@ import {
 import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import { NumberInput } from '@/components/atoms/NumberInput'
 import SelectBox from '@/components/atoms/SelectBox'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
@@ -59,10 +59,7 @@ export default function DetalhesTemporada({}: DetalhesTemporadaProps) {
                         singleDateValue="22/09/2024"
                     />
 
-                    <InputNumberBox
-                        label="Mínimo de Diárias"
-                        defaultValue={2}
-                    />
+                    <NumberInput label="Mínimo de Diárias" defaultValue={2} />
                 </Flex>
 
                 <section>

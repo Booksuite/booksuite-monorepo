@@ -3,7 +3,7 @@
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
         "source.fixAll": "explicit",
-        "source.organizeImports": "explicit"
+        "source.organizeImports": "never"
     },
     "[javascript]": {
         "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"

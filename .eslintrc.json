@@ -4,12 +4,14 @@
         "next/core-web-vitals",
         "plugin:@typescript-eslint/recommended"
     ],
-    "plugins": ["simple-import-sort"],
+    "plugins": ["simple-import-sort", "import"],
     "ignorePatterns": ["./packages/sdk/**/*.ts"],
     "rules": {
         "no-console": "error",
         "@typescript-eslint/no-empty-object-type": "off",
         "@typescript-eslint/no-unused-vars": "error",
+        "import/newline-after-import": "error",
+        "import/no-duplicates": "error",
         "simple-import-sort/imports": [
             "warn",
             {

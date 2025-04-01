@@ -1,7 +1,6 @@
 'use client'
 
 import type { HousingUnitTypeMedia, Media } from '@booksuite/sdk'
-import { Box, Button, HStack, SimpleGrid, Text, VStack } from '@chakra-ui/react'
 import {
     closestCenter,
     DndContext,
@@ -16,12 +15,13 @@ import {
     rectSortingStrategy,
     SortableContext,
 } from '@dnd-kit/sortable'
-import { Stack, TextField } from '@mui/material'
+import { Box, Button, Grid, Stack, TextField, useTheme } from '@mui/material'
 import { FieldArray, useFormikContext } from 'formik'
 import { useState } from 'react'
 
-import InputBox from '@/components/atoms/InputBox'
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import { FormSection } from '@/components/atoms/FormSection'
+import { NumberInput } from '@/components/atoms/NumberInput'
+import { TextFieldCurrency } from '@/components/atoms/TextFieldCurrency'
 import { MediaGallery } from '@/components/organisms/MediaGallery'
 import { RoomsFormData } from '../utils/config'
 
@@ -29,14 +29,9 @@ import { HousingUnitTypeFacilitiesField } from './HousingUnitTypeFacilitiesField
 import { SortableMediaItem } from './SortableMediaItem'
 
 export const RoomsForm: React.FC = () => {
-    const {
-        getFieldProps,
-        touched,
-        errors,
-        values,
-        handleChange,
-        setFieldValue,
-    } = useFormikContext<RoomsFormData>()
+    const theme = useTheme()
+    const { getFieldProps, errors, values, handleChange, setFieldValue } =
+        useFormikContext<RoomsFormData>()
 
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
@@ -102,7 +97,7 @@ export const RoomsForm: React.FC = () => {
     return (
         <>
             <Stack gap={4}>
-                <Stack direction="column" gap={2}>
+                <FormSection>
                     <TextField
                         label="Nome da Acomodação"
                         error={!!errors.name}
@@ -118,219 +113,177 @@ export const RoomsForm: React.FC = () => {
                         helperText={errors.description}
                         {...getFieldProps('description')}
                     />
-                </Stack>
-                <section>
-                    <Stack gap={2}>
-                        <FieldArray name="housingUnits">
-                            {({ remove, push }) => (
-                                <>
-                                    <InputNumberBox
-                                        label="Unidades disponíveis"
-                                        value={values.housingUnits.length}
-                                        min={1}
-                                        readOnly
-                                        onChange={(e) => {
-                                            const newValueNumber = Number(
-                                                e.target.value,
+                </FormSection>
+                <FormSection title="Unidades disponíveis">
+                    <FieldArray name="housingUnits">
+                        {({ remove, push }) => (
+                            <>
+                                <NumberInput
+                                    label="Unidades disponíveis"
+                                    value={values.housingUnits.length}
+                                    min={1}
+                                    readOnly
+                                    onChange={(e) => {
+                                        const newValueNumber = Number(
+                                            e.target.value,
+                                        )
+                                        if (Number.isNaN(newValueNumber)) return
+
+                                        if (
+                                            newValueNumber >
+                                            values.housingUnits.length
+                                        ) {
+                                            push({
+                                                name: (
+                                                    values.housingUnits.length +
+                                                    1
+                                                ).toString(),
+                                            })
+                                        } else if (
+                                            newValueNumber <
+                                            values.housingUnits.length
+                                        ) {
+                                            remove(
+                                                values.housingUnits.length - 1,
                                             )
-                                            if (Number.isNaN(newValueNumber))
-                                                return
+                                        }
+                                    }}
+                                />
 
-                                            if (
-                                                newValueNumber >
-                                                values.housingUnits.length
-                                            ) {
-                                                push({
-                                                    name: (
-                                                        values.housingUnits
-                                                            .length + 1
-                                                    ).toString(),
-                                                })
-                                            } else if (
-                                                newValueNumber <
-                                                values.housingUnits.length
-                                            ) {
-                                                remove(
-                                                    values.housingUnits.length -
-                                                        1,
-                                                )
-                                            }
-                                        }}
-                                    />
+                                <Stack gap={2}>
+                                    {values.housingUnits.map((_, index) => {
+                                        const error =
+                                            errors.housingUnits?.[index]
+                                        const errorMessage =
+                                            typeof error !== 'string'
+                                                ? error?.name
+                                                : ''
 
-                                    <VStack gap={2}>
-                                        {values.housingUnits.map((_, index) => {
-                                            const error =
-                                                errors.housingUnits?.[index]
-                                            const errorMessage =
-                                                typeof error !== 'string'
-                                                    ? error?.name
-                                                    : ''
+                                        return (
+                                            <TextField
+                                                key={index}
+                                                label="Nome da unidade"
+                                                error={!!errorMessage}
+                                                helperText={errorMessage}
+                                                value={
+                                                    values.housingUnits?.[index]
+                                                        ?.name
+                                                }
+                                                onChange={({
+                                                    target: { value },
+                                                }) => {
+                                                    setFieldValue(
+                                                        `housingUnits.${index}.name`,
+                                                        value,
+                                                    )
+                                                }}
+                                            />
+                                        )
+                                    })}
+                                </Stack>
+                            </>
+                        )}
+                    </FieldArray>
+                </FormSection>
+                <FormSection title="Hóspedes">
+                    <NumberInput
+                        label="Máximo de Hóspedes"
+                        error={!!errors.maxGuests}
+                        helperText={errors.maxGuests}
+                        min={1}
+                        {...getFieldProps('maxGuests')}
+                        onChange={handleChange('maxGuests')}
+                    />
+                    <NumberInput
+                        label="Mínimo de Hóspedes"
+                        min={1}
+                        error={!!errors.minGuests}
+                        helperText={errors.minGuests}
+                        {...getFieldProps('minGuests')}
+                        onChange={handleChange('minGuests')}
+                    />
 
-                                            return (
-                                                <InputBox
-                                                    key={index}
-                                                    label="Nome da unidade"
-                                                    error={errorMessage}
-                                                    value={
-                                                        values.housingUnits?.[
-                                                            index
-                                                        ]?.name
-                                                    }
-                                                    onChange={({
-                                                        target: { value },
-                                                    }) => {
-                                                        setFieldValue(
-                                                            `housingUnits.${index}.name`,
-                                                            value,
-                                                        )
-                                                    }}
-                                                />
-                                            )
-                                        })}
-                                    </VStack>
-                                </>
-                            )}
-                        </FieldArray>
-                    </Stack>
-                </section>
-                <section>
-                    <Text as="h4">Hóspedes</Text>
-
-                    <Stack gap={2}>
-                        <InputNumberBox
-                            label="Máximo de Hóspedes"
-                            error={errors.maxGuests}
-                            min={1}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.maxGuests && touched.maxGuests,
-                            }}
-                            {...getFieldProps('maxGuests')}
-                            onChange={handleChange('maxGuests')}
-                        />
-                        <InputNumberBox
-                            label="Mínimo de Hóspedes"
-                            min={1}
-                            error={errors.minGuests}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.minGuests && touched.minGuests,
-                            }}
-                            {...getFieldProps('minGuests')}
-                            onChange={handleChange('minGuests')}
-                        />
-
-                        <InputNumberBox
-                            label="Máximo de Adultos"
-                            error={errors.maxAdults}
-                            min={1}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.maxAdults && touched.maxAdults,
-                            }}
-                            {...getFieldProps('maxAdults')}
-                            onChange={handleChange('maxAdults')}
-                        />
-                        <InputNumberBox
-                            label="Máximo de Crianças"
-                            error={errors.maxChildren}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.maxChildren && touched.maxChildren,
-                            }}
-                            {...getFieldProps('maxChildren')}
-                            onChange={handleChange('maxChildren')}
-                        />
-                    </Stack>
-                </section>
-                <section>
-                    <h4>Preço Base por Diária</h4>
-
-                    <Stack gap={2}>
-                        <InputBox
-                            label="Preço durante a semana"
-                            type="currency"
-                            error={errors.weekdaysPrice}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.weekdaysPrice &&
-                                    touched.weekdaysPrice,
-                            }}
-                            {...getFieldProps('weekdaysPrice')}
-                            onChange={handleChange('weekdaysPrice')}
-                        />
-                        <InputBox
-                            label="Preço fim de semana"
-                            type="currency"
-                            error={errors.weekendPrice}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.weekendPrice &&
-                                    touched.weekendPrice,
-                            }}
-                            {...getFieldProps('weekendPrice')}
-                            onChange={handleChange('weekendPrice')}
-                        />
-                        <InputBox
-                            label="Valor por adulto extra"
-                            type="currency"
-                            error={errors.extraAdultPrice}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.extraAdultPrice &&
-                                    touched.extraAdultPrice,
-                            }}
-                            {...getFieldProps('extraAdultPrice')}
-                            onChange={handleChange('extraAdultPrice')}
-                        />
-                        <InputNumberBox
-                            label="Cobrar valor extra por adulto acima de"
-                            error={errors.chargeExtraAdultHigherThan}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.chargeExtraAdultHigherThan &&
-                                    touched.chargeExtraAdultHigherThan,
-                            }}
-                            {...getFieldProps('chargeExtraAdultHigherThan')}
-                            onChange={handleChange(
-                                'chargeExtraAdultHigherThan',
-                            )}
-                        />
-                    </Stack>
-                </section>
-                <section>
+                    <NumberInput
+                        label="Máximo de Adultos"
+                        error={!!errors.maxAdults}
+                        helperText={errors.maxAdults}
+                        min={1}
+                        {...getFieldProps('maxAdults')}
+                        onChange={handleChange('maxAdults')}
+                    />
+                    <NumberInput
+                        label="Máximo de Crianças"
+                        error={!!errors.maxChildren}
+                        helperText={errors.maxChildren}
+                        min={1}
+                        {...getFieldProps('maxChildren')}
+                        onChange={handleChange('maxChildren')}
+                    />
+                </FormSection>
+                <FormSection title="Preço Base por Diária">
+                    <TextFieldCurrency
+                        label="Preço durante a semana"
+                        error={!!errors.weekdaysPrice}
+                        helperText={errors.weekdaysPrice}
+                        {...getFieldProps('weekdaysPrice')}
+                        onChange={handleChange('weekdaysPrice')}
+                    />
+                    <TextFieldCurrency
+                        label="Preço fim de semana"
+                        error={!!errors.weekendPrice}
+                        helperText={errors.weekendPrice}
+                        {...getFieldProps('weekendPrice')}
+                        onChange={handleChange('weekendPrice')}
+                    />
+                    <TextFieldCurrency
+                        label="Valor por adulto extra"
+                        error={!!errors.extraAdultPrice}
+                        helperText={errors.extraAdultPrice}
+                        {...getFieldProps('extraAdultPrice')}
+                        onChange={handleChange('extraAdultPrice')}
+                    />
+                    <NumberInput
+                        label="Cobrar valor extra por adulto acima de"
+                        error={!!errors.chargeExtraAdultHigherThan}
+                        helperText={errors.chargeExtraAdultHigherThan}
+                        {...getFieldProps('chargeExtraAdultHigherThan')}
+                        onChange={handleChange('chargeExtraAdultHigherThan')}
+                    />
+                </FormSection>
+                <FormSection
+                    title="Fotos e vídeos"
+                    p={3}
+                    borderRadius={1}
+                    border="1px solid"
+                    borderColor="blueGrey.200"
+                    position="relative"
+                >
                     <Box
-                        p={6}
-                        borderRadius="lg"
-                        border="1px solid"
-                        borderColor="gray.200"
+                        position="absolute"
+                        top={theme.spacing(3)}
+                        right={theme.spacing(3)}
                     >
-                        <HStack gap={2} align="center" justify="space-between">
-                            <h2>Fotos e vídeos</h2>
-
-                            <Button
-                                onClick={() => setIsMediaGalleryOpen(true)}
-                                variant="solid"
-                                size="sm"
-                                colorScheme="blue"
-                            >
-                                Selecionar Mídia
-                            </Button>
-                        </HStack>
-                        <DndContext
-                            sensors={sensors}
-                            collisionDetection={closestCenter}
-                            onDragEnd={handleMediaDragEnd}
+                        <Button onClick={() => setIsMediaGalleryOpen(true)}>
+                            Selecionar Mídia
+                        </Button>
+                    </Box>
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleMediaDragEnd}
+                    >
+                        <SortableContext
+                            items={values.medias.map((item) => item.media.id)}
+                            strategy={rectSortingStrategy}
                         >
-                            <SortableContext
-                                items={values.medias.map(
-                                    (item) => item.media.id,
-                                )}
-                                strategy={rectSortingStrategy}
+                            <Grid
+                                container
+                                columns={[2, 4, 8]}
+                                spacing={2}
+                                mt={4}
                             >
-                                <SimpleGrid columns={[2, 4, 8]} gap={3} mt={4}>
-                                    {values.medias.map((item, index) => (
+                                {values.medias.map((item, index) => (
+                                    <Grid size={1} key={item.media.id}>
                                         <SortableMediaItem
                                             key={item.media.id}
                                             mediaItem={item}
@@ -339,11 +292,11 @@ export const RoomsForm: React.FC = () => {
                                                 handleSetFeatured
                                             }
                                         />
-                                    ))}
-                                </SimpleGrid>
-                            </SortableContext>
-                        </DndContext>
-                    </Box>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </SortableContext>
+                    </DndContext>
 
                     <MediaGallery
                         isOpen={isMediaGalleryOpen}
@@ -354,7 +307,7 @@ export const RoomsForm: React.FC = () => {
                         initialItems={values.medias.map((item) => item.media)}
                         onItemsChange={handleMediaChange}
                     />
-                </section>
+                </FormSection>
 
                 <HousingUnitTypeFacilitiesField />
             </Stack>

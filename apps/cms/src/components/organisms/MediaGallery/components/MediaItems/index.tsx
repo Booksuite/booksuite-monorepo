@@ -1,15 +1,13 @@
 import { Media } from '@booksuite/sdk'
 import {
+    Box,
     Button,
-    Flex,
-    HStack,
-    IconButton,
-    Input,
-    InputGroup,
-    InputRightElement,
-    Spinner,
-    Text,
-} from '@chakra-ui/react'
+    CircularProgress,
+    InputAdornment,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material'
 import { Search, X } from 'lucide-react'
 import pluralize from 'pluralize'
 import { useState } from 'react'
@@ -38,53 +36,57 @@ export const GalleryMediaItems: React.FC<MediaItemsProps> = ({
     )
 
     return (
-        <>
-            <HStack justifyContent="space-between" mb={4}>
-                <InputGroup
-                    maxW={300}
-                    size="sm"
-                    css={{ input: { background: 'white' } }}
+        <Box height={1000}>
+            <Stack direction="row" justifyContent="space-between" mb={4}>
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="flex-start"
+                    spacing={3}
                 >
-                    <Input
+                    <TextField
+                        variant="outlined"
                         placeholder="Pesquisar"
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
+                        size="small"
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Search size={14} />
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
                     />
-                    <InputRightElement>
-                        {searchInput.length > 0 ? (
-                            <IconButton
-                                size="xs"
-                                variant="ghost"
-                                icon={<X size={14} />}
-                                aria-label={'Limpar'}
-                                onClick={() => setSearchInput('')}
-                            />
-                        ) : (
-                            <Search size={14} />
-                        )}
-                    </InputRightElement>
-                </InputGroup>
-                <HStack gap={3}>
-                    {isLoading && <Spinner size="sm" color="gray.400" />}
-                    <Flex justifyContent="space-between">
-                        <Text fontSize="sm" color="gray.500">
+                    {isLoading && (
+                        <CircularProgress
+                            size={20}
+                            sx={{ color: 'gray.400' }}
+                        />
+                    )}
+                </Stack>
+                <Stack direction="row" alignItems="center" spacing={3}>
+                    <Stack>
+                        <Typography variant="body2" color="text.secondary">
                             {selectedItems.length}{' '}
                             {pluralize('item', selectedItems.length)}{' '}
                             selecionados
-                        </Text>
-                    </Flex>
+                        </Typography>
+                    </Stack>
 
                     <Button
                         disabled={selectedItems.length < 1}
-                        size="sm"
-                        leftIcon={<X />}
-                        variant="outline"
+                        variant="outlined"
+                        size="small"
+                        startIcon={<X />}
                         onClick={onUnselectAll}
                     >
                         Desmarcar todos
                     </Button>
-                </HStack>
-            </HStack>
+                </Stack>
+            </Stack>
 
             <MediaItems
                 medias={filteredMedias}
@@ -99,6 +101,6 @@ export const GalleryMediaItems: React.FC<MediaItemsProps> = ({
                     },
                 ]}
             />
-        </>
+        </Box>
     )
 }
