@@ -4,9 +4,9 @@ import {
     useGetCompanyAgePolicy,
     useUpsertCompanyAgePolicy,
 } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
@@ -22,7 +22,7 @@ import {
 
 export default function AgePolicy() {
     const companyId = useCurrentCompanyId()
-    const toast = useToast()
+    const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
 
     const { data: companyAgePolicyData, isLoading } = useGetCompanyAgePolicy({
@@ -37,22 +37,32 @@ export default function AgePolicy() {
                 companyId: companyId,
                 data: formData,
             })
-            toast({
-                title: 'Políticas de Idade modificadas com sucesso',
-                status: 'success',
+            enqueueSnackbar('Políticas de Idade modificadas com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
             })
             back()
         } catch (error) {
-            toast({
-                title: 'Erro ao modificar Políticas de Idade',
-                description: getErrorMessage(error),
-                status: 'error',
-            })
+            enqueueSnackbar(
+                `Erro ao modificar políticas: ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
+                },
+            )
         }
     }
 
     return (
-        <div className="PoliticaDeIdade">
+        <div className="age_policy">
             <PageHeader.Root>
                 <PageHeader.BackLink href="/settings">
                     Configurações
