@@ -1,9 +1,9 @@
 'use client'
 
 import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
@@ -19,7 +19,7 @@ import {
 
 export default function Address() {
     const companyId = useCurrentCompanyId()
-    const toast = useToast()
+    const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
 
     const { data: companyData, isLoading } = useGetCompanyById({
@@ -35,18 +35,28 @@ export default function Address() {
                 data: formData,
             })
 
-            toast({
-                title: 'Endereço modificado com sucesso',
-                status: 'success',
+            enqueueSnackbar('Endereço modificado com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
             })
 
             back()
         } catch (error) {
-            toast({
-                title: 'Erro ao editar Endereço',
-                description: getErrorMessage(error),
-                status: 'error',
-            })
+            enqueueSnackbar(
+                `Erro ao modificar endereço: ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
+                },
+            )
         }
     }
 
