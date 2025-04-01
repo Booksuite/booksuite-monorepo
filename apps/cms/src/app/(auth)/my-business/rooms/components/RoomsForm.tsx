@@ -15,7 +15,7 @@ import {
     rectSortingStrategy,
     SortableContext,
 } from '@dnd-kit/sortable'
-import { Box, Button, Grid, Stack, TextField, useTheme } from '@mui/material'
+import { Button, Grid, Stack, TextField } from '@mui/material'
 import { FieldArray, useFormikContext } from 'formik'
 import { useState } from 'react'
 
@@ -30,7 +30,6 @@ import { HousingUnitTypeFacilitiesField } from './HousingUnitTypeFacilitiesField
 import { SortableMediaItem } from './SortableMediaItem'
 
 export const RoomsForm: React.FC = () => {
-    const theme = useTheme()
     const { getFieldProps, errors, values, handleChange, setFieldValue } =
         useFormikContext<RoomsFormData>()
 
@@ -248,21 +247,13 @@ export const RoomsForm: React.FC = () => {
             </FormSection>
             <FormSection
                 title="Fotos e vídeos"
-                p={3}
-                borderRadius={1}
-                border="1px solid"
-                borderColor="blueGrey.200"
-                position="relative"
-            >
-                <Box
-                    position="absolute"
-                    top={theme.spacing(3)}
-                    right={theme.spacing(3)}
-                >
+                variant="outlined"
+                rightAction={
                     <Button onClick={() => setIsMediaGalleryOpen(true)}>
                         Selecionar Mídia
                     </Button>
-                </Box>
+                }
+            >
                 <DndContext
                     sensors={sensors}
                     collisionDetection={closestCenter}
