@@ -121,6 +121,7 @@ export const CancellationPolicyForm = () => {
                             />
                         </Stack>
 
+
                         <Box
                             bgcolor="grey.100"
                             p={3}

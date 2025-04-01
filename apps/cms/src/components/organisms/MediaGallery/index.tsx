@@ -6,25 +6,19 @@ import {
     useUploadMedia,
     useUpsertMedia,
 } from '@booksuite/sdk'
+import { useToast } from '@chakra-ui/react'
 import {
     Box,
     Button,
-    Flex,
-    HStack,
+    Grid,
+    IconButton,
     Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-    SimpleGrid,
     Skeleton,
-    Text,
-    useToast,
-} from '@chakra-ui/react'
+    Stack,
+    Typography,
+} from '@mui/material'
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
-import { Plus, UploadIcon } from 'lucide-react'
+import { Plus, UploadIcon, X as CloseIcon } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -32,6 +26,12 @@ import { getErrorMessage } from '@/common/utils'
 
 import { AddUrlModal } from './components/AddUrlModal'
 import { GalleryMediaItems } from './components/MediaItems'
+import {
+    ModalBody,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+} from './components/StyledComponents'
 import { ITEMS_PER_PAGE } from './constants'
 import { MediaGalleryProps, MediaUrlInfo } from './types'
 import { getGalleryDescription } from './utils'
@@ -239,26 +239,26 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
 
     return (
         <Modal
-            isOpen={isOpen}
+            open={isOpen}
             onClose={onClose}
-            size="5xl"
-            scrollBehavior="inside"
+            aria-labelledby="media-gallery-modal"
         >
-            <ModalOverlay />
-            <ModalContent height="80vh" maxH="80vh">
-                <ModalHeader>
-                    Galeria de mídias
-                    <Text
+            <ModalContent>
+                <ModalHeader sx={{ px: 6, py: 4, borderBottom: 'none' }}>
+                    <Typography variant="h6">Galeria de mídias</Typography>
+                    <Typography
                         variant="caption"
-                        fontWeight="light"
-                        fontSize="sm"
-                        color="gray.600"
-                        mt={1}
-                        mb={0}
+                        color="text.secondary"
+                        sx={{ mt: 1, display: 'block' }}
                     >
                         {getGalleryDescription(minItems, maxItems)}
-                    </Text>
-                    <HStack justifyContent="flex-end" alignItems="center">
+                    </Typography>
+                    <Stack
+                        direction="row"
+                        gap={1}
+                        justifyContent="flex-end"
+                        alignItems="center"
+                    >
                         {allowExternalUrls && (
                             <AddUrlModal
                                 allowVideos={allowVideos}
@@ -271,15 +271,13 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                         )}
 
                         <Button
-                            size="sm"
+                            size="small"
                             onClick={() => fileInputRef.current?.click()}
-                            leftIcon={<UploadIcon size={16} />}
+                            startIcon={<UploadIcon size={16} />}
                             disabled={
                                 !!maxItems && allMediaItems.length >= maxItems
                             }
-                            isLoading={isUploadPending}
-                            loadingText="Enviando..."
-                            variant="outline"
+                            variant="outlined"
                         >
                             Fazer upload
                         </Button>
@@ -290,24 +288,34 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                             style={{ display: 'none' }}
                             onChange={handleFileChange}
                         />
-                    </HStack>
+                    </Stack>
+                    <IconButton
+                        size="small"
+                        onClick={onClose}
+                        sx={{ position: 'absolute', right: 8, top: 8 }}
+                    >
+                        <CloseIcon size={20} />
+                    </IconButton>
                 </ModalHeader>
-                <ModalCloseButton />
-                <ModalBody p={0} ref={modalBodyRef} overflowX="hidden">
-                    <Box bg="gray.100" p={6}>
+                <ModalBody ref={modalBodyRef}>
+                    <Box sx={{ bgcolor: 'grey.100', p: 6 }}>
                         {isLoading ? (
-                            <SimpleGrid columns={[2, 4, 8]} gap={3}>
+                            <Grid container spacing={2} columns={[2, 4, 9]}>
                                 {Array.from({ length: 8 }).map((_, index) => (
-                                    <Skeleton
-                                        key={index}
-                                        aspectRatio={1}
-                                        borderRadius="md"
-                                        css={{
-                                            animationDelay: `${index * 0.03}s`,
-                                        }}
-                                    />
+                                    <Grid size={1} key={index}>
+                                        <Skeleton
+                                            variant="rectangular"
+                                            width="100%"
+                                            height="100%"
+                                            sx={{
+                                                aspectRatio: '1',
+                                                borderRadius: 1,
+                                                animation: `animation-delay: ${index * 0.03}s`,
+                                            }}
+                                        />
+                                    </Grid>
                                 ))}
-                            </SimpleGrid>
+                            </Grid>
                         ) : allMediaItems.length > 0 ? (
                             <>
                                 <GalleryMediaItems
@@ -318,39 +326,50 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                                     onSelectItem={handleSelectItem}
                                 />
                                 {isFetchingNextPage && (
-                                    <Flex justifyContent="center" py={4} mt={2}>
-                                        <Skeleton height="30px" width="100px" />
-                                    </Flex>
+                                    <Box
+                                        display="flex"
+                                        justifyContent="center"
+                                        py={2}
+                                        mt={1}
+                                    >
+                                        <Skeleton height={30} width={100} />
+                                    </Box>
                                 )}
                             </>
                         ) : (
-                            <Flex
-                                direction="column"
-                                alignItems="center"
-                                justifyContent="center"
-                                border="2px dashed"
-                                borderColor="gray.300"
-                                borderRadius="md"
-                                minH="200px"
-                                cursor="pointer"
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    border: '2px dashed',
+                                    borderColor: 'grey.300',
+                                    borderRadius: 1,
+                                    minHeight: 200,
+                                    cursor: 'pointer',
+                                }}
                                 onClick={() => fileInputRef.current?.click()}
                             >
                                 <Plus size={24} color="gray" />
-                                <Text mt={2} color="gray.500">
+                                <Typography
+                                    color="text.secondary"
+                                    sx={{ mt: 1 }}
+                                >
                                     Clique para adicionar arquivos
-                                </Text>
-                            </Flex>
+                                </Typography>
+                            </Box>
                         )}
                     </Box>
                 </ModalBody>
-                <ModalFooter gap={4}>
-                    <Button variant="outline" onClick={onClose}>
+                <ModalFooter sx={{ p: 6, borderTop: 'none' }}>
+                    <Button variant="outlined" onClick={onClose}>
                         Cancelar
                     </Button>
                     <Button
                         disabled={disabled}
-                        variant="solid"
-                        colorScheme="blue"
+                        variant="contained"
+                        color="primary"
                         onClick={() => {
                             onItemsChange?.(
                                 allMediaItems.filter((media) =>

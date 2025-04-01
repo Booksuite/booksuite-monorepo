@@ -9,7 +9,7 @@ import {
 import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import { NumberInput } from '@/components/atoms/NumberInput'
 import SelectBox from '@/components/atoms/SelectBox'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
@@ -144,22 +144,22 @@ export default function DetalhesOfertasECupons() {
                     <h2>Condições de Aplicabilidade</h2>
 
                     <Stack spacing={2}>
-                        <InputNumberBox
+                        <NumberInput
                             label="Estadia Mínima (opcional)"
                             defaultValue={2}
                         />
 
-                        <InputNumberBox
+                        <NumberInput
                             label="Estadia Máxima (opcional)"
                             defaultValue={2}
                         />
 
-                        <InputNumberBox
+                        <NumberInput
                             label="Antecedência Mínima (opcional)"
                             defaultValue={2}
                         />
 
-                        <InputNumberBox
+                        <NumberInput
                             label="Antecedência Máxima (opcional)"
                             defaultValue={2}
                         />

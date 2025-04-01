@@ -3,8 +3,8 @@
 import { Flex } from '@chakra-ui/react'
 import { useState } from 'react'
 
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import LabelBadge from '@/components/atoms/LabelBadge'
+import { NumberInput } from '@/components/atoms/NumberInput'
 
 import { PriceListItemProps } from './types'
 
@@ -19,7 +19,7 @@ export const PriceListItem: React.FC<PriceListItemProps> = (props) => {
             borderBottom="2px solid #e2e8f0"
             borderRadius="md"
         >
-            <InputNumberBox
+            <NumberInput
                 marginLeft={'auto'}
                 maxWidth={'30vw'}
                 onChange={(inputValue) => {

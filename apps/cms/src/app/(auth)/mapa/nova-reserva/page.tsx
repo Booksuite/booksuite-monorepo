@@ -2,8 +2,8 @@ import { Button, SimpleGrid, Stack } from '@chakra-ui/react'
 
 import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import LabelBadge from '@/components/atoms/LabelBadge'
+import { NumberInput } from '@/components/atoms/NumberInput'
 import SelectBox from '@/components/atoms/SelectBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
@@ -86,14 +86,14 @@ export default function NovaReserva() {
                                 name="hotelName"
                             />
 
-                            <InputNumberBox
+                            <NumberInput
                                 label={<>Adultos</>}
                                 max={10}
                                 name="adults"
                                 defaultValue={5}
                             />
 
-                            <InputNumberBox
+                            <NumberInput
                                 label={
                                     <>
                                         Crianças{' '}
@@ -103,7 +103,7 @@ export default function NovaReserva() {
                                 name="childs"
                             />
 
-                            <InputNumberBox
+                            <NumberInput
                                 label={
                                     <>
                                         Crianças{' '}

@@ -13,7 +13,7 @@ import { FieldArray, Form, useFormikContext } from 'formik'
 import { CirclePlus, Info, Trash } from 'lucide-react'
 
 import InputBox from '@/components/atoms/InputBox'
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import { NumberInput } from '@/components/atoms/NumberInput'
 import SelectBox from '@/components/atoms/SelectBox'
 import { AgePolicyFormData } from '../utils/config'
 import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
@@ -33,7 +33,7 @@ export const AgePolicyForm = () => {
             <Stack spacing={8} mt={4}>
                 <Stack spacing={4}>
                     <h2 style={{ marginBottom: '0' }}>Adultos</h2>
-                    <InputNumberBox
+                    <NumberInput
                         label="Idade inicial para adultos"
                         error={errors.adultMinAge}
                         formControl={{
@@ -121,7 +121,7 @@ export const AgePolicyForm = () => {
                                                 gap={2}
                                             >
                                                 <GridItem>
-                                                    <InputNumberBox
+                                                    <NumberInput
                                                         label="Idade Inicial"
                                                         error={
                                                             error?.initialAge
@@ -143,7 +143,7 @@ export const AgePolicyForm = () => {
                                                     />
                                                 </GridItem>
                                                 <GridItem>
-                                                    <InputNumberBox
+                                                    <NumberInput
                                                         label="Idade Final"
                                                         error={error?.finalAge}
                                                         formControl={{

@@ -145,7 +145,7 @@ export default function Rooms() {
     }
 
     return (
-        <div>
+        <>
             <PageHeader
                 title="Acomodações"
                 backLButtonLabel="Meu Negócio"
@@ -174,6 +174,8 @@ export default function Rooms() {
                     />
 
                     <TextField
+                        variant="outlined"
+                        size="small"
                         placeholder="Pesquisar"
                         value={searchInputValue}
                         onChange={(e) => setSearchInputValue(e.target.value)}
@@ -286,6 +288,6 @@ export default function Rooms() {
                     />
                 </Stack>
             </Stack>
-        </div>
+        </>
     )
 }

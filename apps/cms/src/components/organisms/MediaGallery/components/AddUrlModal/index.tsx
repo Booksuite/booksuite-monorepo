@@ -1,23 +1,23 @@
+import CloseIcon from '@mui/icons-material/Close'
+import LinkIcon from '@mui/icons-material/Link'
 import {
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
     FormControl,
-    FormErrorMessage,
-    Input,
-    Modal,
-    ModalBody,
-    ModalCloseButton,
-    ModalContent,
-    ModalFooter,
-    ModalHeader,
-    ModalOverlay,
-} from '@chakra-ui/react'
-import { Link } from 'lucide-react'
+    FormHelperText,
+    IconButton,
+    TextField,
+} from '@mui/material'
 import { useState } from 'react'
 
 import { getErrorMessage } from '@/common/utils'
 import { MediaUrlInfo } from '../../types'
 
 import { validateUrlContent } from './utils'
+
 interface AddUrlModalProps {
     allowVideos?: boolean
     onAddUrl: (info: MediaUrlInfo) => Promise<void> | void
@@ -62,64 +62,69 @@ export const AddUrlModal: React.FC<AddUrlModalProps> = ({
     return (
         <>
             <Button
-                size="sm"
-                isLoading={isSaving}
-                loadingText="Adicionando"
-                leftIcon={<Link />}
-                variant="outline"
+                size="small"
+                disabled={disabled || isSaving}
+                startIcon={<LinkIcon />}
+                variant="outlined"
                 onClick={() => setIsOpen(true)}
-                mr={2}
-                disabled={disabled}
+                sx={{ mr: 2 }}
             >
-                Adicionar URL
+                {isSaving ? 'Adicionando...' : 'Adicionar URL'}
             </Button>
-            <Modal isOpen={isOpen} onClose={handleClose}>
-                <ModalOverlay />
-                <ModalContent>
-                    <ModalHeader>Adicionar mídia externa (URL)</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                        <FormControl
-                            isInvalid={!!errorMessage}
-                            variant="none"
-                            label=""
-                        >
-                            <Input
-                                size="md"
-                                value={urlInput}
-                                type="url"
-                                onChange={(e) => {
-                                    setUrlInput(e.target.value)
-                                    if (errorMessage) setErrorMessage(null)
-                                }}
-                                placeholder="https://"
-                                isDisabled={isValidating}
-                            />
-
-                            <FormErrorMessage>{errorMessage}</FormErrorMessage>
-                        </FormControl>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button
-                            variant="ghost"
-                            mr={3}
-                            onClick={handleClose}
-                            isDisabled={isValidating}
-                        >
-                            Cancelar
-                        </Button>
-                        <Button
-                            colorScheme="blue"
-                            onClick={handleAddUrl}
-                            isLoading={isValidating}
-                            loadingText="Verificando"
-                            isDisabled={!urlInput.trim() || isValidating}
-                        >
-                            Adicionar
-                        </Button>
-                    </ModalFooter>
-                </ModalContent>
-            </Modal>
+            <Dialog open={isOpen} onClose={handleClose} maxWidth="sm" fullWidth>
+                <DialogTitle>
+                    Adicionar mídia externa (URL)
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleClose}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                        }}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
+                <DialogContent sx={{ px: 6, py: 2 }}>
+                    <FormControl fullWidth error={!!errorMessage}>
+                        <TextField
+                            fullWidth
+                            value={urlInput}
+                            type="url"
+                            onChange={(e) => {
+                                setUrlInput(e.target.value)
+                                if (errorMessage) setErrorMessage(null)
+                            }}
+                            label="URL"
+                            placeholder="https://"
+                            disabled={isValidating}
+                            error={!!errorMessage}
+                            margin="normal"
+                        />
+                        {errorMessage && (
+                            <FormHelperText>{errorMessage}</FormHelperText>
+                        )}
+                    </FormControl>
+                </DialogContent>
+                <DialogActions sx={{ px: 6, pb: 6 }}>
+                    <Button
+                        variant="outlined"
+                        onClick={handleClose}
+                        disabled={isValidating}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={handleAddUrl}
+                        disabled={!urlInput.trim() || isValidating}
+                        loading={isValidating}
+                    >
+                        {isValidating ? 'Verificando...' : 'Adicionar'}
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 }

@@ -15,7 +15,7 @@ import { Info, PlusCircle, Trash } from 'lucide-react'
 import { ChangeEvent, useEffect, useState } from 'react'
 
 import { DatePickerBox } from '@/components/atoms/DatePickerBox'
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import { NumberInput } from '@/components/atoms/NumberInput'
 import { HostingRulesData } from '../utils/config'
 import {
     AVAILABLE_WEEK_DAYS,
@@ -140,7 +140,7 @@ export const HostingRulesForm = () => {
                         </Select>
                     </Flex>
 
-                    <InputNumberBox
+                    <NumberInput
                         label="Mínimo de diárias"
                         {...getFieldProps('minDaily')}
                         onChange={(e) =>
@@ -232,7 +232,7 @@ export const HostingRulesForm = () => {
                         </Select>
                     )}
 
-                    <InputNumberBox
+                    <NumberInput
                         label="Janela de abertura (dias)"
                         value={getFieldProps('fixedWindowPeriod').value}
                         onChange={(e) => {
