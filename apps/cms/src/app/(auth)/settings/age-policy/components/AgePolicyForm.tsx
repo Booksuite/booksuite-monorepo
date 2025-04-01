@@ -24,26 +24,20 @@ import { AgePolicyFormData } from '../utils/config'
 import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
 
 export const AgePolicyForm = () => {
-    const {
-        getFieldProps,
-        touched,
-        errors,
-        values,
-        handleChange,
-        setFieldValue,
-    } = useFormikContext<AgePolicyFormData>()
+    const { touched, errors, values, setFieldValue } =
+        useFormikContext<AgePolicyFormData>()
 
     return (
         <FormContainer>
             <FormSection title="Adultos">
                 <NumberInput
                     label="Idade inicial para adultos"
-                    error={errors.adultMinAge}
-                    formControl={{
-                        isInvalid: !!errors.adultMinAge && touched.adultMinAge,
+                    value={values.adultMinAge}
+                    onChange={(e) => {
+                        const newValueNumber = Number(e.target.value)
+                        if (Number.isNaN(newValueNumber)) return
+                        setFieldValue('adultMinAge', newValueNumber)
                     }}
-                    {...getFieldProps('adultMinAge')}
-                    onChange={handleChange('adultMinAge')}
                 />
                 <Box
                     bgcolor={'grey.100'}
@@ -91,7 +85,7 @@ export const AgePolicyForm = () => {
                                     gap: 3,
                                 }}
                             >
-                                {values.ageGroups.map((_, index) => {
+                                {values.ageGroups.map((ageGroup, index) => {
                                     const error =
                                         typeof errors.ageGroups?.[index] ===
                                         'object'
@@ -133,24 +127,31 @@ export const AgePolicyForm = () => {
                                                     <Stack width={'100%'}>
                                                         <NumberInput
                                                             label="Idade Inicial"
-                                                            error={
-                                                                error?.initialAge
+                                                            value={
+                                                                ageGroup.initialAge
                                                             }
-                                                            formControl={{
-                                                                isInvalid:
-                                                                    !!error?.initialAge &&
-                                                                    touched
-                                                                        .ageGroups?.[
-                                                                        index
-                                                                    ]
-                                                                        ?.initialAge,
+                                                            min={0}
+                                                            max={
+                                                                values.adultMinAge -
+                                                                2
+                                                            }
+                                                            onChange={(e) => {
+                                                                const newValueNumber =
+                                                                    Number(
+                                                                        e.target
+                                                                            .value,
+                                                                    )
+                                                                if (
+                                                                    Number.isNaN(
+                                                                        newValueNumber,
+                                                                    )
+                                                                )
+                                                                    return
+                                                                setFieldValue(
+                                                                    `ageGroups.${index}.initialAge`,
+                                                                    newValueNumber,
+                                                                )
                                                             }}
-                                                            {...getFieldProps(
-                                                                `ageGroups.${index}.initialAge`,
-                                                            )}
-                                                            onChange={handleChange(
-                                                                `ageGroups.${index}.initialAge`,
-                                                            )}
                                                         />
                                                     </Stack>
                                                 </Grid>
@@ -158,23 +159,34 @@ export const AgePolicyForm = () => {
                                                     <Stack width={'100%'}>
                                                         <NumberInput
                                                             label="Idade Final"
-                                                            error={
-                                                                error?.finalAge
+                                                            value={
+                                                                ageGroup.finalAge
                                                             }
-                                                            formControl={{
-                                                                isInvalid:
-                                                                    !!error?.finalAge &&
-                                                                    touched
-                                                                        .ageGroups?.[
-                                                                        index
-                                                                    ]?.finalAge,
+                                                            min={
+                                                                ageGroup.initialAge +
+                                                                1
+                                                            }
+                                                            max={
+                                                                values.adultMinAge -
+                                                                1
+                                                            }
+                                                            onChange={(e) => {
+                                                                const newValueNumber =
+                                                                    Number(
+                                                                        e.target
+                                                                            .value,
+                                                                    )
+                                                                if (
+                                                                    Number.isNaN(
+                                                                        newValueNumber,
+                                                                    )
+                                                                )
+                                                                    return
+                                                                setFieldValue(
+                                                                    `ageGroups.${index}.finalAge`,
+                                                                    newValueNumber,
+                                                                )
                                                             }}
-                                                            {...getFieldProps(
-                                                                `ageGroups.${index}.finalAge`,
-                                                            )}
-                                                            onChange={handleChange(
-                                                                `ageGroups.${index}.finalAge`,
-                                                            )}
                                                         />
                                                     </Stack>
                                                 </Grid>
@@ -191,10 +203,7 @@ export const AgePolicyForm = () => {
                                                     >
                                                         <Select
                                                             value={
-                                                                values
-                                                                    .ageGroups?.[
-                                                                    index
-                                                                ]?.chargeType ||
+                                                                ageGroup.chargeType ||
                                                                 ''
                                                             }
                                                             onChange={(event) =>
@@ -205,14 +214,6 @@ export const AgePolicyForm = () => {
                                                                 )
                                                             }
                                                             displayEmpty
-                                                            variant="outlined"
-                                                            style={{
-                                                                border: '1px solid #D9E2EC',
-                                                                borderRadius:
-                                                                    '8px',
-                                                                padding: '6px',
-                                                                color: '#01337D',
-                                                            }}
                                                         >
                                                             <MenuItem
                                                                 value=""
@@ -253,8 +254,8 @@ export const AgePolicyForm = () => {
                                                             )}
                                                     </FormControl>
                                                 </Grid>
-                                                {values.ageGroups[index]
-                                                    ?.chargeType !== 'FREE' && (
+                                                {ageGroup.chargeType !==
+                                                    'FREE' && (
                                                     <Grid size={6}>
                                                         <TextField
                                                             label="Valor a ser cobrado"
@@ -276,13 +277,17 @@ export const AgePolicyForm = () => {
                                                                     : ''
                                                             }
                                                             value={
-                                                                getFieldProps(
-                                                                    `ageGroups.${index}.value`,
-                                                                ).value
+                                                                ageGroup.value
                                                             }
-                                                            onChange={handleChange(
-                                                                `ageGroups.${index}.value`,
-                                                            )}
+                                                            onChange={(e) => {
+                                                                const newValue =
+                                                                    e.target
+                                                                        .value
+                                                                setFieldValue(
+                                                                    `ageGroups.${index}.value`,
+                                                                    newValue,
+                                                                )
+                                                            }}
                                                             fullWidth
                                                             variant="outlined"
                                                             InputProps={{
