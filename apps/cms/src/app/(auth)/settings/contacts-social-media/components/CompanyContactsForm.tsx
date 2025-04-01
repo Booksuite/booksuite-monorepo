@@ -1,16 +1,19 @@
 import {
     Button,
-    Flex,
-    HStack,
+    FormControl,
     IconButton,
+    MenuItem,
     Select,
     Stack,
-} from '@chakra-ui/react'
-import { FieldArray, Form, useFormikContext } from 'formik'
+    TextField,
+    Typography,
+} from '@mui/material'
+import { FieldArray, useFormikContext } from 'formik'
 import { CirclePlus, Trash } from 'lucide-react'
 import { useState } from 'react'
 
-import InputBox from '@/components/atoms/InputBox'
+import { FormContainer } from '@/components/atoms/FormContainer'
+import { FormSection } from '@/components/atoms/FormSection'
 import { ContactsData } from '../utils/config'
 import { PHONE_TYPES, TYPES_OPTIONS } from '../utils/constants'
 
@@ -24,27 +27,24 @@ export default function CompanyContactsForm() {
     )
 
     return (
-        <Form>
-            <div className="CompanyContactForm">
+        <FormContainer>
+            <FormSection>
                 <FieldArray name="email">
                     {({ push, remove }) => (
-                        <Stack spacing={4}>
-                            <h3
-                                style={{ fontWeight: '600', marginBottom: '0' }}
-                            >
-                                E-mails de Contato
-                            </h3>
+                        <FormSection title="E-mails de Contato">
                             {values.email?.length ? (
                                 values.email.map((email, index) => (
-                                    <HStack
+                                    <Stack
                                         key={index}
+                                        direction="row"
                                         spacing={2}
                                         alignItems="center"
                                         width="100%"
                                     >
-                                        <InputBox
+                                        <TextField
                                             label={`E-mail de ${email.category}`}
                                             type="email"
+                                            fullWidth
                                             {...getFieldProps(
                                                 `email.${index}.value`,
                                             )}
@@ -53,41 +53,53 @@ export default function CompanyContactsForm() {
                                             )}
                                         />
                                         <IconButton
-                                            icon={<Trash />}
-                                            colorScheme="red"
-                                            variant="ghost"
+                                            color="error"
                                             onClick={() => remove(index)}
-                                            aria-label={'Remover'}
-                                            size={'lg'}
-                                        />
-                                    </HStack>
+                                            aria-label="Remover"
+                                            size="large"
+                                        >
+                                            <Trash />
+                                        </IconButton>
+                                    </Stack>
                                 ))
                             ) : (
-                                <h2>Nenhum Email encontrado</h2>
+                                <Typography variant="h6">
+                                    Nenhum Email encontrado
+                                </Typography>
                             )}
-                            <Flex gap={2}>
-                                <Select
-                                    size="lg"
-                                    value={selectedType || ''}
-                                    onChange={(e) =>
-                                        setSelectedType(Number(e.target.value))
-                                    }
-                                >
-                                    <option value="" disabled hidden>
-                                        Selecione o tipo de email
-                                    </option>
-                                    {TYPES_OPTIONS.map(({ label }, index) => (
-                                        <option key={index} value={index}>
-                                            {label}
-                                        </option>
-                                    ))}
-                                </Select>
+                            <Stack direction="row" spacing={2}>
+                                <FormControl fullWidth>
+                                    <Select
+                                        value={selectedType || ''}
+                                        onChange={(e) =>
+                                            setSelectedType(
+                                                Number(e.target.value),
+                                            )
+                                        }
+                                        size="medium"
+                                        displayEmpty
+                                    >
+                                        <MenuItem value="" disabled>
+                                            Selecione o tipo de email
+                                        </MenuItem>
+                                        {TYPES_OPTIONS.map(
+                                            ({ label }, index) => (
+                                                <MenuItem
+                                                    key={index}
+                                                    value={index}
+                                                >
+                                                    {label}
+                                                </MenuItem>
+                                            ),
+                                        )}
+                                    </Select>
+                                </FormControl>
                                 <Button
-                                    variant="outline"
-                                    width={'100%'}
-                                    leftIcon={<CirclePlus />}
-                                    size={'lg'}
-                                    isDisabled={selectedType === null}
+                                    variant="outlined"
+                                    fullWidth
+                                    startIcon={<CirclePlus />}
+                                    size="large"
+                                    disabled={selectedType === null}
                                     onClick={() => {
                                         if (selectedType !== null) {
                                             push({
@@ -103,30 +115,29 @@ export default function CompanyContactsForm() {
                                 >
                                     Adicionar Email
                                 </Button>
-                            </Flex>
-                        </Stack>
+                            </Stack>
+                        </FormSection>
                     )}
                 </FieldArray>
+            </FormSection>
 
+            <FormSection>
                 <FieldArray name="phone">
                     {({ push, remove }) => (
-                        <Stack spacing={4}>
-                            <h3
-                                style={{ fontWeight: '600', marginTop: '20px' }}
-                            >
-                                Telefones (Opcional)
-                            </h3>
+                        <FormSection title="Telefones (Opcional)">
                             {values.phone?.length ? (
                                 values.phone.map((phone, index) => (
-                                    <HStack
+                                    <Stack
                                         key={index}
+                                        direction="row"
                                         spacing={2}
                                         alignItems="center"
                                         width="100%"
                                     >
-                                        <InputBox
-                                            label={`Telefone - ${phone.category}`}
-                                            type="tel"
+                                        <TextField
+                                            label={phone.category}
+                                            type="phone"
+                                            fullWidth
                                             {...getFieldProps(
                                                 `phone.${index}.value`,
                                             )}
@@ -135,43 +146,48 @@ export default function CompanyContactsForm() {
                                             )}
                                         />
                                         <IconButton
-                                            icon={<Trash />}
-                                            colorScheme="red"
-                                            variant="ghost"
+                                            color="error"
                                             onClick={() => remove(index)}
-                                            aria-label={'Remover'}
-                                            size={'lg'}
-                                        />
-                                    </HStack>
+                                            aria-label="Remover"
+                                            size="large"
+                                        >
+                                            <Trash />
+                                        </IconButton>
+                                    </Stack>
                                 ))
                             ) : (
-                                <h2>Nenhum telefone encontrado</h2>
+                                <Typography variant="h6">
+                                    Nenhum telefone encontrado
+                                </Typography>
                             )}
-                            <Flex gap={2}>
-                                <Select
-                                    size="lg"
-                                    value={selectedPhoneType || ''}
-                                    onChange={(e) =>
-                                        setSelectedPhoneType(
-                                            Number(e.target.value),
-                                        )
-                                    }
-                                >
-                                    <option value="" disabled hidden>
-                                        Selecione o tipo de telefone
-                                    </option>
-                                    {PHONE_TYPES.map(({ label }, index) => (
-                                        <option key={index} value={index}>
-                                            {label}
-                                        </option>
-                                    ))}
-                                </Select>
+                            <Stack direction="row" spacing={2}>
+                                <FormControl fullWidth>
+                                    <Select
+                                        value={selectedPhoneType || ''}
+                                        onChange={(e) =>
+                                            setSelectedPhoneType(
+                                                Number(e.target.value),
+                                            )
+                                        }
+                                        size="medium"
+                                        displayEmpty
+                                    >
+                                        <MenuItem value="" disabled>
+                                            Selecione o tipo de telefone
+                                        </MenuItem>
+                                        {PHONE_TYPES.map(({ label }, index) => (
+                                            <MenuItem key={index} value={index}>
+                                                {label}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
                                 <Button
-                                    variant="outline"
-                                    width={'100%'}
-                                    leftIcon={<CirclePlus />}
-                                    size={'lg'}
-                                    isDisabled={selectedPhoneType === null}
+                                    variant="outlined"
+                                    fullWidth
+                                    startIcon={<CirclePlus />}
+                                    size="large"
+                                    disabled={selectedPhoneType === null}
                                     onClick={() => {
                                         if (selectedPhoneType !== null) {
                                             push({
@@ -188,29 +204,27 @@ export default function CompanyContactsForm() {
                                 >
                                     Adicionar Telefone
                                 </Button>
-                            </Flex>
-                        </Stack>
+                            </Stack>
+                        </FormSection>
                     )}
                 </FieldArray>
+            </FormSection>
 
+            <FormSection>
                 <FieldArray name="socialMedias">
-                    {({ remove }) => (
-                        <Stack spacing={4}>
-                            <h3
-                                style={{ fontWeight: '600', marginTop: '20px' }}
-                            >
-                                Redes Sociais (Opcional)
-                            </h3>
+                    {() => (
+                        <FormSection title="Redes Sociais (Opcional)">
                             {values.socialMedias.map((contact, index) => (
-                                <HStack
+                                <Stack
                                     key={index}
                                     spacing={2}
                                     alignItems="center"
                                     width="100%"
                                 >
-                                    <InputBox
+                                    <TextField
                                         label={contact.type}
                                         type="text"
+                                        fullWidth
                                         {...getFieldProps(
                                             `socialMedias.${index}.value`,
                                         )}
@@ -221,20 +235,12 @@ export default function CompanyContactsForm() {
                                             )
                                         }
                                     />
-                                    <IconButton
-                                        icon={<Trash />}
-                                        colorScheme="red"
-                                        variant="ghost"
-                                        onClick={() => remove(index)}
-                                        aria-label={'Remover'}
-                                        size={'lg'}
-                                    />
-                                </HStack>
+                                </Stack>
                             ))}
-                        </Stack>
+                        </FormSection>
                     )}
                 </FieldArray>
-            </div>
-        </Form>
+            </FormSection>
+        </FormContainer>
     )
 }
