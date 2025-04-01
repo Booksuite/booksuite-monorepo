@@ -37,17 +37,14 @@ export default function AgePolicy() {
                 companyId: companyId,
                 data: formData,
             })
-            enqueueSnackbar(
-                'Políticas de Cancelamento modificadas com sucesso',
-                {
-                    variant: 'success',
-                    anchorOrigin: {
-                        vertical: 'top',
-                        horizontal: 'right',
-                    },
-                    autoHideDuration: 3000,
+            enqueueSnackbar('Políticas de Idade modificadas com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
                 },
-            )
+                autoHideDuration: 3000,
+            })
             back()
         } catch (error) {
             enqueueSnackbar(
