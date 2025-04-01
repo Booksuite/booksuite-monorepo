@@ -6,16 +6,17 @@ import {
     FormHelperText,
     Grid,
     IconButton,
+    InputAdornment,
     MenuItem,
     Select,
     Stack,
     Switch,
+    TextField,
     Typography,
 } from '@mui/material'
 import { FieldArray, Form, useFormikContext } from 'formik'
 import { CirclePlus, Info, Trash } from 'lucide-react'
 
-import InputBox from '@/components/atoms/InputBox'
 import { InputNumberBox } from '@/components/atoms/InputNumberBox'
 import { AgePolicyFormData } from '../utils/config'
 import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
@@ -134,46 +135,53 @@ export const AgePolicyForm = () => {
                                                 }}
                                             >
                                                 <Grid size={6}>
-                                                    <InputNumberBox
-                                                        label="Idade Inicial"
-                                                        error={
-                                                            error?.initialAge
-                                                        }
-                                                        formControl={{
-                                                            isInvalid:
-                                                                !!error?.initialAge &&
-                                                                touched
-                                                                    .ageGroups?.[
-                                                                    index
-                                                                ]?.initialAge,
-                                                        }}
-                                                        {...getFieldProps(
-                                                            `ageGroups.${index}.initialAge`,
-                                                        )}
-                                                        onChange={handleChange(
-                                                            `ageGroups.${index}.initialAge`,
-                                                        )}
-                                                    />
+                                                    <Stack width={'100%'}>
+                                                        <InputNumberBox
+                                                            label="Idade Inicial"
+                                                            error={
+                                                                error?.initialAge
+                                                            }
+                                                            formControl={{
+                                                                isInvalid:
+                                                                    !!error?.initialAge &&
+                                                                    touched
+                                                                        .ageGroups?.[
+                                                                        index
+                                                                    ]
+                                                                        ?.initialAge,
+                                                            }}
+                                                            {...getFieldProps(
+                                                                `ageGroups.${index}.initialAge`,
+                                                            )}
+                                                            onChange={handleChange(
+                                                                `ageGroups.${index}.initialAge`,
+                                                            )}
+                                                        />
+                                                    </Stack>
                                                 </Grid>
                                                 <Grid size={6}>
-                                                    <InputNumberBox
-                                                        label="Idade Final"
-                                                        error={error?.finalAge}
-                                                        formControl={{
-                                                            isInvalid:
-                                                                !!error?.finalAge &&
-                                                                touched
-                                                                    .ageGroups?.[
-                                                                    index
-                                                                ]?.finalAge,
-                                                        }}
-                                                        {...getFieldProps(
-                                                            `ageGroups.${index}.finalAge`,
-                                                        )}
-                                                        onChange={handleChange(
-                                                            `ageGroups.${index}.finalAge`,
-                                                        )}
-                                                    />
+                                                    <Stack width={'100%'}>
+                                                        <InputNumberBox
+                                                            label="Idade Final"
+                                                            error={
+                                                                error?.finalAge
+                                                            }
+                                                            formControl={{
+                                                                isInvalid:
+                                                                    !!error?.finalAge &&
+                                                                    touched
+                                                                        .ageGroups?.[
+                                                                        index
+                                                                    ]?.finalAge,
+                                                            }}
+                                                            {...getFieldProps(
+                                                                `ageGroups.${index}.finalAge`,
+                                                            )}
+                                                            onChange={handleChange(
+                                                                `ageGroups.${index}.finalAge`,
+                                                            )}
+                                                        />
+                                                    </Stack>
                                                 </Grid>
                                                 <Grid size={6}>
                                                     <FormControl
@@ -253,24 +261,49 @@ export const AgePolicyForm = () => {
                                                 {values.ageGroups[index]
                                                     ?.chargeType !== 'FREE' && (
                                                     <Grid size={6}>
-                                                        <InputBox
+                                                        <TextField
                                                             label="Valor a ser cobrado"
-                                                            type="currency"
-                                                            error={error?.value}
-                                                            formControl={{
-                                                                isInvalid:
-                                                                    !!error?.value &&
-                                                                    touched
-                                                                        .ageGroups?.[
-                                                                        index
-                                                                    ]?.value,
-                                                            }}
-                                                            {...getFieldProps(
-                                                                `ageGroups.${index}.value`,
-                                                            )}
+                                                            type="text"
+                                                            error={
+                                                                !!error?.value &&
+                                                                touched
+                                                                    ?.ageGroups?.[
+                                                                    index
+                                                                ]?.value
+                                                            }
+                                                            helperText={
+                                                                error?.value &&
+                                                                touched
+                                                                    ?.ageGroups?.[
+                                                                    index
+                                                                ]?.value
+                                                                    ? error.value
+                                                                    : ''
+                                                            }
+                                                            value={
+                                                                getFieldProps(
+                                                                    `ageGroups.${index}.value`,
+                                                                ).value
+                                                            }
                                                             onChange={handleChange(
                                                                 `ageGroups.${index}.value`,
                                                             )}
+                                                            fullWidth
+                                                            variant="outlined"
+                                                            InputProps={{
+                                                                startAdornment:
+                                                                    (
+                                                                        <InputAdornment position="start">
+                                                                            R$
+                                                                        </InputAdornment>
+                                                                    ),
+                                                                inputMode:
+                                                                    'numeric',
+                                                                inputProps: {
+                                                                    pattern:
+                                                                        '[0-9]*',
+                                                                },
+                                                            }}
                                                         />
                                                     </Grid>
                                                 )}
