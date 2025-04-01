@@ -17,7 +17,7 @@ import {
 import { FieldArray, Form, useFormikContext } from 'formik'
 import { CirclePlus, Info, Trash } from 'lucide-react'
 
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import { NumberInput } from '@/components/atoms/NumberInput'
 import { AgePolicyFormData } from '../utils/config'
 import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
 
@@ -36,7 +36,7 @@ export const AgePolicyForm = () => {
             <Stack spacing={4} mt={2}>
                 <Stack spacing={2}>
                     <Typography variant="h6">Adultos</Typography>
-                    <InputNumberBox
+                    <NumberInput
                         label="Idade inicial para adultos"
                         error={errors.adultMinAge}
                         formControl={{
@@ -136,12 +136,11 @@ export const AgePolicyForm = () => {
                                             >
                                                 <Grid size={6}>
                                                     <Stack width={'100%'}>
-                                                        <InputNumberBox
+                                                        <NumberInput
                                                             label="Idade Inicial"
                                                             error={
                                                                 error?.initialAge
                                                             }
-                                                          
                                                             formControl={{
                                                                 isInvalid:
                                                                     !!error?.initialAge &&
@@ -162,7 +161,7 @@ export const AgePolicyForm = () => {
                                                 </Grid>
                                                 <Grid size={6}>
                                                     <Stack width={'100%'}>
-                                                        <InputNumberBox
+                                                        <NumberInput
                                                             label="Idade Final"
                                                             error={
                                                                 error?.finalAge
