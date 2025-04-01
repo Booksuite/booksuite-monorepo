@@ -1,16 +1,17 @@
 'use client'
 
-import { Grid, GridItem, useToast } from '@chakra-ui/react'
+import { Grid, TextField } from '@mui/material'
 import cep from 'cep-promise'
-import { Form, useFormikContext } from 'formik'
+import { useFormikContext } from 'formik'
+import { useSnackbar } from 'notistack'
 import { debounce } from 'radash'
 import { useEffect, useRef } from 'react'
 
-import InputBox from '@/components/atoms/InputBox'
+import { FormContainer } from '@/components/atoms/FormContainer'
 import type { AddressFormData } from '../utils/config'
 
 export const AddressForm = () => {
-    const toast = useToast()
+    const { enqueueSnackbar } = useSnackbar()
 
     const {
         getFieldProps,
@@ -19,7 +20,6 @@ export const AddressForm = () => {
         errors,
         setValues,
         isSubmitting,
-        handleSubmit,
         setSubmitting,
     } = useFormikContext<AddressFormData>()
 
@@ -38,11 +38,10 @@ export const AddressForm = () => {
                     address: address.street || '',
                 }))
 
-                toast({ title: 'CEP encontrado!', status: 'success' })
+                enqueueSnackbar('CEP encontrado!', { variant: 'success' })
             } catch {
-                toast({
-                    title: 'CEP inválido ou não encontrado.',
-                    status: 'error',
+                enqueueSnackbar('CEP inválido ou não encontrado.', {
+                    variant: 'error',
                 })
             } finally {
                 setSubmitting(false)
@@ -57,80 +56,80 @@ export const AddressForm = () => {
     }, [values.zipcode])
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <Grid templateColumns="repeat(12, 1fr)" gap={4}>
-                <GridItem colSpan={12}>
-                    <InputBox
+        <FormContainer>
+            <Grid container spacing={3}>
+                <Grid size={12}>
+                    <TextField
                         label="CEP"
-                        error={errors.zipcode}
-                        formControl={{
-                            isInvalid: !!errors.zipcode && touched.zipcode,
-                        }}
-                        isDisabled={isSubmitting}
+                        error={touched.zipcode && Boolean(errors.zipcode)}
+                        helperText={touched.zipcode && errors.zipcode}
+                        disabled={isSubmitting}
+                        fullWidth
+                        variant="outlined"
                         {...getFieldProps('zipcode')}
                     />
-                </GridItem>
+                </Grid>
 
-                <GridItem colSpan={{ base: 12, md: 4 }}>
-                    <InputBox
+                <Grid size={4}>
+                    <TextField
                         label="Cidade"
-                        error={errors.city}
-                        formControl={{
-                            isInvalid: !!errors.city && touched.city,
-                        }}
-                        isDisabled={isSubmitting}
+                        error={touched.city && Boolean(errors.city)}
+                        helperText={touched.city && errors.city}
+                        disabled={isSubmitting}
+                        fullWidth
+                        variant="outlined"
                         {...getFieldProps('city')}
                     />
-                </GridItem>
+                </Grid>
 
-                <GridItem colSpan={{ base: 12, md: 4 }}>
-                    <InputBox
+                <Grid size={4}>
+                    <TextField
                         label="Estado"
-                        error={errors.state}
-                        formControl={{
-                            isInvalid: !!errors.state && touched.state,
-                        }}
-                        isDisabled={isSubmitting}
+                        error={touched.state && Boolean(errors.state)}
+                        helperText={touched.state && errors.state}
+                        disabled={isSubmitting}
+                        fullWidth
+                        variant="outlined"
                         {...getFieldProps('state')}
                     />
-                </GridItem>
+                </Grid>
 
-                <GridItem colSpan={{ base: 12, md: 4 }}>
-                    <InputBox
+                <Grid size={4}>
+                    <TextField
                         label="País"
-                        error={errors.country}
-                        formControl={{
-                            isInvalid: !!errors.country && touched.country,
-                        }}
-                        isDisabled={isSubmitting}
+                        error={touched.country && Boolean(errors.country)}
+                        helperText={touched.country && errors.country}
+                        disabled={isSubmitting}
+                        fullWidth
+                        variant="outlined"
                         {...getFieldProps('country')}
                     />
-                </GridItem>
+                </Grid>
 
-                <GridItem colSpan={{ base: 12, md: 6 }}>
-                    <InputBox
+                <Grid size={6}>
+                    <TextField
                         label="Endereço"
-                        error={errors.address}
-                        formControl={{
-                            isInvalid: !!errors.address && touched.address,
-                        }}
-                        isDisabled={isSubmitting}
+                        error={touched.address && Boolean(errors.address)}
+                        helperText={touched.address && errors.address}
+                        disabled={isSubmitting}
+                        fullWidth
+                        variant="outlined"
                         {...getFieldProps('address')}
                     />
-                </GridItem>
+                </Grid>
 
-                <GridItem colSpan={{ base: 12, md: 6 }}>
-                    <InputBox
+                <Grid size={6}>
+                    <TextField
                         label="Número"
-                        error={errors.number}
-                        formControl={{
-                            isInvalid: !!errors.number && touched.number,
-                        }}
-                        isDisabled={isSubmitting}
+                        error={touched.number && Boolean(errors.number)}
+                        helperText={touched.number && errors.number}
+                        disabled={isSubmitting}
+                        fullWidth
+                        variant="outlined"
                         {...getFieldProps('number')}
                     />
-                </GridItem>
+                </Grid>
             </Grid>
-        </Form>
+        </FormContainer>
     )
 }
