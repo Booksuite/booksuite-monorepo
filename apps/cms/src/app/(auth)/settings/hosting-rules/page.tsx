@@ -4,10 +4,10 @@ import {
     useGetCompanyHostingRules,
     useUpsertCompanyHostingRules,
 } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
@@ -24,6 +24,7 @@ import {
 
 export default function HostingRules() {
     const companyId = useCurrentCompanyId()
+    const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
     const queryClient = useQueryClient()
 
@@ -35,8 +36,6 @@ export default function HostingRules() {
     const { mutateAsync: updateCompanyHostingRules } =
         useUpsertCompanyHostingRules()
 
-    const toast = useToast()
-
     async function handleSubmit(formData: HostingRulesData) {
         try {
             const apiData = transformFormDataForSubmit(formData)
@@ -44,11 +43,14 @@ export default function HostingRules() {
                 companyId: companyId,
                 data: apiData,
             })
-            toast({
-                title: 'Dados gerais modificados com sucesso ',
-                status: 'success',
+            enqueueSnackbar('Regras de hospedagem modificadas com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
             })
-
             await queryClient.invalidateQueries({
                 queryKey: ['getCompanyHostingRules'],
                 refetchType: 'all',
@@ -56,11 +58,17 @@ export default function HostingRules() {
 
             back()
         } catch (error) {
-            toast({
-                title: 'Erro ao editar dados gerais',
-                description: getErrorMessage(error),
-                status: 'error',
-            })
+            enqueueSnackbar(
+                `Erro ao modificar regras: ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
+                },
+            )
         }
     }
 

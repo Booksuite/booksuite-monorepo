@@ -2,19 +2,24 @@ import {
     Box,
     Button,
     Checkbox,
-    CheckboxGroup,
-    Flex,
-    HStack,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    Grid,
     IconButton,
+    MenuItem,
     Select,
     Stack,
-    Text,
-} from '@chakra-ui/react'
-import { Form, useFormikContext } from 'formik'
+    Typography,
+    useTheme,
+} from '@mui/material'
+import { useFormikContext } from 'formik'
 import { Info, PlusCircle, Trash } from 'lucide-react'
 import { ChangeEvent, useEffect, useState } from 'react'
 
 import { DatePickerBox } from '@/components/atoms/DatePickerBox'
+import { FormContainer } from '@/components/atoms/FormContainer'
+import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { HostingRulesData } from '../utils/config'
 import {
@@ -28,7 +33,8 @@ import {
 } from '../utils/contants'
 
 export const HostingRulesForm = () => {
-    const { getFieldProps, values, setFieldValue, touched, errors } =
+    const theme = useTheme()
+    const { getFieldProps, values, setFieldValue, errors } =
         useFormikContext<HostingRulesData>()
 
     const [selectedOpening, setSelectedOpening] = useState<number | null>(null)
@@ -86,293 +92,316 @@ export const HostingRulesForm = () => {
     }, [])
 
     return (
-        <Form>
-            <div>
-                <Stack spacing={4}>
-                    <Flex gap={2} justifyContent={'space-between'} w={'100%'}>
-                        <Select
-                            size="lg"
-                            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                                setFieldValue('checkIn', Number(e.target.value))
-                            }
-                            value={
-                                CHECKIN_OPTIONS.find(
-                                    (option) =>
-                                        option.value ===
-                                        getFieldProps('checkIn').value,
-                                )?.value
-                            }
-                        >
-                            <option value="" disabled selected hidden>
-                                Horário do Check-In
-                            </option>
-                            {CHECKIN_OPTIONS.map(({ label, value }, index) => (
-                                <option key={index} value={value}>
-                                    {label}
-                                </option>
-                            ))}
-                        </Select>
+        <FormContainer>
+            <FormSection>
+                <Grid container spacing={2}>
+                    <Grid size={6}>
+                        <FormControl fullWidth>
+                            <Select
+                                size="medium"
+                                onChange={(
+                                    e: ChangeEvent<{ value: unknown }>,
+                                ) =>
+                                    setFieldValue(
+                                        'checkIn',
+                                        Number(e.target.value),
+                                    )
+                                }
+                                value={getFieldProps('checkIn').value}
+                                displayEmpty
+                            >
+                                <MenuItem value="" disabled>
+                                    Horário do Check-In
+                                </MenuItem>
+                                {CHECKIN_OPTIONS.map(
+                                    ({ label, value }, index) => (
+                                        <MenuItem key={index} value={value}>
+                                            {label}
+                                        </MenuItem>
+                                    ),
+                                )}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid size={6}>
+                        <FormControl fullWidth>
+                            <Select
+                                size="medium"
+                                onChange={(
+                                    e: ChangeEvent<{ value: unknown }>,
+                                ) =>
+                                    setFieldValue(
+                                        'checkOut',
+                                        Number(e.target.value),
+                                    )
+                                }
+                                value={getFieldProps('checkOut').value}
+                                displayEmpty
+                            >
+                                <MenuItem value="" disabled>
+                                    Horário do Check-Out
+                                </MenuItem>
+                                {CHECKOUT_OPTIONS.map(
+                                    ({ label, value }, index) => (
+                                        <MenuItem key={index} value={value}>
+                                            {label}
+                                        </MenuItem>
+                                    ),
+                                )}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
 
-                        <Select
-                            size="lg"
-                            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                                setFieldValue(
-                                    'checkOut',
-                                    Number(e.target.value),
-                                )
-                            }
-                            value={
-                                CHECKOUT_OPTIONS.find(
-                                    (option) =>
-                                        option.value ===
-                                        getFieldProps('checkOut').value,
-                                )?.value
-                            }
-                        >
-                            <option value="" disabled selected hidden>
-                                Horário do Check-Out
-                            </option>
-                            {CHECKOUT_OPTIONS.map(({ label, value }, index) => (
-                                <option key={index} value={value}>
-                                    {label}
-                                </option>
-                            ))}
-                        </Select>
-                    </Flex>
+                <NumberInput
+                    label="Mínimo de diárias"
+                    {...getFieldProps('minDaily')}
+                    onChange={(e) => setFieldValue('minDaily', e.target.value)}
+                />
+            </FormSection>
 
-                    <NumberInput
-                        label="Mínimo de diárias"
-                        {...getFieldProps('minDaily')}
-                        onChange={(e) =>
-                            setFieldValue('minDaily', e.target.value)
-                        }
-                    />
-                </Stack>
-
-                <Stack mt={8} spacing={4}>
-                    <h3 style={{ fontWeight: '600', marginBottom: '0' }}>
-                        Noites do fim de semana
-                    </h3>
-                    <CheckboxGroup
-                        value={values.availableWeekend}
-                        onChange={(newValue) => {
-                            setFieldValue(
-                                'availableWeekend',
-                                newValue.map(String),
-                            )
-                        }}
-                    >
-                        <Flex gap={2} justifyContent={'space-between'}>
-                            {AVAILABLE_WEEK_DAYS.map((night) => (
-                                <Checkbox key={night.name} value={night.value}>
-                                    {night.name}
-                                </Checkbox>
-                            ))}
-                        </Flex>
-                    </CheckboxGroup>
-                    <Box
-                        bg={'gray.100'}
-                        p={3}
-                        borderRadius={'md'}
-                        display={'flex'}
-                        alignItems={'center'}
-                    >
-                        <Flex align="center" gap={2}>
-                            <Info size={23} color={'#0B1F51'} />
-                            <Text fontSize={'md'} color={'#0B1F51'}>
-                                <b>Atenção:</b> as noites não selecionadas serão
-                                automaticamente consideradas dia de semana.
-                            </Text>
-                        </Flex>
+            <FormSection title="Noites do fim de semana">
+                <FormGroup>
+                    <Grid container spacing={2}>
+                        {AVAILABLE_WEEK_DAYS.map((night) => (
+                            <Grid key={night.name}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={values.availableWeekend.includes(
+                                                night.value,
+                                            )}
+                                            onChange={(e) => {
+                                                const newValue = e.target
+                                                    .checked
+                                                    ? [
+                                                          ...values.availableWeekend,
+                                                          night.value,
+                                                      ]
+                                                    : values.availableWeekend.filter(
+                                                          (v) =>
+                                                              v !== night.value,
+                                                      )
+                                                setFieldValue(
+                                                    'availableWeekend',
+                                                    newValue,
+                                                )
+                                            }}
+                                        />
+                                    }
+                                    label={night.name}
+                                />
+                            </Grid>
+                        ))}
+                    </Grid>
+                </FormGroup>
+                <Box
+                    bgcolor="grey.100"
+                    p={2}
+                    borderRadius={4}
+                    display="flex"
+                    alignItems="center"
+                >
+                    <Box display="flex" alignItems="center" gap={1}>
+                        <Info size={20} color={theme.palette.primary.main} />
+                        <Typography variant="body2" color="primary.dark">
+                            <b>Atenção:</b> as noites não selecionadas serão
+                            automaticamente consideradas dia de semana.
+                        </Typography>
                     </Box>
-                </Stack>
+                </Box>
+            </FormSection>
 
-                <Stack mt={8} spacing={4}>
-                    <h2 style={{ fontWeight: '600', marginBottom: '0' }}>
-                        Janela de Disponibilidade
-                    </h2>
-
+            <FormSection title="Janela de Disponibilidade">
+                <FormControl fullWidth>
                     <Select
-                        size="lg"
                         value={selectedOpening || ''}
-                        onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                        onChange={(e) => {
                             const value = Number(e.target.value)
                             setSelectedOpening(value)
                         }}
+                        displayEmpty
                     >
-                        <option value="" disabled selected hidden>
+                        <MenuItem value="" disabled>
                             Selecione a janela de abertura de hospedagem
-                        </option>
+                        </MenuItem>
                         {OPENING_WINDOW.map(({ label }, index) => (
-                            <option key={index} value={index}>
+                            <MenuItem key={index} value={index}>
                                 {label}
-                            </option>
+                            </MenuItem>
                         ))}
                     </Select>
+                </FormControl>
 
-                    {selectedOpening === 0 && (
+                {selectedOpening === 0 && (
+                    <FormControl fullWidth>
                         <Select
-                            size="lg"
                             value={selectedPeriods || ''}
-                            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                            onChange={(e) => {
                                 const value = Number(e.target.value)
                                 setSelectedPeriods(value)
                                 setFieldValue('reservationWindowStart', null)
                                 setFieldValue('reservationWindowEnd', null)
                             }}
+                            displayEmpty
                         >
-                            <option value="" disabled selected hidden>
+                            <MenuItem value="" disabled>
                                 Selecione o período
-                            </option>
+                            </MenuItem>
                             {PERIODS.map(({ label }, index) => (
-                                <option key={index} value={index}>
+                                <MenuItem key={index} value={index}>
                                     {label}
-                                </option>
+                                </MenuItem>
                             ))}
                         </Select>
-                    )}
+                    </FormControl>
+                )}
 
-                    <NumberInput
-                        label="Janela de abertura (dias)"
-                        value={getFieldProps('fixedWindowPeriod').value}
-                        onChange={(e) => {
-                            setFieldValue('fixedWindowPeriod', e.target.value)
+                <NumberInput
+                    label="Janela de abertura (dias)"
+                    value={getFieldProps('fixedWindowPeriod').value}
+                    onChange={(e) => {
+                        setFieldValue('fixedWindowPeriod', e.target.value)
+                        if (selectedPeriods !== 4) {
+                            setFieldValue(
+                                'fixedWindowPeriod',
+                                getDaysForPeriod(selectedPeriods),
+                            )
+                        }
+                    }}
+                />
 
-                            if (selectedPeriods !== 4) {
-                                setFieldValue(
-                                    'fixedWindowPeriod',
-                                    getDaysForPeriod(selectedPeriods),
-                                )
-                            }
-                        }}
-                    />
-                    {selectedOpening === 1 &&
-                        periods.map((period, index) => (
-                            <Box key={period.id} w="100%">
-                                <Flex gap={4} alignItems="center">
-                                    <h3
-                                        style={{
-                                            fontWeight: '600',
-                                            margin: '0',
-                                        }}
-                                    >
-                                        Período de Hospedagem {index + 1}
-                                    </h3>
-                                    <IconButton
-                                        aria-label="Remover período"
-                                        icon={<Trash />}
-                                        colorScheme="red"
-                                        variant="ghost"
-                                        onClick={() => removePeriod(period.id)}
+                {selectedOpening === 1 &&
+                    periods.map((period, index) => (
+                        <Box key={period.id} width="100%">
+                            <Stack
+                                direction="row"
+                                alignItems="center"
+                                spacing={1}
+                            >
+                                <Typography variant="h6" fontWeight={600}>
+                                    Período de Hospedagem {index + 1}
+                                </Typography>
+                                <IconButton
+                                    aria-label="Remover período"
+                                    color="error"
+                                    onClick={() => removePeriod(period.id)}
+                                >
+                                    <Trash size={20} />
+                                </IconButton>
+                            </Stack>
+                            <Grid container spacing={2} mt={1}>
+                                <Grid size={6}>
+                                    <Typography variant="subtitle2">
+                                        Início da Janela de Venda
+                                    </Typography>
+                                    <DatePickerBox
+                                        value={values.reservationWindowStart}
+                                        onChange={(date) =>
+                                            setFieldValue(
+                                                'reservationWindowStart',
+                                                date,
+                                            )
+                                        }
+                                        error={errors.reservationWindowStart}
                                     />
-                                </Flex>
-                                <HStack mt={3} spacing={3}>
-                                    <Stack w={'100%'}>
-                                        <h4>Início da Janela de Venda</h4>
-                                        <DatePickerBox
-                                            value={
-                                                values.reservationWindowStart
-                                            }
-                                            onChange={(date) =>
-                                                setFieldValue(
-                                                    'reservationWindowStart',
-                                                    date,
-                                                )
-                                            }
-                                            error={
-                                                errors.reservationWindowStart
-                                            }
-                                            formControl={{
-                                                isInvalid:
-                                                    !!errors.reservationWindowStart &&
-                                                    touched.reservationWindowStart,
-                                            }}
-                                        />
-                                    </Stack>
+                                </Grid>
+                                <Grid size={6}>
+                                    <Typography variant="subtitle2">
+                                        Fim da Janela de Venda
+                                    </Typography>
+                                    <DatePickerBox
+                                        value={values.reservationWindowEnd}
+                                        onChange={(date) =>
+                                            setFieldValue(
+                                                'reservationWindowEnd',
+                                                date,
+                                            )
+                                        }
+                                        error={errors.reservationWindowEnd}
+                                    />
+                                </Grid>
+                            </Grid>
+                        </Box>
+                    ))}
 
-                                    <Stack w={'100%'}>
-                                        <h4>Fim da Janela de Venda</h4>
-                                        <DatePickerBox
-                                            value={values.reservationWindowEnd}
-                                            onChange={(date) =>
-                                                setFieldValue(
-                                                    'reservationWindowEnd',
-                                                    date,
-                                                )
-                                            }
-                                            error={errors.reservationWindowEnd}
-                                            formControl={{
-                                                isInvalid:
-                                                    !!errors.reservationWindowEnd &&
-                                                    touched.reservationWindowEnd,
-                                            }}
-                                        />
-                                    </Stack>
-                                </HStack>
-                            </Box>
-                        ))}
-                    {selectedOpening === 1 && (
-                        <Button
-                            leftIcon={<PlusCircle />}
-                            colorScheme="blue"
-                            variant="outline"
-                            onClick={addPeriod}
-                            size={'lg'}
-                        >
-                            Adicionar período
-                        </Button>
-                    )}
-                </Stack>
-                <Stack mt={8} spacing={4}>
-                    <Flex alignItems="center" gap={2}>
-                        <Select
-                            size="lg"
-                            value={selectedSpecificDays || ''}
-                            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                                const value = Number(e.target.value)
-                                setSelectedSpecificDays(value)
+                {selectedOpening === 1 && (
+                    <Button
+                        startIcon={<PlusCircle />}
+                        variant="outlined"
+                        color="primary"
+                        onClick={addPeriod}
+                        size="large"
+                    >
+                        Adicionar período
+                    </Button>
+                )}
+            </FormSection>
 
-                                if (value == 0)
-                                    setFieldValue(
-                                        'availableWeekDays',
-                                        [0, 1, 2, 3, 4, 5, 6],
-                                    )
-                            }}
-                        >
-                            <option value="" disabled selected hidden>
-                                Dias de Funcionamento
-                            </option>
-                            {SPECIFIC_DAYS.map(({ label }, index) => (
-                                <option key={index} value={index}>
-                                    {label}
-                                </option>
-                            ))}
-                        </Select>
-                    </Flex>
-                    {selectedSpecificDays === 1 && (
-                        <CheckboxGroup
-                            value={values.availableWeekDays}
-                            onChange={(newValue) => {
+            <FormSection>
+                <FormControl fullWidth>
+                    <Select
+                        value={selectedSpecificDays || ''}
+                        onChange={(e) => {
+                            const value = Number(e.target.value)
+                            setSelectedSpecificDays(value)
+                            if (value == 0)
                                 setFieldValue(
                                     'availableWeekDays',
-                                    newValue.map(String),
+                                    [0, 1, 2, 3, 4, 5, 6],
                                 )
-                            }}
-                        >
-                            <Flex gap={2} justifyContent={'space-between'}>
-                                {HOSTING_SPECIFIC_DAYS.map((night) => (
-                                    <Checkbox
-                                        key={night.name}
-                                        value={night.value}
-                                    >
-                                        {night.name}
-                                    </Checkbox>
-                                ))}
-                            </Flex>
-                        </CheckboxGroup>
-                    )}
-                </Stack>
-            </div>
-        </Form>
+                        }}
+                        displayEmpty
+                    >
+                        <MenuItem value="" disabled>
+                            Dias de Funcionamento
+                        </MenuItem>
+                        {SPECIFIC_DAYS.map(({ label }, index) => (
+                            <MenuItem key={index} value={index}>
+                                {label}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                {selectedSpecificDays === 1 && (
+                    <FormGroup>
+                        <Grid container spacing={2}>
+                            {HOSTING_SPECIFIC_DAYS.map((night) => (
+                                <Grid key={night.name}>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={values.availableWeekDays.includes(
+                                                    night.value,
+                                                )}
+                                                onChange={(e) => {
+                                                    const newValue = e.target
+                                                        .checked
+                                                        ? [
+                                                              ...values.availableWeekDays,
+                                                              night.value,
+                                                          ]
+                                                        : values.availableWeekDays.filter(
+                                                              (v) =>
+                                                                  v !==
+                                                                  night.value,
+                                                          )
+                                                    setFieldValue(
+                                                        'availableWeekDays',
+                                                        newValue,
+                                                    )
+                                                }}
+                                            />
+                                        }
+                                        label={night.name}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </FormGroup>
+                )}
+            </FormSection>
+        </FormContainer>
     )
 }
