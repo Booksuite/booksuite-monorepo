@@ -1,10 +1,10 @@
 'use client'
 
 import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { SnackbarProvider, useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
@@ -16,7 +16,7 @@ import { ContactsData, createContactsFormInitialValues } from './utils/config'
 
 export default function ContactsSocialMediaPage() {
     const companyId = useCurrentCompanyId()
-    const toast = useToast()
+    const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
     const queryClient = useQueryClient()
 
@@ -44,18 +44,31 @@ export default function ContactsSocialMediaPage() {
             })
             await queryClient.invalidateQueries({ queryKey: queryKey })
 
-            back()
+            enqueueSnackbar(
+                'Contatos e/ou redes sociais modificados com sucesso',
+                {
+                    variant: 'success',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 3000,
+                },
+            )
 
-            toast({
-                title: 'Formas de contato modificadas com sucesso',
-                status: 'success',
-            })
+            back()
         } catch (error) {
-            toast({
-                title: 'Erro ao modificar formas de contato',
-                description: getErrorMessage(error),
-                status: 'error',
-            })
+            enqueueSnackbar(
+                `Erro ao modificar os contatos e/ou redes sociais: ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
+                },
+            )
         }
     }
 
