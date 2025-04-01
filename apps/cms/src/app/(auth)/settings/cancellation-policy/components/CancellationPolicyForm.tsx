@@ -14,7 +14,7 @@ import {
 import { FieldArray, Form, useFormikContext } from 'formik'
 import { CirclePlus, Trash } from 'lucide-react'
 
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import { NumberInput } from '@/components/atoms/NumberInput'
 import { CancellationPolicyFormData } from '../utils/config'
 import { DEFAULT_PENALTY_OPTIONS } from '../utils/constants'
 
@@ -84,7 +84,7 @@ export const CancellationPolicyForm = () => {
                         </FormControl>
 
                         <Stack width={'100%'} spacing={2}>
-                            <InputNumberBox
+                            <NumberInput
                                 label={
                                     DEFAULT_PENALTY_OPTIONS.find(
                                         (option) =>
@@ -107,7 +107,7 @@ export const CancellationPolicyForm = () => {
                                 }
                             />
 
-                            <InputNumberBox
+                            <NumberInput
                                 label="Período de desistência (dias)"
                                 error={errors.withdrawalPeriod}
                                 min={1}
@@ -204,7 +204,7 @@ export const CancellationPolicyForm = () => {
                                                         </IconButton>
                                                     </Stack>
 
-                                                    <InputNumberBox
+                                                    <NumberInput
                                                         label="Dias antes do check-in"
                                                         error={
                                                             errors
@@ -288,7 +288,7 @@ export const CancellationPolicyForm = () => {
                                                         </Select>
                                                     </FormControl>
 
-                                                    <InputNumberBox
+                                                    <NumberInput
                                                         label={
                                                             DEFAULT_PENALTY_OPTIONS.find(
                                                                 (option) =>
