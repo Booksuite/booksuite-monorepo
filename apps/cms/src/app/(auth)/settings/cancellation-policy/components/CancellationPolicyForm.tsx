@@ -1,76 +1,81 @@
 import {
     Box,
     Button,
-    HStack,
+    FormControl,
+    FormControlLabel,
     IconButton,
+    MenuItem,
     Select,
     Stack,
     Switch,
-    Text,
-    VStack,
-} from '@chakra-ui/react'
-import { FieldArray, Form, useFormikContext } from 'formik'
+    TextField,
+    Typography,
+} from '@mui/material'
+import { FieldArray, useFormikContext } from 'formik'
 import { CirclePlus, Trash } from 'lucide-react'
 
-import InputBox from '@/components/atoms/InputBox'
+import { FormContainer } from '@/components/atoms/FormContainer'
+import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
-import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { CancellationPolicyFormData } from '../utils/config'
 import { DEFAULT_PENALTY_OPTIONS } from '../utils/constants'
 
 export const CancellationPolicyForm = () => {
-    const {
-        getFieldProps,
-        touched,
-        errors,
-        values,
-        handleChange,
-        setFieldValue,
-    } = useFormikContext<CancellationPolicyFormData>()
+    const { getFieldProps, values, setFieldValue, errors } =
+        useFormikContext<CancellationPolicyFormData>()
 
     return (
-        <Form>
-            <Stack spacing={4}>
-                <HStack spacing={2} alignItems={'center'}>
-                    <Switch
-                        isChecked={values.applyCancellationTax === true}
-                        onChange={(e) =>
-                            setFieldValue(
-                                'applyCancellationTax',
-                                e.target.checked,
-                            )
+        <FormContainer>
+            <FormSection>
+                <Stack direction="row" spacing={2} alignItems="center">
+                    <FormControlLabel
+                        control={
+                            <Switch
+                                checked={values.applyCancellationTax === true}
+                                onChange={(e) =>
+                                    setFieldValue(
+                                        'applyCancellationTax',
+                                        e.target.checked,
+                                    )
+                                }
+                            />
                         }
+                        label="Aplicar taxa de cancelamento"
                     />
-                    <h2 style={{ fontWeight: '600', marginBottom: 0 }}>
-                        Aplicar taxa de cancelamento
-                    </h2>
-                </HStack>
-                {values.applyCancellationTax === true && (
-                    <VStack spacing={4} alignItems={'start'} w={'100%'}>
-                        <h2 style={{ fontWeight: 400, marginBottom: 0 }}>
-                            Regras de cancelamento padrão
-                        </h2>
+                </Stack>
+            </FormSection>
+
+            {values.applyCancellationTax === true && (
+                <FormSection>
+                    <h3 style={{ fontWeight: '400' }}>
+                        Regras de cancelamento padrão
+                    </h3>
+                    <FormControl fullWidth>
                         <Select
-                            size="lg"
+                            value={values.defaultPenaltyBy}
                             onChange={(selectedOption) =>
                                 setFieldValue(
                                     'defaultPenaltyBy',
                                     selectedOption.target.value,
                                 )
                             }
+                            displayEmpty
                         >
-                            <option value="" disabled selected hidden>
+                            <MenuItem value="" disabled>
                                 Selecione um tipo de cobrança
-                            </option>
+                            </MenuItem>
                             {DEFAULT_PENALTY_OPTIONS.map(
                                 ({ label, value }, index) => (
-                                    <option key={index} value={value}>
+                                    <MenuItem key={index} value={value}>
                                         {label}
-                                    </option>
+                                    </MenuItem>
                                 ),
                             )}
                         </Select>
-                        <InputBox
+                    </FormControl>
+
+                    <Stack width={'100%'} spacing={2}>
+                        <NumberInput
                             label={
                                 DEFAULT_PENALTY_OPTIONS.find(
                                     (option) =>
@@ -78,162 +83,189 @@ export const CancellationPolicyForm = () => {
                                         values.defaultPenaltyBy,
                                 )?.label || 'Valor padrão (%)'
                             }
-                            type="number"
-                            error={errors.defaultValue}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.defaultValue &&
-                                    touched.defaultValue,
+                            value={values.defaultValue}
+                            min={1}
+                            onChange={(e) => {
+                                const newValueNumber = Number(e.target.value)
+                                if (Number.isNaN(newValueNumber)) return
+                                setFieldValue('defaultValue', newValueNumber)
                             }}
-                            {...getFieldProps('defaultValue')}
-                            onChange={handleChange('defaultValue')}
-                            isDisabled={
+                            disabled={
                                 values.defaultPenaltyBy === 'FIRST_NIGHT_AMOUNT'
                             }
                         />
 
                         <NumberInput
                             label="Período de desistência (dias)"
-                            error={errors.defaultValue}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.defaultValue &&
-                                    touched.defaultValue,
+                            value={values.withdrawalPeriod}
+                            min={1}
+                            onChange={(e) => {
+                                const newValueNumber = Number(e.target.value)
+                                if (Number.isNaN(newValueNumber)) return
+                                setFieldValue(
+                                    'withdrawalPeriod',
+                                    newValueNumber,
+                                )
                             }}
-                            {...getFieldProps('withdrawalPeriod')}
-                            onChange={handleChange('withdrawalPeriod')}
                         />
-                        <Box
-                            bg={'gray.100'}
-                            p={3}
-                            borderRadius={'md'}
-                            display={'flex'}
-                            alignItems={'center'}
-                            w={'100%'}
-                        >
-                            <Text fontSize={'md'} color={'#0B1F51'}>
-                                A <b>taxa de cancelamento padrão</b> é aplicada
-                                sempre que uma reserva for cancelada após o{' '}
-                                <b>período de arrependimento</b> da compra de
-                                acordo com o CDC (código de defesa do consumidor
-                                - artigo 49).
-                                <br />
-                                <br />
-                                <b>
-                                    Dentro do período de desistência é
-                                    reembolsado 100% do valor pago.
-                                </b>
-                            </Text>
-                        </Box>
-                        <HStack spacing={2} alignItems={'center'} mt={4}>
-                            <Switch
-                                isChecked={values.extraCancellationTax === true}
-                                onChange={(e) =>
-                                    setFieldValue(
-                                        'extraCancellationTax',
-                                        e.target.checked,
-                                    )
-                                }
-                            />
-                            <h2 style={{ fontWeight: '600', marginBottom: 0 }}>
-                                Aplicar taxas de penalização personalizadas
-                            </h2>
-                        </HStack>
+                    </Stack>
 
+                    <Box
+                        bgcolor="grey.100"
+                        p={3}
+                        borderRadius="md"
+                        display="flex"
+                        alignItems="center"
+                        width="100%"
+                    >
+                        <Typography variant="body2" color="#0B1F51">
+                            A <strong>taxa de cancelamento padrão</strong> é
+                            aplicada sempre que uma reserva for cancelada após o{' '}
+                            <strong>período de arrependimento</strong> da compra
+                            de acordo com o CDC (código de defesa do consumidor
+                            - artigo 49).
+                            <br />
+                            <br />
+                            <strong>
+                                Dentro do período de desistência é reembolsado
+                                100% do valor pago.
+                            </strong>
+                        </Typography>
+                    </Box>
+                    <Stack
+                        direction="row"
+                        spacing={2}
+                        alignItems="center"
+                        mt={4}
+                    >
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={
+                                        values.extraCancellationTax === true
+                                    }
+                                    onChange={(e) =>
+                                        setFieldValue(
+                                            'extraCancellationTax',
+                                            e.target.checked,
+                                        )
+                                    }
+                                />
+                            }
+                            label="Aplicar taxas de penalização personalizadas"
+                        />
+                    </Stack>
+
+                    <FormSection>
                         {values.extraCancellationTax === true && (
                             <FieldArray name="penaltyRanges">
                                 {({ push, remove }) => (
-                                    <VStack alignItems={'start'} w={'100%'}>
+                                    <Stack spacing={4} width="100%">
                                         {values.penaltyRanges.map(
                                             (penalty, index) => (
                                                 <Stack
                                                     key={index}
-                                                    w="100%"
-                                                    spacing={4}
+                                                    spacing={2}
+                                                    width="100%"
                                                 >
-                                                    <HStack
+                                                    <Stack
+                                                        direction="row"
                                                         spacing={2}
-                                                        alignItems={'center'}
+                                                        alignItems="center"
                                                     >
                                                         <h2
                                                             style={{
                                                                 fontWeight:
                                                                     '600',
-                                                                marginBottom: 0,
                                                             }}
                                                         >
                                                             Taxa de penalização{' '}
                                                             {index + 1}
                                                         </h2>
                                                         <IconButton
-                                                            icon={<Trash />}
-                                                            colorScheme="red"
-                                                            variant="ghost"
+                                                            color="error"
                                                             onClick={() =>
                                                                 remove(index)
                                                             }
-                                                            aria-label=""
-                                                        />
-                                                    </HStack>
+                                                            aria-label="delete"
+                                                        >
+                                                            <Trash />
+                                                        </IconButton>
+                                                    </Stack>
 
                                                     <NumberInput
                                                         label="Dias antes do check-in"
-                                                        {...getFieldProps(
-                                                            `penaltyRanges.${index}.daysBeforeCheckIn`,
-                                                        )}
-                                                        onChange={handleChange(
-                                                            `penaltyRanges.${index}.daysBeforeCheckIn`,
-                                                        )}
+                                                        value={
+                                                            penalty.daysBeforeCheckIn
+                                                        }
+                                                        min={1}
+                                                        onChange={(e) => {
+                                                            const newValueNumber =
+                                                                Number(
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            if (
+                                                                Number.isNaN(
+                                                                    newValueNumber,
+                                                                )
+                                                            )
+                                                                return
+                                                            setFieldValue(
+                                                                `penaltyRanges.${index}.daysBeforeCheckIn`,
+                                                                newValueNumber,
+                                                            )
+                                                        }}
                                                     />
 
-                                                    <Select
-                                                        size="lg"
-                                                        value={
-                                                            penalty.penaltyBy
-                                                        }
-                                                        onChange={(
-                                                            selectedOption,
-                                                        ) =>
-                                                            setFieldValue(
-                                                                `penaltyRanges.${index}.penaltyBy`,
-                                                                selectedOption
-                                                                    .target
-                                                                    .value,
-                                                            )
-                                                        }
-                                                    >
-                                                        <option
-                                                            value=""
-                                                            disabled
-                                                            selected
-                                                            hidden
+                                                    <FormControl fullWidth>
+                                                        <Select
+                                                            value={
+                                                                penalty.penaltyBy
+                                                            }
+                                                            onChange={(
+                                                                selectedOption,
+                                                            ) =>
+                                                                setFieldValue(
+                                                                    `penaltyRanges.${index}.penaltyBy`,
+                                                                    selectedOption
+                                                                        .target
+                                                                        .value,
+                                                                )
+                                                            }
+                                                            displayEmpty
                                                         >
-                                                            Selecione um tipo de
-                                                            cobrança
-                                                        </option>
-                                                        {DEFAULT_PENALTY_OPTIONS.map(
-                                                            (
-                                                                {
-                                                                    label,
-                                                                    value,
-                                                                },
-                                                                optionIndex,
-                                                            ) => (
-                                                                <option
-                                                                    key={
-                                                                        optionIndex
-                                                                    }
-                                                                    value={
-                                                                        value
-                                                                    }
-                                                                >
-                                                                    {label}
-                                                                </option>
-                                                            ),
-                                                        )}
-                                                    </Select>
+                                                            <MenuItem
+                                                                value=""
+                                                                disabled
+                                                            >
+                                                                Selecione um
+                                                                tipo de cobrança
+                                                            </MenuItem>
+                                                            {DEFAULT_PENALTY_OPTIONS.map(
+                                                                (
+                                                                    {
+                                                                        label,
+                                                                        value,
+                                                                    },
+                                                                    optionIndex,
+                                                                ) => (
+                                                                    <MenuItem
+                                                                        key={
+                                                                            optionIndex
+                                                                        }
+                                                                        value={
+                                                                            value
+                                                                        }
+                                                                    >
+                                                                        {label}
+                                                                    </MenuItem>
+                                                                ),
+                                                            )}
+                                                        </Select>
+                                                    </FormControl>
 
-                                                    <InputBox
+                                                    <NumberInput
                                                         label={
                                                             DEFAULT_PENALTY_OPTIONS.find(
                                                                 (option) =>
@@ -242,35 +274,35 @@ export const CancellationPolicyForm = () => {
                                                             )?.label ||
                                                             'Valor padrão (%)'
                                                         }
-                                                        type="number"
-                                                        formControl={{
-                                                            isInvalid:
-                                                                !!errors
-                                                                    .penaltyRanges?.[
-                                                                    index
-                                                                ] &&
-                                                                touched
-                                                                    .penaltyRanges?.[
-                                                                    index
-                                                                ]?.value,
+                                                        value={penalty.value}
+                                                        min={0}
+                                                        max={100}
+                                                        onChange={(e) => {
+                                                            const newValueNumber =
+                                                                Number(
+                                                                    e.target
+                                                                        .value,
+                                                                )
+                                                            if (
+                                                                Number.isNaN(
+                                                                    newValueNumber,
+                                                                )
+                                                            )
+                                                                return
+                                                            setFieldValue(
+                                                                `penaltyRanges.${index}.value`,
+                                                                newValueNumber,
+                                                            )
                                                         }}
-                                                        {...getFieldProps(
-                                                            `penaltyRanges.${index}.value`,
-                                                        )}
-                                                        onChange={handleChange(
-                                                            `penaltyRanges.${index}.value`,
-                                                        )}
                                                     />
                                                 </Stack>
                                             ),
                                         )}
                                         <Button
-                                            mt={3}
-                                            variant="outline"
-                                            width={'100%'}
-                                            leftIcon={<CirclePlus />}
-                                            mb={4}
-                                            size={'lg'}
+                                            variant="outlined"
+                                            fullWidth
+                                            startIcon={<CirclePlus />}
+                                            size="large"
                                             onClick={() =>
                                                 push({
                                                     daysBeforeCheckIn: '',
@@ -283,16 +315,16 @@ export const CancellationPolicyForm = () => {
                                             Adicionar taxa de penalização
                                         </Button>
                                         <Box
-                                            bg={'gray.100'}
+                                            bgcolor="grey.100"
                                             p={3}
-                                            borderRadius={'md'}
-                                            display={'flex'}
-                                            alignItems={'center'}
-                                            w={'100%'}
+                                            borderRadius="md"
+                                            display="flex"
+                                            alignItems="center"
+                                            width="100%"
                                         >
-                                            <Text
-                                                fontSize={'md'}
-                                                color={'#0B1F51'}
+                                            <Typography
+                                                variant="body2"
+                                                color="#0B1F51"
                                             >
                                                 As taxas adicionais de
                                                 cancelamento são multas
@@ -302,9 +334,9 @@ export const CancellationPolicyForm = () => {
                                                 adicionais.
                                                 <br />
                                                 <br />
-                                                <b>Atenção:</b> esta taxa não é
-                                                cumulativa com a taxa de
-                                                cancelamento padrão.
+                                                <strong>Atenção:</strong> esta
+                                                taxa não é cumulativa com a taxa
+                                                de cancelamento padrão.
                                                 <br />
                                                 <br />
                                                 Essa cobrança visa compensar
@@ -313,86 +345,35 @@ export const CancellationPolicyForm = () => {
                                                 ressarcimento adequado diante do
                                                 risco de não conseguir realocar
                                                 a acomodação no mesmo período.
-                                            </Text>
+                                            </Typography>
                                         </Box>
-                                    </VStack>
+                                    </Stack>
                                 )}
                             </FieldArray>
                         )}
-                    </VStack>
-                )}
+                    </FormSection>
+                </FormSection>
+            )}
 
-                <VStack alignItems={'start'} mt={4} w={'100%'} spacing={4}>
-                    <h2 style={{ fontWeight: '600', marginBottom: 0 }}>
-                        Descrição da política de cancelamento
-                    </h2>
+            <FormSection title="Descrição da política de cancelamento">
+                <TextField
+                    multiline
+                    rows={4}
+                    label="Descrição dinâmica (exibida para o hóspede)"
+                    error={!!errors.dynamicDescription}
+                    helperText={errors.dynamicDescription}
+                    {...getFieldProps('dynamicDescription')}
+                />
 
-                    <TextAreaBox
-                        label="Descrição dinâmica (exibida para o hóspede)"
-                        fontSize={'md'}
-                        maxLength={650}
-                        formControl={{
-                            isInvalid:
-                                !!errors.dynamicDescription &&
-                                touched.dynamicDescription,
-                        }}
-                        {...getFieldProps('dynamicDescription')}
-                    />
-
-                    <TextAreaBox
-                        label="Demais regras e observações"
-                        maxLength={650}
-                        fontSize={'md'}
-                        color={'#0B1F51'}
-                        p={3}
-                        border={'1px solid #D9E2EC'}
-                        borderRadius={'md'}
-                        formControl={{
-                            isInvalid:
-                                !!errors.otherDescription &&
-                                touched.otherDescription,
-                        }}
-                        {...getFieldProps('otherDescription')}
-                    />
-
-                    {/*
-                    (TODO: Implementar Templates)
-                    <Box
-                        bg={'gray.100'}
-                        p={3}
-                        borderRadius={'md'}
-                        alignItems="center"
-                        justifyContent="center"
-                        width={'100%'}
-                        textAlign={'center'}
-                        gap={4}
-                    >
-                        <br />
-                        <br />
-                        <ScanText size={'40'} />
-                        <h3>
-                            Se necessário personalize nosso modelo de políticas
-                            de cancelamento para o seu negócio.
-                        </h3>
-                        <Link
-                            href="/settings/cancellation-policy/templates"
-                            passHref
-                        >
-                            <Button
-                                variant="outline"
-                                width={'100%'}
-                                leftIcon={<CirclePlus size={23} />}
-                                mb={4}
-                                border={0}
-                                fontSize={'md'}
-                                as="a"
-                            >
-                                Selecionar Modelo
-                            </Button>
-                        </Link>
-                    </Box>*/}
-                </VStack>
-            </Stack>
-        </Form>
+                <TextField
+                    multiline
+                    rows={4}
+                    label="Demais regras e observações"
+                    error={!!errors.otherDescription}
+                    helperText={errors.otherDescription}
+                    {...getFieldProps('otherDescription')}
+                />
+            </FormSection>
+        </FormContainer>
     )
 }

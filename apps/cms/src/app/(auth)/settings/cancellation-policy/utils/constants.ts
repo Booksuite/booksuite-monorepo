@@ -1,8 +1,11 @@
 export const DEFAULT_PENALTY_OPTIONS = [
-    { label: 'Porcentagem de Reserva', value: 'RESERVATION_PERCENTAGE' },
+    { label: 'Percentual de Reserva', value: 'RESERVATION_PERCENTAGE' },
     {
-        label: 'Porcentagem por Diárias',
+        label: 'Percentual por Diárias',
         value: 'FULL_DAILIES_PERCENTAGE',
     },
-    { label: 'Valor da Primeira Noite', value: 'FIRST_NIGHT_AMOUNT' },
+    {
+        label: 'Percentual do Valor da Primeira Noite',
+        value: 'FIRST_NIGHT_AMOUNT',
+    },
 ]
