@@ -5,7 +5,7 @@ import { type FormEvent, useState } from 'react'
 
 import { CreateExtraDTO, UpdateExtraDTO } from '@/common/types/Extra'
 import InputBox from '@/components/atoms/InputBox'
-import { InputNumberBox } from '@/components/atoms/InputNumberBox'
+import { NumberInput } from '@/components/atoms/NumberInput'
 import SelectBox from '@/components/atoms/SelectBox'
 
 import { ExtraFormProps } from './types'
@@ -76,7 +76,7 @@ export const DashboardExtraForm: React.FC<
                         }}
                     />
 
-                    <InputNumberBox
+                    <NumberInput
                         label="Mínimo de Diárias"
                         defaultValue={data?.minDaily ?? 0}
                         onChange={(_, valueAsNumber) => {
@@ -87,7 +87,7 @@ export const DashboardExtraForm: React.FC<
                         }}
                     />
 
-                    <InputNumberBox
+                    <NumberInput
                         label="Antecedência mínima"
                         defaultValue={data?.minNotice ?? 0}
                         onChange={(_, valueAsNumber) => {

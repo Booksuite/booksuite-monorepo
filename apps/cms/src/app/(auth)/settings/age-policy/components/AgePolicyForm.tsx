@@ -141,6 +141,7 @@ export const AgePolicyForm = () => {
                                                             error={
                                                                 error?.initialAge
                                                             }
+                                                          
                                                             formControl={{
                                                                 isInvalid:
                                                                     !!error?.initialAge &&

@@ -76,6 +76,8 @@ export const themeOptions: ThemeOptions = {
         blue,
         orange,
     },
+
+    spacing: 4,
     shape: {
         borderRadius: 8,
     },
@@ -97,6 +99,7 @@ export const themeOptions: ThemeOptions = {
                             props: {
                                 variant: 'filled',
                             },
+
                             style: {
                                 '& .MuiFilledInput-root': {
                                     borderRadius: theme.shape.borderRadius,
@@ -150,6 +153,7 @@ export const themeOptions: ThemeOptions = {
                 },
             },
         },
+
         MuiSelect: {
             defaultProps: {
                 size: 'small',

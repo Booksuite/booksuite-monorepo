@@ -13,16 +13,17 @@ import {
 } from '@mui/material'
 import { MinusCircle, PlusCircle } from 'lucide-react'
 import { useRef } from 'react'
-export type InputNumberBoxProps = InputBaseProps & {
+
+export type NumberInputProps = InputBaseProps & {
     label?: string
-    formHelperText?: string
+    helperText?: string
     min?: number
     max?: number
 }
 
-export const InputNumberBox: React.FC<InputNumberBoxProps> = ({
+export const NumberInput: React.FC<NumberInputProps> = ({
     label,
-    formHelperText,
+    helperText,
     min,
     max,
     ...props
@@ -44,7 +45,8 @@ export const InputNumberBox: React.FC<InputNumberBoxProps> = ({
                 sx={{
                     border: `1px solid ${theme.palette.grey[400]}`,
                     borderRadius: `${theme.shape.borderRadius}px`,
-                    padding: theme.spacing(1),
+                    py: theme.spacing(2),
+                    px: theme.spacing(3),
                     height: '56px',
                     '&:focus-within': {
                         outline: `2px inset ${theme.palette.primary.main}`,
@@ -52,13 +54,16 @@ export const InputNumberBox: React.FC<InputNumberBoxProps> = ({
                     },
                 }}
             >
-                <FormLabel htmlFor={props.id || 'input-number-box'}>
+                <FormLabel
+                    color={props.color}
+                    htmlFor={props.id || 'input-number-box'}
+                >
                     {label ?? ' '}
                 </FormLabel>
 
                 <Stack direction="row" alignItems="center" gap={1}>
                     <IconButton
-                        color="primary"
+                        color={props.color || 'primary'}
                         tabIndex={-1}
                         onClick={() => {
                             if (min && valueNumber === min) return
@@ -92,7 +97,7 @@ export const InputNumberBox: React.FC<InputNumberBoxProps> = ({
                         }}
                     />
                     <IconButton
-                        color="primary"
+                        color={props.color || 'primary'}
                         tabIndex={-1}
                         onClick={() => {
                             if (max && valueNumber === max) return
@@ -108,9 +113,7 @@ export const InputNumberBox: React.FC<InputNumberBoxProps> = ({
                     </IconButton>
                 </Stack>
             </Stack>
-            <FormHelperText error={props.error}>
-                {formHelperText}
-            </FormHelperText>
+            <FormHelperText error={props.error}>{helperText}</FormHelperText>
         </FormControl>
     )
 }

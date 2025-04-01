@@ -1,5 +1,4 @@
 import { Media } from '@booksuite/sdk'
-import { MenuItemProps } from '@chakra-ui/react'
 
 export interface MediaItemProps {
     item: Media
@@ -9,6 +8,9 @@ export interface MediaItemProps {
     actions?: MediaItemAction[]
 }
 
-export interface MediaItemAction extends MenuItemProps {
+export interface MediaItemAction {
     id: string
+    onClick?: () => void
+    children?: React.ReactNode
+    icon?: React.ReactNode
 }

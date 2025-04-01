@@ -1,7 +1,7 @@
 import { HousingUnitTypeMedia } from '@booksuite/sdk'
-import { HStack, Text } from '@chakra-ui/react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import { Stack, Typography, useTheme } from '@mui/material'
 import { GripIcon, ImageIcon } from 'lucide-react'
 
 import { MediaItem } from '@/components/molecules/MediaItem'
@@ -17,6 +17,8 @@ export const SortableMediaItem: React.FC<SortableMediaItemProps> = ({
     index,
     handleSetFeatured,
 }) => {
+    const theme = useTheme()
+
     const {
         attributes,
         listeners,
@@ -51,16 +53,16 @@ export const SortableMediaItem: React.FC<SortableMediaItemProps> = ({
                     },
                 ]}
             >
-                <HStack
+                <Stack
                     position="absolute"
                     top="50%"
                     left="50%"
-                    transform="translate(-50%, -50%)"
-                    bg="blackAlpha.300"
-                    borderRadius={4}
+                    bgcolor={`${theme.palette.blueGrey[900]}90`}
+                    borderRadius={0.8}
                     p={1}
                     className="drag-handle hideable"
-                    css={{
+                    sx={{
+                        transform: 'translate(-50%, -50%)',
                         cursor: 'grab',
                         '&:active': {
                             cursor: 'grabbing',
@@ -69,21 +71,23 @@ export const SortableMediaItem: React.FC<SortableMediaItemProps> = ({
                     {...listeners}
                 >
                     <GripIcon size={16} color="white" />
-                </HStack>
+                </Stack>
                 {mediaItem.isFeatured && (
-                    <HStack
+                    <Stack
+                        direction="row"
+                        alignItems="center"
                         position="absolute"
-                        bottom={1}
-                        right={1}
-                        bg="white"
-                        borderRadius={4}
-                        py={0.5}
+                        bottom={theme.spacing(1)}
+                        right={theme.spacing(1)}
+                        bgcolor="white"
+                        borderRadius={0.8}
+                        py={0.8}
                         px={1}
-                        gap={0.5}
+                        gap={1}
                     >
                         <ImageIcon size={16} />
-                        <Text fontSize="xs">Capa</Text>
-                    </HStack>
+                        <Typography fontSize={12}>Capa</Typography>
+                    </Stack>
                 )}
             </MediaItem>
         </div>

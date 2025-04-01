@@ -1,11 +1,11 @@
 import {
     Alert,
-    AlertDescription,
-    AlertIcon,
     AlertTitle,
     Button,
+    CircularProgress,
     Stack,
-} from '@chakra-ui/react'
+    Typography,
+} from '@mui/material'
 import { Form, FormikErrors, useFormikContext } from 'formik'
 import { PropsWithChildren } from 'react'
 
@@ -68,49 +68,68 @@ export const FormikController: React.FC<
                     <Stack
                         direction="row"
                         marginBottom={2}
-                        bg="gray.200"
+                        bgcolor="blueGrey.100"
                         gap={4}
-                        borderRadius="lg"
+                        borderRadius={1}
                         boxShadow="0 0 3px 0 rgba(0, 0, 0, .2)"
-                        justifyContent="flex-end"
+                        justifyContent={
+                            errorMessages.length ? 'space-between' : 'flex-end'
+                        }
                         alignItems="center"
                         p={4}
                     >
                         {errorMessages.length > 0 && (
                             <Alert
-                                status="warning"
-                                bg="transparent"
-                                maxH="30px"
+                                variant="outlined"
+                                severity="error"
+                                sx={{
+                                    bgcolor: 'transparent',
+                                    border: 'none',
+                                }}
                             >
-                                <AlertIcon />
-                                <AlertTitle>Confira o formulário</AlertTitle>
-                                <AlertDescription fontSize="xs">
-                                    {alertMessage}
-                                </AlertDescription>
+                                <Stack
+                                    direction="row"
+                                    alignItems="center"
+                                    gap={3}
+                                >
+                                    <AlertTitle m={0}>
+                                        Confira o formulário
+                                    </AlertTitle>
+                                    <Typography fontSize={12}>
+                                        {alertMessage}
+                                    </Typography>
+                                </Stack>
                             </Alert>
                         )}
-                        {!!onCancel && (
+                        <Stack direction="row" gap={3}>
+                            {!!onCancel && (
+                                <Button
+                                    disabled={isSubmitting}
+                                    type="button"
+                                    color="secondary"
+                                    onClick={onCancel}
+                                    variant="outlined"
+                                    size="medium"
+                                >
+                                    {cancelText}
+                                </Button>
+                            )}
                             <Button
-                                disabled={isSubmitting}
-                                type="button"
-                                colorScheme="gray"
-                                onClick={onCancel}
-                                variant="solid"
-                                size="md"
+                                type={onSubmit ? 'button' : 'submit'}
+                                color="secondary"
+                                onClick={onSubmit}
+                                loading={isSubmitting}
+                                loadingIndicator={
+                                    <>
+                                        <CircularProgress />
+                                        {loadingText}
+                                    </>
+                                }
+                                size="medium"
                             >
-                                {cancelText}
+                                {submitText}
                             </Button>
-                        )}
-                        <Button
-                            type={onSubmit ? 'button' : 'submit'}
-                            onClick={onSubmit}
-                            isLoading={isSubmitting}
-                            loadingText={loadingText}
-                            minWidth="100px"
-                            size="md"
-                        >
-                            {submitText}
-                        </Button>
+                        </Stack>
                     </Stack>
                 </Stack>
             </Stack>
