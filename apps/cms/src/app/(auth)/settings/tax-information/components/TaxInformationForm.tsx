@@ -1,16 +1,17 @@
 import {
     Box,
-    Flex,
+    FormControl,
     Grid,
-    GridItem,
+    InputLabel,
+    MenuItem,
     Select,
     Stack,
-    Text,
-} from '@chakra-ui/react'
+    TextField,
+    Typography,
+} from '@mui/material'
 import { useFormikContext } from 'formik'
 import { Info } from 'lucide-react'
 
-import InputBox from '@/components/atoms/InputBox'
 import { TaxInformationData } from '../utils/config'
 import { DOC_TYPE } from '../utils/constants'
 
@@ -28,187 +29,206 @@ export const TaxInformationForm = () => {
 
     return (
         <div className="tax_information">
-            <Stack mt={8} spacing={4} align="stretch">
-                <h2 style={{ fontWeight: '600', marginBottom: '0' }}>
+            <Stack mt={8} spacing={4}>
+                <Typography variant="h6" fontWeight={600} mb={0}>
                     Dados do Responsável
-                </h2>
-                <InputBox
+                </Typography>
+                <TextField
                     label="Nome do Responsável"
-                    error={errors.responsible}
-                    formControl={{
-                        isInvalid: !!errors.responsible && touched.responsible,
-                    }}
+                    variant="outlined"
+                    fullWidth
+                    error={!!errors.responsible && touched.responsible}
+                    helperText={errors.responsible}
                     {...getFieldProps('responsible')}
                 />
-                <InputBox
+                <TextField
                     label="E-mail do Responsável"
-                    error={errors.responsibleEmail}
-                    formControl={{
-                        isInvalid:
-                            !!errors.responsibleEmail &&
-                            touched.responsibleEmail,
-                    }}
+                    variant="outlined"
+                    fullWidth
+                    error={
+                        !!errors.responsibleEmail && touched.responsibleEmail
+                    }
+                    helperText={errors.responsibleEmail}
                     {...getFieldProps('responsibleEmail')}
                 />
-                <InputBox
+                <TextField
                     label="Telefone Celular"
-                    error={errors.responsiblePhone}
-                    formControl={{
-                        isInvalid:
-                            !!errors.responsiblePhone &&
-                            touched.responsiblePhone,
-                    }}
+                    variant="outlined"
+                    fullWidth
+                    error={
+                        !!errors.responsiblePhone && touched.responsiblePhone
+                    }
+                    helperText={errors.responsiblePhone}
                     {...getFieldProps('responsiblePhone')}
                 />
 
                 <Box
-                    bg={'gray.100'}
+                    bgcolor={'grey.100'}
                     p={3}
-                    borderRadius={'md'}
+                    borderRadius={1}
                     display={'flex'}
                     alignItems={'center'}
-                    w={'100%'}
+                    width={'100%'}
                 >
-                    <Flex align="center" gap={2}>
+                    <Box display="flex" alignItems="center" gap={2}>
                         <Info size={23} color={'#0B1F51'} />
-                        <Text fontSize={'md'} color={'#0B1F51'}>
+                        <Typography variant="body1" color={'#0B1F51'}>
                             <b>Importante:</b> os dados do responsável pela
                             empresa não serão exibidos para o seu cliente.
-                        </Text>
-                    </Flex>
+                        </Typography>
+                    </Box>
                 </Box>
             </Stack>
-            <Stack mt={8} spacing={4} align="stretch">
-                <h2 style={{ fontWeight: '600', marginBottom: '0' }}>
+            <Stack mt={8} spacing={4}>
+                <Typography variant="h6" fontWeight={600} mb={0}>
                     Informações do Negócio
-                </h2>
-                <Grid templateColumns="repeat(12, 1fr)" gap={4}>
-                    <GridItem colSpan={{ base: 12, md: 6 }}>
-                        <Select
-                            size="lg"
-                            onChange={(selectedOption) =>
-                                setFieldValue(
-                                    'docType',
-                                    selectedOption.target.value,
-                                )
-                            }
-                        >
-                            <option value="" disabled selected hidden>
-                                Selecione o tipo de documento
-                            </option>
-                            {DOC_TYPE.map(({ value }, index) => (
-                                <option key={index} value={value}>
-                                    {value}
-                                </option>
-                            ))}
-                        </Select>
-                    </GridItem>
-                    <GridItem colSpan={{ base: 12, md: 6 }}>
-                        <InputBox
+                </Typography>
+                <Grid
+                    container
+                    rowSpacing={4}
+                    columnSpacing={{
+                        xs: 1,
+                        sm: 2,
+                        md: 3,
+                    }}
+                >
+                    <Grid size={6}>
+                        <FormControl fullWidth>
+                            <InputLabel>Tipo de documento</InputLabel>
+                            <Select
+                                size="medium"
+                                label="Tipo de documento"
+                                onChange={(selectedOption) =>
+                                    setFieldValue(
+                                        'docType',
+                                        selectedOption.target.value,
+                                    )
+                                }
+                                value={values.docType || ''}
+                            >
+                                {DOC_TYPE.map(({ value }, index) => (
+                                    <MenuItem key={index} value={value}>
+                                        {value}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid size={6}>
+                        <TextField
                             label={
                                 DOC_TYPE.find(
                                     (option) => option.value === values.docType,
                                 )?.value || 'CPF'
                             }
-                            error={errors.identification}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.identification &&
-                                    touched.identification,
-                            }}
+                            variant="outlined"
+                            fullWidth
+                            error={
+                                !!errors.identification &&
+                                touched.identification
+                            }
+                            helperText={errors.identification}
                             {...getFieldProps('identification')}
                             onChange={handleChange('identification')}
                         />
-                    </GridItem>
+                    </Grid>
                     {isCNPJ && (
                         <>
-                            <GridItem colSpan={{ base: 12, md: 4 }}>
-                                <InputBox
+                            <Grid size={4}>
+                                <TextField
                                     label="Razão Social"
-                                    error={errors.companyName}
-                                    formControl={{
-                                        isInvalid:
-                                            !!errors.companyName &&
-                                            touched.companyName,
-                                    }}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={
+                                        !!errors.companyName &&
+                                        touched.companyName
+                                    }
+                                    helperText={errors.companyName}
                                     {...getFieldProps('companyName')}
-                                    onChange={(e) => setFieldValue('companyName', e.target.value)}
+                                    onChange={(e) =>
+                                        setFieldValue(
+                                            'companyName',
+                                            e.target.value,
+                                        )
+                                    }
                                 />
-                            </GridItem>
-                            <GridItem colSpan={{ base: 12, md: 4 }}>
-                                <InputBox
+                            </Grid>
+                            <Grid size={4}>
+                                <TextField
                                     label="Incrição Estadual (opcional)"
-                                    error={errors.stateRegistration}
-                                    formControl={{
-                                        isInvalid:
-                                            !!errors.stateRegistration &&
-                                            touched.stateRegistration,
-                                    }}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={
+                                        !!errors.stateRegistration &&
+                                        touched.stateRegistration
+                                    }
+                                    helperText={errors.stateRegistration}
                                     {...getFieldProps('stateRegistration')}
                                     onChange={handleChange('stateRegistration')}
                                 />
-                            </GridItem>
-                            <GridItem colSpan={{ base: 12, md: 4 }}>
-                                <InputBox
+                            </Grid>
+                            <Grid size={4}>
+                                <TextField
                                     label="Incrição Municipal (opcional)"
-                                    error={errors.municipalRegistration}
-                                    formControl={{
-                                        isInvalid:
-                                            !!errors.municipalRegistration &&
-                                            touched.municipalRegistration,
-                                    }}
+                                    variant="outlined"
+                                    fullWidth
+                                    error={
+                                        !!errors.municipalRegistration &&
+                                        touched.municipalRegistration
+                                    }
+                                    helperText={errors.municipalRegistration}
                                     {...getFieldProps('municipalRegistration')}
                                     onChange={handleChange(
                                         'municipalRegistration',
                                     )}
                                 />
-                            </GridItem>
+                            </Grid>
                         </>
                     )}
-                    <GridItem colSpan={{ base: 12, md: 8 }}>
-                        <InputBox
+                    <Grid size={8}>
+                        <TextField
                             label="CEP"
-                            error={errors.zipcode}
-                            formControl={{
-                                isInvalid: !!errors.zipcode && touched.zipcode,
-                            }}
+                            variant="outlined"
+                            fullWidth
+                            error={!!errors.zipcode && touched.zipcode}
+                            helperText={errors.zipcode}
                             {...getFieldProps('zipcode')}
                             onChange={handleChange('zipcode')}
                         />
-                    </GridItem>
-                    <GridItem colSpan={{ base: 12, md: 4 }}>
-                        <InputBox
+                    </Grid>
+                    <Grid size={4}>
+                        <TextField
                             label="Estado"
-                            error={errors.state}
-                            formControl={{
-                                isInvalid: !!errors.state && touched.state,
-                            }}
+                            variant="outlined"
+                            fullWidth
+                            error={!!errors.state && touched.state}
+                            helperText={errors.state}
                             {...getFieldProps('state')}
                             onChange={handleChange('state')}
                         />
-                    </GridItem>
-                    <GridItem colSpan={{ base: 12, md: 6 }}>
-                        <InputBox
+                    </Grid>
+                    <Grid size={6}>
+                        <TextField
                             label="Cidade"
-                            error={errors.city}
-                            formControl={{
-                                isInvalid: !!errors.city && touched.city,
-                            }}
+                            variant="outlined"
+                            fullWidth
+                            error={!!errors.city && touched.city}
+                            helperText={errors.city}
                             {...getFieldProps('city')}
                             onChange={handleChange('city')}
                         />
-                    </GridItem>
-                    <GridItem colSpan={{ base: 12, md: 6 }}>
-                        <InputBox
+                    </Grid>
+                    <Grid size={6}>
+                        <TextField
                             label="País"
-                            error={errors.country}
-                            formControl={{
-                                isInvalid: !!errors.country && touched.country,
-                            }}
+                            variant="outlined"
+                            fullWidth
+                            error={!!errors.country && touched.country}
+                            helperText={errors.country}
                             {...getFieldProps('country')}
                             onChange={handleChange('country')}
                         />
-                    </GridItem>
+                    </Grid>
                 </Grid>
             </Stack>
         </div>
