@@ -12,18 +12,22 @@ import {
     useToast,
     VStack,
 } from '@chakra-ui/react'
+import { Button, useTheme } from '@mui/material'
 import { useFormikContext } from 'formik'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { COMODITIES_TAB_FILTER } from '@/common/constants/facility'
-import { SelectBox } from '@/components/organisms/SelectBox'
+import { FormSection } from '@/components/atoms/FormSection'
+import { SelectModal } from '@/components/organisms/SelectModal'
 import { MAX_FEATURED_FACILITIES } from '../constants'
 import { RoomsFormData } from '../utils/config'
 
 import { HousintUnitTypeFacilityItem } from './HousintUnitTypeFacilityItem'
 
 export const HousingUnitTypeFacilitiesField = () => {
+    const theme = useTheme()
     const toast = useToast()
+    const [isOpen, setIsOpen] = useState(false)
     const { values, setFieldValue } = useFormikContext<RoomsFormData>()
 
     const { data: facilities } = useSearchFacilities({
@@ -60,26 +64,23 @@ export const HousingUnitTypeFacilitiesField = () => {
     }, [values.facilities, getFacilities])
 
     return (
-        <section>
-            <Stack
-                p={6}
-                sx={{
-                    border: '1px solid #D9E2EC',
-                    borderRadius: '8px',
-                }}
-            >
+        <FormSection
+            title="Comodidades"
+            variant="outlined"
+            rightAction={
+                <Button onClick={() => setIsOpen(true)}>
+                    {values.facilities.length > 0 ? 'Adicionar' : 'Selecionar'}
+                </Button>
+            }
+        >
+            <Stack>
                 <HStack gap={2} align="center" justify="space-between">
-                    <h2>Comodidades</h2>
-
                     {!!facilities && (
-                        <SelectBox
+                        <SelectModal
                             items={facilities.items}
                             initialSelectedItems={allFacilities}
-                            openModalButtonText={
-                                values.facilities.length > 0
-                                    ? 'Adicionar'
-                                    : 'Selecionar'
-                            }
+                            isOpen={isOpen}
+                            onClose={() => setIsOpen(false)}
                             onSelect={(items) => {
                                 setFieldValue(
                                     'facilities',
@@ -153,7 +154,12 @@ export const HousingUnitTypeFacilitiesField = () => {
                         </VStack>
                     </Box>
 
-                    <Box borderLeft="1px solid #D9E2EC" pl={8} flex={1}>
+                    <Box
+                        borderLeft="1px solid"
+                        borderLeftColor={theme.palette.blueGrey[200]}
+                        pl={8}
+                        flex={1}
+                    >
                         <Text fontWeight="bold" mb={3}>
                             Demais comodidades
                         </Text>
@@ -210,6 +216,6 @@ export const HousingUnitTypeFacilitiesField = () => {
                     </Box>
                 </Flex>
             </Stack>
-        </section>
+        </FormSection>
     )
 }
