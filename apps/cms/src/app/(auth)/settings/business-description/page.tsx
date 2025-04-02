@@ -1,9 +1,12 @@
 'use client'
 
+import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
 
+import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
@@ -18,9 +21,28 @@ import {
 export default function BusinessDescription() {
     const { back } = useRouter()
     const { enqueueSnackbar } = useSnackbar()
+    const companyId = useCurrentCompanyId()
+    const {
+        data: companydata,
+        isLoading,
+        queryKey,
+    } = useGetCompanyById({
+        id: companyId,
+    })
 
-    function handleSubmit() {
+    const queryClient = useQueryClient()
+
+    const { mutateAsync: updateCompanyBusinessDescription } = useUpdateCompany()
+
+    async function handleSubmit(formData: BusinessDescriptionFormData) {
         try {
+            await updateCompanyBusinessDescription({
+                id: companyId,
+                data: formData,
+            })
+
+            await queryClient.invalidateQueries({ queryKey: queryKey })
+
             enqueueSnackbar('Descrição do negócio modificado com sucesso', {
                 variant: 'success',
                 anchorOrigin: {
@@ -56,15 +78,19 @@ export default function BusinessDescription() {
                 <PageHeader.Title>Descrição do Negócio</PageHeader.Title>
             </PageHeader.Root>
 
-            <Formik<BusinessDescriptionFormData>
-                initialValues={businessDescriptionInitialValues()}
-                validationSchema={businessDescriptionFormSchema}
-                onSubmit={handleSubmit}
-            >
-                <FormikController onCancel={() => back()}>
-                    <BusinessDescriptionForm />
-                </FormikController>
-            </Formik>
+            {!isLoading && (
+                <Formik<BusinessDescriptionFormData>
+                    initialValues={businessDescriptionInitialValues(
+                        companydata,
+                    )}
+                    validationSchema={businessDescriptionFormSchema}
+                    onSubmit={handleSubmit}
+                >
+                    <FormikController onCancel={() => back()}>
+                        <BusinessDescriptionForm />
+                    </FormikController>
+                </Formik>
+            )}
         </div>
     )
 }
