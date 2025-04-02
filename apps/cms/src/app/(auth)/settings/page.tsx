@@ -74,7 +74,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <FileText size={20} />,
         title: 'Políticas de Reservas',
-        href: `/settings/politicas-de-reservas`,
+        href: `/settings/reservation-policy`,
     },
     {
         icon: <File size={20} />,
