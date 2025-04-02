@@ -3,16 +3,16 @@
 import {
     Box,
     Button,
-    Flex,
-    FormControl,
-    Image,
+    Grid,
+    MenuItem,
     Select,
-    Stack,
-    Text,
-} from '@chakra-ui/react'
+    TextField,
+    Typography,
+} from '@mui/material'
 import { ChangeEvent, useRef, useState } from 'react'
 
-import InputBox from '@/components/atoms/InputBox'
+import { FormContainer } from '@/components/atoms/FormContainer'
+import { FormSection } from '@/components/atoms/FormSection'
 import { OPTIONS } from '../utils/constants'
 
 export default function VisualIdentityForm() {
@@ -30,6 +30,7 @@ export default function VisualIdentityForm() {
             setLogo(imageUrl)
         }
     }
+
     const handleFaviconChange = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0]
         if (file) {
@@ -39,177 +40,197 @@ export default function VisualIdentityForm() {
     }
 
     const openLogoSelector = () => {
-        if (logoInputRef.current) {
-            logoInputRef.current.click()
-        }
+        logoInputRef.current?.click()
     }
 
     const openFaviconSelector = () => {
-        if (faviconInputRef.current) {
-            faviconInputRef.current.click()
-        }
+        faviconInputRef.current?.click()
     }
 
     const [selectedType, setSelectedType] = useState<number | null>(null)
 
     return (
-        <Box mx="auto" p={4} bg="white" borderRadius="lg">
-            <Stack spacing={4}>
+        <FormContainer>
+            <FormSection>
                 <Select
-                    size="lg"
                     value={selectedType || ''}
                     onChange={(e) => setSelectedType(Number(e.target.value))}
+                    displayEmpty
+                    size="medium"
                 >
-                    <option value="" disabled hidden>
+                    <MenuItem value="" disabled>
                         Proporção da Logotipo
-                    </option>
+                    </MenuItem>
                     {OPTIONS.map(({ label }, index) => (
-                        <option key={index} value={index}>
+                        <MenuItem key={index} value={index}>
                             {label}
-                        </option>
+                        </MenuItem>
                     ))}
                 </Select>
+            </FormSection>
 
-                <FormControl
-                    border={'1px solid'}
-                    borderColor={'gray.100'}
-                    p={4}
-                    borderRadius="md"
+            <FormSection
+                sx={{
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    p: 3,
+                    borderRadius: 1,
+                }}
+            >
+                <Grid
+                    container
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mb={2}
                 >
-                    <Flex
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        mb={2}
-                    >
-                        <Box>
-                            <h2
-                                style={{ fontWeight: '600', marginBottom: '0' }}
-                            >
-                                Adicionar seu logotipo
-                            </h2>
-                            <Text>
-                                Arquivo deve ser em PNG com tamanho mínimo de
-                                200px
-                            </Text>
-                        </Box>
-                        <Button
-                            onClick={openLogoSelector}
-                            variant="solid"
-                            colorScheme="primary"
-                        >
-                            Adicionar
-                        </Button>
-                    </Flex>
-
-                    <Box
-                        borderRadius="md"
-                        p={4}
-                        bg="gray.100"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        {logo ? (
-                            <Image
-                                src={logo || '/placeholder.svg'}
-                                alt="Logotipo"
-                                boxSize="120px"
-                                borderRadius="full"
-                            />
-                        ) : (
-                            <Text color="gray.500">
-                                Nenhuma imagem selecionada
-                            </Text>
-                        )}
+                    <Box>
+                        <Typography variant="h6" fontWeight={600} gutterBottom>
+                            Adicionar seu logotipo
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            Arquivo deve ser em PNG com tamanho mínimo de 200px
+                        </Typography>
                     </Box>
+                    <Button
+                        onClick={openLogoSelector}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Adicionar
+                    </Button>
+                </Grid>
 
-                    <input
-                        type="file"
-                        ref={logoInputRef}
-                        onChange={handleLogoChange}
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                    />
-                </FormControl>
-
-                <FormControl
-                    border={'1px solid'}
-                    borderColor={'gray.100'}
-                    p={4}
-                    borderRadius="md"
+                <Box
+                    sx={{
+                        borderRadius: 1,
+                        p: 3,
+                        bgcolor: 'grey.100',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: 120,
+                    }}
                 >
-                    <Flex
-                        justifyContent={'space-between'}
-                        alignItems={'center'}
-                        mb={2}
-                    >
-                        <Box>
-                            <h2
-                                style={{ fontWeight: '600', marginBottom: '0' }}
-                            >
-                                Adicionar seu favicon
-                            </h2>
-                            <Text>
-                                Arquivo deve ser em ICO com tamanho mínimo de
-                                32px
-                            </Text>
-                        </Box>
-                        <Button
-                            onClick={openFaviconSelector}
-                            variant="solid"
-                            colorScheme="primary"
-                        >
-                            Adicionar
-                        </Button>
-                    </Flex>
-                    <Box
-                        borderRadius="md"
-                        p={4}
-                        bg="gray.100"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        {favicon ? (
-                            <Image
-                                src={favicon || '/placeholder.svg'}
-                                alt="Favicon"
-                                boxSize="70px"
-                                borderRadius="full"
-                            />
-                        ) : (
-                            <Text color="gray.500">
-                                Nenhuma imagem selecionada
-                            </Text>
-                        )}
+                    {logo ? (
+                        <Box
+                            component="img"
+                            src={logo}
+                            alt="Logotipo"
+                            sx={{
+                                width: 120,
+                                height: 120,
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                            }}
+                        />
+                    ) : (
+                        <Typography color="text.disabled">
+                            Nenhuma imagem selecionada
+                        </Typography>
+                    )}
+                </Box>
+
+                <input
+                    type="file"
+                    ref={logoInputRef}
+                    onChange={handleLogoChange}
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                />
+            </FormSection>
+
+            <FormSection
+                sx={{
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    p: 3,
+                    borderRadius: 1,
+                }}
+            >
+                <Grid
+                    container
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mb={2}
+                >
+                    <Box>
+                        <Typography variant="h6" fontWeight={600} gutterBottom>
+                            Adicionar seu favicon
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            Arquivo deve ser em ICO com tamanho mínimo de 32px
+                        </Typography>
                     </Box>
+                    <Button
+                        onClick={openFaviconSelector}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Adicionar
+                    </Button>
+                </Grid>
+                <Box
+                    sx={{
+                        borderRadius: 1,
+                        p: 3,
+                        bgcolor: 'grey.100',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        minHeight: 70,
+                    }}
+                >
+                    {favicon ? (
+                        <Box
+                            component="img"
+                            src={favicon}
+                            alt="Favicon"
+                            sx={{
+                                width: 70,
+                                height: 70,
+                                borderRadius: '50%',
+                                objectFit: 'cover',
+                            }}
+                        />
+                    ) : (
+                        <Typography color="text.disabled">
+                            Nenhuma imagem selecionada
+                        </Typography>
+                    )}
+                </Box>
 
-                    <input
-                        type="file"
-                        ref={faviconInputRef}
-                        onChange={handleFaviconChange}
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                    />
-                </FormControl>
+                <input
+                    type="file"
+                    ref={faviconInputRef}
+                    onChange={handleFaviconChange}
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                />
+            </FormSection>
 
-                <FormControl>
-                    <h2 style={{ fontWeight: '600' }}>Cor principal do site</h2>
-                    <Flex align="center" gap={2} p={2}>
-                        <InputBox
-                            label={'Cor principal (HEX)'}
+            <FormSection title="Cor principal do site">
+                <Grid container alignItems="center" spacing={2} p={1}>
+                    <Grid size={11}>
+                        <TextField
+                            label="Cor principal (HEX)"
                             value={mainColor}
-                            fontWeight="400"
+                            fullWidth
                             onChange={(e) => setMainColor(e.target.value)}
                         />
+                    </Grid>
+                    <Grid size={1}>
                         <Box
-                            bg={mainColor}
-                            borderRadius="md"
-                            boxSize="50px"
-                        ></Box>
-                    </Flex>
-                </FormControl>
-            </Stack>
-        </Box>
+                            sx={{
+                                bgcolor: mainColor,
+                                borderRadius: 1,
+                                width: 55,
+                                height: 55,
+                                ml: 1,
+                            }}
+                        />
+                    </Grid>
+                </Grid>
+            </FormSection>
+        </FormContainer>
     )
 }
