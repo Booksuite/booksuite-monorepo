@@ -228,12 +228,13 @@ export default function VisualIdentityForm() {
                             label="Cor principal (HEX)"
                             value={values.settings.theme?.color}
                             fullWidth
-                            onChange={(e) =>
+                            onChange={(e) => {
                                 setFieldValue(
                                     'settings.theme.color',
                                     e.target.value,
                                 )
-                            }
+                                setMainColor(e.target.value)
+                            }}
                         />
                     </Grid>
                     <Grid size={1}>
