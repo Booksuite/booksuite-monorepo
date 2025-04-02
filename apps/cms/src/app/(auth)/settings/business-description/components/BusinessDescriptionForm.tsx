@@ -1,95 +1,103 @@
-import { Box, Flex, Stack, Text } from '@chakra-ui/react'
-import { Form, useFormikContext } from 'formik'
+import { Box, TextField, Typography, useTheme } from '@mui/material'
+import { useFormikContext } from 'formik'
 import { Info } from 'lucide-react'
 
-import InputBox from '@/components/atoms/InputBox'
-import { TextAreaBox } from '@/components/atoms/TextAreaBox'
+import { FormContainer } from '@/components/atoms/FormContainer'
+import { FormSection } from '@/components/atoms/FormSection'
 import { BusinessDescriptionFormData } from '../utils/config'
 
 export const BusinessDescriptionForm = () => {
+    const theme = useTheme()
     const { getFieldProps, errors, touched, handleChange } =
         useFormikContext<BusinessDescriptionFormData>()
 
     return (
-        <Form>
-            <Stack spacing={8}>
-                <Stack spacing={4}>
-                    <InputBox
-                        label="Nome da Propriedade"
-                        isDisabled
-                        {...getFieldProps('name')}
-                    />
-                    <TextAreaBox
-                        label="Descrição Curta"
-                        maxLength={165}
-                        fontSize={'md'}
-                        formControl={{
-                            isInvalid:
-                                !!errors.shortDescription &&
-                                touched.shortDescription,
-                        }}
-                        {...getFieldProps('shortDescription')}
-                    />
-                    <TextAreaBox
-                        label="Descrição Longa - Sobre Nós"
-                        maxLength={1000}
-                        fontSize={'md'}
-                        formControl={{
-                            isInvalid:
-                                !!errors.description && touched.description,
-                        }}
-                        {...getFieldProps('description')}
-                    />
-                </Stack>
-                <Stack spacing={4}>
-                    <h2 style={{ fontWeight: '600', marginBottom: '0' }}>
-                        Banner de compartilhamento
-                    </h2>
-                    <Box
-                        bg={'gray.100'}
-                        p={5}
-                        borderRadius={'md'}
-                        display={'flex'}
-                        alignItems={'center'}
-                    >
-                        <Flex align="center" gap={2}>
-                            <Info color={'#0B1F51'} />
-                            <Text fontSize={'md'} color={'#0B1F51'}>
-                                1. A imagem será exibida quando você
-                                compartilhar o site em alguma rede social ou
-                                aplicativo de mensagens.
-                                <br />
-                                <br />
-                                2. A imagem será utilizada no banner principal
-                                do site quando não houver nenhum banner
-                                específico cadastrado no menu marketing/banners.
-                            </Text>
-                        </Flex>
+        <FormContainer>
+            <FormSection>
+                <TextField
+                    label="Nome da Propriedade"
+                    disabled
+                    fullWidth
+                    {...getFieldProps('name')}
+                />
+
+                <TextField
+                    label="Descrição Curta"
+                    multiline
+                    rows={4}
+                    fullWidth
+                    error={
+                        touched.shortDescription &&
+                        Boolean(errors.shortDescription)
+                    }
+                    helperText={
+                        touched.shortDescription && errors.shortDescription
+                    }
+                    {...getFieldProps('shortDescription')}
+                />
+
+                <TextField
+                    label="Descrição Longa - Sobre Nós"
+                    multiline
+                    rows={6}
+                    fullWidth
+                    error={touched.description && Boolean(errors.description)}
+                    helperText={touched.description && errors.description}
+                    {...getFieldProps('description')}
+                />
+            </FormSection>
+
+            <FormSection title="Banner de compartilhamento">
+                <Box
+                    bgcolor="grey.100"
+                    p={4}
+                    borderRadius={1}
+                    display="flex"
+                    alignItems="center"
+                >
+                    <Box display="flex" alignItems="center" gap={4}>
+                        <Info color={theme.palette.blue[900]} />
+                        <Typography variant="body2" color="blue.900">
+                            1. A imagem será exibida quando você compartilhar o
+                            site em alguma rede social ou aplicativo de
+                            mensagens.
+                            <br />
+                            <br />
+                            2. A imagem será utilizada no banner principal do
+                            site quando não houver nenhum banner específico
+                            cadastrado no menu marketing/banners.
+                        </Typography>
                     </Box>
-                    <h2 style={{ fontWeight: '600', marginBottom: '0' }}>
-                        Informações do Banner - página inicial
-                    </h2>
-                    <InputBox
+                </Box>
+
+                <FormSection title="Informações do Banner - página inicial">
+                    <TextField
                         label="Título Principal"
-                        formControl={{
-                            isInvalid:
-                                !!errors.bannerTitle && touched.bannerTitle,
-                        }}
+                        fullWidth
+                        error={
+                            touched.bannerTitle && Boolean(errors.bannerTitle)
+                        }
+                        helperText={touched.bannerTitle && errors.bannerTitle}
                         {...getFieldProps('bannerTitle')}
                         onChange={handleChange('bannerTitle')}
                     />
-                    <InputBox
+
+                    <TextField
                         label="Descrição de Apoio (opcional)"
-                        formControl={{
-                            isInvalid:
-                                !!errors.bannerDescription &&
-                                touched.bannerDescription,
-                        }}
+                        fullWidth
+                        error={
+                            touched.bannerDescription &&
+                            Boolean(errors.bannerDescription)
+                        }
+                        helperText={
+                            touched.bannerDescription &&
+                            errors.bannerDescription
+                        }
                         {...getFieldProps('bannerDescription')}
                         onChange={handleChange('bannerDescription')}
                     />
-                </Stack>
-            </Stack>
-        </Form>
+                </FormSection>
+            </FormSection>
+        </FormContainer>
     )
 }
