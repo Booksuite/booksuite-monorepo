@@ -9,13 +9,19 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
-import { ChangeEvent, useRef, useState } from 'react'
+import { useFormikContext } from 'formik'
+import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
+import Settings from '../../page'
+import { visualIdentityFormData } from '../utils/config'
 import { OPTIONS } from '../utils/constants'
 
 export default function VisualIdentityForm() {
+    const { values, errors, setFieldValue } =
+        useFormikContext<visualIdentityFormData>()
+
     const [logo, setLogo] = useState<string | null>(null)
     const [favicon, setFavicon] = useState<string | null>(null)
     const [mainColor, setMainColor] = useState('#714C3B')
@@ -28,6 +34,7 @@ export default function VisualIdentityForm() {
         if (file) {
             const imageUrl = URL.createObjectURL(file)
             setLogo(imageUrl)
+            setFieldValue('logoFile', file)
         }
     }
 
@@ -36,6 +43,7 @@ export default function VisualIdentityForm() {
         if (file) {
             const imageUrl = URL.createObjectURL(file)
             setFavicon(imageUrl)
+            setFieldValue('favIconFile', file)
         }
     }
 
@@ -48,6 +56,11 @@ export default function VisualIdentityForm() {
     }
 
     const [selectedType, setSelectedType] = useState<number | null>(null)
+
+    useEffect(() => {
+        setLogo(values.logo)
+        setFavicon(values.favIcon)
+    }, [values.favIcon, values.logo])
 
     return (
         <FormContainer>
@@ -213,9 +226,14 @@ export default function VisualIdentityForm() {
                     <Grid size={11}>
                         <TextField
                             label="Cor principal (HEX)"
-                            value={mainColor}
+                            value={values.settings.theme?.color}
                             fullWidth
-                            onChange={(e) => setMainColor(e.target.value)}
+                            onChange={(e) =>
+                                setFieldValue(
+                                    'settings.theme.color',
+                                    e.target.value,
+                                )
+                            }
                         />
                     </Grid>
                     <Grid size={1}>

@@ -1,20 +1,32 @@
-import { CompanyFull, CompanyUpdateInput } from '@booksuite/sdk'
+import {
+    CompanyFull,
+    CompanySettingsInput,
+    CompanyUpdateInput,
+} from '@booksuite/sdk'
 import * as yup from 'yup'
 
 export type visualIdentityFormData = Pick<
     CompanyUpdateInput,
-    | 'favIcon'
-    | 'logo'
->
+    'favIcon' | 'logo' | 'settings'
+> & {
+    favIcon: string
+    logo: string
+    settings: CompanySettingsInput
+    favIconFile?: File
+    logoFile?: File
+}
 
-export const createAddressInitialValues = (
+export const createvisualIdentityInitialValues = (
     data?: Partial<CompanyFull> | null,
 ): visualIdentityFormData => ({
-    favIcon: data?.favIcon,
-    logo: data?.logo
+    favIcon: data?.favIcon || '',
+    logo: data?.logo || '',
+    settings: data?.settings || {},
+    favIconFile: undefined,
+    logoFile: undefined,
 })
 
-export const addressFormSchema = yup.object({
+export const visualIdentityFormSchema = yup.object({
     logo: yup.string(),
     favIcon: yup.string(),
 })
