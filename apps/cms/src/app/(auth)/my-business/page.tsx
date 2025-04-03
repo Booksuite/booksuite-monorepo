@@ -19,7 +19,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <CircleDollarSign size={20} />,
         title: 'Preços e Períodos',
-        href: '/my-business/precos-e-periodos',
+        href: '/my-business/prices-and-periods',
     },
     {
         icon: <CirclePlus size={20} />,
