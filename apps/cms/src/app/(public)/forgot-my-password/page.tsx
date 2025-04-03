@@ -1,43 +1,54 @@
-import {
-    Box,
-    Button,
-    FormControl,
-    FormLabel,
-    Input,
-    Link,
-    Text,
-} from '@chakra-ui/react'
+'use client'
+
+import { Button, Link, TextField, Typography } from '@mui/material'
 import NextLink from 'next/link'
+import { useState } from 'react'
+
+import { FormContainer } from '@/components/atoms/FormContainer'
+import { FormSection } from '@/components/atoms/FormSection'
 
 export default function ForgotMyPassword() {
+    const [email, setEmail] = useState('')
+
     return (
-        <Box textAlign="center" maxW="sm" mx="auto">
-            <Text mb={6} fontWeight="semibold" fontSize={16}>
+        <FormContainer>
+            <Typography variant="body1" sx={{ mb: 3, textAlign: 'center' }}>
                 Digite seu e-mail que enviaremos um link para a recuperação de
                 sua senha.
-            </Text>
+            </Typography>
 
-            <form>
-                <FormControl mb={3}>
-                    <FormLabel>E-mail</FormLabel>
-                    <Input type="email" />
-                </FormControl>
+            <FormSection>
+                <TextField
+                    label="E-mail"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+            </FormSection>
 
-                <Button width="full" mb={10}>
-                    Enviar
+            <FormSection>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={isLoading}
+                    sx={{ mb: 3, mt: 4 }}
+                >
+                    {isLoading ? 'Enviando...' : 'Enviar'}
                 </Button>
-            </form>
+            </FormSection>
 
             <Link
-                as={NextLink}
+                component={NextLink}
                 href="/login"
-                display="block"
-                color="blue.500"
-                fontWeight="semibold"
-                fontSize={18}
+                sx={{
+                    display: 'block',
+                    textAlign: 'center',
+                    fontWeight: 600,
+                }}
             >
-                Voltar
+                Voltar para o login
             </Link>
-        </Box>
+        </FormContainer>
     )
 }
