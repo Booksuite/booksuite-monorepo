@@ -1,0 +1,1 @@
+export type ReservationOptionOrderBy = 'name' | 'billingType' | 'additionalAdultPrice' | 'additionalChildrenPrice'

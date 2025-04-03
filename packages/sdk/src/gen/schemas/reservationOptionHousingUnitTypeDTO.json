@@ -1,0 +1,1 @@
+{"type":"object","properties":{"housingUnitTypeId":{"type":"string","example":"3c39db8f-ec01-4bf1-89e3-a4b458903b2c"}},"required":["housingUnitTypeId"],"x-readme-ref-name":"ReservationOptionHousingUnitTypeDTO"}
