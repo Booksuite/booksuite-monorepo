@@ -1,0 +1,31 @@
+/* eslint-disable no-alert, no-console */
+import client from '../../../axios-client'
+import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
+import type {
+  ReservationOptionsControllerUpdateMutationRequest,
+  ReservationOptionsControllerUpdateMutationResponse,
+  ReservationOptionsControllerUpdatePathParams,
+} from '../../types/ReservationOptionsController/ReservationOptionsControllerUpdate.ts'
+
+export function getReservationOptionsControllerUpdateUrl({ id }: { id: ReservationOptionsControllerUpdatePathParams['id'] }) {
+  return `/company/${companyId}/reservationOptions/${id}` as const
+}
+
+/**
+ * {@link /company/:companyId/reservationOptions/:id}
+ */
+export async function reservationOptionsControllerUpdate(
+  { id }: { id: ReservationOptionsControllerUpdatePathParams['id'] },
+  data: ReservationOptionsControllerUpdateMutationRequest,
+  config: Partial<RequestConfig<ReservationOptionsControllerUpdateMutationRequest>> & { client?: typeof client } = {},
+) {
+  const { client: request = client, ...requestConfig } = config
+
+  const res = await request<ReservationOptionsControllerUpdateMutationResponse, ResponseErrorConfig<Error>, ReservationOptionsControllerUpdateMutationRequest>({
+    method: 'PATCH',
+    url: getReservationOptionsControllerUpdateUrl({ id }).toString(),
+    data,
+    ...requestConfig,
+  })
+  return res.data
+}

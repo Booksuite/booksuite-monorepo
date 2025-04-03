@@ -245,6 +245,7 @@ export type { OrderDirection } from './OrderDirection.ts'
 export type { PaginationQueryInput } from './PaginationQueryInput.ts'
 export type { PenaltyRangeResponseDTOPenaltyBy, PenaltyRange } from './PenaltyRange.ts'
 export type { PenaltyRangeDTOPenaltyBy, PenaltyRangeInput } from './PenaltyRangeInput.ts'
+export type { PriceVariationType } from './PriceVariationType.ts'
 export type { ReservationResponseDTOStatus, ReservationResponseDTOSaleChannel, Reservation } from './Reservation.ts'
 export type { ReservationConfigResponseDTOReservationDepositType, ReservationConfig } from './ReservationConfig.ts'
 export type {
@@ -297,6 +298,43 @@ export type {
 } from './ReservationController/SearchReservations.ts'
 export type { ReservationCreateDTOStatus, ReservationCreateDTOSaleChannel, ReservationCreateInput } from './ReservationCreateInput.ts'
 export type { ReservationResponseFullDTOStatus, ReservationResponseFullDTOSaleChannel, ReservationFull } from './ReservationFull.ts'
+export type { ReservationOption } from './ReservationOption.ts'
+export type { ReservationOptionFull } from './ReservationOptionFull.ts'
+export type { ReservationOptionHousingUnitTypeInput } from './ReservationOptionHousingUnitTypeInput.ts'
+export type { ReservationOptionInput } from './ReservationOptionInput.ts'
+export type { ReservationOptionOrderBy } from './ReservationOptionOrderBy.ts'
+export type { ReservationOptionOrderByInput } from './ReservationOptionOrderByInput.ts'
+export type { ReservationOptionPaginated } from './ReservationOptionPaginated.ts'
+export type {
+  ReservationOptionsControllerCreatePathParams,
+  ReservationOptionsControllerCreate200,
+  ReservationOptionsControllerCreateMutationRequest,
+  ReservationOptionsControllerCreateMutationResponse,
+  ReservationOptionsControllerCreateMutation,
+} from './ReservationOptionsController/ReservationOptionsControllerCreate.ts'
+export type {
+  ReservationOptionsControllerGetByIdPathParams,
+  ReservationOptionsControllerGetById200,
+  ReservationOptionsControllerGetByIdQueryResponse,
+  ReservationOptionsControllerGetByIdQuery,
+} from './ReservationOptionsController/ReservationOptionsControllerGetById.ts'
+export type {
+  ReservationOptionsControllerUpdatePathParams,
+  ReservationOptionsControllerUpdate200,
+  ReservationOptionsControllerUpdateMutationRequest,
+  ReservationOptionsControllerUpdateMutationResponse,
+  ReservationOptionsControllerUpdateMutation,
+} from './ReservationOptionsController/ReservationOptionsControllerUpdate.ts'
+export type {
+  SearchReservationOptionPathParams,
+  SearchReservationOptionQueryParams,
+  SearchReservationOption200,
+  SearchReservationOptionMutationRequest,
+  SearchReservationOptionMutationResponse,
+  SearchReservationOptionMutation,
+} from './ReservationOptionsController/SearchReservationOption.ts'
+export type { ReservationOptionSearchBodyInput } from './ReservationOptionSearchBodyInput.ts'
+export type { ReservationOptionSearchFilterInput } from './ReservationOptionSearchFilterInput.ts'
 export type { ReservationOrderBy } from './ReservationOrderBy.ts'
 export type { ReservationOrderByInput } from './ReservationOrderByInput.ts'
 export type { ReservationPaginated } from './ReservationPaginated.ts'
@@ -305,6 +343,45 @@ export type { ReservationSearchFilterDTOSaleChannel, ReservationSearchFilterDTOS
 export type { ReservationService } from './ReservationService.ts'
 export type { ReservationServiceInput } from './ReservationServiceInput.ts'
 export type { ReservationUpdateDTOStatus, ReservationUpdateDTOSaleChannel, ReservationUpdateInput } from './ReservationUpdateInput.ts'
+export type { SeasonRule } from './SeasonRule.ts'
+export type { SeasonRuleFull } from './SeasonRuleFull.ts'
+export type { SeasonRuleHousingUnitType } from './SeasonRuleHousingUnitType.ts'
+export type { SeasonRuleHousingUnitTypePriceInput } from './SeasonRuleHousingUnitTypePriceInput.ts'
+export type { SeasonRuleInput } from './SeasonRuleInput.ts'
+export type { SeasonRuleOrderBy } from './SeasonRuleOrderBy.ts'
+export type { SeasonRuleOrderByInput } from './SeasonRuleOrderByInput.ts'
+export type { SeasonRulePaginated } from './SeasonRulePaginated.ts'
+export type {
+  SearchSeasonRulesPathParams,
+  SearchSeasonRulesQueryParams,
+  SearchSeasonRules200,
+  SearchSeasonRulesMutationRequest,
+  SearchSeasonRulesMutationResponse,
+  SearchSeasonRulesMutation,
+} from './SeasonRulesController/SearchSeasonRules.ts'
+export type {
+  SeasonRulesControllerCreatePathParams,
+  SeasonRulesControllerCreate200,
+  SeasonRulesControllerCreateMutationRequest,
+  SeasonRulesControllerCreateMutationResponse,
+  SeasonRulesControllerCreateMutation,
+} from './SeasonRulesController/SeasonRulesControllerCreate.ts'
+export type {
+  SeasonRulesControllerGetByIdPathParams,
+  SeasonRulesControllerGetById200,
+  SeasonRulesControllerGetByIdQueryResponse,
+  SeasonRulesControllerGetByIdQuery,
+} from './SeasonRulesController/SeasonRulesControllerGetById.ts'
+export type {
+  SeasonRulesControllerUpdatePathParams,
+  SeasonRulesControllerUpdate200,
+  SeasonRulesControllerUpdateMutationRequest,
+  SeasonRulesControllerUpdateMutationResponse,
+  SeasonRulesControllerUpdateMutation,
+} from './SeasonRulesController/SeasonRulesControllerUpdate.ts'
+export type { SeasonRuleSearchBodyInput } from './SeasonRuleSearchBodyInput.ts'
+export type { SeasonRuleSearchFilterInput } from './SeasonRuleSearchFilterInput.ts'
+export type { SeasonRuleUpdateInput } from './SeasonRuleUpdateInput.ts'
 export type { Service } from './Service.ts'
 export type {
   CreateServicePathParams,
