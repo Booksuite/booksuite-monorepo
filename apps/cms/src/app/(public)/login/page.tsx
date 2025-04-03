@@ -1,7 +1,9 @@
 import { Link } from '@chakra-ui/react'
 import NextLink from 'next/link'
 
-import DashboardLoginForm from '@/components/templates/DashboardLoginForm'
+import { FormSection } from '@/components/atoms/FormSection'
+
+import DashboardLoginForm from './components/DashboardLoginForm'
 
 export default async function Login() {
     return (

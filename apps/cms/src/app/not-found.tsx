@@ -1,37 +1,28 @@
-import { Box, Button, Heading } from '@chakra-ui/react'
+import { Box, Button, Stack, Typography } from '@mui/material'
 import Link from 'next/link'
 
 import { Logo } from '@/components/atoms/Logo'
 
 export default function Custom404() {
     return (
-        <Box
-            display="flex"
-            flexDirection="column"
+        <Stack
             justifyContent="center"
             alignItems="center"
             textAlign="center"
             minHeight="100vh"
-            bg="primary.900"
+            bgcolor="blue.900"
             color="white"
             px={4}
         >
-            <Box maxWidth="350px">
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                    }}
-                >
-                    <Logo.FullLogo />
-                </div>
-                <Heading as="h1" size="md" color={'white'} mt={4}>
-                    Página não encontrada
-                </Heading>
-                <Button as={Link} href="/" mt={4}>
-                    Voltar
-                </Button>
+            <Box display="flex" justifyContent="center">
+                <Logo.FullLogo />
             </Box>
-        </Box>
+            <Typography variant="h5" component="h1" color="white" mt={8} mb={8}>
+                Página não encontrada
+            </Typography>
+            <Button component={Link} href="/" variant="contained">
+                Voltar
+            </Button>
+        </Stack>
     )
 }
