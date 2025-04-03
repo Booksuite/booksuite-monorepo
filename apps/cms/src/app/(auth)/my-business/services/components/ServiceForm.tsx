@@ -5,15 +5,17 @@ import {
     Box,
     Button,
     Checkbox,
-    CheckboxGroup,
-    Flex,
-    HStack,
+    FormControlLabel,
+    FormGroup,
+    FormControl,
+    Grid,
+    MenuItem,
     Select,
-    SimpleGrid,
     Stack,
     Switch,
-    Text,
-} from '@chakra-ui/react'
+    Typography,
+    TextField,
+} from '@mui/material'
 import {
     closestCenter,
     DndContext,
@@ -28,21 +30,19 @@ import {
     rectSortingStrategy,
     SortableContext,
 } from '@dnd-kit/sortable'
-import { Form, useFormikContext } from 'formik'
+import { useFormikContext } from 'formik'
 import type React from 'react'
 import { useState } from 'react'
 
 import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { DatePickerBox } from '@/components/atoms/DatePickerBox'
-import InputBox from '@/components/atoms/InputBox'
-import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import { NumberInput } from '@/components/atoms/NumberInput'
-import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { MediaGallery } from '@/components/organisms/MediaGallery'
 import { SortableMediaItem } from '../../rooms/components/SortableMediaItem'
 import type { ServiceFormData } from '../utils/config'
 import { VALID_NIGHTS } from '../utils/constants'
+import { FormContainer } from '@/components/atoms/FormContainer'
+import { FormSection } from '@/components/atoms/FormSection'
 
 export const ServiceForm: React.FC = () => {
     const {
@@ -117,102 +117,121 @@ export const ServiceForm: React.FC = () => {
     const availableHousingUnitTypes = housingUnitTypes?.items
 
     return (
-        <Form>
-            <Stack gap={8}>
-                <Flex
-                    gap={2}
-                    alignSelf={'flex-start'}
-                    marginTop={5}
-                    marginBottom={-4}
-                    alignItems="center"
+        <FormContainer>
+            <FormSection>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={values.published}
+                            onChange={(e) =>
+                                setFieldValue('published', e.target.checked)
+                            }
+                        />
+                    }
+                    label="Publicado"
+                />
+            </FormSection>
+
+            <FormSection>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        width: '100%',
+                        gap: 2,
+                    }}
                 >
-                    <h2 style={{ marginBottom: 0 }}>Publicado</h2>
-                    <Switch
-                        {...getFieldProps('published')}
-                        isChecked={values.published}
-                        onChange={(e) =>
-                            setFieldValue('published', e.target.checked)
-                        }
+                    <TextField
+                        label="Nome da Experiência"
+                        error={touched.name && Boolean(errors.name)}
+                        helperText={touched.name && errors.name}
+                        fullWidth
+                        {...getFieldProps('name')}
                     />
-                </Flex>
-                <Stack gap={4}>
-                    <Flex justifyContent={'space-between'} w={'100%'} gap={2}>
-                        <InputBox
-                            label="Nome da Experiência"
-                            error={errors.name}
-                            formControl={{
-                                isInvalid: !!errors.name && touched.name,
-                            }}
-                            {...getFieldProps('name')}
-                        />
 
-                        <InputBox
-                            label="Preço Final da Experiência"
-                            type="currency"
-                            error={errors.price}
-                            formControl={{
-                                isInvalid: !!errors.price && touched.price,
-                            }}
-                            {...getFieldProps('price')}
-                            onChange={handleChange('price')}
-                        />
-                    </Flex>
+                    <TextField
+                        label="Preço Final da Experiência"
+                        type="currency"
+                        error={touched.price && Boolean(errors.price)}
+                        helperText={touched.price && errors.price}
+                        fullWidth
+                        {...getFieldProps('price')}
+                    />
+                </Box>
 
-                    <Select
-                        size="lg"
-                        {...getFieldProps('billingType')}
-                        onChange={(selectedOption) =>
-                            setFieldValue(
-                                'billingType',
-                                selectedOption.target.value,
-                            )
-                        }
-                    >
-                        <option value="" disabled selected hidden>
-                            Selecione um tipo de cobrança
-                        </option>
-                        {Object.entries(BILLING_TYPE_MAPPING).map(
-                            ([key, value]) => (
-                                <option key={key} value={key}>
-                                    {value}
-                                </option>
-                            ),
-                        )}
-                    </Select>
-                    <Flex justifyContent={'space-between'} w={'100%'} gap={2}>
+                <Grid
+                    container
+                    rowSpacing={4}
+                    columnSpacing={{
+                        xs: 1,
+                        sm: 2,
+                        md: 3,
+                    }}
+                >
+                    <Grid size={4}>
+                        <FormControl fullWidth>
+                            <Select
+                                value={values.billingType}
+                                onChange={(e) =>
+                                    setFieldValue('billingType', e.target.value)
+                                }
+                                displayEmpty
+                            >
+                                <MenuItem value="" disabled>
+                                    Selecione um tipo de cobrança
+                                </MenuItem>
+                                {Object.entries(BILLING_TYPE_MAPPING).map(
+                                    ([key, value]) => (
+                                        <MenuItem key={key} value={key}>
+                                            {value}
+                                        </MenuItem>
+                                    ),
+                                )}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid size={4}>
                         <NumberInput
                             label="Mínimo de Diárias"
                             min={1}
-                            error={errors.minDaily}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.minDaily && touched.minDaily,
-                            }}
+                            error={!!errors.minDaily}
+                            helperText={errors.minDaily}
                             {...getFieldProps('minDaily')}
-                            onChange={handleChange('minDaily')}
+                            onChange={(e) => {
+                                const newValueNumber = Number(e.target.value)
+                                if (Number.isNaN(newValueNumber)) return
+                                setFieldValue('minDaily', newValueNumber)
+                            }}
                         />
+                    </Grid>
 
+                    <Grid size={4}>
                         <NumberInput
                             label="Antecedência mínima"
                             min={1}
-                            error={errors.minNotice}
-                            formControl={{
-                                isInvalid:
-                                    !!errors.minNotice && touched.minNotice,
-                            }}
+                            error={!!errors.minNotice}
+                            helperText={errors.minNotice}
                             {...getFieldProps('minNotice')}
-                            onChange={handleChange('minNotice')}
+                            onChange={(e) => {
+                                const newValueNumber = Number(e.target.value)
+                                if (Number.isNaN(newValueNumber)) return
+                                setFieldValue(
+                                    'minNotice',
+                                    Math.round(newValueNumber),
+                                )
+                            }}
                         />
-                    </Flex>
-                </Stack>
+                    </Grid>
+                </Grid>
+            </FormSection>
 
-                <section>
-                    <Text as="h2">Configurações de Venda</Text>
-                    <Stack gap={2}>
-                        <Flex gap={2} align="center">
+            <FormSection title="Configurações de Venda">
+                <Stack spacing={2}>
+                    <FormControlLabel
+                        control={
                             <Switch
-                                {...getFieldProps('onlineSale')}
-                                isChecked={values.onlineSale}
+                                checked={values.onlineSale}
                                 onChange={(e) =>
                                     setFieldValue(
                                         'onlineSale',
@@ -220,26 +239,24 @@ export const ServiceForm: React.FC = () => {
                                     )
                                 }
                             />
-                            <h3 style={{ marginBottom: 0 }}>
-                                Vender online no site
-                            </h3>
-                        </Flex>
-                        <Flex gap={2} align="center">
+                        }
+                        label="Vender online no site"
+                    />
+                    <FormControlLabel
+                        control={
                             <Switch
-                                {...getFieldProps('panelSale')}
-                                isChecked={values.panelSale}
+                                checked={values.panelSale}
                                 onChange={(e) =>
                                     setFieldValue('panelSale', e.target.checked)
                                 }
                             />
-                            <h3 style={{ marginBottom: 0 }}>
-                                Vender online no painel
-                            </h3>
-                        </Flex>
-                        <Flex gap={2} align="center">
+                        }
+                        label="Vender online no painel"
+                    />
+                    <FormControlLabel
+                        control={
                             <Switch
-                                {...getFieldProps('seasonalSale')}
-                                isChecked={values.seasonalSale}
+                                checked={values.seasonalSale}
                                 onChange={(e) =>
                                     setFieldValue(
                                         'seasonalSale',
@@ -247,206 +264,228 @@ export const ServiceForm: React.FC = () => {
                                     )
                                 }
                             />
-                            <h3 style={{ marginBottom: 0 }}>
-                                Vender em períodos específicos
-                            </h3>
-                        </Flex>
-                    </Stack>
-                </section>
-
-                {values.seasonalSale && (
-                    <section>
-                        <Text as="h2">Períodos de Venda</Text>
-                        <Flex
-                            justifyContent={'space-between'}
-                            w={'100%'}
-                            gap={2}
-                        >
-                            <Stack w={'100%'}>
-                                <h4>Início do Período de Venda</h4>
-                                <DatePickerBox
-                                    value={values.seasonStart}
-                                    onChange={(date) =>
-                                        setFieldValue('seasonStart', date)
-                                    }
-                                    error={errors.seasonStart}
-                                    formControl={{
-                                        isInvalid:
-                                            !!errors.seasonStart &&
-                                            touched.seasonStart,
-                                    }}
-                                />
-                            </Stack>
-                            <Stack w={'100%'}>
-                                <h4>Fim do Período de Venda</h4>
-                                <DatePickerBox
-                                    value={values.seasonEnd}
-                                    onChange={(date) =>
-                                        setFieldValue('seasonEnd', date)
-                                    }
-                                    error={errors.seasonEnd}
-                                    formControl={{
-                                        isInvalid:
-                                            !!errors.seasonEnd &&
-                                            touched.seasonEnd,
-                                    }}
-                                />
-                            </Stack>
-                        </Flex>
-                    </section>
-                )}
-
-                <section>
-                    <h2>Adultos</h2>
-                    <NumberInput
-                        label="Número de adultos"
-                        error={errors.adults}
-                        min={0}
-                        formControl={{
-                            isInvalid: !!errors.adults && touched.adults,
-                        }}
-                        {...getFieldProps('adults')}
-                        onChange={(e) =>
-                            setFieldValue('adults', e.target.value)
                         }
+                        label="Vender em períodos específicos"
                     />
-                </section>
+                </Stack>
+            </FormSection>
 
-                {!isLoadingHousingUnitTypes && !!housingUnitTypes && (
-                    <section>
-                        <Text as="h2">Acomodações Válidas</Text>
-                        <CheckboxGroup
-                            value={values.availableHousingUnitTypes.map(
-                                (h) => h.housingUnitTypeId,
-                            )}
-                            onChange={(selectedIds) => {
-                                setFieldValue(
-                                    'availableHousingUnitTypes',
-                                    selectedIds.map((id) => ({
-                                        housingUnitTypeId: id,
-                                    })),
-                                )
-                            }}
-                        >
-                            <Stack spacing={2}>
-                                {availableHousingUnitTypes?.map((housing) => (
-                                    <InputCheckboxBox
-                                        key={housing.id}
-                                        value={housing.id}
-                                        isChecked={values.availableHousingUnitTypes.includes(
-                                            { housingUnitTypeId: housing.id },
-                                        )}
-                                    >
-                                        {housing.name}
-                                    </InputCheckboxBox>
-                                ))}
-                            </Stack>
-                        </CheckboxGroup>
-                    </section>
-                )}
+            {values.seasonalSale && (
+                <FormSection title="Períodos de Venda">
+                    <Grid container spacing={2} mt={1}>
+                        <Grid size={6}>
+                            <TextField
+                                label="Início do Período de Venda"
+                                type="date"
+                                fullWidth
+                                value={values.seasonStart || ''}
+                                onChange={(e) =>
+                                    setFieldValue('seasonStart', e.target.value)
+                                }
+                                error={!!errors.seasonStart}
+                                helperText={errors.seasonStart}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+                        <Grid size={6}>
+                            <TextField
+                                label="Fim do Período de Venda"
+                                type="date"
+                                fullWidth
+                                value={values.seasonEnd || ''}
+                                onChange={(e) =>
+                                    setFieldValue('seasonEnd', e.target.value)
+                                }
+                                error={!!errors.seasonEnd}
+                                helperText={errors.seasonEnd}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                </FormSection>
+            )}
 
-                <section>
-                    <Text as="h2">Noites válidas</Text>
-                    <CheckboxGroup
-                        value={values.availableWeekDays}
-                        onChange={(newValue) => {
-                            setFieldValue(
-                                'availableWeekDays',
-                                newValue.map(String),
-                            )
-                        }}
-                    >
-                        <Flex gap={2} justifyContent={'space-between'}>
-                            {VALID_NIGHTS.map((night) => (
-                                <Checkbox key={night.name} value={night.value}>
-                                    {night.name}
-                                </Checkbox>
+            <FormSection title="Adultos">
+                <NumberInput
+                    label="Número de adultos"
+                    min={0}
+                    helperText={errors.adults}
+                    {...getFieldProps('adults')}
+                    onChange={(e) => {
+                        const newValueNumber = Number(e.target.value)
+                        if (Number.isNaN(newValueNumber)) return
+                        setFieldValue('adults', Math.round(newValueNumber))
+                    }}
+                />
+            </FormSection>
+
+            {!isLoadingHousingUnitTypes && !!housingUnitTypes && (
+                <FormSection title="Acomodações Válidas">
+                    <FormControl component="fieldset">
+                        <FormGroup>
+                            {availableHousingUnitTypes?.map((housing) => (
+                                <FormControlLabel
+                                    key={housing.id}
+                                    control={
+                                        <Checkbox
+                                            checked={values.availableHousingUnitTypes.some(
+                                                (h) =>
+                                                    h.housingUnitTypeId ===
+                                                    housing.id,
+                                            )}
+                                            onChange={(e) => {
+                                                const newValue = e.target
+                                                    .checked
+                                                    ? [
+                                                          ...values.availableHousingUnitTypes,
+                                                          {
+                                                              housingUnitTypeId:
+                                                                  housing.id,
+                                                          },
+                                                      ]
+                                                    : values.availableHousingUnitTypes.filter(
+                                                          (h) =>
+                                                              h.housingUnitTypeId !==
+                                                              housing.id,
+                                                      )
+                                                setFieldValue(
+                                                    'availableHousingUnitTypes',
+                                                    newValue,
+                                                )
+                                            }}
+                                        />
+                                    }
+                                    label={housing.name}
+                                />
                             ))}
-                        </Flex>
-                    </CheckboxGroup>
-                </section>
+                        </FormGroup>
+                    </FormControl>
+                </FormSection>
+            )}
 
-                <section>
-                    <Text as="h2">Descrição e Informação</Text>
-                    <TextAreaBox
-                        label="Descrição"
-                        maxLength={250}
-                        error={errors.description}
-                        formControl={{
-                            isInvalid:
-                                !!errors.description && touched.description,
-                        }}
-                        {...getFieldProps('description')}
-                    />
+            <FormSection title="Noites válidas">
+                <FormControl component="fieldset">
+                    <FormGroup>
+                        <Grid container justifyContent={'space-between'}>
+                            {VALID_NIGHTS.map((night) => (
+                                <Grid key={night.name}>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={values.availableWeekDays.includes(
+                                                    night.value,
+                                                )}
+                                                onChange={(e) => {
+                                                    const newValue = e.target
+                                                        .checked
+                                                        ? [
+                                                              ...values.availableWeekDays,
+                                                              night.value,
+                                                          ]
+                                                        : values.availableWeekDays.filter(
+                                                              (v) =>
+                                                                  v !==
+                                                                  night.value,
+                                                          )
+                                                    setFieldValue(
+                                                        'availableWeekDays',
+                                                        newValue,
+                                                    )
+                                                }}
+                                            />
+                                        }
+                                        label={night.name}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </FormGroup>
+                </FormControl>
+            </FormSection>
 
-                    <TextAreaBox
-                        mt={2}
-                        label="Informações gerais e observações"
-                        maxLength={500}
-                        error={errors.notes}
-                        formControl={{
-                            isInvalid: !!errors.notes && touched.notes,
-                        }}
-                        {...getFieldProps('notes')}
-                    />
-                </section>
+            <FormSection title="Descrição e Informação">
+                <TextField
+                    multiline
+                    rows={4}
+                    label="Descrição"
+                    error={!!errors.description}
+                    helperText={errors.description}
+                    {...getFieldProps('description')}
+                />
 
-                <section>
-                    <h2>Fotos e Vídeos</h2>
+                <TextField
+                    sx={{ mt: 2 }}
+                    multiline
+                    rows={4}
+                    label="Informações gerais e observações"
+                    error={!!errors.notes}
+                    helperText={errors.notes}
+                    {...getFieldProps('notes')}
+                />
+            </FormSection>
 
+            <FormSection title="Fotos e Vídeos">
+                <Box
+                    p={6}
+                    borderRadius={1}
+                    sx={{ border: '1px solid', borderColor: 'divider' }}
+                >
                     <Box
-                        p={6}
-                        borderRadius="lg"
-                        border="1px solid"
-                        borderColor="gray.200"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: 2,
+                        }}
                     >
-                        <HStack gap={2} align="center" justify="space-between">
-                            <h2>Galeria de Fotos</h2>
+                        <Typography variant="h6" fontWeight={600} gutterBottom>
+                            Galeria de Fotos
+                        </Typography>
 
-                            <Button
-                                onClick={() => setIsMediaGalleryOpen(true)}
-                                variant="solid"
-                                size="sm"
-                                colorScheme="blue"
-                            >
-                                Selecionar Mídia
-                            </Button>
-                        </HStack>
-                        <DndContext
-                            sensors={sensors}
-                            collisionDetection={closestCenter}
-                            onDragEnd={handleMediaDragEnd}
+                        <Button
+                            onClick={() => setIsMediaGalleryOpen(true)}
+                            variant="contained"
+                            size="small"
+                            color="primary"
                         >
-                            <SortableContext
-                                items={values.medias.map(
-                                    (item) => item.media.id,
-                                )}
-                                strategy={rectSortingStrategy}
-                            >
-                                <SimpleGrid columns={[2, 4, 8]} gap={3} mt={4}>
-                                    {values.medias.map((item, index) => (
+                            Selecionar Mídia
+                        </Button>
+                    </Box>
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
+                        onDragEnd={handleMediaDragEnd}
+                    >
+                        <SortableContext
+                            items={values.medias.map((item) => item.media.id)}
+                            strategy={rectSortingStrategy}
+                        >
+                            <Grid container spacing={3} mt={4}>
+                                {values.medias.map((item, index) => (
+                                    <Grid size={2} key={item.media.id}>
                                         <SortableMediaItem
-                                            key={item.media.id}
                                             mediaItem={item}
                                             index={index}
                                         />
-                                    ))}
-                                </SimpleGrid>
-                            </SortableContext>
-                        </DndContext>
-                    </Box>
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </SortableContext>
+                    </DndContext>
+                </Box>
 
-                    <MediaGallery
-                        isOpen={isMediaGalleryOpen}
-                        onClose={() => setIsMediaGalleryOpen(false)}
-                        selectedItems={values.medias.map(
-                            (item) => item.media.id,
-                        )}
-                        initialItems={values.medias.map((item) => item.media)}
-                        onItemsChange={handleMediaChange}
-                    />
-                </section>
-            </Stack>
-        </Form>
+                <MediaGallery
+                    isOpen={isMediaGalleryOpen}
+                    onClose={() => setIsMediaGalleryOpen(false)}
+                    selectedItems={values.medias.map((item) => item.media.id)}
+                    initialItems={values.medias.map((item) => item.media)}
+                    onItemsChange={handleMediaChange}
+                />
+            </FormSection>
+        </FormContainer>
     )
 }

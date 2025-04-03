@@ -1,33 +1,49 @@
 import { ServiceFull } from '@booksuite/sdk'
-import {
-    Menu,
-    MenuButton,
-    MenuDivider,
-    MenuItem,
-    MenuList,
-} from '@chakra-ui/react'
+import { Menu, MenuItem, ListItemIcon, Divider, styled } from '@mui/material'
 import { Copy, Edit, Eye, EyeOff, Trash } from 'lucide-react'
 import pluralize from 'pluralize'
 
 import { formatCurrency } from '@/common/utils/currency'
 import { Card } from '@/components/atoms/Card'
+import { useState } from 'react'
 
 interface ServiceCardProps {
     service: ServiceFull
     onClick?: (id: string) => void
 }
 
+const OptionDotsButton = styled(Card.OptionDots)({
+    padding: '8px',
+    borderRadius: '50%',
+    '&:hover': {
+        backgroundColor: 'rgba(0, 0, 0, 0.04)',
+    },
+})
+
 export const ServiceCard: React.FC<ServiceCardProps> = ({
     service,
     onClick,
 }) => {
     const thumbUrl = service.medias[0]?.media.url
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const open = Boolean(anchorEl)
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation()
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
 
     return (
         <Card.Container
             key={service.id}
-            _hover={{
-                bg: 'gray.200',
+            sx={{
+                '&:hover': {
+                    bgcolor: 'action.hover',
+                },
             }}
         >
             <Card.Section>
@@ -36,14 +52,14 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
                         src={thumbUrl}
                         alt={service.name}
                         onClick={() => onClick?.(service.id)}
-                        cursor="pointer"
+                        style={{ cursor: 'pointer' }}
                     />
                 )}
             </Card.Section>
-            <Card.Section flex={1}>
+            <Card.Section style={{ flex: 1 }}>
                 <Card.Title>{service.name}</Card.Title>
                 {service.price && (
-                    <Card.Text hideBelow="md">
+                    <Card.Text sx={{ display: { xs: 'none', md: 'block' } }}>
                         {formatCurrency(service.price)}
                     </Card.Text>
                 )}
@@ -70,38 +86,48 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({
                 )}
             </Card.Section>
             <Card.Section>
-                <Menu>
-                    {({}) => (
-                        <>
-                            <MenuButton
-                                as={Card.OptionDots}
-                                onClick={(e) => e.stopPropagation()}
-                            />
-                            <MenuList>
-                                {/* TODO: Implementar campo published */}
-                                <MenuItem icon={<EyeOff size={14} />}>
-                                    Despublicar
-                                </MenuItem>
-                                <MenuItem icon={<Eye size={14} />}>
-                                    Publicar
-                                </MenuItem>
-                                <MenuItem icon={<Edit size={14} />}>
-                                    Editar
-                                </MenuItem>
-                                <MenuItem icon={<Copy size={14} />}>
-                                    Duplicar
-                                </MenuItem>
-                                <MenuDivider />
-                                <MenuItem
-                                    icon={<Trash size={14} />}
-                                    color="red.500"
-                                >
-                                    Excluir
-                                </MenuItem>
-                            </MenuList>
-                        </>
-                    )}
-                </Menu>
+                <div>
+                    <OptionDotsButton onClick={handleClick} />
+                    <Menu
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {/* TODO: Implementar campo published */}
+                        <MenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <EyeOff size={14} />
+                            </ListItemIcon>
+                            Despublicar
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <Eye size={14} />
+                            </ListItemIcon>
+                            Publicar
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <Edit size={14} />
+                            </ListItemIcon>
+                            Editar
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <Copy size={14} />
+                            </ListItemIcon>
+                            Duplicar
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem onClick={handleClose}>
+                            <ListItemIcon>
+                                <Trash size={14} color="error" />
+                            </ListItemIcon>
+                            <span style={{ color: 'red' }}>Excluir</span>
+                        </MenuItem>
+                    </Menu>
+                </div>
             </Card.Section>
         </Card.Container>
     )
