@@ -22,6 +22,7 @@ import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { AgePolicyFormData } from '../utils/config'
 import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
+import { theme } from '@/common/theme'
 
 export const AgePolicyForm = () => {
     const { touched, errors, values, setFieldValue } =
@@ -41,14 +42,14 @@ export const AgePolicyForm = () => {
                 />
                 <Box
                     bgcolor={'grey.100'}
-                    p={2}
+                    p={4}
                     borderRadius={1}
                     display={'flex'}
                     alignItems={'center'}
                 >
-                    <Box display="flex" alignItems="center" gap={1}>
-                        <Info size={23} color={'#0B1F51'} />
-                        <Typography variant="body1" color={'#0B1F51'}>
+                    <Box display="flex" alignItems="center" gap={2}>
+                        <Info color={theme.palette.blue[900]} />
+                        <Typography variant="body1" color={'blue.900'}>
                             <b>Importante:</b> selecione acima qual idade o
                             sistema deve considerar adulto (cobrando valor
                             integral).
