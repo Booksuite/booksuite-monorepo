@@ -1,26 +1,25 @@
-import { Box, Flex } from '@chakra-ui/react'
+import { Box, Stack } from '@mui/material'
 import { ReactNode } from 'react'
 
 import { Logo } from '@/components/atoms/Logo'
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
     return (
-        <Flex
-            direction="column"
-            justify="center"
-            align="center"
-            textAlign="center"
-            minH="100vh"
-            bg="var(--clr-primary)"
+        <Stack
+            justifyContent="center"
+            alignItems="center"
+            minHeight="100vh"
+            bgcolor="blue.900"
             color="white"
+            px={4}
         >
-            <Box maxW="350px" w="full">
+            <Box>
                 <Box display="flex" justifyContent="center">
                     <Logo.FullLogo />
                 </Box>
 
                 <Box mt={10}>{children}</Box>
             </Box>
-        </Flex>
+        </Stack>
     )
 }
