@@ -65,7 +65,6 @@ export const AddressForm = () => {
                         helperText={touched.zipcode && errors.zipcode}
                         disabled={isSubmitting}
                         fullWidth
-                        variant="outlined"
                         {...getFieldProps('zipcode')}
                     />
                 </Grid>
@@ -77,7 +76,6 @@ export const AddressForm = () => {
                         helperText={touched.city && errors.city}
                         disabled={isSubmitting}
                         fullWidth
-                        variant="outlined"
                         {...getFieldProps('city')}
                     />
                 </Grid>
@@ -89,7 +87,6 @@ export const AddressForm = () => {
                         helperText={touched.state && errors.state}
                         disabled={isSubmitting}
                         fullWidth
-                        variant="outlined"
                         {...getFieldProps('state')}
                     />
                 </Grid>
@@ -101,7 +98,6 @@ export const AddressForm = () => {
                         helperText={touched.country && errors.country}
                         disabled={isSubmitting}
                         fullWidth
-                        variant="outlined"
                         {...getFieldProps('country')}
                     />
                 </Grid>
@@ -113,7 +109,6 @@ export const AddressForm = () => {
                         helperText={touched.address && errors.address}
                         disabled={isSubmitting}
                         fullWidth
-                        variant="outlined"
                         {...getFieldProps('address')}
                     />
                 </Grid>
@@ -125,7 +120,6 @@ export const AddressForm = () => {
                         helperText={touched.number && errors.number}
                         disabled={isSubmitting}
                         fullWidth
-                        variant="outlined"
                         {...getFieldProps('number')}
                     />
                 </Grid>

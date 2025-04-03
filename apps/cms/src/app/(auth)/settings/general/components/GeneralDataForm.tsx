@@ -1,6 +1,6 @@
 'use client'
 
-import { Grid, Select, TextField } from '@mui/material'
+import { Grid, MenuItem, Select, TextField } from '@mui/material'
 import { useFormikContext } from 'formik'
 import React from 'react'
 
@@ -34,10 +34,10 @@ export const GeneralForm: React.FC = () => {
                             }
                         >
                             {Object.entries(COMPANY_TYPES).map(
-                                ([label, value]) => (
-                                    <option key={label} value={label}>
-                                        {value}
-                                    </option>
+                                ([value, label]) => (
+                                    <MenuItem key={value} value={value}>
+                                        {label}
+                                    </MenuItem>
                                 ),
                             )}
                         </Select>
@@ -55,9 +55,9 @@ export const GeneralForm: React.FC = () => {
                         >
                             {Object.entries(BRAZIL_TIMEZONES).map(
                                 ([label, value]) => (
-                                    <option key={label} value={value}>
+                                    <MenuItem key={label} value={value}>
                                         {value}
-                                    </option>
+                                    </MenuItem>
                                 ),
                             )}
                         </Select>

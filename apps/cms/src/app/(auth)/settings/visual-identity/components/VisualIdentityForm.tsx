@@ -24,7 +24,9 @@ export default function VisualIdentityForm() {
 
     const [logo, setLogo] = useState<string | null>(null)
     const [favicon, setFavicon] = useState<string | null>(null)
-    const [mainColor, setMainColor] = useState('#714C3B')
+    const [mainColor, setMainColor] = useState(
+        `${values.settings.theme?.color}`,
+    )
 
     const logoInputRef = useRef<HTMLInputElement>(null)
     const faviconInputRef = useRef<HTMLInputElement>(null)
@@ -64,7 +66,7 @@ export default function VisualIdentityForm() {
 
     return (
         <FormContainer>
-            <FormSection>
+            {/*<FormSection>
                 <Select
                     value={selectedType || ''}
                     onChange={(e) => setSelectedType(Number(e.target.value))}
@@ -80,7 +82,7 @@ export default function VisualIdentityForm() {
                         </MenuItem>
                     ))}
                 </Select>
-            </FormSection>
+            </FormSection>*/}
 
             <FormSection
                 sx={{
@@ -240,6 +242,8 @@ export default function VisualIdentityForm() {
                     <Grid size={1}>
                         <Box
                             sx={{
+                                border: '1px solid',
+                                borderColor: 'divider',
                                 bgcolor: mainColor,
                                 borderRadius: 1,
                                 width: 55,
