@@ -89,7 +89,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <ScanText size={20} />,
         title: 'Política de Privacidade',
-        href: `/settings/politica-de-privacidade`,
+        href: `/settings/privacy-policy`,
     },
     {
         icon: <UserRound size={20} />,
