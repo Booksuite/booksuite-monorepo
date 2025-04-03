@@ -8,7 +8,6 @@ import {
     FormControlLabel,
     FormGroup,
     FormControl,
-    FormLabel,
     Grid,
     MenuItem,
     Select,
@@ -31,17 +30,13 @@ import {
     rectSortingStrategy,
     SortableContext,
 } from '@dnd-kit/sortable'
-import { Form, useFormikContext } from 'formik'
+import { useFormikContext } from 'formik'
 import type React from 'react'
 import { useState } from 'react'
 
 import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { DatePickerBox } from '@/components/atoms/DatePickerBox'
-import InputBox from '@/components/atoms/InputBox'
-import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import { NumberInput } from '@/components/atoms/NumberInput'
-import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { MediaGallery } from '@/components/organisms/MediaGallery'
 import { SortableMediaItem } from '../../rooms/components/SortableMediaItem'
 import type { ServiceFormData } from '../utils/config'
@@ -157,9 +152,10 @@ export const ServiceForm: React.FC = () => {
                     <TextField
                         label="Preço Final da Experiência"
                         type="currency"
-                        error={touched.price && Boolean(errors.name)}
+                        error={touched.price && Boolean(errors.price)}
+                        helperText={touched.price && errors.price}
                         fullWidth
-                        {...getFieldProps('name')}
+                        {...getFieldProps('price')}
                     />
                 </Box>
 
@@ -199,8 +195,14 @@ export const ServiceForm: React.FC = () => {
                         <NumberInput
                             label="Mínimo de Diárias"
                             min={1}
+                            error={!!errors.minDaily}
+                            helperText={errors.minDaily}
                             {...getFieldProps('minDaily')}
-                            onChange={handleChange('minDaily')}
+                            onChange={(e) => {
+                                const newValueNumber = Number(e.target.value)
+                                if (Number.isNaN(newValueNumber)) return
+                                setFieldValue('minDaily', newValueNumber)
+                            }}
                         />
                     </Grid>
 
@@ -208,8 +210,17 @@ export const ServiceForm: React.FC = () => {
                         <NumberInput
                             label="Antecedência mínima"
                             min={1}
+                            error={!!errors.minNotice}
+                            helperText={errors.minNotice}
                             {...getFieldProps('minNotice')}
-                            onChange={handleChange('minNotice')}
+                            onChange={(e) => {
+                                const newValueNumber = Number(e.target.value)
+                                if (Number.isNaN(newValueNumber)) return
+                                setFieldValue(
+                                    'minNotice',
+                                    Math.round(newValueNumber),
+                                )
+                            }}
                         />
                     </Grid>
                 </Grid>
@@ -302,8 +313,13 @@ export const ServiceForm: React.FC = () => {
                 <NumberInput
                     label="Número de adultos"
                     min={0}
+                    helperText={errors.adults}
                     {...getFieldProps('adults')}
-                    onChange={(e) => setFieldValue('adults', e.target.value)}
+                    onChange={(e) => {
+                        const newValueNumber = Number(e.target.value)
+                        if (Number.isNaN(newValueNumber)) return
+                        setFieldValue('adults', Math.round(newValueNumber))
+                    }}
                 />
             </FormSection>
 
