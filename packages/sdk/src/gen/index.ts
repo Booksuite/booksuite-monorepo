@@ -37,6 +37,14 @@ export type { DeleteReservationMutationKey } from './hooks/ReservationHooks/useD
 export type { GetReservationByIdQueryKey } from './hooks/ReservationHooks/useGetReservationById.ts'
 export type { ReservationControllerUpdateMutationKey } from './hooks/ReservationHooks/useReservationControllerUpdate.ts'
 export type { SearchReservationsQueryKey } from './hooks/ReservationHooks/useSearchReservations.ts'
+export type { ReservationOptionsControllerCreateMutationKey } from './hooks/ReservationOptionsHooks/useReservationOptionsControllerCreate.ts'
+export type { ReservationOptionsControllerGetByIdQueryKey } from './hooks/ReservationOptionsHooks/useReservationOptionsControllerGetById.ts'
+export type { ReservationOptionsControllerUpdateMutationKey } from './hooks/ReservationOptionsHooks/useReservationOptionsControllerUpdate.ts'
+export type { SearchReservationOptionQueryKey } from './hooks/ReservationOptionsHooks/useSearchReservationOption.ts'
+export type { SearchSeasonRulesQueryKey } from './hooks/SeasonRulesHooks/useSearchSeasonRules.ts'
+export type { SeasonRulesControllerCreateMutationKey } from './hooks/SeasonRulesHooks/useSeasonRulesControllerCreate.ts'
+export type { SeasonRulesControllerGetByIdQueryKey } from './hooks/SeasonRulesHooks/useSeasonRulesControllerGetById.ts'
+export type { SeasonRulesControllerUpdateMutationKey } from './hooks/SeasonRulesHooks/useSeasonRulesControllerUpdate.ts'
 export type { CreateServiceMutationKey } from './hooks/ServiceHooks/useCreateService.ts'
 export type { DeleteServiceMutationKey } from './hooks/ServiceHooks/useDeleteService.ts'
 export type { GetServiceByIdQueryKey } from './hooks/ServiceHooks/useGetServiceById.ts'
@@ -304,6 +312,7 @@ export type { OrderDirection } from './types/OrderDirection.ts'
 export type { PaginationQueryInput } from './types/PaginationQueryInput.ts'
 export type { PenaltyRangeResponseDTOPenaltyBy, PenaltyRange } from './types/PenaltyRange.ts'
 export type { PenaltyRangeDTOPenaltyBy, PenaltyRangeInput } from './types/PenaltyRangeInput.ts'
+export type { PriceVariationType } from './types/PriceVariationType.ts'
 export type { ReservationResponseDTOStatus, ReservationResponseDTOSaleChannel, Reservation } from './types/Reservation.ts'
 export type { ReservationConfigResponseDTOReservationDepositType, ReservationConfig } from './types/ReservationConfig.ts'
 export type {
@@ -356,6 +365,43 @@ export type {
 } from './types/ReservationController/SearchReservations.ts'
 export type { ReservationCreateDTOStatus, ReservationCreateDTOSaleChannel, ReservationCreateInput } from './types/ReservationCreateInput.ts'
 export type { ReservationResponseFullDTOStatus, ReservationResponseFullDTOSaleChannel, ReservationFull } from './types/ReservationFull.ts'
+export type { ReservationOption } from './types/ReservationOption.ts'
+export type { ReservationOptionFull } from './types/ReservationOptionFull.ts'
+export type { ReservationOptionHousingUnitTypeInput } from './types/ReservationOptionHousingUnitTypeInput.ts'
+export type { ReservationOptionInput } from './types/ReservationOptionInput.ts'
+export type { ReservationOptionOrderBy } from './types/ReservationOptionOrderBy.ts'
+export type { ReservationOptionOrderByInput } from './types/ReservationOptionOrderByInput.ts'
+export type { ReservationOptionPaginated } from './types/ReservationOptionPaginated.ts'
+export type {
+  ReservationOptionsControllerCreatePathParams,
+  ReservationOptionsControllerCreate200,
+  ReservationOptionsControllerCreateMutationRequest,
+  ReservationOptionsControllerCreateMutationResponse,
+  ReservationOptionsControllerCreateMutation,
+} from './types/ReservationOptionsController/ReservationOptionsControllerCreate.ts'
+export type {
+  ReservationOptionsControllerGetByIdPathParams,
+  ReservationOptionsControllerGetById200,
+  ReservationOptionsControllerGetByIdQueryResponse,
+  ReservationOptionsControllerGetByIdQuery,
+} from './types/ReservationOptionsController/ReservationOptionsControllerGetById.ts'
+export type {
+  ReservationOptionsControllerUpdatePathParams,
+  ReservationOptionsControllerUpdate200,
+  ReservationOptionsControllerUpdateMutationRequest,
+  ReservationOptionsControllerUpdateMutationResponse,
+  ReservationOptionsControllerUpdateMutation,
+} from './types/ReservationOptionsController/ReservationOptionsControllerUpdate.ts'
+export type {
+  SearchReservationOptionPathParams,
+  SearchReservationOptionQueryParams,
+  SearchReservationOption200,
+  SearchReservationOptionMutationRequest,
+  SearchReservationOptionMutationResponse,
+  SearchReservationOptionMutation,
+} from './types/ReservationOptionsController/SearchReservationOption.ts'
+export type { ReservationOptionSearchBodyInput } from './types/ReservationOptionSearchBodyInput.ts'
+export type { ReservationOptionSearchFilterInput } from './types/ReservationOptionSearchFilterInput.ts'
 export type { ReservationOrderBy } from './types/ReservationOrderBy.ts'
 export type { ReservationOrderByInput } from './types/ReservationOrderByInput.ts'
 export type { ReservationPaginated } from './types/ReservationPaginated.ts'
@@ -368,6 +414,45 @@ export type {
 export type { ReservationService } from './types/ReservationService.ts'
 export type { ReservationServiceInput } from './types/ReservationServiceInput.ts'
 export type { ReservationUpdateDTOStatus, ReservationUpdateDTOSaleChannel, ReservationUpdateInput } from './types/ReservationUpdateInput.ts'
+export type { SeasonRule } from './types/SeasonRule.ts'
+export type { SeasonRuleFull } from './types/SeasonRuleFull.ts'
+export type { SeasonRuleHousingUnitType } from './types/SeasonRuleHousingUnitType.ts'
+export type { SeasonRuleHousingUnitTypePriceInput } from './types/SeasonRuleHousingUnitTypePriceInput.ts'
+export type { SeasonRuleInput } from './types/SeasonRuleInput.ts'
+export type { SeasonRuleOrderBy } from './types/SeasonRuleOrderBy.ts'
+export type { SeasonRuleOrderByInput } from './types/SeasonRuleOrderByInput.ts'
+export type { SeasonRulePaginated } from './types/SeasonRulePaginated.ts'
+export type {
+  SearchSeasonRulesPathParams,
+  SearchSeasonRulesQueryParams,
+  SearchSeasonRules200,
+  SearchSeasonRulesMutationRequest,
+  SearchSeasonRulesMutationResponse,
+  SearchSeasonRulesMutation,
+} from './types/SeasonRulesController/SearchSeasonRules.ts'
+export type {
+  SeasonRulesControllerCreatePathParams,
+  SeasonRulesControllerCreate200,
+  SeasonRulesControllerCreateMutationRequest,
+  SeasonRulesControllerCreateMutationResponse,
+  SeasonRulesControllerCreateMutation,
+} from './types/SeasonRulesController/SeasonRulesControllerCreate.ts'
+export type {
+  SeasonRulesControllerGetByIdPathParams,
+  SeasonRulesControllerGetById200,
+  SeasonRulesControllerGetByIdQueryResponse,
+  SeasonRulesControllerGetByIdQuery,
+} from './types/SeasonRulesController/SeasonRulesControllerGetById.ts'
+export type {
+  SeasonRulesControllerUpdatePathParams,
+  SeasonRulesControllerUpdate200,
+  SeasonRulesControllerUpdateMutationRequest,
+  SeasonRulesControllerUpdateMutationResponse,
+  SeasonRulesControllerUpdateMutation,
+} from './types/SeasonRulesController/SeasonRulesControllerUpdate.ts'
+export type { SeasonRuleSearchBodyInput } from './types/SeasonRuleSearchBodyInput.ts'
+export type { SeasonRuleSearchFilterInput } from './types/SeasonRuleSearchFilterInput.ts'
+export type { SeasonRuleUpdateInput } from './types/SeasonRuleUpdateInput.ts'
 export type { Service } from './types/Service.ts'
 export type {
   CreateServicePathParams,
@@ -454,12 +539,31 @@ export { getUpsertMediaUrl, upsertMedia } from './client/MediaService/upsertMedi
 export { getGetCompanyReservationConfigUrl, getCompanyReservationConfig } from './client/ReservationConfigService/getCompanyReservationConfig.ts'
 export { reservationConfigService } from './client/ReservationConfigService/reservationConfigService.ts'
 export { getUpsertCompanyReservationConfigUrl, upsertCompanyReservationConfig } from './client/ReservationConfigService/upsertCompanyReservationConfig.ts'
+export {
+  getReservationOptionsControllerCreateUrl,
+  reservationOptionsControllerCreate,
+} from './client/ReservationOptionsService/reservationOptionsControllerCreate.ts'
+export {
+  getReservationOptionsControllerGetByIdUrl,
+  reservationOptionsControllerGetById,
+} from './client/ReservationOptionsService/reservationOptionsControllerGetById.ts'
+export {
+  getReservationOptionsControllerUpdateUrl,
+  reservationOptionsControllerUpdate,
+} from './client/ReservationOptionsService/reservationOptionsControllerUpdate.ts'
+export { reservationOptionsService } from './client/ReservationOptionsService/reservationOptionsService.ts'
+export { getSearchReservationOptionUrl, searchReservationOption } from './client/ReservationOptionsService/searchReservationOption.ts'
 export { getCreateReservationUrl, createReservation } from './client/ReservationService/createReservation.ts'
 export { getDeleteReservationUrl, deleteReservation } from './client/ReservationService/deleteReservation.ts'
 export { getGetReservationByIdUrl, getReservationById } from './client/ReservationService/getReservationById.ts'
 export { getReservationControllerUpdateUrl, reservationControllerUpdate } from './client/ReservationService/reservationControllerUpdate.ts'
 export { reservationService } from './client/ReservationService/reservationService.ts'
 export { getSearchReservationsUrl, searchReservations } from './client/ReservationService/searchReservations.ts'
+export { getSearchSeasonRulesUrl, searchSeasonRules } from './client/SeasonRulesService/searchSeasonRules.ts'
+export { getSeasonRulesControllerCreateUrl, seasonRulesControllerCreate } from './client/SeasonRulesService/seasonRulesControllerCreate.ts'
+export { getSeasonRulesControllerGetByIdUrl, seasonRulesControllerGetById } from './client/SeasonRulesService/seasonRulesControllerGetById.ts'
+export { getSeasonRulesControllerUpdateUrl, seasonRulesControllerUpdate } from './client/SeasonRulesService/seasonRulesControllerUpdate.ts'
+export { seasonRulesService } from './client/SeasonRulesService/seasonRulesService.ts'
 export { getCreateServiceUrl, createService } from './client/ServiceService/createService.ts'
 export { getDeleteServiceUrl, deleteService } from './client/ServiceService/deleteService.ts'
 export { getGetServiceByIdUrl, getServiceById } from './client/ServiceService/getServiceById.ts'
@@ -534,6 +638,32 @@ export { deleteReservationMutationKey, useDeleteReservation } from './hooks/Rese
 export { getReservationByIdQueryKey, getReservationByIdQueryOptions, useGetReservationById } from './hooks/ReservationHooks/useGetReservationById.ts'
 export { reservationControllerUpdateMutationKey, useReservationControllerUpdate } from './hooks/ReservationHooks/useReservationControllerUpdate.ts'
 export { searchReservationsQueryKey, searchReservationsQueryOptions, useSearchReservations } from './hooks/ReservationHooks/useSearchReservations.ts'
+export {
+  reservationOptionsControllerCreateMutationKey,
+  useReservationOptionsControllerCreate,
+} from './hooks/ReservationOptionsHooks/useReservationOptionsControllerCreate.ts'
+export {
+  reservationOptionsControllerGetByIdQueryKey,
+  reservationOptionsControllerGetByIdQueryOptions,
+  useReservationOptionsControllerGetById,
+} from './hooks/ReservationOptionsHooks/useReservationOptionsControllerGetById.ts'
+export {
+  reservationOptionsControllerUpdateMutationKey,
+  useReservationOptionsControllerUpdate,
+} from './hooks/ReservationOptionsHooks/useReservationOptionsControllerUpdate.ts'
+export {
+  searchReservationOptionQueryKey,
+  searchReservationOptionQueryOptions,
+  useSearchReservationOption,
+} from './hooks/ReservationOptionsHooks/useSearchReservationOption.ts'
+export { searchSeasonRulesQueryKey, searchSeasonRulesQueryOptions, useSearchSeasonRules } from './hooks/SeasonRulesHooks/useSearchSeasonRules.ts'
+export { seasonRulesControllerCreateMutationKey, useSeasonRulesControllerCreate } from './hooks/SeasonRulesHooks/useSeasonRulesControllerCreate.ts'
+export {
+  seasonRulesControllerGetByIdQueryKey,
+  seasonRulesControllerGetByIdQueryOptions,
+  useSeasonRulesControllerGetById,
+} from './hooks/SeasonRulesHooks/useSeasonRulesControllerGetById.ts'
+export { seasonRulesControllerUpdateMutationKey, useSeasonRulesControllerUpdate } from './hooks/SeasonRulesHooks/useSeasonRulesControllerUpdate.ts'
 export { createServiceMutationKey, useCreateService } from './hooks/ServiceHooks/useCreateService.ts'
 export { deleteServiceMutationKey, useDeleteService } from './hooks/ServiceHooks/useDeleteService.ts'
 export { getServiceByIdQueryKey, getServiceByIdQueryOptions, useGetServiceById } from './hooks/ServiceHooks/useGetServiceById.ts'

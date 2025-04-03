@@ -1,0 +1,1 @@
+export type SeasonRuleOrderBy = 'name' | 'startDate' | 'endDate' | 'minDaily' | 'price'
