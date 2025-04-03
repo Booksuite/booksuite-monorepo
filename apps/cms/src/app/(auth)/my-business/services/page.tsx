@@ -2,26 +2,21 @@
 
 import {
     ServiceFull,
-    ServiceOrderByDTOOrderBy,
+    ServiceOrderBy,
     useSearchServices,
+    useUpdateService,
 } from '@booksuite/sdk'
+import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
 import {
-    HStack,
-    IconButton,
-    Image,
-    Input,
-    InputGroup,
-    InputRightElement,
-    Text,
-    VStack,
-} from '@chakra-ui/react'
-import {
-    ColumnDef,
-    functionalUpdate,
-    getCoreRowModel,
-    useReactTable,
-} from '@tanstack/react-table'
-import { Plus, Search, X } from 'lucide-react'
+    Check,
+    CheckCheck,
+    Copy,
+    Edit,
+    Plus,
+    Search,
+    Trash,
+    X,
+} from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { debounce } from 'radash'
 import { useEffect, useRef, useState } from 'react'
@@ -32,29 +27,32 @@ import { useSearchParamsPagination } from '@/common/hooks/usePagination'
 import { formatCurrency } from '@/common/utils/currency'
 import { LinkButton } from '@/components/atoms/LinkButton'
 import { PaginationControls } from '@/components/molecules/PaginationControl'
+import { TableRowActionItem } from '@/components/molecules/TableRowActionItem'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Table } from '@/components/organisms/Table'
-
-import { ServiceRowActionsMenu } from './components/RowActionsMenu'
+import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
     { key: 'unpublished', label: 'Não publicadas' },
 ]
 
-const columnsDefinition: ColumnDef<ServiceFull>[] = [
+const COLUMNS_DEFINITION = [
     {
         id: 'image',
+        header: '',
         size: 85,
-        cell: ({ row }) => (
-            <Image
+        Cell: ({ row }: { row: { original: ServiceFull } }) => (
+            <img
                 src={row.original.medias[0]?.media.url}
                 alt={row.original.name}
-                objectFit="cover"
-                borderRadius="lg"
-                width="72px"
-                height="72px"
+                style={{
+                    width: '72px',
+                    height: '72px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                }}
             />
         ),
     },
@@ -63,44 +61,47 @@ const columnsDefinition: ColumnDef<ServiceFull>[] = [
         header: 'Nome',
         accessorKey: 'name',
         enableSorting: true,
-        cell: ({ row }) => (
-            <Text fontWeight="bold" fontSize="md" color="#486581">
+        Cell: ({ row }: { row: { original: ServiceFull } }) => (
+            <span
+                style={{
+                    fontWeight: 'bold',
+                    fontSize: '14px',
+                    color: '#486581',
+                }}
+            >
                 {row.original.name}
-            </Text>
+            </span>
         ),
     },
     {
         id: 'price',
         header: 'Preço',
-        accessorFn: (row) => (row.price ? formatCurrency(row.price) : '-'),
+        accessorFn: (row: ServiceFull) =>
+            row.price ? formatCurrency(row.price) : '-',
+        enableSorting: true,
     },
     {
         id: 'published',
         header: 'Status',
-        accessorFn: (row) => (row.published ? 'Ativo' : 'Inativo'),
-    },
-    {
-        id: 'actions',
-        size: 50,
-        cell: ({ row }) => <ServiceRowActionsMenu item={row.original} />,
+        accessorFn: (row: ServiceFull) => (row.published ? 'Ativo' : 'Inativo'),
+        enableSorting: true,
     },
 ]
 
 export default function Services() {
     const { push } = useRouter()
+    const { showDialog } = useConfirmationDialog()
+    const { mutate: updateService } = useUpdateService()
+
     const [selectedFilters, setSelectedFilters] = useState<string[]>([])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
 
     const { orderBy, orderDirection, setOrder } =
-        useSearchParamsOrder<ServiceOrderByDTOOrderBy>({
+        useSearchParamsOrder<ServiceOrderBy>({
             defaultOrder: 'name',
             currentPath: '/my-business/services',
         })
-
-    const handleRowClick = (row: ServiceFull) => {
-        push(`/my-business/services/${row.id}`)
-    }
 
     const { page, itemsPerPage, setPage, setItemsPerPage } =
         useSearchParamsPagination({
@@ -140,36 +141,59 @@ export default function Services() {
         { query: searchQuery.length > 0 ? searchQuery : undefined },
     )
 
-    const table = useReactTable({
-        data: services?.items ?? [],
-        columns: columnsDefinition,
-        getCoreRowModel: getCoreRowModel(),
-        manualSorting: true,
-        state: {
-            sorting: [
-                {
-                    id: orderBy,
-                    desc: orderDirection === 'desc',
-                },
-            ],
-        },
-        onSortingChange: (sorting) => {
-            const newValue = functionalUpdate(sorting, [
-                {
-                    id: orderBy,
-                    desc: orderDirection === 'desc',
-                },
-            ])
+    const handleRowClick = (row: ServiceFull) => {
+        push(`/my-business/services/${row.id}`)
+    }
 
-            setOrder(
-                newValue[0]?.id ?? 'name',
-                newValue[0]?.desc ? 'desc' : 'asc',
-            )
-        },
-    })
+    const handleDuplicate = (item: ServiceFull) => {
+        // TODO: push(`/my-business/services/${item.id}/duplicate`)
+    }
+
+    const handleTogglePublished = (item: ServiceFull) => {
+        showDialog({
+            title: 'Confirmar publicação',
+            description: `Tem certeza que deseja ${
+                item.published ? 'despublicar' : 'publicar'
+            } "${item.name}"?`,
+            confirmButton: {
+                children: 'Confirmar',
+                onClick: () => {
+                    updateService({
+                        companyId,
+                        id: item.id,
+                        data: {
+                            published: !item.published,
+                        },
+                    })
+                },
+            },
+            cancelButton: {
+                children: 'Cancelar',
+            },
+        })
+    }
+
+    const handleDelete = (item: ServiceFull) => {
+        showDialog({
+            title: 'Confirmar exclusão',
+            description: `Tem certeza que deseja excluir "${item.name}"? Esta ação não pode ser desfeita.`,
+            confirmButton: {
+                children: 'Excluir',
+                onClick: () => {
+                    console.log('Excluir', item.id)
+                    // TODO: implement actual delete functionality
+                },
+            },
+            variant: 'error',
+        })
+    }
+
+    const handleEdit = (item: ServiceFull) => {
+        push(`/my-business/services/${item.id}`)
+    }
 
     return (
-        <div className="Services">
+        <>
             <PageHeader
                 title="Serviços"
                 backLButtonLabel="Meu Negócio"
@@ -177,70 +201,141 @@ export default function Services() {
                 headerRight={
                     <LinkButton
                         href="/my-business/services/create"
-                        leftIcon={<Plus size={16} />}
+                        startIcon={<Plus size={16} />}
                     >
                         Adicionar
                     </LinkButton>
                 }
             />
 
-            <VStack gap={4} alignItems="stretch">
-                <HStack flex={1} justifyContent="space-between">
+            <Stack spacing={2}>
+                <Stack
+                    direction="row"
+                    flex={1}
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
                     <ChipFilter
                         items={chipItems}
                         value={selectedFilters}
                         onChange={setSelectedFilters}
                     />
 
-                    <InputGroup w="300px">
-                        <Input
-                            type="text"
-                            placeholder="Pesquisar"
-                            value={searchInputValue}
-                            onChange={(e) =>
-                                setSearchInputValue(e.target.value)
-                            }
-                        />
-                        <InputRightElement>
-                            <IconButton
-                                variant="ghost"
-                                aria-label="Pesquisar"
-                                size="sm"
-                                onClick={() => {
-                                    setSearchInputValue('')
-                                    setSearchQuery('')
-                                }}
-                            >
-                                {searchQuery.length > 0 ? (
-                                    <X size={16} />
-                                ) : (
-                                    <Search size={16} />
-                                )}
-                            </IconButton>
-                        </InputRightElement>
-                    </InputGroup>
-                </HStack>
+                    <TextField
+                        variant="outlined"
+                        size="small"
+                        placeholder="Pesquisar"
+                        value={searchInputValue}
+                        onChange={(e) => setSearchInputValue(e.target.value)}
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => {
+                                                setSearchInputValue('')
+                                                setSearchQuery('')
+                                            }}
+                                        >
+                                            {searchQuery.length > 0 ? (
+                                                <X size={16} />
+                                            ) : (
+                                                <Search size={16} />
+                                            )}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                    />
+                </Stack>
 
                 <Table
-                    table={table}
+                    columns={COLUMNS_DEFINITION}
+                    data={services?.items ?? []}
                     error={error}
-                    isLoading={isLoading}
+                    enableRowActions
+                    renderRowActionMenuItems={({ row, closeMenu }) => [
+                        <TableRowActionItem
+                            key="edit"
+                            label="Editar"
+                            Icon={Edit}
+                            onClick={() => {
+                                handleEdit(row.original)
+                                closeMenu()
+                            }}
+                        />,
+                        <TableRowActionItem
+                            key="toggle-published"
+                            label={
+                                row.original.published
+                                    ? 'Despublicar'
+                                    : 'Publicar'
+                            }
+                            Icon={row.original.published ? CheckCheck : Check}
+                            onClick={() => {
+                                handleTogglePublished(row.original)
+                                closeMenu()
+                            }}
+                        />,
+                        <TableRowActionItem
+                            key="duplicate"
+                            label="Duplicar"
+                            Icon={Copy}
+                            onClick={() => {
+                                handleDuplicate(row.original)
+                                closeMenu()
+                            }}
+                        />,
+                        <TableRowActionItem
+                            key="delete"
+                            label="Excluir"
+                            Icon={Trash}
+                            onClick={() => {
+                                handleDelete(row.original)
+                                closeMenu()
+                            }}
+                        />,
+                    ]}
+                    state={{
+                        isLoading,
+                        sorting: [
+                            {
+                                id: orderBy,
+                                desc: orderDirection === 'desc',
+                            },
+                        ],
+                    }}
+                    onSortingChange={(sorting) => {
+                        const newValue =
+                            typeof sorting === 'function'
+                                ? sorting([
+                                      {
+                                          id: orderBy,
+                                          desc: orderDirection === 'desc',
+                                      },
+                                  ])
+                                : sorting
+
+                        setOrder(
+                            newValue[0]?.id ?? 'name',
+                            newValue[0]?.desc ? 'desc' : 'asc',
+                        )
+                    }}
                     onRowClick={handleRowClick}
                 />
 
-                <HStack justifyContent="flex-end">
+                <Stack direction="row" justifyContent="flex-end">
                     <PaginationControls
                         page={page}
-                        prevPage={services?.prevPage ?? null}
-                        nextPage={services?.nextPage ?? null}
-                        totalPages={services?.totalPages ?? 0}
-                        totalItems={services?.totalItems ?? 0}
                         itemsPerPage={itemsPerPage}
                         onItemsPerPageChange={setItemsPerPage}
-                        onPageChange={setPage}
+                        count={services?.totalPages ?? 0}
+                        onChange={(_, value) => setPage(value)}
                     />
-                </HStack>
-            </VStack>
-        </div>
+                </Stack>
+            </Stack>
+        </>
     )
 }

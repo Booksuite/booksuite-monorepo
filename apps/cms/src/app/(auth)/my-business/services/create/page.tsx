@@ -1,7 +1,7 @@
 'use client'
 
 import { useCreateService } from '@booksuite/sdk'
-import { Flex, useToast } from '@chakra-ui/react'
+import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -58,16 +58,9 @@ export default function CreateServicePage() {
     return (
         <div className="CreateService">
             <PageHeader.Root>
-                <Flex
-                    alignItems="center"
-                    justifyContent="space-between"
-                    gap={2}
-                >
-                    <PageHeader.BackLink href="/my-business/services">
-                        Serviços
-                    </PageHeader.BackLink>
-                </Flex>
-
+                <PageHeader.BackLink href="/my-business/services">
+                    Serviços
+                </PageHeader.BackLink>
                 <PageHeader.Title>Criar Serviço</PageHeader.Title>
             </PageHeader.Root>
 
