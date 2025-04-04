@@ -43,8 +43,6 @@ export const ReservationOptionForm: React.FC = () => {
         handleChange,
     } = useFormikContext<ReservationOptionData>()
 
-    console.log(values)
-
     const companyId = useCurrentCompanyId()
     const { data: housingUnitTypes, isLoading: isLoadingHousingUnitTypes } =
         useSearchHousingUnitTypes(
@@ -158,8 +156,14 @@ export const ReservationOptionForm: React.FC = () => {
                                         `ageGroupPrices.${index}.price`,
                                     )}
                                     onChange={(e) => {
-                                        setFieldValue(`ageGroupPrices.${index}.ageGroupId`, a.id)
-                                        setFieldValue(`ageGroupPrices.${index}.price`, e.target.value)
+                                        setFieldValue(
+                                            `ageGroupPrices.${index}.ageGroupId`,
+                                            a.id,
+                                        )
+                                        setFieldValue(
+                                            `ageGroupPrices.${index}.price`,
+                                            e.target.value,
+                                        )
                                     }}
                                 />
                             </Box>
