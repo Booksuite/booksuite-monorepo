@@ -22,10 +22,14 @@ import { FieldArray, useFormikContext } from 'formik'
 import { CirclePlus, Trash } from 'lucide-react'
 import React, { useEffect } from 'react'
 
-import { BILLING_TYPE_MAPPING, BILLING_TYPE_RESERVATION_OPTION_MAPPING } from '@/common/constants/billingType'
+import {
+    BILLING_TYPE_MAPPING,
+    BILLING_TYPE_RESERVATION_OPTION_MAPPING,
+} from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
+import { TextFieldCurrency } from '@/components/atoms/TextFieldCurrency'
 import { VALID_NIGHTS } from '../../services/utils/constants'
 import { ReservationOptionData } from '../utils/config'
 
@@ -36,6 +40,7 @@ export const ReservationOptionForm: React.FC = () => {
         values,
         touched,
         setFieldValue,
+        handleChange,
     } = useFormikContext<ReservationOptionData>()
 
     const companyId = useCurrentCompanyId()
@@ -53,20 +58,8 @@ export const ReservationOptionForm: React.FC = () => {
         companyId: companyId,
     })
 
-    useEffect(() => {
-        if (agePolicy?.ageGroups) {
-            setFieldValue(
-                'ageGroupPrices',
-                agePolicy.ageGroups.map((a) => ({
-                    ageGroupId: a.id,
-                    price: 0,
-                })),
-            )
-        }
-    }, [agePolicy, setFieldValue])
-
     return (
-        <FormContainer>
+        <FormContainer spacing={3}>
             <FormSection>
                 <FormControlLabel
                     control={
@@ -103,24 +96,22 @@ export const ReservationOptionForm: React.FC = () => {
             <FormSection title="Preço">
                 <Grid size={4}>
                     <FormControl fullWidth>
-                        <Select
-                            value={values.billingType}
-                            onChange={(e) =>
-                                setFieldValue('billingType', e.target.value)
-                            }
-                            displayEmpty
+                        <TextField
+                            select
+                            label="Tipo de Cobrança"
+                            error={touched.name && Boolean(errors.name)}
+                            helperText={touched.name && errors.name}
+                            fullWidth
+                            {...getFieldProps('billingType')}
                         >
-                            <MenuItem value="" disabled>
-                                Selecione um tipo de cobrança
-                            </MenuItem>
-                            {Object.entries(BILLING_TYPE_RESERVATION_OPTION_MAPPING).map(
-                                ([key, value]) => (
-                                    <MenuItem key={key} value={key}>
-                                        {value}
-                                    </MenuItem>
-                                ),
-                            )}
-                        </Select>
+                            {Object.entries(
+                                BILLING_TYPE_RESERVATION_OPTION_MAPPING,
+                            ).map(([key, value]) => (
+                                <MenuItem key={key} value={key}>
+                                    {value}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                     </FormControl>
                 </Grid>
 
@@ -132,70 +123,53 @@ export const ReservationOptionForm: React.FC = () => {
                         gap: 2,
                     }}
                 >
-                    <TextField
-                        label="Valor Adicional (por adulto)"
-                        type="number"
-                        error={
-                            touched.additionalAdultPrice &&
-                            Boolean(errors.additionalAdultPrice)
-                        }
-                        helperText={
-                            touched.additionalAdultPrice &&
-                            errors.additionalAdultPrice
-                        }
+                    <TextFieldCurrency
                         fullWidth
+                        label="Valor Adicional (por adulto)"
+                        error={!!errors.additionalAdultPrice}
+                        helperText={errors.additionalAdultPrice}
                         {...getFieldProps('additionalAdultPrice')}
                     />
-                    <TextField
-                        label="Valor Adicional (por criança)"
-                        type="number"
-                        error={
-                            touched.additionalChildrenPrice &&
-                            Boolean(errors.additionalChildrenPrice)
-                        }
-                        helperText={
-                            touched.additionalChildrenPrice &&
-                            errors.additionalChildrenPrice
-                        }
+                    <TextFieldCurrency
                         fullWidth
+                        label="Valor Adicional (por criança)"
+                        error={!!errors.additionalChildrenPrice}
+                        helperText={errors.additionalChildrenPrice}
                         {...getFieldProps('additionalChildrenPrice')}
                     />
                 </Box>
-                <FieldArray name="ageGroupPrices">
-                    {({}) => (
-                        <Box>
-                            {agePolicy?.ageGroups?.map((a, index) => {
-                                const error =
-                                    typeof errors.ageGroupPrices?.[index] ===
-                                    'object'
-                                        ? errors.ageGroupPrices[index]
-                                        : undefined
+                {agePolicy?.ageGroups?.map((a, index) => {
+                    const error =
+                        typeof errors.ageGroupPrices?.[index] === 'object'
+                            ? errors.ageGroupPrices[index]
+                            : undefined
 
-                                return (
-                                    <TextField
-                                        key={index}
-                                        label={`Valor adicional (faixa etária ${a.initialAge}-${a.finalAge})`}
-                                        type="number"
-                                        error={
-                                            touched.additionalChildrenPrice &&
-                                            Boolean(
-                                                errors.additionalChildrenPrice,
-                                            )
-                                        }
-                                        helperText={
-                                            touched.additionalChildrenPrice &&
-                                            errors.additionalChildrenPrice
-                                        }
-                                        fullWidth
-                                        {...getFieldProps(
+                    return (
+                        <FormSection key={index}>
+                            <Box>
+                                <TextFieldCurrency
+                                    fullWidth
+                                    label={`Valor adicional (faixa etária ${a.initialAge}-${a.finalAge})`}
+                                    error={!!errors.additionalChildrenPrice}
+                                    helperText={errors.additionalChildrenPrice}
+                                    {...getFieldProps(
+                                        `ageGroupPrices.${index}.price`,
+                                    )}
+                                    onChange={(e) => {
+                                        setFieldValue(
+                                            `ageGroupPrices.${index}.ageGroupId`,
+                                            a.id,
+                                        )
+                                        setFieldValue(
                                             `ageGroupPrices.${index}.price`,
-                                        )}
-                                    />
-                                )
-                            })}
-                        </Box>
-                    )}
-                </FieldArray>
+                                            e.target.value,
+                                        )
+                                    }}
+                                />
+                            </Box>
+                        </FormSection>
+                    )
+                })}
             </FormSection>
 
             <FormSection title="Itens Inclusos">
@@ -210,32 +184,37 @@ export const ReservationOptionForm: React.FC = () => {
                                         : undefined
 
                                 return (
-                                    <Box key={index}>
-                                        <IconButton
-                                            onClick={() => remove(index)}
-                                            aria-label="Remove"
-                                            color="error"
-                                        >
-                                            <Trash />
-                                        </IconButton>
-                                        <TextField
-                                            key={index}
-                                            label="Item Incluso"
-                                            type="text"
-                                            error={
-                                                touched.includedItems &&
-                                                Boolean(errors.includedItems)
-                                            }
-                                            helperText={
-                                                touched.includedItems &&
-                                                errors.includedItems
-                                            }
-                                            fullWidth
-                                            {...getFieldProps(
-                                                `includedItems.${index}`,
-                                            )}
-                                        />
-                                    </Box>
+                                    <FormSection key={index}>
+                                        <Box key={index} display={'flex'}>
+                                            <TextField
+                                                key={index}
+                                                label="Item Incluso"
+                                                type="text"
+                                                error={
+                                                    touched.includedItems &&
+                                                    Boolean(
+                                                        errors.includedItems,
+                                                    )
+                                                }
+                                                helperText={
+                                                    touched.includedItems &&
+                                                    errors.includedItems
+                                                }
+                                                fullWidth
+                                                {...getFieldProps(
+                                                    `includedItems.${index}`,
+                                                )}
+                                            />
+
+                                            <IconButton
+                                                onClick={() => remove(index)}
+                                                aria-label="Remove"
+                                                color="error"
+                                            >
+                                                <Trash />
+                                            </IconButton>
+                                        </Box>
+                                    </FormSection>
                                 )
                             })}
                             <Button
@@ -246,7 +225,7 @@ export const ReservationOptionForm: React.FC = () => {
                                 size="large"
                                 onClick={() => push('')}
                             >
-                                Adicionar Faixa Etária
+                                Adicionar Item
                             </Button>
                         </Box>
                     )}

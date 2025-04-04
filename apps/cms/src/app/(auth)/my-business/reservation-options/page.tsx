@@ -38,11 +38,6 @@ import { billingTypes, COLUMNS_DEFINITION } from './constants'
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
     { key: 'unpublished', label: 'Não publicadas' },
-    { key: 'DAILY', label: 'Diaria' },
-    { key: 'PER_GUEST', label: 'Por Hospede' },
-    { key: 'PER_RESERVATION', label: 'Por Reserva' },
-    { key: 'PER_GUEST_DAILY', label: 'Por Hospede Por Dia' },
-    { key: 'PER_HOUSING_UNIT', label: 'Por Acomodação' },
 ]
 
 export default function ReservationOptions() {
@@ -100,10 +95,6 @@ export default function ReservationOptions() {
                                   ))
                                   ? selectedFilters.includes('published')
                                   : undefined,
-                          billingType: selectedFilters.find(
-                              (filter): filter is BillingType =>
-                                  billingTypes.includes(filter as BillingType),
-                          ),
                       }
                     : undefined,
         },

@@ -13,7 +13,7 @@ export const BILLING_TYPE_RESERVATION_OPTION_MAPPING: Record<
     BillingType,
     string
 > = {
-    DAILY: 'Diária',
+    DAILY: 'Por Diária',
     PER_GUEST: 'Por Hóspede',
     PER_GUEST_DAILY: 'Por Hóspede Por Dia',
     PER_RESERVATION: 'Por Reserva',
