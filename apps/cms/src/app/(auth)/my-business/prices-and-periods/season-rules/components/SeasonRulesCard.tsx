@@ -45,9 +45,10 @@ export const SeasonRulesCard: React.FC<SeasonRulesCardProps> = ({
         >
             <Card.Section style={{ flex: 1 }}>
                 <Card.Title>{seasonRules.name}</Card.Title>
-                <Card.Text>
-                    {seasonRules.startDate} a {seasonRules.endDate}
-                </Card.Text>
+
+                <Card.Text>{seasonRules.startDate}</Card.Text>
+
+                <Card.Text>{seasonRules.endDate}</Card.Text>
             </Card.Section>
 
             <Card.Section style={{ flex: 1 }}>
