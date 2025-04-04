@@ -5,6 +5,10 @@ export type SeasonRulesControllerGetByIdPathParams = {
    * @type string
    */
   id: string
+  /**
+   * @type string
+   */
+  companyId: string
 }
 
 export type SeasonRulesControllerGetById200 = SeasonRuleFull | null
