@@ -8,7 +8,10 @@ export type BusinessDescriptionFormData = Pick<
     | 'description'
     | 'bannerTitle'
     | 'name'
->
+    | 'bannerImage'
+> & {
+    bannerFile?: File
+}
 export const businessDescriptionInitialValues = (
     data?: Partial<CompanyFull> | null,
 ): BusinessDescriptionFormData => ({
@@ -17,6 +20,8 @@ export const businessDescriptionInitialValues = (
     description: data?.description || '',
     bannerTitle: data?.bannerTitle || '',
     bannerDescription: data?.bannerDescription || '',
+    bannerImage: data?.bannerImage || null,
+    bannerFile: undefined,
 })
 
 // Adicionar galeria ou file explorer no front para enviar uma imagem

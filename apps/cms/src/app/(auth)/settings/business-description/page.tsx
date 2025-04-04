@@ -1,10 +1,15 @@
 'use client'
 
-import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
+import {
+    useGetCompanyById,
+    useUpdateCompany,
+    useUploadMedia,
+} from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
+import { omit } from 'radash'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
@@ -33,12 +38,21 @@ export default function BusinessDescription() {
     const queryClient = useQueryClient()
 
     const { mutateAsync: updateCompanyBusinessDescription } = useUpdateCompany()
+    const { mutateAsync: uploadMedia } = useUploadMedia()
 
     async function handleSubmit(formData: BusinessDescriptionFormData) {
         try {
+            const uploadedMedia = await uploadMedia({
+                companyId,
+                data: { file: formData.bannerFile },
+            })
+
             await updateCompanyBusinessDescription({
                 id: companyId,
-                data: formData,
+                data: {
+                    ...omit(formData, ['bannerFile']),
+                    bannerImageId: uploadedMedia.id,
+                },
             })
 
             await queryClient.invalidateQueries({ queryKey: queryKey })
