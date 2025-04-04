@@ -43,7 +43,7 @@ export const BusinessDescriptionForm = () => {
 
     useEffect(() => {
         setbanner(values.bannerImage?.url || '')
-    }, [values])
+    }, [])
 
     return (
         <FormContainer>

@@ -42,16 +42,18 @@ export default function BusinessDescription() {
 
     async function handleSubmit(formData: BusinessDescriptionFormData) {
         try {
-            const uploadedMedia = await uploadMedia({
-                companyId,
-                data: { file: formData.bannerFile },
-            })
+            const uploadedMedia = formData.bannerFile
+                ? await uploadMedia({
+                      companyId,
+                      data: { file: formData.bannerFile },
+                  })
+                : undefined
 
             await updateCompanyBusinessDescription({
                 id: companyId,
                 data: {
-                    ...omit(formData, ['bannerFile']),
-                    bannerImageId: uploadedMedia.id,
+                    ...omit(formData, ['bannerFile', 'bannerImage']),
+                    bannerImageId: uploadedMedia?.id,
                 },
             })
 

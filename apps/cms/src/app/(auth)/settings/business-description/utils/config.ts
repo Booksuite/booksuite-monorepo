@@ -40,7 +40,6 @@ export const businessDescriptionFormSchema = yup.object({
     name: yup.string().required('Nome é obrigatório'),
     shortDescription: yup.string().nullable(),
     description: yup.string().nullable(),
-    bannerImage: yup.array().min(1, 'A imagem do banner é obrigatória'),
     bannerTitle: yup.string().nullable(),
     bannerDescription: yup.string().nullable(),
 })

@@ -1,26 +1,15 @@
 'use client'
 
-import {
-    Box,
-    Button,
-    Grid,
-    MenuItem,
-    Select,
-    TextField,
-    Typography,
-} from '@mui/material'
+import { Box, Button, Grid, TextField, Typography } from '@mui/material'
 import { useFormikContext } from 'formik'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
-import Settings from '../../page'
 import { visualIdentityFormData } from '../utils/config'
-import { OPTIONS } from '../utils/constants'
 
 export default function VisualIdentityForm() {
-    const { values, errors, setFieldValue } =
-        useFormikContext<visualIdentityFormData>()
+    const { values, setFieldValue } = useFormikContext<visualIdentityFormData>()
 
     const [logo, setLogo] = useState<string | null>(null)
     const [favicon, setFavicon] = useState<string | null>(null)
