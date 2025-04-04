@@ -35,7 +35,7 @@ export default function UpdateReservationOption({
     const { mutateAsync: createReservationOption } =
         useReservationOptionsControllerUpdate()
 
-    const { data: ReservationOptionsData, isLoading } =
+    const { data: ReservationOptionsData, isLoading, queryKey } =
         useReservationOptionsControllerGetById({
             companyId,
             id: params.id,
@@ -54,6 +54,7 @@ export default function UpdateReservationOption({
                 },
             })
 
+            await queryClient.invalidateQueries({ queryKey: queryKey })
             await queryClient.invalidateQueries({
                 queryKey: ['searchReservationOption'],
                 refetchType: 'all',

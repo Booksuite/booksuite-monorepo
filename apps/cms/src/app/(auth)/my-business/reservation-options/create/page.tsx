@@ -67,7 +67,7 @@ export default function CreateReservationOption() {
                 title="Criar Opção de Tarfia"
                 backLButtonLabel="Opções de Tarifa"
             />
-            
+
             <Formik<ReservationOptionData>
                 initialValues={createReservationOptionFormInitialValues()}
                 validationSchema={reservationOptionFormSchema}

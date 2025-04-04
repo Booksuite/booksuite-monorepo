@@ -22,7 +22,10 @@ import { FieldArray, useFormikContext } from 'formik'
 import { CirclePlus, Trash } from 'lucide-react'
 import React, { useEffect } from 'react'
 
-import { BILLING_TYPE_MAPPING, BILLING_TYPE_RESERVATION_OPTION_MAPPING } from '@/common/constants/billingType'
+import {
+    BILLING_TYPE_MAPPING,
+    BILLING_TYPE_RESERVATION_OPTION_MAPPING,
+} from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
@@ -30,13 +33,8 @@ import { VALID_NIGHTS } from '../../services/utils/constants'
 import { ReservationOptionData } from '../utils/config'
 
 export const ReservationOptionForm: React.FC = () => {
-    const {
-        getFieldProps,
-        errors,
-        values,
-        touched,
-        setFieldValue,
-    } = useFormikContext<ReservationOptionData>()
+    const { getFieldProps, errors, values, touched, setFieldValue } =
+        useFormikContext<ReservationOptionData>()
 
     const companyId = useCurrentCompanyId()
     const { data: housingUnitTypes, isLoading: isLoadingHousingUnitTypes } =
@@ -66,7 +64,7 @@ export const ReservationOptionForm: React.FC = () => {
     }, [agePolicy, setFieldValue])
 
     return (
-        <FormContainer>
+        <FormContainer spacing={3}>
             <FormSection>
                 <FormControlLabel
                     control={
@@ -103,16 +101,14 @@ export const ReservationOptionForm: React.FC = () => {
             <FormSection title="Preço">
                 <Grid size={4}>
                     <FormControl fullWidth>
-                        <Select
-                            value={values.billingType}
-                            onChange={(e) =>
-                                setFieldValue('billingType', e.target.value)
-                            }
-                            displayEmpty
+                        <TextField
+                            select
+                            label="Tipo de Cobrança"
+                            error={touched.name && Boolean(errors.name)}
+                            helperText={touched.name && errors.name}
+                            fullWidth
+                            {...getFieldProps('billingType')}
                         >
-                            <MenuItem value="" disabled>
-                                Selecione um tipo de cobrança
-                            </MenuItem>
                             {Object.entries(BILLING_TYPE_RESERVATION_OPTION_MAPPING).map(
                                 ([key, value]) => (
                                     <MenuItem key={key} value={key}>
@@ -120,7 +116,7 @@ export const ReservationOptionForm: React.FC = () => {
                                     </MenuItem>
                                 ),
                             )}
-                        </Select>
+                        </TextField>
                     </FormControl>
                 </Grid>
 
@@ -172,25 +168,29 @@ export const ReservationOptionForm: React.FC = () => {
                                         : undefined
 
                                 return (
-                                    <TextField
-                                        key={index}
-                                        label={`Valor adicional (faixa etária ${a.initialAge}-${a.finalAge})`}
-                                        type="number"
-                                        error={
-                                            touched.additionalChildrenPrice &&
-                                            Boolean(
-                                                errors.additionalChildrenPrice,
-                                            )
-                                        }
-                                        helperText={
-                                            touched.additionalChildrenPrice &&
-                                            errors.additionalChildrenPrice
-                                        }
-                                        fullWidth
-                                        {...getFieldProps(
-                                            `ageGroupPrices.${index}.price`,
-                                        )}
-                                    />
+                                    <FormSection key={index}>
+                                        <Box key={index}>
+                                            <TextField
+                                                key={index}
+                                                label={`Valor adicional (faixa etária ${a.initialAge}-${a.finalAge})`}
+                                                type="number"
+                                                error={
+                                                    touched.additionalChildrenPrice &&
+                                                    Boolean(
+                                                        errors.additionalChildrenPrice,
+                                                    )
+                                                }
+                                                helperText={
+                                                    touched.additionalChildrenPrice &&
+                                                    errors.additionalChildrenPrice
+                                                }
+                                                fullWidth
+                                                {...getFieldProps(
+                                                    `ageGroupPrices.${index}.price`,
+                                                )}
+                                            />
+                                        </Box>
+                                    </FormSection>
                                 )
                             })}
                         </Box>
@@ -198,7 +198,7 @@ export const ReservationOptionForm: React.FC = () => {
                 </FieldArray>
             </FormSection>
 
-            <FormSection title="Itens Inclusos">
+            <FormSection title="Items Inclusos">
                 <FieldArray name="includedItems">
                     {({ push, remove }) => (
                         <Box>
@@ -210,32 +210,37 @@ export const ReservationOptionForm: React.FC = () => {
                                         : undefined
 
                                 return (
-                                    <Box key={index}>
-                                        <IconButton
-                                            onClick={() => remove(index)}
-                                            aria-label="Remove"
-                                            color="error"
-                                        >
-                                            <Trash />
-                                        </IconButton>
-                                        <TextField
-                                            key={index}
-                                            label="Item Incluso"
-                                            type="text"
-                                            error={
-                                                touched.includedItems &&
-                                                Boolean(errors.includedItems)
-                                            }
-                                            helperText={
-                                                touched.includedItems &&
-                                                errors.includedItems
-                                            }
-                                            fullWidth
-                                            {...getFieldProps(
-                                                `includedItems.${index}`,
-                                            )}
-                                        />
-                                    </Box>
+                                    <FormSection key={index}>
+                                        <Box key={index} display={'flex'}>
+                                            <TextField
+                                                key={index}
+                                                label="Item Incluso"
+                                                type="text"
+                                                error={
+                                                    touched.includedItems &&
+                                                    Boolean(
+                                                        errors.includedItems,
+                                                    )
+                                                }
+                                                helperText={
+                                                    touched.includedItems &&
+                                                    errors.includedItems
+                                                }
+                                                fullWidth
+                                                {...getFieldProps(
+                                                    `includedItems.${index}`,
+                                                )}
+                                            />
+
+                                            <IconButton
+                                                onClick={() => remove(index)}
+                                                aria-label="Remove"
+                                                color="error"
+                                            >
+                                                <Trash />
+                                            </IconButton>
+                                        </Box>
+                                    </FormSection>
                                 )
                             })}
                             <Button
@@ -246,7 +251,7 @@ export const ReservationOptionForm: React.FC = () => {
                                 size="large"
                                 onClick={() => push('')}
                             >
-                                Adicionar Faixa Etária
+                                Adicionar Item
                             </Button>
                         </Box>
                     )}
