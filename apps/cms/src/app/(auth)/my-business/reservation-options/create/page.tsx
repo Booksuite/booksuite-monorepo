@@ -9,6 +9,7 @@ import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { enqueueSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
@@ -48,15 +49,22 @@ export default function CreateReservationOption() {
 
             push('/my-business/reservation-options')
 
-            toast({
-                title: 'Tarifa criada com sucesso',
-                status: 'success',
+            enqueueSnackbar('Tarifa criada com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
             })
         } catch (error) {
-            toast({
-                title: 'Erro ao criar tarifa',
-                description: getErrorMessage(error),
-                status: 'error',
+            enqueueSnackbar('Erro ao modificar tarifa com sucesso', {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
             })
         }
     }
