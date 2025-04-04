@@ -1,13 +1,17 @@
 'use client'
 
 import {
-    searchSeasonRules,
     SeasonRuleFull,
     SeasonRuleOrderBy,
     useSearchSeasonRules,
-    useSeasonRulesControllerUpdate,
 } from '@booksuite/sdk'
-import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
+import {
+    IconButton,
+    InputAdornment,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material'
 import {
     Check,
     CheckCheck,
@@ -18,7 +22,9 @@ import {
     Trash,
     X,
 } from 'lucide-react'
+import { MRT_ColumnDef } from 'material-react-table'
 import { useRouter } from 'next/navigation'
+import pluralize from 'pluralize'
 import { debounce } from 'radash'
 import { useEffect, useRef, useState } from 'react'
 
@@ -38,30 +44,41 @@ const chipItems = [
     { key: 'unpublished', label: 'Não publicadas' },
 ]
 
-const COLUMNS_DEFINITION = [
+const COLUMNS_DEFINITION: MRT_ColumnDef<SeasonRuleFull>[] = [
     {
         id: 'name',
         header: 'Nome',
+        size: 200,
         accessorKey: 'name',
         enableSorting: true,
-        Cell: ({ row }: { row: { original: SeasonRuleFull } }) => (
-            <span
-                style={{
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
                     fontWeight: 'bold',
-                    fontSize: '14px',
+                    fontSize: '1rem',
                     color: '#486581',
                 }}
             >
                 {row.original.name}
-            </span>
+            </Typography>
         ),
+    },
+    {
+        id: 'startDate',
+        header: 'Inicio',
+
+        accessorFn: (row) => (row.startDate ? pluralize(row.startDate) : '-'),
+    },
+    {
+        id: 'endDate',
+        header: 'Fim',
+
+        accessorFn: (row) => (row.endDate ? pluralize(row.endDate) : '-'),
     },
     {
         id: 'published',
         header: 'Status',
-        accessorFn: (row: SeasonRuleFull) =>
-            row.published ? 'Ativo' : 'Inativo',
-        enableSorting: true,
+        accessorFn: (row) => (row.published ? 'Publicado' : 'Não Publicado'),
     },
 ]
 
