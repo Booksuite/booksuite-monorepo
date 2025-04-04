@@ -1,4 +1,7 @@
-import { useSearchHousingUnitTypes } from '@booksuite/sdk'
+import {
+    SeasonRuleHousingUnitType,
+    useSearchHousingUnitTypes,
+} from '@booksuite/sdk'
 import {
     Checkbox,
     FormControl,
@@ -6,10 +9,10 @@ import {
     FormGroup,
     Grid,
     MenuItem,
-    Select,
     Stack,
     Switch,
     TextField,
+    Typography,
 } from '@mui/material'
 import { useFormikContext } from 'formik'
 import { useEffect } from 'react'
@@ -230,6 +233,61 @@ export const SeasonRulesForm: React.FC = () => {
                 <FormSection title="Categorias Válidas">
                     <FormControl component="fieldset">
                         <Grid container spacing={2}>
+                            <Grid size={3}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={
+                                                values.housingUnitTypePrices
+                                                    .length ===
+                                                availableHousingUnitTypes?.length
+                                            }
+                                            indeterminate={
+                                                availableHousingUnitTypes !==
+                                                    undefined &&
+                                                values.housingUnitTypePrices
+                                                    .length > 0 &&
+                                                values.housingUnitTypePrices
+                                                    .length <
+                                                    availableHousingUnitTypes.length
+                                            }
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    const allSelected =
+                                                        availableHousingUnitTypes?.map(
+                                                            (housing) => ({
+                                                                housingUnitType:
+                                                                    housing,
+                                                                baseWeekPrice:
+                                                                    housing.weekdaysPrice ||
+                                                                    0,
+                                                                newWeekPrice: 0,
+                                                                weekendBasePrice:
+                                                                    housing.weekendPrice ||
+                                                                    0,
+                                                                weekendNewPrice: 0,
+                                                                id: '',
+                                                                seasonRuleId:
+                                                                    '',
+                                                            }),
+                                                        )
+                                                    setFieldValue(
+                                                        'housingUnitTypePrices',
+                                                        allSelected,
+                                                    )
+                                                } else {
+                                                    setFieldValue(
+                                                        'housingUnitTypePrices',
+                                                        [],
+                                                    )
+                                                }
+                                            }}
+                                        />
+                                    }
+                                    label="Selecionar Todos"
+                                />
+                            </Grid>
+
                             {availableHousingUnitTypes?.map((housing) => {
                                 const exists =
                                     values.housingUnitTypePrices.some(
@@ -244,17 +302,15 @@ export const SeasonRulesForm: React.FC = () => {
                                                 <Checkbox
                                                     checked={exists}
                                                     onChange={(e) => {
-                                                        let updated = [
-                                                            ...values.housingUnitTypePrices,
+                                                        const updated = [
+                                                            ...(values.housingUnitTypePrices ??
+                                                                []),
                                                         ]
 
                                                         if (e.target.checked) {
                                                             updated.push({
                                                                 housingUnitType:
-                                                                    {
-                                                                        id: housing.id,
-                                                                        name: housing.name,
-                                                                    },
+                                                                    housing,
                                                                 baseWeekPrice:
                                                                     housing.weekdaysPrice ||
                                                                     0,
@@ -263,9 +319,12 @@ export const SeasonRulesForm: React.FC = () => {
                                                                     housing.weekendPrice ||
                                                                     0,
                                                                 weekendNewPrice: 0,
+                                                                id: '',
+                                                                seasonRuleId:
+                                                                    '',
                                                             })
                                                         } else {
-                                                            updated =
+                                                            const filtered =
                                                                 updated.filter(
                                                                     (h) =>
                                                                         h
@@ -273,6 +332,11 @@ export const SeasonRulesForm: React.FC = () => {
                                                                             .id !==
                                                                         housing.id,
                                                                 )
+                                                            setFieldValue(
+                                                                'housingUnitTypePrices',
+                                                                filtered,
+                                                            )
+                                                            return
                                                         }
 
                                                         setFieldValue(
@@ -294,22 +358,20 @@ export const SeasonRulesForm: React.FC = () => {
 
             <FormSection title="Ajuste de Preço por Diária">
                 <FormControl fullWidth>
-                    <Select
+                    <TextField
+                        select
+                        label="Tipo de Variação do Preço"
                         value={values.priceVariationType}
                         onChange={(e) =>
                             setFieldValue('priceVariationType', e.target.value)
                         }
-                        displayEmpty
                     >
-                        <MenuItem value="" disabled>
-                            Selecione um tipo de cobrança
-                        </MenuItem>
                         {PRICE_VARIATION_TYPE.map(({ label, value }) => (
                             <MenuItem key={value} value={value}>
                                 {label}
                             </MenuItem>
                         ))}
-                    </Select>
+                    </TextField>
                 </FormControl>
 
                 {values.priceVariationType !== 'CUSTOM' && (
@@ -321,7 +383,7 @@ export const SeasonRulesForm: React.FC = () => {
                         fullWidth
                         value={values.price || ''}
                         onChange={(e) => {
-                            let newValue = e.target.value
+                            let newValue: string | number = e.target.value
                             if (
                                 values.priceVariationType ===
                                     'PERCENTAGE_INCREASE' ||
@@ -357,9 +419,10 @@ export const SeasonRulesForm: React.FC = () => {
                             return (
                                 <Grid size={12} key={item.housingUnitType.id}>
                                     <Stack spacing={2}>
-                                        <strong>
-                                            {item.housingUnitType.name}
-                                        </strong>
+                                        <Typography>
+                                            {item.housingUnitType.name} (preço
+                                            por diária)
+                                        </Typography>
 
                                         <Grid container spacing={2}>
                                             <Grid size={6}>
@@ -369,31 +432,37 @@ export const SeasonRulesForm: React.FC = () => {
                                                     value={baseWeek}
                                                     onChange={(e) => {
                                                         const updated = [
-                                                            ...values.housingUnitTypePrices,
+                                                            ...(values.housingUnitTypePrices ??
+                                                                []),
                                                         ]
-                                                        updated[
-                                                            index
-                                                        ].baseWeekPrice =
-                                                            Number(
-                                                                e.target.value,
-                                                            )
-                                                        updated[
-                                                            index
-                                                        ].newWeekPrice =
-                                                            applyVariation(
+
+                                                        if (updated[index]) {
+                                                            updated[
+                                                                index
+                                                            ].baseWeekPrice =
                                                                 Number(
                                                                     e.target
                                                                         .value,
-                                                                ),
-                                                                Number(
-                                                                    values.price,
-                                                                ),
-                                                                values.priceVariationType,
+                                                                )
+                                                            updated[
+                                                                index
+                                                            ].newWeekPrice =
+                                                                applyVariation(
+                                                                    Number(
+                                                                        e.target
+                                                                            .value,
+                                                                    ),
+                                                                    Number(
+                                                                        values.price,
+                                                                    ),
+                                                                    values.priceVariationType,
+                                                                )
+
+                                                            setFieldValue(
+                                                                'housingUnitTypePrices',
+                                                                updated,
                                                             )
-                                                        setFieldValue(
-                                                            'housingUnitTypePrices',
-                                                            updated,
-                                                        )
+                                                        }
                                                     }}
                                                     type="number"
                                                     fullWidth
@@ -408,22 +477,28 @@ export const SeasonRulesForm: React.FC = () => {
                                                     }
                                                     onChange={(e) => {
                                                         const updated = [
-                                                            ...values.housingUnitTypePrices,
+                                                            ...(values.housingUnitTypePrices ??
+                                                                []),
                                                         ]
-                                                        updated[
-                                                            index
-                                                        ].newWeekPrice = Number(
-                                                            e.target.value,
-                                                        )
 
-                                                        setFieldValue(
-                                                            'priceVariationType',
-                                                            'CUSTOM',
-                                                        )
-                                                        setFieldValue(
-                                                            'housingUnitTypePrices',
-                                                            updated,
-                                                        )
+                                                        if (updated[index]) {
+                                                            updated[
+                                                                index
+                                                            ].newWeekPrice =
+                                                                Number(
+                                                                    e.target
+                                                                        .value,
+                                                                )
+
+                                                            setFieldValue(
+                                                                'priceVariationType',
+                                                                'CUSTOM',
+                                                            )
+                                                            setFieldValue(
+                                                                'housingUnitTypePrices',
+                                                                updated,
+                                                            )
+                                                        }
                                                     }}
                                                     fullWidth
                                                 />
@@ -435,31 +510,37 @@ export const SeasonRulesForm: React.FC = () => {
                                                     value={baseWeekend}
                                                     onChange={(e) => {
                                                         const updated = [
-                                                            ...values.housingUnitTypePrices,
+                                                            ...(values.housingUnitTypePrices ??
+                                                                []),
                                                         ]
-                                                        updated[
-                                                            index
-                                                        ].weekendBasePrice =
-                                                            Number(
-                                                                e.target.value,
-                                                            )
-                                                        updated[
-                                                            index
-                                                        ].weekendNewPrice =
-                                                            applyVariation(
+
+                                                        if (updated[index]) {
+                                                            updated[
+                                                                index
+                                                            ].weekendBasePrice =
                                                                 Number(
                                                                     e.target
                                                                         .value,
-                                                                ),
-                                                                Number(
-                                                                    values.price,
-                                                                ),
-                                                                values.priceVariationType,
+                                                                )
+                                                            updated[
+                                                                index
+                                                            ].weekendNewPrice =
+                                                                applyVariation(
+                                                                    Number(
+                                                                        e.target
+                                                                            .value,
+                                                                    ),
+                                                                    Number(
+                                                                        values.price,
+                                                                    ),
+                                                                    values.priceVariationType,
+                                                                )
+
+                                                            setFieldValue(
+                                                                'housingUnitTypePrices',
+                                                                updated,
                                                             )
-                                                        setFieldValue(
-                                                            'housingUnitTypePrices',
-                                                            updated,
-                                                        )
+                                                        }
                                                     }}
                                                     type="number"
                                                     fullWidth
@@ -474,24 +555,30 @@ export const SeasonRulesForm: React.FC = () => {
                                                         0
                                                     }
                                                     onChange={(e) => {
-                                                        const updated = [
-                                                            ...values.housingUnitTypePrices,
-                                                        ]
-                                                        updated[
-                                                            index
-                                                        ].weekendNewPrice =
-                                                            Number(
-                                                                e.target.value,
-                                                            )
+                                                        const updated: SeasonRuleHousingUnitType[] =
+                                                            [
+                                                                ...(values.housingUnitTypePrices ??
+                                                                    []),
+                                                            ]
 
-                                                        setFieldValue(
-                                                            'priceVariationType',
-                                                            'CUSTOM',
-                                                        )
-                                                        setFieldValue(
-                                                            'housingUnitTypePrices',
-                                                            updated,
-                                                        )
+                                                        if (updated[index]) {
+                                                            updated[
+                                                                index
+                                                            ].weekendNewPrice =
+                                                                Number(
+                                                                    e.target
+                                                                        .value,
+                                                                )
+
+                                                            setFieldValue(
+                                                                'priceVariationType',
+                                                                'CUSTOM',
+                                                            )
+                                                            setFieldValue(
+                                                                'housingUnitTypePrices',
+                                                                updated,
+                                                            )
+                                                        }
                                                     }}
                                                     fullWidth
                                                 />
@@ -520,24 +607,26 @@ export const SeasonRulesForm: React.FC = () => {
                             .map((housing) => (
                                 <Grid size={12} key={housing.id}>
                                     <Stack spacing={1}>
-                                        <strong>{housing.name}</strong>
+                                        <Typography>
+                                            {housing.name} (preço por diária)
+                                        </Typography>
                                         <Grid container spacing={2}>
-                                            <Grid size={6}>
+                                            <Grid size={12}>
                                                 <TextField
                                                     label="Preço Base (Semana)"
                                                     value={
-                                                        housing.baseWeekPrice ??
+                                                        housing.weekdaysPrice ??
                                                         0
                                                     }
                                                     disabled
                                                     fullWidth
                                                 />
                                             </Grid>
-                                            <Grid size={6}>
+                                            <Grid size={12}>
                                                 <TextField
                                                     label="Preço Base (Fim de Semana)"
                                                     value={
-                                                        housing.weekendBasePrice ??
+                                                        housing.weekendPrice ??
                                                         0
                                                     }
                                                     disabled
