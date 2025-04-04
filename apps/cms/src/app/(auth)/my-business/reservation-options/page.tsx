@@ -1,6 +1,7 @@
 'use client'
 
 import {
+    BillingType,
     ReservationOptionFull,
     ReservationOptionOrderBy,
     useReservationOptionsControllerUpdate,
@@ -32,11 +33,16 @@ import { PageHeader } from '@/components/organisms/PageHeader'
 import { Table } from '@/components/organisms/Table'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
 
-import { COLUMNS_DEFINITION } from './constants'
+import { billingTypes, COLUMNS_DEFINITION } from './constants'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
     { key: 'unpublished', label: 'Não publicadas' },
+    { key: 'DAILY', label: 'Diaria' },
+    { key: 'PER_GUEST', label: 'Por Hospede' },
+    { key: 'PER_RESERVATION', label: 'Por Reserva' },
+    { key: 'PER_GUEST_DAILY', label: 'Por Hospede Por Dia' },
+    { key: 'PER_HOUSING_UNIT', label: 'Por Acomodação' },
 ]
 
 export default function ReservationOptions() {
@@ -86,8 +92,18 @@ export default function ReservationOptions() {
             filter:
                 selectedFilters.length > 0
                     ? {
-                          published: selectedFilters.includes('published'),
-                          billingType: 'DAILY',
+                          published:
+                              selectedFilters.includes('published') ||
+                              (selectedFilters.includes('unpublished') &&
+                                  !selectedFilters.some((f) =>
+                                      billingTypes.includes(f as BillingType),
+                                  ))
+                                  ? selectedFilters.includes('published')
+                                  : undefined,
+                          billingType: selectedFilters.find(
+                              (filter): filter is BillingType =>
+                                  billingTypes.includes(filter as BillingType),
+                          ),
                       }
                     : undefined,
         },

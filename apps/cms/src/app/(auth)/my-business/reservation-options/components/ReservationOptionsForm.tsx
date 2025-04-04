@@ -1,11 +1,9 @@
 'use client'
 
 import {
-    PriceVariationType,
     useGetCompanyAgePolicy,
     useSearchHousingUnitTypes,
 } from '@booksuite/sdk'
-import { Label } from '@mui/icons-material'
 import {
     Box,
     Button,
@@ -24,7 +22,7 @@ import { FieldArray, useFormikContext } from 'formik'
 import { CirclePlus, Trash } from 'lucide-react'
 import React, { useEffect } from 'react'
 
-import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
+import { BILLING_TYPE_MAPPING, BILLING_TYPE_RESERVATION_OPTION_MAPPING } from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
@@ -36,7 +34,6 @@ export const ReservationOptionForm: React.FC = () => {
         getFieldProps,
         errors,
         values,
-        handleChange,
         touched,
         setFieldValue,
     } = useFormikContext<ReservationOptionData>()
@@ -116,7 +113,7 @@ export const ReservationOptionForm: React.FC = () => {
                             <MenuItem value="" disabled>
                                 Selecione um tipo de cobrança
                             </MenuItem>
-                            {Object.entries(BILLING_TYPE_MAPPING).map(
+                            {Object.entries(BILLING_TYPE_RESERVATION_OPTION_MAPPING).map(
                                 ([key, value]) => (
                                     <MenuItem key={key} value={key}>
                                         {value}
