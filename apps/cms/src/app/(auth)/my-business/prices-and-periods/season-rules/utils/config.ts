@@ -22,10 +22,6 @@ export const transformFormDataForSubmit = (
     const transformedHousingUnitPrices: SeasonRuleHousingUnitTypePriceInput[] =
         housingUnitTypePrices.map((item) => ({
             housingUnitTypeId: item.housingUnitType.id,
-            housingUnitType: {
-                id: item.housingUnitType.id,
-                name: item.housingUnitType.name,
-            },
             baseWeekPrice: item.baseWeekPrice,
             newWeekPrice: item.newWeekPrice,
             weekendBasePrice: item.weekendBasePrice,
@@ -34,13 +30,15 @@ export const transformFormDataForSubmit = (
 
     return {
         ...rest,
+        startDate: new Date(formData.startDate).toISOString(),
+        endDate: new Date(formData.endDate).toISOString(),
         availableWeekend: availableWeekend.map(Number),
         housingUnitTypePrices: transformedHousingUnitPrices,
     }
 }
 
 export const createFormInitialValues = (
-    data?: SeasonRuleFull,
+    data?: SeasonRuleFull | null,
 ): SeasonRuleFormData => ({
     name: data?.name || '',
     published: data?.published || false,

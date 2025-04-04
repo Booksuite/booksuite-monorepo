@@ -4,6 +4,7 @@ import {
     searchSeasonRules,
     SeasonRuleFull,
     SeasonRuleOrderBy,
+    useSearchSeasonRules,
     useSeasonRulesControllerUpdate,
 } from '@booksuite/sdk'
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
@@ -14,7 +15,6 @@ import {
     Edit,
     Plus,
     Search,
-    Table,
     Trash,
     X,
 } from 'lucide-react'
@@ -30,6 +30,7 @@ import { PaginationControls } from '@/components/molecules/PaginationControl'
 import { TableRowActionItem } from '@/components/molecules/TableRowActionItem'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
+import { Table } from '@/components/organisms/Table'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
 
 const chipItems = [
@@ -67,7 +68,6 @@ const COLUMNS_DEFINITION = [
 export default function SeasonRules() {
     const { push } = useRouter()
     const { showDialog } = useConfirmationDialog()
-    const { mutate: updateService } = useSeasonRulesControllerUpdate()
 
     const [selectedFilters, setSelectedFilters] = useState<string[]>([])
     const [searchQuery, setSearchQuery] = useState<string>('')
@@ -100,7 +100,7 @@ export default function SeasonRules() {
         data: seasonRules,
         isLoading,
         error,
-    } = searchSeasonRules(
+    } = useSearchSeasonRules(
         { companyId },
         {
             pagination: { page, itemsPerPage },
@@ -127,27 +127,27 @@ export default function SeasonRules() {
     }
 
     const handleTogglePublished = (item: SeasonRuleFull) => {
-        showDialog({
-            title: 'Confirmar publicação',
-            description: `Tem certeza que deseja ${
-                item.published ? 'despublicar' : 'publicar'
-            } "${item.name}"?`,
-            confirmButton: {
-                children: 'Confirmar',
-                onClick: () => {
-                    updateService({
-                        companyId,
-                        id: item.id,
-                        data: {
-                            published: !item.published,
-                        },
-                    })
-                },
-            },
-            cancelButton: {
-                children: 'Cancelar',
-            },
-        })
+        // showDialog({
+        //     title: 'Confirmar publicação',
+        //     description: `Tem certeza que deseja ${
+        //         item.published ? 'despublicar' : 'publicar'
+        //     } "${item.name}"?`,
+        //     confirmButton: {
+        //         children: 'Confirmar',
+        //         onClick: () => {
+        //             updateService({
+        //                 companyId,
+        //                 id: item.id,
+        //                 data: {
+        //                     published: !item.published,
+        //                 },
+        //             })
+        //         },
+        //     },
+        //     cancelButton: {
+        //         children: 'Cancelar',
+        //     },
+        // })
     }
 
     const handleDelete = (item: SeasonRuleFull) => {

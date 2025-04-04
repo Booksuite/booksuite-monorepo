@@ -255,9 +255,13 @@ export const SeasonRulesForm: React.FC = () => {
                                                                         id: housing.id,
                                                                         name: housing.name,
                                                                     },
-                                                                baseWeekPrice: 0,
+                                                                baseWeekPrice:
+                                                                    housing.weekdaysPrice ||
+                                                                    0,
                                                                 newWeekPrice: 0,
-                                                                weekendBasePrice: 0,
+                                                                weekendBasePrice:
+                                                                    housing.weekendPrice ||
+                                                                    0,
                                                                 weekendNewPrice: 0,
                                                             })
                                                         } else {
@@ -329,7 +333,7 @@ export const SeasonRulesForm: React.FC = () => {
                                     Math.min(100, Number(newValue)),
                                 )
                             }
-                            setFieldValue('price', newValue)
+                            setFieldValue('price', Number(newValue))
                         }}
                         InputProps={{
                             endAdornment:
