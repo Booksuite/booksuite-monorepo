@@ -6,6 +6,10 @@ export type SeasonRulesControllerUpdatePathParams = {
    * @type string
    */
   id: string
+  /**
+   * @type string
+   */
+  companyId: string
 }
 
 export type SeasonRulesControllerUpdate200 = SeasonRuleFull

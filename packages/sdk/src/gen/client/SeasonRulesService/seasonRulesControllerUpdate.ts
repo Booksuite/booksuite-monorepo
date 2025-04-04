@@ -7,7 +7,13 @@ import type {
   SeasonRulesControllerUpdatePathParams,
 } from '../../types/SeasonRulesController/SeasonRulesControllerUpdate.ts'
 
-export function getSeasonRulesControllerUpdateUrl({ id }: { id: SeasonRulesControllerUpdatePathParams['id'] }) {
+export function getSeasonRulesControllerUpdateUrl({
+  id,
+  companyId,
+}: {
+  id: SeasonRulesControllerUpdatePathParams['id']
+  companyId: SeasonRulesControllerUpdatePathParams['companyId']
+}) {
   return `/company/${companyId}/seasonRules/${id}` as const
 }
 
@@ -15,7 +21,7 @@ export function getSeasonRulesControllerUpdateUrl({ id }: { id: SeasonRulesContr
  * {@link /company/:companyId/seasonRules/:id}
  */
 export async function seasonRulesControllerUpdate(
-  { id }: { id: SeasonRulesControllerUpdatePathParams['id'] },
+  { id, companyId }: { id: SeasonRulesControllerUpdatePathParams['id']; companyId: SeasonRulesControllerUpdatePathParams['companyId'] },
   data?: SeasonRulesControllerUpdateMutationRequest,
   config: Partial<RequestConfig<SeasonRulesControllerUpdateMutationRequest>> & { client?: typeof client } = {},
 ) {
@@ -23,7 +29,7 @@ export async function seasonRulesControllerUpdate(
 
   const res = await request<SeasonRulesControllerUpdateMutationResponse, ResponseErrorConfig<Error>, SeasonRulesControllerUpdateMutationRequest>({
     method: 'PATCH',
-    url: getSeasonRulesControllerUpdateUrl({ id }).toString(),
+    url: getSeasonRulesControllerUpdateUrl({ id, companyId }).toString(),
     data,
     ...requestConfig,
   })

@@ -24,7 +24,6 @@ import {
 } from 'lucide-react'
 import { MRT_ColumnDef } from 'material-react-table'
 import { useRouter } from 'next/navigation'
-import pluralize from 'pluralize'
 import { debounce } from 'radash'
 import { useEffect, useRef, useState } from 'react'
 
@@ -66,18 +65,54 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SeasonRuleFull>[] = [
     {
         id: 'startDate',
         header: 'Inicio',
-
-        accessorFn: (row) => (row.startDate ? pluralize(row.startDate) : '-'),
+        accessorFn: (row) =>
+            row.startDate
+                ? new Date(row.startDate).toLocaleDateString('pt-BR')
+                : '-',
     },
     {
         id: 'endDate',
         header: 'Fim',
-
-        accessorFn: (row) => (row.endDate ? pluralize(row.endDate) : '-'),
+        accessorFn: (row) =>
+            row.endDate
+                ? new Date(row.endDate).toLocaleDateString('pt-BR')
+                : '-',
     },
     {
-        id: 'published',
         header: 'Status',
+        accessorKey: 'status',
+        Cell: ({ row }) => {
+            const { published, startDate, endDate } = row.original
+
+            const now = new Date()
+            const start = startDate ? new Date(startDate) : null
+            const end = endDate ? new Date(endDate) : null
+
+            let text = 'Inativa'
+            let color = 'inherit'
+
+            if (published) {
+                if (start && end) {
+                    if (now >= start && now <= end) {
+                        text = 'Em Andamento'
+                        color = '#1D7F52'
+                    } else if (now < start) {
+                        text = 'Programada'
+                        color = '#E0AE15'
+                    } else if (now > end) {
+                        text = 'Finalizada'
+                        color = '#D63841'
+                    }
+                }
+            }
+
+            return <span style={{ color, fontWeight: 'bold' }}>{text}</span>
+        },
+    },
+
+    {
+        id: 'published',
+        header: 'Visibilidade',
         accessorFn: (row) => (row.published ? 'Publicado' : 'Não Publicado'),
     },
 ]
@@ -140,7 +175,7 @@ export default function SeasonRules() {
     }
 
     const handleDuplicate = (item: SeasonRuleFull) => {
-        // TODO: push(`/my-business/services/${item.id}/duplicate`)
+        // TODO: push(`/my-business/prices-and-periods/season-rules/${item.id}/duplicate`)
     }
 
     const handleTogglePublished = (item: SeasonRuleFull) => {
@@ -174,8 +209,7 @@ export default function SeasonRules() {
             confirmButton: {
                 children: 'Excluir',
                 onClick: () => {
-                    console.log('Excluir', item.id)
-                    // TODO: implement actual delete functionality
+                    return null
                 },
             },
             variant: 'error',
