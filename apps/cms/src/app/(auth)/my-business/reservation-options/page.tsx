@@ -1,10 +1,11 @@
 'use client'
 
 import {
-    HousingUnitTypeFull,
-    HousingUnitTypeOrderByDTOOrderBy,
-    useSearchHousingUnitTypes,
-    useUpdateHousingUnitType,
+    BillingType,
+    ReservationOptionFull,
+    ReservationOptionOrderBy,
+    useReservationOptionsControllerUpdate,
+    useSearchReservationOption,
 } from '@booksuite/sdk'
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
 import {
@@ -32,31 +33,37 @@ import { PageHeader } from '@/components/organisms/PageHeader'
 import { Table } from '@/components/organisms/Table'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
 
-import { COLUMNS_DEFINITION } from './constants'
+import { billingTypes, COLUMNS_DEFINITION } from './constants'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
     { key: 'unpublished', label: 'Não publicadas' },
+    { key: 'DAILY', label: 'Diaria' },
+    { key: 'PER_GUEST', label: 'Por Hospede' },
+    { key: 'PER_RESERVATION', label: 'Por Reserva' },
+    { key: 'PER_GUEST_DAILY', label: 'Por Hospede Por Dia' },
+    { key: 'PER_HOUSING_UNIT', label: 'Por Acomodação' },
 ]
 
-export default function Rooms() {
+export default function ReservationOptions() {
     const { push } = useRouter()
     const { showDialog } = useConfirmationDialog()
-    const { mutate: updateHousingUnitType } = useUpdateHousingUnitType()
+    const { mutateAsync: updateReservationOptions } =
+        useReservationOptionsControllerUpdate()
 
-    const [selectedFilters, setSelectedFilters] = useState<string[]>(['DAILY'])
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
 
     const { orderBy, orderDirection, setOrder } =
-        useSearchParamsOrder<HousingUnitTypeOrderByDTOOrderBy>({
+        useSearchParamsOrder<ReservationOptionOrderBy>({
             defaultOrder: 'name',
-            currentPath: '/my-business/rooms',
+            currentPath: '/my-business/reservation-options',
         })
 
     const { page, itemsPerPage, setPage, setItemsPerPage } =
         useSearchParamsPagination({
-            currentPath: '/my-business/rooms',
+            currentPath: '/my-business/reservation-options',
         })
 
     const debouncedSearch = useRef(
@@ -71,10 +78,10 @@ export default function Rooms() {
 
     const companyId = useCurrentCompanyId()
     const {
-        data: housingUnitTypes,
+        data: reservationOptions,
         isLoading,
         error,
-    } = useSearchHousingUnitTypes(
+    } = useSearchReservationOption(
         { companyId },
         {
             pagination: { page, itemsPerPage },
@@ -85,7 +92,18 @@ export default function Rooms() {
             filter:
                 selectedFilters.length > 0
                     ? {
-                          published: selectedFilters.includes('published'),
+                          published:
+                              selectedFilters.includes('published') ||
+                              (selectedFilters.includes('unpublished') &&
+                                  !selectedFilters.some((f) =>
+                                      billingTypes.includes(f as BillingType),
+                                  ))
+                                  ? selectedFilters.includes('published')
+                                  : undefined,
+                          billingType: selectedFilters.find(
+                              (filter): filter is BillingType =>
+                                  billingTypes.includes(filter as BillingType),
+                          ),
                       }
                     : undefined,
         },
@@ -93,15 +111,11 @@ export default function Rooms() {
         { query: { enabled: undefined } },
     )
 
-    const handleRowClick = (row: HousingUnitTypeFull) => {
-        push(`/my-business/rooms/${row.id}`)
+    const handleRowClick = (row: ReservationOptionFull) => {
+        push(`/my-business/reservation-options/${row.id}`)
     }
 
-    const handleDuplicate = (item: HousingUnitTypeFull) => {
-        // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
-    }
-
-    const handleTogglePublished = (item: HousingUnitTypeFull) => {
+    const handleTogglePublished = (item: ReservationOptionFull) => {
         showDialog({
             title: 'Confirmar publicação',
             description: `Tem certeza que deseja ${
@@ -110,12 +124,10 @@ export default function Rooms() {
             confirmButton: {
                 children: 'Confirmar',
                 onClick: () => {
-                    updateHousingUnitType({
+                    updateReservationOptions({
                         companyId,
                         id: item.id,
-                        data: {
-                            published: !item.published,
-                        },
+                        data: { published: !item.published },
                     })
                 },
             },
@@ -125,7 +137,11 @@ export default function Rooms() {
         })
     }
 
-    const handleDelete = (item: HousingUnitTypeFull) => {
+    const handleDuplicate = (item: ReservationOptionFull) => {
+        // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
+    }
+
+    const handleDelete = (item: ReservationOptionFull) => {
         showDialog({
             title: 'Confirmar exclusão',
             description: `Tem certeza que deseja excluir "${item.name}"? Esta ação não pode ser desfeita.`,
@@ -140,19 +156,19 @@ export default function Rooms() {
         })
     }
 
-    const handleEdit = (item: HousingUnitTypeFull) => {
-        push(`/my-business/rooms/${item.id}`)
+    const handleEdit = (item: ReservationOptionFull) => {
+        push(`/my-business/reservation-options/${item.id}`)
     }
 
     return (
         <>
             <PageHeader
-                title="Acomodações"
+                title="Opções de Tarifa"
                 backLButtonLabel="Meu Negócio"
                 backButtonHref="/my-business"
                 headerRight={
                     <LinkButton
-                        href="/my-business/rooms/create"
+                        href="/my-business/reservation-options/create"
                         startIcon={<Plus size={16} />}
                     >
                         Adicionar
@@ -205,7 +221,7 @@ export default function Rooms() {
 
                 <Table
                     columns={COLUMNS_DEFINITION}
-                    data={housingUnitTypes?.items ?? []}
+                    data={reservationOptions?.items ?? []}
                     error={error}
                     enableRowActions
                     renderRowActionMenuItems={({ row, closeMenu }) => [
@@ -283,7 +299,7 @@ export default function Rooms() {
                         page={page}
                         itemsPerPage={itemsPerPage}
                         onItemsPerPageChange={setItemsPerPage}
-                        count={housingUnitTypes?.totalPages ?? 0}
+                        count={reservationOptions?.totalPages ?? 0}
                         onChange={(_, value) => setPage(value)}
                     />
                 </Stack>

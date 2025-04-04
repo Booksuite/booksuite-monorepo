@@ -2,21 +2,6 @@
 
 import { Media, ServiceMedia, useSearchHousingUnitTypes } from '@booksuite/sdk'
 import {
-    Box,
-    Button,
-    Checkbox,
-    FormControlLabel,
-    FormGroup,
-    FormControl,
-    Grid,
-    MenuItem,
-    Select,
-    Stack,
-    Switch,
-    Typography,
-    TextField,
-} from '@mui/material'
-import {
     closestCenter,
     DndContext,
     DragEndEvent,
@@ -30,19 +15,34 @@ import {
     rectSortingStrategy,
     SortableContext,
 } from '@dnd-kit/sortable'
+import {
+    Box,
+    Button,
+    Checkbox,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    Grid,
+    MenuItem,
+    Select,
+    Stack,
+    Switch,
+    TextField,
+    Typography,
+} from '@mui/material'
 import { useFormikContext } from 'formik'
 import type React from 'react'
 import { useState } from 'react'
 
 import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { FormContainer } from '@/components/atoms/FormContainer'
+import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { MediaGallery } from '@/components/organisms/MediaGallery'
 import { SortableMediaItem } from '../../rooms/components/SortableMediaItem'
 import type { ServiceFormData } from '../utils/config'
 import { VALID_NIGHTS } from '../utils/constants'
-import { FormContainer } from '@/components/atoms/FormContainer'
-import { FormSection } from '@/components/atoms/FormSection'
 
 export const ServiceForm: React.FC = () => {
     const {
