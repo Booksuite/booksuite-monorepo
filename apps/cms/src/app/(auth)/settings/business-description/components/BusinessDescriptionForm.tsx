@@ -88,6 +88,7 @@ export const BusinessDescriptionForm = () => {
                     borderRadius={1}
                     display="flex"
                     alignItems="center"
+                    width={'100%'}
                 >
                     <FormSection
                         sx={{
@@ -95,6 +96,7 @@ export const BusinessDescriptionForm = () => {
                             borderColor: 'divider',
                             p: 3,
                             borderRadius: 1,
+                            width: '100%',
                         }}
                     >
                         <Grid
@@ -102,23 +104,15 @@ export const BusinessDescriptionForm = () => {
                             justifyContent="space-between"
                             alignItems="center"
                             mb={2}
+                            width={'100%'}
                         >
-                            <Box>
-                                <Typography
-                                    variant="h6"
-                                    fontWeight={600}
-                                    gutterBottom
-                                >
-                                    Adicionar seu Banner
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    color="text.secondary"
-                                >
-                                    Arquivo deve ser em PNG com tamanho mínimo
-                                    de 200px
-                                </Typography>
-                            </Box>
+                            <Typography
+                                variant="h6"
+                                fontWeight={600}
+                                gutterBottom
+                            >
+                                Adicionar seu Banner
+                            </Typography>
                             <Button
                                 onClick={openbannerSelector}
                                 variant="contained"
@@ -145,10 +139,10 @@ export const BusinessDescriptionForm = () => {
                                     src={banner}
                                     alt="bannertipo"
                                     sx={{
-                                        width: 120,
-                                        height: 120,
-                                        borderRadius: '50%',
+                                        width: 600,
+                                        height: 300,
                                         objectFit: 'cover',
+                                        borderRadius: 2,
                                     }}
                                 />
                             ) : (
