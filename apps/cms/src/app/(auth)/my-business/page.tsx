@@ -34,7 +34,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <Archive size={20} />,
         title: 'Opções de Tarifas',
-        href: '/my-business/opcoes-de-tarifas',
+        href: '/my-business/reservation-options',
     },
 ]
 
