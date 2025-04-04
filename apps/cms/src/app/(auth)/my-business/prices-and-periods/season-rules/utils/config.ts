@@ -22,7 +22,10 @@ export const transformFormDataForSubmit = (
     const transformedHousingUnitPrices: SeasonRuleHousingUnitTypePriceInput[] =
         housingUnitTypePrices.map((item) => ({
             housingUnitTypeId: item.housingUnitType.id,
-            housingUnitTypeName: item.housingUnitType.name,
+            housingUnitType: {
+                id: item.housingUnitType.id,
+                name: item.housingUnitType.name,
+            },
             baseWeekPrice: item.baseWeekPrice,
             newWeekPrice: item.newWeekPrice,
             weekendBasePrice: item.weekendBasePrice,
