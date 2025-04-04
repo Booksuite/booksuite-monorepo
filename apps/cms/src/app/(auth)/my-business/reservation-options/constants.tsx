@@ -2,11 +2,8 @@ import { BillingType, ReservationOptionFull } from '@booksuite/sdk'
 import { Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 
-import {
-    BILLING_TYPE_MAPPING,
-    BILLING_TYPE_RESERVATION_OPTION_MAPPING,
-} from '@/common/constants/billingType'
-import { formatCurrency } from '@/common/utils/currency'
+import { BILLING_TYPE_RESERVATION_OPTION_MAPPING } from '@/common/constants/billingType'
+import { themeOptions } from '@/common/theme'
 
 export const MAX_FEATURED_FACILITIES = 5
 
@@ -29,21 +26,12 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<ReservationOptionFull>[] = [
                 sx={{
                     fontWeight: 'bold',
                     fontSize: '1rem',
-                    color: '#486581',
+                    color: themeOptions.palette?.blueGrey?.[700],
                 }}
             >
                 {row.original.name}
             </Typography>
         ),
-    },
-    {
-        id: 'price',
-        header: 'Preço',
-
-        accessorFn: (row) =>
-            row.additionalAdultPrice
-                ? formatCurrency(row.additionalAdultPrice)
-                : '-',
     },
     {
         id: 'billingType',
@@ -52,9 +40,9 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<ReservationOptionFull>[] = [
         Cell: ({ row }) => (
             <Typography
                 sx={{
-                    fontWeight: 'bold',
                     fontSize: '1rem',
                     color: '#486581',
+                    fontWeight: '400'
                 }}
             >
                 {BILLING_TYPE_RESERVATION_OPTION_MAPPING[
@@ -66,16 +54,16 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<ReservationOptionFull>[] = [
 
     {
         id: 'published',
-        header: 'Status',
+        header: 'Visibilidade',
         Cell: ({ row }) => (
             <Typography
                 sx={{
-                    fontWeight: 'bold',
+                    fontWeight: '500',
                     fontSize: '1rem',
-                    color: '#486581',
+                    color: row.original.published ? '#1D7F52' : '#6B7279',
                 }}
             >
-                {row.original.published ? 'Ativo' : 'Inativo'}
+                {row.original.published ? 'Publicado' : 'Não publicado'}
             </Typography>
         ),
     },
