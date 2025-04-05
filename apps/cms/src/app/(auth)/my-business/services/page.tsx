@@ -17,6 +17,7 @@ import {
     Trash,
     X,
 } from 'lucide-react'
+import { MRT_ColumnDef } from 'material-react-table'
 import { useRouter } from 'next/navigation'
 import { debounce } from 'radash'
 import { useEffect, useRef, useState } from 'react'
@@ -38,12 +39,12 @@ const chipItems = [
     { key: 'unpublished', label: 'Não publicadas' },
 ]
 
-const COLUMNS_DEFINITION = [
+const COLUMNS_DEFINITION: MRT_ColumnDef<ServiceFull>[] = [
     {
         id: 'image',
         header: '',
         size: 85,
-        Cell: ({ row }: { row: { original: ServiceFull } }) => (
+        Cell: ({ row }) => (
             <img
                 src={row.original.medias[0]?.media.url}
                 alt={row.original.name}
@@ -76,15 +77,12 @@ const COLUMNS_DEFINITION = [
     {
         id: 'price',
         header: 'Preço',
-        accessorFn: (row: ServiceFull) =>
-            row.price ? formatCurrency(row.price) : '-',
-        enableSorting: true,
+        accessorFn: (row) => (row.price ? formatCurrency(row.price) : '-'),
     },
     {
         id: 'published',
         header: 'Status',
-        accessorFn: (row: ServiceFull) => (row.published ? 'Ativo' : 'Inativo'),
-        enableSorting: true,
+        accessorFn: (row) => (row.published ? 'Ativo' : 'Inativo'),
     },
 ]
 
@@ -145,7 +143,7 @@ export default function Services() {
         push(`/my-business/services/${row.id}`)
     }
 
-    const handleDuplicate = (item: ServiceFull) => {
+    const handleDuplicate = () => {
         // TODO: push(`/my-business/services/${item.id}/duplicate`)
     }
 
@@ -179,10 +177,7 @@ export default function Services() {
             description: `Tem certeza que deseja excluir "${item.name}"? Esta ação não pode ser desfeita.`,
             confirmButton: {
                 children: 'Excluir',
-                onClick: () => {
-                    console.log('Excluir', item.id)
-                    // TODO: implement actual delete functionality
-                },
+                onClick: () => {},
             },
             variant: 'error',
         })
@@ -284,7 +279,7 @@ export default function Services() {
                             label="Duplicar"
                             Icon={Copy}
                             onClick={() => {
-                                handleDuplicate(row.original)
+                                handleDuplicate()
                                 closeMenu()
                             }}
                         />,
