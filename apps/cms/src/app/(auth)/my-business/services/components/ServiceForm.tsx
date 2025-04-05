@@ -24,7 +24,6 @@ import {
     FormGroup,
     Grid,
     MenuItem,
-    Select,
     Stack,
     Switch,
     TextField,
@@ -36,6 +35,7 @@ import { useState } from 'react'
 
 import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { formatCurrency } from '@/common/utils/currency'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
@@ -45,14 +45,8 @@ import type { ServiceFormData } from '../utils/config'
 import { VALID_NIGHTS } from '../utils/constants'
 
 export const ServiceForm: React.FC = () => {
-    const {
-        getFieldProps,
-        touched,
-        errors,
-        values,
-        handleChange,
-        setFieldValue,
-    } = useFormikContext<ServiceFormData>()
+    const { getFieldProps, touched, errors, values, setFieldValue } =
+        useFormikContext<ServiceFormData>()
 
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
@@ -151,13 +145,37 @@ export const ServiceForm: React.FC = () => {
 
                     <TextField
                         label="Preço Final da Experiência"
-                        type="currency"
+                        fullWidth
                         error={touched.price && Boolean(errors.price)}
                         helperText={touched.price && errors.price}
-                        fullWidth
-                        {...getFieldProps('price')}
+                        value={formatCurrency(values.price)}
+                        onChange={(e) => {
+                            const raw = e.target.value.replace(/\D/g, '')
+                            const numeric = Number(raw) / 100
+                            setFieldValue('price', numeric)
+                        }}
                     />
                 </Box>
+
+                <FormControl fullWidth>
+                    <TextField
+                        select
+                        label="Tipo de cobrança"
+                        fullWidth
+                        value={values.billingType}
+                        onChange={(e) =>
+                            setFieldValue('billingType', e.target.value)
+                        }
+                    >
+                        {Object.entries(BILLING_TYPE_MAPPING).map(
+                            ([key, value]) => (
+                                <MenuItem key={key} value={key}>
+                                    {value}
+                                </MenuItem>
+                            ),
+                        )}
+                    </TextField>
+                </FormControl>
 
                 <Grid
                     container
@@ -168,60 +186,45 @@ export const ServiceForm: React.FC = () => {
                         md: 3,
                     }}
                 >
-                    <Grid size={4}>
-                        <FormControl fullWidth>
-                            <Select
-                                value={values.billingType}
-                                onChange={(e) =>
-                                    setFieldValue('billingType', e.target.value)
-                                }
-                                displayEmpty
-                            >
-                                <MenuItem value="" disabled>
-                                    Selecione um tipo de cobrança
-                                </MenuItem>
-                                {Object.entries(BILLING_TYPE_MAPPING).map(
-                                    ([key, value]) => (
-                                        <MenuItem key={key} value={key}>
-                                            {value}
-                                        </MenuItem>
-                                    ),
-                                )}
-                            </Select>
-                        </FormControl>
+                    <Grid size={6}>
+                        <Stack width={'100%'}>
+                            <NumberInput
+                                label="Mínimo de Diárias"
+                                min={1}
+                                error={!!errors.minDaily}
+                                helperText={errors.minDaily}
+                                {...getFieldProps('minDaily')}
+                                onChange={(e) => {
+                                    const newValueNumber = Number(
+                                        e.target.value,
+                                    )
+                                    if (Number.isNaN(newValueNumber)) return
+                                    setFieldValue('minDaily', newValueNumber)
+                                }}
+                            />
+                        </Stack>
                     </Grid>
 
-                    <Grid size={4}>
-                        <NumberInput
-                            label="Mínimo de Diárias"
-                            min={1}
-                            error={!!errors.minDaily}
-                            helperText={errors.minDaily}
-                            {...getFieldProps('minDaily')}
-                            onChange={(e) => {
-                                const newValueNumber = Number(e.target.value)
-                                if (Number.isNaN(newValueNumber)) return
-                                setFieldValue('minDaily', newValueNumber)
-                            }}
-                        />
-                    </Grid>
-
-                    <Grid size={4}>
-                        <NumberInput
-                            label="Antecedência mínima"
-                            min={1}
-                            error={!!errors.minNotice}
-                            helperText={errors.minNotice}
-                            {...getFieldProps('minNotice')}
-                            onChange={(e) => {
-                                const newValueNumber = Number(e.target.value)
-                                if (Number.isNaN(newValueNumber)) return
-                                setFieldValue(
-                                    'minNotice',
-                                    Math.round(newValueNumber),
-                                )
-                            }}
-                        />
+                    <Grid size={6}>
+                        <Stack width={'100%'}>
+                            <NumberInput
+                                label="Antecedência mínima"
+                                min={1}
+                                error={!!errors.minNotice}
+                                helperText={errors.minNotice}
+                                {...getFieldProps('minNotice')}
+                                onChange={(e) => {
+                                    const newValueNumber = Number(
+                                        e.target.value,
+                                    )
+                                    if (Number.isNaN(newValueNumber)) return
+                                    setFieldValue(
+                                        'minNotice',
+                                        Math.round(newValueNumber),
+                                    )
+                                }}
+                            />
+                        </Stack>
                     </Grid>
                 </Grid>
             </FormSection>
@@ -312,7 +315,8 @@ export const ServiceForm: React.FC = () => {
             <FormSection title="Adultos">
                 <NumberInput
                     label="Número de adultos"
-                    min={0}
+                    min={1}
+                    error={!!errors.adults}
                     helperText={errors.adults}
                     {...getFieldProps('adults')}
                     onChange={(e) => {
