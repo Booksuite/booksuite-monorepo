@@ -7,8 +7,10 @@ import {
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { enqueueSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { SeasonRulesForm } from '../components/SeasonRulesForm'
@@ -52,8 +54,29 @@ export default function UpdateSeasonRule({ params }: UpdateSeasonRuleProps) {
                 refetchType: 'all',
             })
 
+            enqueueSnackbar('Regras de temporada editadas com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
+            })
+
             back()
-        } catch {}
+        } catch (error) {
+            enqueueSnackbar(
+                `Erro ao criar regras de temporada: ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
+                },
+            )
+        }
     }
 
     return (
