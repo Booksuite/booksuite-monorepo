@@ -8,6 +8,7 @@ import {
     FormControlLabel,
     FormGroup,
     Grid,
+    InputAdornment,
     MenuItem,
     Stack,
     Switch,
@@ -18,6 +19,7 @@ import { useFormikContext } from 'formik'
 import { useEffect } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { formatCurrency } from '@/common/utils/currency'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
@@ -377,34 +379,46 @@ export const SeasonRulesForm: React.FC = () => {
                 {values.priceVariationType !== 'CUSTOM' && (
                     <TextField
                         label="Variação de Preço Geral"
-                        type="number"
+                        fullWidth
                         error={touched.price && Boolean(errors.price)}
                         helperText={touched.price && errors.price}
-                        fullWidth
-                        value={values.price || ''}
+                        value={
+                            values.priceVariationType ===
+                                'PERCENTAGE_INCREASE' ||
+                            values.priceVariationType === 'PERCENTAGE_REDUCTION'
+                                ? values.price
+                                : formatCurrency(values.price || 0)
+                        }
                         onChange={(e) => {
-                            let newValue: string | number = e.target.value
+                            const newValue = e.target.value
+
                             if (
                                 values.priceVariationType ===
                                     'PERCENTAGE_INCREASE' ||
                                 values.priceVariationType ===
                                     'PERCENTAGE_REDUCTION'
                             ) {
-                                newValue = Math.max(
+                                const numeric = Math.max(
                                     0,
                                     Math.min(100, Number(newValue)),
                                 )
+                                setFieldValue('price', numeric)
+                            } else {
+                                const raw = newValue.replace(/\D/g, '')
+                                const numeric = Number(raw) / 100
+                                setFieldValue('price', numeric)
                             }
-                            setFieldValue('price', Number(newValue))
                         }}
                         InputProps={{
-                            endAdornment:
+                            startAdornment:
                                 values.priceVariationType ===
                                     'PERCENTAGE_INCREASE' ||
                                 values.priceVariationType ===
-                                    'PERCENTAGE_REDUCTION'
-                                    ? '%'
-                                    : '',
+                                    'PERCENTAGE_REDUCTION' ? (
+                                    <InputAdornment position="start">
+                                        %
+                                    </InputAdornment>
+                                ) : undefined,
                         }}
                     />
                 )}
@@ -428,9 +442,20 @@ export const SeasonRulesForm: React.FC = () => {
                                             <Grid size={6}>
                                                 <TextField
                                                     label="Preço Base (Semana)"
+                                                    fullWidth
                                                     disabled
-                                                    value={baseWeek}
+                                                    value={formatCurrency(
+                                                        baseWeek,
+                                                    )}
                                                     onChange={(e) => {
+                                                        const raw =
+                                                            e.target.value.replace(
+                                                                /\D/g,
+                                                                '',
+                                                            )
+                                                        const numeric =
+                                                            Number(raw) / 100
+
                                                         const updated = [
                                                             ...(values.housingUnitTypePrices ??
                                                                 []),
@@ -440,18 +465,12 @@ export const SeasonRulesForm: React.FC = () => {
                                                             updated[
                                                                 index
                                                             ].baseWeekPrice =
-                                                                Number(
-                                                                    e.target
-                                                                        .value,
-                                                                )
+                                                                numeric
                                                             updated[
                                                                 index
                                                             ].newWeekPrice =
                                                                 applyVariation(
-                                                                    Number(
-                                                                        e.target
-                                                                            .value,
-                                                                    ),
+                                                                    numeric,
                                                                     Number(
                                                                         values.price,
                                                                     ),
@@ -464,18 +483,24 @@ export const SeasonRulesForm: React.FC = () => {
                                                             )
                                                         }
                                                     }}
-                                                    type="number"
-                                                    fullWidth
                                                 />
                                             </Grid>
                                             <Grid size={6}>
                                                 <TextField
                                                     label="Novo Preço (Semana)"
-                                                    type="number"
-                                                    value={
-                                                        item.newWeekPrice ?? 0
-                                                    }
+                                                    fullWidth
+                                                    value={formatCurrency(
+                                                        item.newWeekPrice ?? 0,
+                                                    )}
                                                     onChange={(e) => {
+                                                        const raw =
+                                                            e.target.value.replace(
+                                                                /\D/g,
+                                                                '',
+                                                            )
+                                                        const numeric =
+                                                            Number(raw) / 100
+
                                                         const updated = [
                                                             ...(values.housingUnitTypePrices ??
                                                                 []),
@@ -485,10 +510,7 @@ export const SeasonRulesForm: React.FC = () => {
                                                             updated[
                                                                 index
                                                             ].newWeekPrice =
-                                                                Number(
-                                                                    e.target
-                                                                        .value,
-                                                                )
+                                                                numeric
 
                                                             setFieldValue(
                                                                 'priceVariationType',
@@ -500,15 +522,25 @@ export const SeasonRulesForm: React.FC = () => {
                                                             )
                                                         }
                                                     }}
-                                                    fullWidth
                                                 />
                                             </Grid>
                                             <Grid size={6}>
                                                 <TextField
                                                     label="Preço Base (Fim de Semana)"
+                                                    fullWidth
                                                     disabled
-                                                    value={baseWeekend}
+                                                    value={formatCurrency(
+                                                        baseWeekend,
+                                                    )}
                                                     onChange={(e) => {
+                                                        const raw =
+                                                            e.target.value.replace(
+                                                                /\D/g,
+                                                                '',
+                                                            )
+                                                        const numeric =
+                                                            Number(raw) / 100
+
                                                         const updated = [
                                                             ...(values.housingUnitTypePrices ??
                                                                 []),
@@ -518,18 +550,12 @@ export const SeasonRulesForm: React.FC = () => {
                                                             updated[
                                                                 index
                                                             ].weekendBasePrice =
-                                                                Number(
-                                                                    e.target
-                                                                        .value,
-                                                                )
+                                                                numeric
                                                             updated[
                                                                 index
                                                             ].weekendNewPrice =
                                                                 applyVariation(
-                                                                    Number(
-                                                                        e.target
-                                                                            .value,
-                                                                    ),
+                                                                    numeric,
                                                                     Number(
                                                                         values.price,
                                                                     ),
@@ -542,19 +568,25 @@ export const SeasonRulesForm: React.FC = () => {
                                                             )
                                                         }
                                                     }}
-                                                    type="number"
-                                                    fullWidth
                                                 />
                                             </Grid>
                                             <Grid size={6}>
                                                 <TextField
                                                     label="Novo Preço (Fim de Semana)"
-                                                    type="number"
-                                                    value={
+                                                    fullWidth
+                                                    value={formatCurrency(
                                                         item.weekendNewPrice ??
-                                                        0
-                                                    }
+                                                            0,
+                                                    )}
                                                     onChange={(e) => {
+                                                        const raw =
+                                                            e.target.value.replace(
+                                                                /\D/g,
+                                                                '',
+                                                            )
+                                                        const numeric =
+                                                            Number(raw) / 100
+
                                                         const updated: SeasonRuleHousingUnitType[] =
                                                             [
                                                                 ...(values.housingUnitTypePrices ??
@@ -565,10 +597,7 @@ export const SeasonRulesForm: React.FC = () => {
                                                             updated[
                                                                 index
                                                             ].weekendNewPrice =
-                                                                Number(
-                                                                    e.target
-                                                                        .value,
-                                                                )
+                                                                numeric
 
                                                             setFieldValue(
                                                                 'priceVariationType',
@@ -580,7 +609,6 @@ export const SeasonRulesForm: React.FC = () => {
                                                             )
                                                         }
                                                     }}
-                                                    fullWidth
                                                 />
                                             </Grid>
                                         </Grid>
@@ -614,21 +642,22 @@ export const SeasonRulesForm: React.FC = () => {
                                             <Grid size={12}>
                                                 <TextField
                                                     label="Preço Base (Semana)"
-                                                    value={
+                                                    value={formatCurrency(
                                                         housing.weekdaysPrice ??
-                                                        0
-                                                    }
+                                                            0,
+                                                    )}
                                                     disabled
                                                     fullWidth
                                                 />
                                             </Grid>
+
                                             <Grid size={12}>
                                                 <TextField
                                                     label="Preço Base (Fim de Semana)"
-                                                    value={
+                                                    value={formatCurrency(
                                                         housing.weekendPrice ??
-                                                        0
-                                                    }
+                                                            0,
+                                                    )}
                                                     disabled
                                                     fullWidth
                                                 />
