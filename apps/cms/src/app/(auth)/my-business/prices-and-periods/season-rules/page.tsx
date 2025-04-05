@@ -3,6 +3,7 @@
 import {
     SeasonRuleFull,
     SeasonRuleOrderBy,
+    seasonRulesControllerUpdate,
     useSearchSeasonRules,
 } from '@booksuite/sdk'
 import {
@@ -174,32 +175,34 @@ export default function SeasonRules() {
         push(`/my-business/prices-and-periods/season-rules/${row.id}`)
     }
 
-    const handleDuplicate = (item: SeasonRuleFull) => {
+    const handleDuplicate = () => {
         // TODO: push(`/my-business/prices-and-periods/season-rules/${item.id}/duplicate`)
     }
 
     const handleTogglePublished = (item: SeasonRuleFull) => {
-        // showDialog({
-        //     title: 'Confirmar publicação',
-        //     description: `Tem certeza que deseja ${
-        //         item.published ? 'despublicar' : 'publicar'
-        //     } "${item.name}"?`,
-        //     confirmButton: {
-        //         children: 'Confirmar',
-        //         onClick: () => {
-        //             updateService({
-        //                 companyId,
-        //                 id: item.id,
-        //                 data: {
-        //                     published: !item.published,
-        //                 },
-        //             })
-        //         },
-        //     },
-        //     cancelButton: {
-        //         children: 'Cancelar',
-        //     },
-        // })
+        showDialog({
+            title: 'Confirmar publicação',
+            description: `Tem certeza que deseja ${
+                item.published ? 'despublicar' : 'publicar'
+            } "${item.name}"?`,
+            confirmButton: {
+                children: 'Confirmar',
+                onClick: () => {
+                    seasonRulesControllerUpdate(
+                        {
+                            companyId,
+                            id: item.id!,
+                        },
+                        {
+                            published: !item.published,
+                        },
+                    )
+                },
+            },
+            cancelButton: {
+                children: 'Cancelar',
+            },
+        })
     }
 
     const handleDelete = (item: SeasonRuleFull) => {
@@ -312,7 +315,7 @@ export default function SeasonRules() {
                             label="Duplicar"
                             Icon={Copy}
                             onClick={() => {
-                                handleDuplicate(row.original)
+                                handleDuplicate()
                                 closeMenu()
                             }}
                         />,
