@@ -24,7 +24,6 @@ import {
     FormGroup,
     Grid,
     MenuItem,
-    Select,
     Stack,
     Switch,
     TextField,
@@ -45,14 +44,8 @@ import type { ServiceFormData } from '../utils/config'
 import { VALID_NIGHTS } from '../utils/constants'
 
 export const ServiceForm: React.FC = () => {
-    const {
-        getFieldProps,
-        touched,
-        errors,
-        values,
-        handleChange,
-        setFieldValue,
-    } = useFormikContext<ServiceFormData>()
+    const { getFieldProps, touched, errors, values, setFieldValue } =
+        useFormikContext<ServiceFormData>()
 
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
@@ -169,26 +162,25 @@ export const ServiceForm: React.FC = () => {
                     }}
                 >
                     <Grid size={4}>
-                        <FormControl fullWidth>
-                            <Select
-                                value={values.billingType}
-                                onChange={(e) =>
-                                    setFieldValue('billingType', e.target.value)
-                                }
-                                displayEmpty
-                            >
-                                <MenuItem value="" disabled>
-                                    Selecione um tipo de cobrança
-                                </MenuItem>
-                                {Object.entries(BILLING_TYPE_MAPPING).map(
-                                    ([key, value]) => (
-                                        <MenuItem key={key} value={key}>
-                                            {value}
-                                        </MenuItem>
-                                    ),
-                                )}
-                            </Select>
-                        </FormControl>
+                        <TextField
+                            select
+                            label="Tipo de cobrança"
+                            value={values.billingType}
+                            onChange={(e) =>
+                                setFieldValue('billingType', e.target.value)
+                            }
+                        >
+                            <MenuItem value="" disabled>
+                                Selecione um tipo de cobrança
+                            </MenuItem>
+                            {Object.entries(BILLING_TYPE_MAPPING).map(
+                                ([key, value]) => (
+                                    <MenuItem key={key} value={key}>
+                                        {value}
+                                    </MenuItem>
+                                ),
+                            )}
+                        </TextField>
                     </Grid>
 
                     <Grid size={4}>
@@ -465,12 +457,9 @@ export const ServiceForm: React.FC = () => {
                             strategy={rectSortingStrategy}
                         >
                             <Grid container spacing={3} mt={4}>
-                                {values.medias.map((item, index) => (
+                                {values.medias.map((item) => (
                                     <Grid size={2} key={item.media.id}>
-                                        <SortableMediaItem
-                                            mediaItem={item}
-                                            index={index}
-                                        />
+                                        <SortableMediaItem mediaItem={item} />
                                     </Grid>
                                 ))}
                             </Grid>

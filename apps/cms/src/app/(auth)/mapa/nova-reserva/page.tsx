@@ -1,10 +1,8 @@
-import { Button, SimpleGrid, Stack } from '@chakra-ui/react'
+import { Button, MenuItem, Stack, TextField } from '@mui/material'
 
 import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
-import LabelBadge from '@/components/atoms/LabelBadge'
 import { NumberInput } from '@/components/atoms/NumberInput'
-import SelectBox from '@/components/atoms/SelectBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { PriceList } from '@/components/organisms/PriceList'
@@ -26,18 +24,20 @@ export default function NovaReserva() {
 
             <form action={submit}>
                 <Stack gap={8}>
-                    <SelectBox
-                        options={[
-                            { value: 'Reservado', label: 'Reservado' },
-                            { value: 'Disponível', label: 'Disponível' },
-                        ]}
+                    <TextField
+                        select
                         label="Status da Reserva"
                         name="status"
-                    />
+                        fullWidth
+                        variant="outlined"
+                    >
+                        <MenuItem value="Reservado">Reservado</MenuItem>
+                        <MenuItem value="Disponível">Disponível</MenuItem>
+                    </TextField>
                     <section>
                         <h4>Detalhes da Reserva</h4>
 
-                        <SimpleGrid spacing={2}>
+                        <Stack spacing={2}>
                             <InputBox
                                 label="Nome Completo"
                                 name="name"
@@ -67,50 +67,37 @@ export default function NovaReserva() {
                                 label="Período de estadia"
                             />
 
-                            <SelectBox
-                                options={[
-                                    {
-                                        value: 'Chalé Imperial',
-                                        label: 'Chalé Imperial',
-                                    },
-                                    {
-                                        value: 'Nome Lorem',
-                                        label: 'Nome Lorem',
-                                    },
-                                    {
-                                        value: 'Lorem Ipsum',
-                                        label: 'Lorem Ipsum',
-                                    },
-                                ]}
+                            <TextField
+                                select
                                 label="Nome da acomodação"
                                 name="hotelName"
-                            />
+                                fullWidth
+                                variant="outlined"
+                            >
+                                <MenuItem value="Chalé Imperial">
+                                    Chalé Imperial
+                                </MenuItem>
+                                <MenuItem value="Nome Lorem">
+                                    Nome Lorem
+                                </MenuItem>
+                                <MenuItem value="Lorem Ipsum">
+                                    Lorem Ipsum
+                                </MenuItem>
+                            </TextField>
 
                             <NumberInput
-                                label={<>Adultos</>}
+                                label="Adultos"
                                 max={10}
                                 name="adults"
                                 defaultValue={5}
                             />
 
                             <NumberInput
-                                label={
-                                    <>
-                                        Crianças{' '}
-                                        <LabelBadge>(0 a 6)</LabelBadge>
-                                    </>
-                                }
+                                label="Crianças (0 a 6)"
                                 name="childs"
                             />
 
-                            <NumberInput
-                                label={
-                                    <>
-                                        Crianças{' '}
-                                        <LabelBadge>(7 a 17)</LabelBadge>
-                                    </>
-                                }
-                            />
+                            <NumberInput label="Crianças (7 a 17)" />
 
                             <InputBox
                                 label="Total das Diárias"
@@ -118,27 +105,26 @@ export default function NovaReserva() {
                                 name="total"
                             />
 
-                            <SelectBox
-                                options={[
-                                    {
-                                        value: 'Central de Reservas',
-                                        label: 'Central de Reservas',
-                                    },
-                                    {
-                                        value: 'Nome Lorem',
-                                        label: 'Nome Lorem',
-                                    },
-                                    {
-                                        value: 'Lorem Ipsum',
-                                        label: 'Lorem Ipsum',
-                                    },
-                                ]}
+                            <TextField
+                                select
                                 label="Canal de Venda"
                                 name="canal-de-venda"
-                            />
+                                fullWidth
+                                variant="outlined"
+                            >
+                                <MenuItem value="Central de Reservas">
+                                    Central de Reservas
+                                </MenuItem>
+                                <MenuItem value="Nome Lorem">
+                                    Nome Lorem
+                                </MenuItem>
+                                <MenuItem value="Lorem Ipsum">
+                                    Lorem Ipsum
+                                </MenuItem>
+                            </TextField>
 
                             <TextAreaBox label="Observações (visível para o hóspede)" />
-                        </SimpleGrid>
+                        </Stack>
                     </section>
 
                     <section>
@@ -147,13 +133,13 @@ export default function NovaReserva() {
                         <PriceList.Root notFoundText="Nenhum Extra Adicionado">
                             <PriceList.Item
                                 title="Pacote Romântico"
-                                name={`extra[0]`}
                                 unityValue={100.33}
+                                value={1}
                             />
                             <PriceList.Item
                                 title="Pacote Romântico 2"
-                                name={`extra[1]`}
                                 unityValue={100}
+                                value={1}
                             />
                         </PriceList.Root>
                     </section>
@@ -170,7 +156,7 @@ export default function NovaReserva() {
                         <PriceList.Root notFoundText="Nenhum Pagamento Adicionado"></PriceList.Root>
                     </section>
 
-                    <Button type="submit" isDisabled>
+                    <Button type="submit" disabled>
                         Enviar
                     </Button>
                 </Stack>

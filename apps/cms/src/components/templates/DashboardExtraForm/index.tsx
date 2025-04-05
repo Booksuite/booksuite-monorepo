@@ -6,7 +6,7 @@ import { type FormEvent, useState } from 'react'
 import { CreateExtraDTO, UpdateExtraDTO } from '@/common/types/Extra'
 import InputBox from '@/components/atoms/InputBox'
 import { NumberInput } from '@/components/atoms/NumberInput'
-import SelectBox from '@/components/atoms/SelectBox'
+import SelectBox from '@/components/atoms/Select'
 
 import { ExtraFormProps } from './types'
 
