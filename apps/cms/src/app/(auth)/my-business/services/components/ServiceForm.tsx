@@ -136,7 +136,7 @@ export const ServiceForm: React.FC = () => {
                     }}
                 >
                     <TextField
-                        label="Nome da Experiência"
+                        label="Nome do Serviço"
                         error={touched.name && Boolean(errors.name)}
                         helperText={touched.name && errors.name}
                         fullWidth
@@ -144,7 +144,7 @@ export const ServiceForm: React.FC = () => {
                     />
 
                     <TextField
-                        label="Preço Final da Experiência"
+                        label="Preço Final do Serviço"
                         fullWidth
                         error={touched.price && Boolean(errors.price)}
                         helperText={touched.price && errors.price}
