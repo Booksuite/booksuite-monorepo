@@ -1,13 +1,18 @@
 'use client'
 
 import {
-    searchSeasonRules,
     SeasonRuleFull,
     SeasonRuleOrderBy,
+    seasonRulesControllerUpdate,
     useSearchSeasonRules,
-    useSeasonRulesControllerUpdate,
 } from '@booksuite/sdk'
-import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
+import {
+    IconButton,
+    InputAdornment,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material'
 import {
     Check,
     CheckCheck,
@@ -18,6 +23,7 @@ import {
     Trash,
     X,
 } from 'lucide-react'
+import { MRT_ColumnDef } from 'material-react-table'
 import { useRouter } from 'next/navigation'
 import { debounce } from 'radash'
 import { useEffect, useRef, useState } from 'react'
@@ -38,30 +44,77 @@ const chipItems = [
     { key: 'unpublished', label: 'Não publicadas' },
 ]
 
-const COLUMNS_DEFINITION = [
+const COLUMNS_DEFINITION: MRT_ColumnDef<SeasonRuleFull>[] = [
     {
         id: 'name',
         header: 'Nome',
+        size: 200,
         accessorKey: 'name',
         enableSorting: true,
-        Cell: ({ row }: { row: { original: SeasonRuleFull } }) => (
-            <span
-                style={{
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
                     fontWeight: 'bold',
-                    fontSize: '14px',
+                    fontSize: '1rem',
                     color: '#486581',
                 }}
             >
                 {row.original.name}
-            </span>
+            </Typography>
         ),
     },
     {
-        id: 'published',
+        id: 'startDate',
+        header: 'Inicio',
+        accessorFn: (row) =>
+            row.startDate
+                ? new Date(row.startDate).toLocaleDateString('pt-BR')
+                : '-',
+    },
+    {
+        id: 'endDate',
+        header: 'Fim',
+        accessorFn: (row) =>
+            row.endDate
+                ? new Date(row.endDate).toLocaleDateString('pt-BR')
+                : '-',
+    },
+    {
         header: 'Status',
-        accessorFn: (row: SeasonRuleFull) =>
-            row.published ? 'Ativo' : 'Inativo',
-        enableSorting: true,
+        accessorKey: 'status',
+        Cell: ({ row }) => {
+            const { published, startDate, endDate } = row.original
+
+            const now = new Date()
+            const start = startDate ? new Date(startDate) : null
+            const end = endDate ? new Date(endDate) : null
+
+            let text = 'Inativa'
+            let color = 'inherit'
+
+            if (published) {
+                if (start && end) {
+                    if (now >= start && now <= end) {
+                        text = 'Em Andamento'
+                        color = '#1D7F52'
+                    } else if (now < start) {
+                        text = 'Programada'
+                        color = '#E0AE15'
+                    } else if (now > end) {
+                        text = 'Finalizada'
+                        color = '#D63841'
+                    }
+                }
+            }
+
+            return <span style={{ color, fontWeight: 'bold' }}>{text}</span>
+        },
+    },
+
+    {
+        id: 'published',
+        header: 'Visibilidade',
+        accessorFn: (row) => (row.published ? 'Publicado' : 'Não Publicado'),
     },
 ]
 
@@ -122,32 +175,34 @@ export default function SeasonRules() {
         push(`/my-business/prices-and-periods/season-rules/${row.id}`)
     }
 
-    const handleDuplicate = (item: SeasonRuleFull) => {
-        // TODO: push(`/my-business/services/${item.id}/duplicate`)
+    const handleDuplicate = () => {
+        // TODO: push(`/my-business/prices-and-periods/season-rules/${item.id}/duplicate`)
     }
 
     const handleTogglePublished = (item: SeasonRuleFull) => {
-        // showDialog({
-        //     title: 'Confirmar publicação',
-        //     description: `Tem certeza que deseja ${
-        //         item.published ? 'despublicar' : 'publicar'
-        //     } "${item.name}"?`,
-        //     confirmButton: {
-        //         children: 'Confirmar',
-        //         onClick: () => {
-        //             updateService({
-        //                 companyId,
-        //                 id: item.id,
-        //                 data: {
-        //                     published: !item.published,
-        //                 },
-        //             })
-        //         },
-        //     },
-        //     cancelButton: {
-        //         children: 'Cancelar',
-        //     },
-        // })
+        showDialog({
+            title: 'Confirmar publicação',
+            description: `Tem certeza que deseja ${
+                item.published ? 'despublicar' : 'publicar'
+            } "${item.name}"?`,
+            confirmButton: {
+                children: 'Confirmar',
+                onClick: () => {
+                    seasonRulesControllerUpdate(
+                        {
+                            companyId,
+                            id: item.id!,
+                        },
+                        {
+                            published: !item.published,
+                        },
+                    )
+                },
+            },
+            cancelButton: {
+                children: 'Cancelar',
+            },
+        })
     }
 
     const handleDelete = (item: SeasonRuleFull) => {
@@ -157,8 +212,7 @@ export default function SeasonRules() {
             confirmButton: {
                 children: 'Excluir',
                 onClick: () => {
-                    console.log('Excluir', item.id)
-                    // TODO: implement actual delete functionality
+                    return null
                 },
             },
             variant: 'error',
@@ -261,7 +315,7 @@ export default function SeasonRules() {
                             label="Duplicar"
                             Icon={Copy}
                             onClick={() => {
-                                handleDuplicate(row.original)
+                                handleDuplicate()
                                 closeMenu()
                             }}
                         />,

@@ -10,30 +10,28 @@ interface SeasonRulesCardProps {
     onClick?: (id: string) => void
 }
 
-const OptionDotsButton = styled(Card.OptionDots)({
-    padding: '8px',
-    borderRadius: '50%',
-    '&:hover': {
-        backgroundColor: 'rgba(0, 0, 0, 0.04)',
-    },
-})
-
-const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-const open = Boolean(anchorEl)
-
-const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation()
-    setAnchorEl(event.currentTarget)
-}
-
-const handleClose = () => {
-    setAnchorEl(null)
-}
-
 export const SeasonRulesCard: React.FC<SeasonRulesCardProps> = ({
     seasonRules,
-    onClick,
 }) => {
+    const OptionDotsButton = styled(Card.OptionDots)({
+        padding: '8px',
+        borderRadius: '50%',
+        '&:hover': {
+            backgroundColor: 'rgba(0, 0, 0, 0.04)',
+        },
+    })
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        event.stopPropagation()
+        setAnchorEl(event.currentTarget)
+    }
+
+    const handleClose = () => {
+        setAnchorEl(null)
+    }
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const open = Boolean(anchorEl)
+
     return (
         <Card.Container
             key={seasonRules.id}
@@ -45,9 +43,10 @@ export const SeasonRulesCard: React.FC<SeasonRulesCardProps> = ({
         >
             <Card.Section style={{ flex: 1 }}>
                 <Card.Title>{seasonRules.name}</Card.Title>
-                <Card.Text>
-                    {seasonRules.startDate} a {seasonRules.endDate}
-                </Card.Text>
+
+                <Card.Text>{seasonRules.startDate}</Card.Text>
+
+                <Card.Text>{seasonRules.endDate}</Card.Text>
             </Card.Section>
 
             <Card.Section style={{ flex: 1 }}>
@@ -63,7 +62,6 @@ export const SeasonRulesCard: React.FC<SeasonRulesCardProps> = ({
                         onClose={handleClose}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        {/* TODO: Implementar campo published */}
                         <MenuItem onClick={handleClose}>
                             <ListItemIcon>
                                 <EyeOff size={14} />

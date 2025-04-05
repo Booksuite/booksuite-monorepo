@@ -1,16 +1,20 @@
 import type { ReservationOptionFull } from '../ReservationOptionFull.ts'
-import type { ReservationOptionInput } from '../ReservationOptionInput.ts'
+import type { ReservationOptionUpdateInput } from '../ReservationOptionUpdateInput.ts'
 
 export type ReservationOptionsControllerUpdatePathParams = {
   /**
    * @type string
    */
   id: string
+  /**
+   * @type string
+   */
+  companyId: string
 }
 
 export type ReservationOptionsControllerUpdate200 = ReservationOptionFull
 
-export type ReservationOptionsControllerUpdateMutationRequest = ReservationOptionInput
+export type ReservationOptionsControllerUpdateMutationRequest = ReservationOptionUpdateInput
 
 export type ReservationOptionsControllerUpdateMutationResponse = ReservationOptionsControllerUpdate200
 

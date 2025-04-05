@@ -7,7 +7,13 @@ import type {
   ReservationOptionsControllerUpdatePathParams,
 } from '../../types/ReservationOptionsController/ReservationOptionsControllerUpdate.ts'
 
-export function getReservationOptionsControllerUpdateUrl({ id }: { id: ReservationOptionsControllerUpdatePathParams['id'] }) {
+export function getReservationOptionsControllerUpdateUrl({
+  id,
+  companyId,
+}: {
+  id: ReservationOptionsControllerUpdatePathParams['id']
+  companyId: ReservationOptionsControllerUpdatePathParams['companyId']
+}) {
   return `/company/${companyId}/reservationOptions/${id}` as const
 }
 
@@ -15,15 +21,15 @@ export function getReservationOptionsControllerUpdateUrl({ id }: { id: Reservati
  * {@link /company/:companyId/reservationOptions/:id}
  */
 export async function reservationOptionsControllerUpdate(
-  { id }: { id: ReservationOptionsControllerUpdatePathParams['id'] },
-  data: ReservationOptionsControllerUpdateMutationRequest,
+  { id, companyId }: { id: ReservationOptionsControllerUpdatePathParams['id']; companyId: ReservationOptionsControllerUpdatePathParams['companyId'] },
+  data?: ReservationOptionsControllerUpdateMutationRequest,
   config: Partial<RequestConfig<ReservationOptionsControllerUpdateMutationRequest>> & { client?: typeof client } = {},
 ) {
   const { client: request = client, ...requestConfig } = config
 
   const res = await request<ReservationOptionsControllerUpdateMutationResponse, ResponseErrorConfig<Error>, ReservationOptionsControllerUpdateMutationRequest>({
     method: 'PATCH',
-    url: getReservationOptionsControllerUpdateUrl({ id }).toString(),
+    url: getReservationOptionsControllerUpdateUrl({ id, companyId }).toString(),
     data,
     ...requestConfig,
   })
