@@ -5,12 +5,12 @@ import {
     SimpleGrid,
     Stack,
 } from '@chakra-ui/react'
+import { MenuItem, TextField } from '@mui/material'
 
 import { DateRangeBox } from '@/components/atoms/DateRangeBox'
 import InputBox from '@/components/atoms/InputBox'
 import InputCheckboxBox from '@/components/atoms/InputCheckboxBox'
 import { NumberInput } from '@/components/atoms/NumberInput'
-import SelectBox from '@/components/atoms/SelectBox'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
@@ -25,7 +25,7 @@ export default function DetalhesOfertasECupons() {
                     justifyContent="space-between"
                     gap={2}
                 >
-                    <PageHeader.BackLink href="/my-business/precos-e-periodos/ofertas-e-cupons">
+                    <PageHeader.BackLink href="/my-business/prices-and-periods/offers-and-coupons">
                         Ofertas
                     </PageHeader.BackLink>
 
@@ -199,14 +199,12 @@ export default function DetalhesOfertasECupons() {
                     <CheckboxGroup>
                         <Stack spacing={[2]} direction={['column']}>
                             <InputCheckboxBox defaultChecked>
-                                Direto no Hotel
-                            </InputCheckboxBox>
-                            <InputCheckboxBox defaultChecked>
-                                Pix
-                            </InputCheckboxBox>
-                            <InputCheckboxBox>
                                 Cartão de Crédito
                             </InputCheckboxBox>
+                            <InputCheckboxBox defaultChecked>
+                                Cartão de Débito
+                            </InputCheckboxBox>
+                            <InputCheckboxBox>Pix</InputCheckboxBox>
                         </Stack>
                     </CheckboxGroup>
                 </section>
@@ -261,17 +259,18 @@ export default function DetalhesOfertasECupons() {
                     <h2>Ajuste de Preço por diária</h2>
 
                     <SimpleGrid spacing={2}>
-                        <SelectBox
-                            options={[
-                                {
-                                    value: 'Aumento em percentual',
-                                    label: 'Aumento em percentual',
-                                },
-                                { value: 'Nome Lorem', label: 'Nome Lorem' },
-                                { value: 'Lorem Ipsum', label: 'Lorem Ipsum' },
-                            ]}
+                        <TextField
+                            select
                             label="Tipo de Variação de Preço"
-                        />
+                            fullWidth
+                            variant="outlined"
+                        >
+                            <MenuItem value="Aumento em percentual">
+                                Aumento em percentual
+                            </MenuItem>
+                            <MenuItem value="Nome Lorem">Nome Lorem</MenuItem>
+                            <MenuItem value="Lorem Ipsum">Lorem Ipsum</MenuItem>
+                        </TextField>
 
                         <InputBox
                             label="Variação do Preço Geral"

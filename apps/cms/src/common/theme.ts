@@ -91,6 +91,7 @@ export const themeOptions: ThemeOptions = {
         MuiTextField: {
             defaultProps: {
                 variant: 'filled',
+                fullWidth: true,
             },
             styleOverrides: {
                 root: ({ theme }) => ({
@@ -154,11 +155,6 @@ export const themeOptions: ThemeOptions = {
             },
         },
 
-        MuiSelect: {
-            defaultProps: {
-                size: 'small',
-            },
-        },
         MuiPagination: {
             defaultProps: { shape: 'rounded', variant: 'outlined' },
             styleOverrides: {
