@@ -227,8 +227,8 @@ export default function SeasonRules() {
         <div className="season_rules">
             <PageHeader
                 title="Regras de Temporada"
-                backLButtonLabel="Meu Negócio"
-                backButtonHref="/my-business"
+                backLButtonLabel="Preços e Períodos"
+                backButtonHref="/my-business/prices-and-periods"
                 headerRight={
                     <LinkButton
                         href="/my-business/prices-and-periods/season-rules/create"
