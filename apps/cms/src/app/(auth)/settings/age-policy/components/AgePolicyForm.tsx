@@ -17,12 +17,13 @@ import {
 import { FieldArray, useFormikContext } from 'formik'
 import { CirclePlus, Info, Trash } from 'lucide-react'
 
+import { theme } from '@/common/theme'
+import { formatCurrency } from '@/common/utils/currency'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { AgePolicyFormData } from '../utils/config'
 import { AGE_GROUP_CHARGE_TYPE } from '../utils/constants'
-import { theme } from '@/common/theme'
 
 export const AgePolicyForm = () => {
     const { touched, errors, values, setFieldValue } =
@@ -93,6 +94,14 @@ export const AgePolicyForm = () => {
                                             ? errors.ageGroups[index]
                                             : undefined
 
+                                    const prevFinalAge =
+                                        values.ageGroups[index - 1]?.finalAge ??
+                                        -1
+
+                                    const nextInitialAge =
+                                        values.ageGroups[index + 1]
+                                            ?.initialAge ?? values.adultMinAge
+
                                     return (
                                         <Box key={index} sx={{ mb: 3 }}>
                                             <Box
@@ -131,10 +140,12 @@ export const AgePolicyForm = () => {
                                                             value={
                                                                 ageGroup.initialAge
                                                             }
-                                                            min={0}
+                                                            min={
+                                                                prevFinalAge + 1
+                                                            }
                                                             max={
-                                                                values.adultMinAge -
-                                                                2
+                                                                ageGroup.finalAge -
+                                                                1
                                                             }
                                                             onChange={(e) => {
                                                                 const newValueNumber =
@@ -143,15 +154,32 @@ export const AgePolicyForm = () => {
                                                                             .value,
                                                                     )
                                                                 if (
-                                                                    Number.isNaN(
+                                                                    !Number.isNaN(
                                                                         newValueNumber,
+                                                                    ) &&
+                                                                    newValueNumber >=
+                                                                        0
+                                                                ) {
+                                                                    const updated =
+                                                                        values.ageGroups.map(
+                                                                            (
+                                                                                group,
+                                                                                i,
+                                                                            ) =>
+                                                                                i ===
+                                                                                index
+                                                                                    ? {
+                                                                                          ...group,
+                                                                                          initialAge:
+                                                                                              newValueNumber,
+                                                                                      }
+                                                                                    : group,
+                                                                        )
+                                                                    setFieldValue(
+                                                                        'ageGroups',
+                                                                        updated,
                                                                     )
-                                                                )
-                                                                    return
-                                                                setFieldValue(
-                                                                    `ageGroups.${index}.initialAge`,
-                                                                    newValueNumber,
-                                                                )
+                                                                }
                                                             }}
                                                         />
                                                     </Stack>
@@ -168,7 +196,7 @@ export const AgePolicyForm = () => {
                                                                 1
                                                             }
                                                             max={
-                                                                values.adultMinAge -
+                                                                nextInitialAge -
                                                                 1
                                                             }
                                                             onChange={(e) => {
@@ -178,15 +206,32 @@ export const AgePolicyForm = () => {
                                                                             .value,
                                                                     )
                                                                 if (
-                                                                    Number.isNaN(
+                                                                    !Number.isNaN(
                                                                         newValueNumber,
+                                                                    ) &&
+                                                                    newValueNumber >=
+                                                                        0
+                                                                ) {
+                                                                    const updated =
+                                                                        values.ageGroups.map(
+                                                                            (
+                                                                                group,
+                                                                                i,
+                                                                            ) =>
+                                                                                i ===
+                                                                                index
+                                                                                    ? {
+                                                                                          ...group,
+                                                                                          finalAge:
+                                                                                              newValueNumber,
+                                                                                      }
+                                                                                    : group,
+                                                                        )
+                                                                    setFieldValue(
+                                                                        'ageGroups',
+                                                                        updated,
                                                                     )
-                                                                )
-                                                                    return
-                                                                setFieldValue(
-                                                                    `ageGroups.${index}.finalAge`,
-                                                                    newValueNumber,
-                                                                )
+                                                                }
                                                             }}
                                                         />
                                                     </Stack>
@@ -207,13 +252,31 @@ export const AgePolicyForm = () => {
                                                                 ageGroup.chargeType ||
                                                                 ''
                                                             }
-                                                            onChange={(event) =>
+                                                            onChange={(
+                                                                event,
+                                                            ) => {
+                                                                const updated =
+                                                                    values.ageGroups.map(
+                                                                        (
+                                                                            group,
+                                                                            i,
+                                                                        ) =>
+                                                                            i ===
+                                                                            index
+                                                                                ? {
+                                                                                      ...group,
+                                                                                      chargeType:
+                                                                                          event
+                                                                                              .target
+                                                                                              .value,
+                                                                                  }
+                                                                                : group,
+                                                                    )
                                                                 setFieldValue(
-                                                                    `ageGroups.${index}.chargeType`,
-                                                                    event.target
-                                                                        .value,
+                                                                    'ageGroups',
+                                                                    updated,
                                                                 )
-                                                            }
+                                                            }}
                                                             displayEmpty
                                                         >
                                                             <MenuItem
@@ -255,12 +318,30 @@ export const AgePolicyForm = () => {
                                                             )}
                                                     </FormControl>
                                                 </Grid>
+
                                                 {ageGroup.chargeType !==
                                                     'FREE' && (
                                                     <Grid size={6}>
                                                         <TextField
-                                                            label="Valor a ser cobrado"
-                                                            type="text"
+                                                            label={
+                                                                ageGroup.chargeType ===
+                                                                'DAILY_PERCENTAGE_PER_CHILDREN'
+                                                                    ? 'Percentual a ser cobrado'
+                                                                    : 'Valor a ser cobrado'
+                                                            }
+                                                            fullWidth
+                                                            value={
+                                                                ageGroup.chargeType ===
+                                                                'DAILY_PERCENTAGE_PER_CHILDREN'
+                                                                    ? (ageGroup.value ??
+                                                                      '')
+                                                                    : formatCurrency(
+                                                                          Number(
+                                                                              ageGroup.value ||
+                                                                                  0,
+                                                                          ),
+                                                                      )
+                                                            }
                                                             error={
                                                                 !!error?.value &&
                                                                 touched
@@ -277,33 +358,64 @@ export const AgePolicyForm = () => {
                                                                     ? error.value
                                                                     : ''
                                                             }
-                                                            value={
-                                                                ageGroup.value
-                                                            }
                                                             onChange={(e) => {
-                                                                const newValue =
+                                                                let newValue =
                                                                     e.target
                                                                         .value
+
+                                                                if (
+                                                                    ageGroup.chargeType ===
+                                                                    'DAILY_PERCENTAGE_PER_CHILDREN'
+                                                                ) {
+                                                                    newValue =
+                                                                        Math.max(
+                                                                            0,
+                                                                            Math.min(
+                                                                                100,
+                                                                                Number(
+                                                                                    newValue,
+                                                                                ),
+                                                                            ),
+                                                                        )
+                                                                } else {
+                                                                    const raw =
+                                                                        newValue.replace(
+                                                                            /\D/g,
+                                                                            '',
+                                                                        )
+                                                                    newValue =
+                                                                        Number(
+                                                                            raw,
+                                                                        ) / 100
+                                                                }
+
+                                                                const updated =
+                                                                    values.ageGroups.map(
+                                                                        (
+                                                                            group,
+                                                                            i,
+                                                                        ) =>
+                                                                            i ===
+                                                                            index
+                                                                                ? {
+                                                                                      ...group,
+                                                                                      value: newValue,
+                                                                                  }
+                                                                                : group,
+                                                                    )
                                                                 setFieldValue(
-                                                                    `ageGroups.${index}.value`,
-                                                                    newValue,
+                                                                    'ageGroups',
+                                                                    updated,
                                                                 )
                                                             }}
-                                                            fullWidth
-                                                            variant="outlined"
                                                             InputProps={{
                                                                 startAdornment:
-                                                                    (
+                                                                    ageGroup.chargeType ===
+                                                                    'DAILY_PERCENTAGE_PER_CHILDREN' ? (
                                                                         <InputAdornment position="start">
-                                                                            R$
+                                                                            %
                                                                         </InputAdornment>
-                                                                    ),
-                                                                inputMode:
-                                                                    'numeric',
-                                                                inputProps: {
-                                                                    pattern:
-                                                                        '[0-9]*',
-                                                                },
+                                                                    ) : null,
                                                             }}
                                                         />
                                                     </Grid>
@@ -318,14 +430,23 @@ export const AgePolicyForm = () => {
                                     startIcon={<CirclePlus size={16} />}
                                     sx={{ mt: 2, mb: 2 }}
                                     size="large"
-                                    onClick={() =>
+                                    onClick={() => {
+                                        const last =
+                                            values.ageGroups[
+                                                values.ageGroups.length - 1
+                                            ]
+                                        const newInitial = last
+                                            ? last.finalAge + 1
+                                            : 0
+                                        const newFinal = newInitial + 1
+
                                         push({
-                                            initialAge: 0,
-                                            finalAge: 0,
+                                            initialAge: newInitial,
+                                            finalAge: newFinal,
                                             value: 0,
                                             chargeType: '',
                                         })
-                                    }
+                                    }}
                                 >
                                     Adicionar Faixa Etária
                                 </Button>
