@@ -36,7 +36,7 @@ export default function CreateServicePage() {
             })
 
             toast({
-                title: 'Experiência Criada com sucesso',
+                title: 'Serviço Criada com sucesso',
                 status: 'success',
             })
 
@@ -48,7 +48,7 @@ export default function CreateServicePage() {
             back()
         } catch (error) {
             toast({
-                title: 'Erro ao criar experiência',
+                title: 'Erro ao criar Serviço',
                 description: getErrorMessage(error),
                 status: 'error',
             })
