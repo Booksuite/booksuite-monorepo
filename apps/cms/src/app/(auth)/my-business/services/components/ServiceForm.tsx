@@ -35,6 +35,7 @@ import { useState } from 'react'
 
 import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { formatCurrency } from '@/common/utils/currency'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
@@ -135,7 +136,7 @@ export const ServiceForm: React.FC = () => {
                     }}
                 >
                     <TextField
-                        label="Nome da Experiência"
+                        label="Nome do Serviço"
                         error={touched.name && Boolean(errors.name)}
                         helperText={touched.name && errors.name}
                         fullWidth
@@ -143,15 +144,19 @@ export const ServiceForm: React.FC = () => {
                     />
 
                     <TextField
-                        label="Preço Final da Experiência"
-                        type="currency"
+                        label="Preço Final do Serviço"
+                        fullWidth
                         error={touched.price && Boolean(errors.price)}
                         helperText={touched.price && errors.price}
-                        fullWidth
-                        {...getFieldProps('price')}
+                        value={formatCurrency(values.price)}
+                        onChange={(e) => {
+                            const raw = e.target.value.replace(/\D/g, '')
+                            const numeric = Number(raw) / 100
+                            setFieldValue('price', numeric)
+                        }}
                     />
                 </Box>
-
+              
                 <Grid
                     container
                     rowSpacing={4}
@@ -161,6 +166,7 @@ export const ServiceForm: React.FC = () => {
                         md: 3,
                     }}
                 >
+
                     <Grid size={4}>
                         <TextField
                             select
@@ -198,22 +204,26 @@ export const ServiceForm: React.FC = () => {
                         />
                     </Grid>
 
-                    <Grid size={4}>
-                        <NumberInput
-                            label="Antecedência mínima"
-                            min={1}
-                            error={!!errors.minNotice}
-                            helperText={errors.minNotice}
-                            {...getFieldProps('minNotice')}
-                            onChange={(e) => {
-                                const newValueNumber = Number(e.target.value)
-                                if (Number.isNaN(newValueNumber)) return
-                                setFieldValue(
-                                    'minNotice',
-                                    Math.round(newValueNumber),
-                                )
-                            }}
-                        />
+                    <Grid size={6}>
+                        <Stack width={'100%'}>
+                            <NumberInput
+                                label="Antecedência mínima"
+                                min={1}
+                                error={!!errors.minNotice}
+                                helperText={errors.minNotice}
+                                {...getFieldProps('minNotice')}
+                                onChange={(e) => {
+                                    const newValueNumber = Number(
+                                        e.target.value,
+                                    )
+                                    if (Number.isNaN(newValueNumber)) return
+                                    setFieldValue(
+                                        'minNotice',
+                                        Math.round(newValueNumber),
+                                    )
+                                }}
+                            />
+                        </Stack>
                     </Grid>
                 </Grid>
             </FormSection>
@@ -304,7 +314,8 @@ export const ServiceForm: React.FC = () => {
             <FormSection title="Adultos">
                 <NumberInput
                     label="Número de adultos"
-                    min={0}
+                    min={1}
+                    error={!!errors.adults}
                     helperText={errors.adults}
                     {...getFieldProps('adults')}
                     onChange={(e) => {
