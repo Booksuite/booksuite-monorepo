@@ -54,9 +54,9 @@ export default function CreateSeasonRules() {
         }
     }
     return (
-        <div className="CreateService">
+        <>
             <PageHeader
-                title="Detalhes da Temporada"
+                title="Criar Regras de Temporada"
                 backLButtonLabel="Regras de Temporada"
                 backButtonHref="/my-business/prices-and-periods/season-rules"
             />
@@ -70,6 +70,6 @@ export default function CreateSeasonRules() {
                     <SeasonRulesForm />
                 </FormikController>
             </Formik>
-        </div>
+        </>
     )
 }
