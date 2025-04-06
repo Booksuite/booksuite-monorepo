@@ -21,7 +21,11 @@ export function useSeasonRulesControllerUpdate<TContext>(
     mutation?: UseMutationOptions<
       SeasonRulesControllerUpdateMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: SeasonRulesControllerUpdatePathParams['id']; data?: SeasonRulesControllerUpdateMutationRequest },
+      {
+        id: SeasonRulesControllerUpdatePathParams['id']
+        companyId: SeasonRulesControllerUpdatePathParams['companyId']
+        data?: SeasonRulesControllerUpdateMutationRequest
+      },
       TContext
     >
     client?: Partial<RequestConfig<SeasonRulesControllerUpdateMutationRequest>> & { client?: typeof client }
@@ -33,11 +37,15 @@ export function useSeasonRulesControllerUpdate<TContext>(
   return useMutation<
     SeasonRulesControllerUpdateMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: SeasonRulesControllerUpdatePathParams['id']; data?: SeasonRulesControllerUpdateMutationRequest },
+    {
+      id: SeasonRulesControllerUpdatePathParams['id']
+      companyId: SeasonRulesControllerUpdatePathParams['companyId']
+      data?: SeasonRulesControllerUpdateMutationRequest
+    },
     TContext
   >({
-    mutationFn: async ({ id, data }) => {
-      return seasonRulesControllerUpdate({ id }, data, config)
+    mutationFn: async ({ id, companyId, data }) => {
+      return seasonRulesControllerUpdate({ id, companyId }, data, config)
     },
     mutationKey,
     ...mutationOptions,
