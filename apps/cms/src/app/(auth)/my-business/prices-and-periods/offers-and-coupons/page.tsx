@@ -1,77 +1,80 @@
 'use client'
 
-import { Button } from '@chakra-ui/react'
+import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
+import { Plus, Search, X } from 'lucide-react'
+import { useState } from 'react'
 
+import { LinkButton } from '@/components/atoms/LinkButton'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-//import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { Icons } from '@/components/svgs/icons'
 
 export default function OfertasECupons() {
+    const [searchInputValue, setSearchInputValue] = useState<string>('')
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+    const [searchQuery, setSearchQuery] = useState<string>('')
+
     const chipItems = [
-        { key: '1', label: 'Ativas' },
-        { key: '2', label: 'Inativas' },
-        { key: '3', label: 'Todas' },
+        { key: 'published', label: 'Publicadas' },
+        { key: 'unpublished', label: 'Não publicadas' },
     ]
 
     return (
-        <div className="OfertasECupons">
-            <PageHeader.Root>
-                <PageHeader.BackLink href="/my-business/precos-e-periodos">
-                    Preços e Períodos
-                </PageHeader.BackLink>
+        <div className="offers_and_coupons">
+            <PageHeader
+                title="Ofertas e Cupons"
+                backLButtonLabel="Preços e Períodos"
+                backButtonHref="/my-business/prices-and-periods"
+                headerRight={
+                    <LinkButton
+                        href="/my-business/prices-and-periods/offers-and-coupons/create"
+                        startIcon={<Plus size={16} />}
+                    >
+                        Adicionar
+                    </LinkButton>
+                }
+            />
 
-                <PageHeader.Title>Ofertas e Cupons</PageHeader.Title>
-            </PageHeader.Root>
+            <Stack
+                direction="row"
+                flex={1}
+                justifyContent="space-between"
+                alignItems="center"
+            >
+                <ChipFilter
+                    items={chipItems}
+                    value={selectedFilters}
+                    onChange={setSelectedFilters}
+                />
 
-            <div>
-                <ChipFilter items={chipItems} />
-
-                {/*<List.Root>
-                    <Link href="ofertas-e-cupons/detalhes">
-                        <List.Item
-                            variant="secondary"
-                            title="Mês dos Namorados"
-                            subtitle={'01/03/2024 a 31/03/2024'}
-                            status="Ativa"
-                        />
-                    </Link>
-
-                    <Link href="ofertas-e-cupons/detalhes">
-                        <List.Item
-                            variant="secondary"
-                            title="Mês dos Namorados"
-                            subtitle={'01/03/2024 a 31/03/2024'}
-                            status="Ativa"
-                        />
-                    </Link>
-
-                    <Link href="ofertas-e-cupons/detalhes">
-                        <List.Item
-                            variant="secondary"
-                            title="Mês dos Namorados"
-                            subtitle={'01/03/2024 a 31/03/2024'}
-                            status="Ativa"
-                        />
-                    </Link>
-
-                    <Link href="ofertas-e-cupons/detalhes">
-                        <List.Item
-                            variant="secondary"
-                            title="Mês dos Namorados"
-                            subtitle={'01/03/2024 a 31/03/2024'}
-                            status="Ativa"
-                        />
-                    </Link>
-                </List.Root>*/}
-
-                <Button
-                    className="mt-[2.5rem] w-full"
-                    leftIcon={<Icons.Plus />}
-                >
-                    Adicionar Oferta
-                </Button>
-            </div>
+                <TextField
+                    variant="outlined"
+                    size="small"
+                    placeholder="Pesquisar"
+                    value={searchInputValue}
+                    onChange={(e) => setSearchInputValue(e.target.value)}
+                    slotProps={{
+                        input: {
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <IconButton
+                                        size="small"
+                                        onClick={() => {
+                                            setSearchInputValue('')
+                                            setSearchQuery('')
+                                        }}
+                                    >
+                                        {searchQuery.length > 0 ? (
+                                            <X size={16} />
+                                        ) : (
+                                            <Search size={16} />
+                                        )}
+                                    </IconButton>
+                                </InputAdornment>
+                            ),
+                        },
+                    }}
+                />
+            </Stack>
         </div>
     )
 }
