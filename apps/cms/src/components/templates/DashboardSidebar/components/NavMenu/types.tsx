@@ -1,7 +1,8 @@
+import { Route } from 'next'
 import { ReactNode } from 'react'
 
 export interface LinkItem {
-    href: string
+    href: Route
     label: string
 }
 

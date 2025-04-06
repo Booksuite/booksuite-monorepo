@@ -25,8 +25,8 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 }) => {
     const mainLinks: LinkItem[] = [
         { href: '/', label: 'Início' },
-        { href: '/mapa', label: 'Mapa' },
-        { href: '/relatorios', label: 'Relatórios' },
+        { href: '/map', label: 'Mapa' },
+        //{ href: '/r', label: 'Relatórios' },
         { href: '/my-business', label: 'Meu Negócio' },
         { href: '/marketing', label: 'Marketing' },
     ]
