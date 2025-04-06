@@ -6,13 +6,7 @@ import type {
   SeasonRulesControllerGetByIdPathParams,
 } from '../../types/SeasonRulesController/SeasonRulesControllerGetById.ts'
 
-export function getSeasonRulesControllerGetByIdUrl({
-  id,
-  companyId,
-}: {
-  id: SeasonRulesControllerGetByIdPathParams['id']
-  companyId: SeasonRulesControllerGetByIdPathParams['companyId']
-}) {
+export function getSeasonRulesControllerGetByIdUrl({ id }: { id: SeasonRulesControllerGetByIdPathParams['id'] }) {
   return `/company/${companyId}/seasonRules/${id}` as const
 }
 
@@ -20,14 +14,14 @@ export function getSeasonRulesControllerGetByIdUrl({
  * {@link /company/:companyId/seasonRules/:id}
  */
 export async function seasonRulesControllerGetById(
-  { id, companyId }: { id: SeasonRulesControllerGetByIdPathParams['id']; companyId: SeasonRulesControllerGetByIdPathParams['companyId'] },
+  { id }: { id: SeasonRulesControllerGetByIdPathParams['id'] },
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
   const { client: request = client, ...requestConfig } = config
 
   const res = await request<SeasonRulesControllerGetByIdQueryResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'GET',
-    url: getSeasonRulesControllerGetByIdUrl({ id, companyId }).toString(),
+    url: getSeasonRulesControllerGetByIdUrl({ id }).toString(),
     ...requestConfig,
   })
   return res.data

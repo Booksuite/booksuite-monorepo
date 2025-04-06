@@ -1,5 +1,4 @@
 import type { BillingType } from './BillingType.ts'
-import type { ReservationOptionAgeGroup } from './ReservationOptionAgeGroup.ts'
 import type { ReservationOptionHousingUnitTypeInput } from './ReservationOptionHousingUnitTypeInput.ts'
 
 export type ReservationOptionFull = {
@@ -39,5 +38,5 @@ export type ReservationOptionFull = {
   /**
    * @type array
    */
-  ageGroupPrices: ReservationOptionAgeGroup[]
+  ageGroupPrices: any[][]
 }

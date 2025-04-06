@@ -5,10 +5,6 @@ export type ReservationOptionsControllerGetByIdPathParams = {
    * @type string
    */
   id: string
-  /**
-   * @type string
-   */
-  companyId: string
 }
 
 export type ReservationOptionsControllerGetById200 = ReservationOptionFull | null

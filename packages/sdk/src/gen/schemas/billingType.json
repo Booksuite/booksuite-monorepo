@@ -1,1 +1,1 @@
-{"type":"string","enum":["PER_GUEST_DAILY","PER_GUEST","DAILY","PER_RESERVATION","PER_HOUSING_UNIT"],"x-readme-ref-name":"BillingType"}
+{"type":"string","enum":["PER_GUEST_DAILY","PER_GUEST","DAILY","PER_RESERVATION"],"x-readme-ref-name":"BillingType"}

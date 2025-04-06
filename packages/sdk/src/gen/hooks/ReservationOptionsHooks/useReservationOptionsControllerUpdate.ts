@@ -21,11 +21,7 @@ export function useReservationOptionsControllerUpdate<TContext>(
     mutation?: UseMutationOptions<
       ReservationOptionsControllerUpdateMutationResponse,
       ResponseErrorConfig<Error>,
-      {
-        id: ReservationOptionsControllerUpdatePathParams['id']
-        companyId: ReservationOptionsControllerUpdatePathParams['companyId']
-        data?: ReservationOptionsControllerUpdateMutationRequest
-      },
+      { id: ReservationOptionsControllerUpdatePathParams['id']; data: ReservationOptionsControllerUpdateMutationRequest },
       TContext
     >
     client?: Partial<RequestConfig<ReservationOptionsControllerUpdateMutationRequest>> & { client?: typeof client }
@@ -37,15 +33,11 @@ export function useReservationOptionsControllerUpdate<TContext>(
   return useMutation<
     ReservationOptionsControllerUpdateMutationResponse,
     ResponseErrorConfig<Error>,
-    {
-      id: ReservationOptionsControllerUpdatePathParams['id']
-      companyId: ReservationOptionsControllerUpdatePathParams['companyId']
-      data?: ReservationOptionsControllerUpdateMutationRequest
-    },
+    { id: ReservationOptionsControllerUpdatePathParams['id']; data: ReservationOptionsControllerUpdateMutationRequest },
     TContext
   >({
-    mutationFn: async ({ id, companyId, data }) => {
-      return reservationOptionsControllerUpdate({ id, companyId }, data, config)
+    mutationFn: async ({ id, data }) => {
+      return reservationOptionsControllerUpdate({ id }, data, config)
     },
     mutationKey,
     ...mutationOptions,

@@ -6,13 +6,7 @@ import type {
   ReservationOptionsControllerGetByIdPathParams,
 } from '../../types/ReservationOptionsController/ReservationOptionsControllerGetById.ts'
 
-export function getReservationOptionsControllerGetByIdUrl({
-  id,
-  companyId,
-}: {
-  id: ReservationOptionsControllerGetByIdPathParams['id']
-  companyId: ReservationOptionsControllerGetByIdPathParams['companyId']
-}) {
+export function getReservationOptionsControllerGetByIdUrl({ id }: { id: ReservationOptionsControllerGetByIdPathParams['id'] }) {
   return `/company/${companyId}/reservationOptions/${id}` as const
 }
 
@@ -20,14 +14,14 @@ export function getReservationOptionsControllerGetByIdUrl({
  * {@link /company/:companyId/reservationOptions/:id}
  */
 export async function reservationOptionsControllerGetById(
-  { id, companyId }: { id: ReservationOptionsControllerGetByIdPathParams['id']; companyId: ReservationOptionsControllerGetByIdPathParams['companyId'] },
+  { id }: { id: ReservationOptionsControllerGetByIdPathParams['id'] },
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
   const { client: request = client, ...requestConfig } = config
 
   const res = await request<ReservationOptionsControllerGetByIdQueryResponse, ResponseErrorConfig<Error>, unknown>({
     method: 'GET',
-    url: getReservationOptionsControllerGetByIdUrl({ id, companyId }).toString(),
+    url: getReservationOptionsControllerGetByIdUrl({ id }).toString(),
     ...requestConfig,
   })
   return res.data

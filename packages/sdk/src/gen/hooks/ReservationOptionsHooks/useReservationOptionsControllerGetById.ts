@@ -8,32 +8,27 @@ import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/r
 import { reservationOptionsControllerGetById } from '../../client/ReservationOptionsService/reservationOptionsControllerGetById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
-export const reservationOptionsControllerGetByIdQueryKey = ({
-  id,
-  companyId,
-}: {
-  id: ReservationOptionsControllerGetByIdPathParams['id']
-  companyId: ReservationOptionsControllerGetByIdPathParams['companyId']
-}) => ['ReservationOptionsController_getById', { companyId: companyId, id: id }] as const
+export const reservationOptionsControllerGetByIdQueryKey = ({ id }: { id: ReservationOptionsControllerGetByIdPathParams['id'] }) =>
+  ['ReservationOptionsController_getById', { companyId: companyId, id: id }] as const
 
 export type ReservationOptionsControllerGetByIdQueryKey = ReturnType<typeof reservationOptionsControllerGetByIdQueryKey>
 
 export function reservationOptionsControllerGetByIdQueryOptions(
-  { id, companyId }: { id: ReservationOptionsControllerGetByIdPathParams['id']; companyId: ReservationOptionsControllerGetByIdPathParams['companyId'] },
+  { id }: { id: ReservationOptionsControllerGetByIdPathParams['id'] },
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
-  const queryKey = reservationOptionsControllerGetByIdQueryKey({ id, companyId })
+  const queryKey = reservationOptionsControllerGetByIdQueryKey({ id })
   return queryOptions<
     ReservationOptionsControllerGetByIdQueryResponse,
     ResponseErrorConfig<Error>,
     ReservationOptionsControllerGetByIdQueryResponse,
     typeof queryKey
   >({
-    enabled: !!(id && companyId),
+    enabled: !!id,
     queryKey,
     queryFn: async ({ signal }) => {
       config.signal = signal
-      return reservationOptionsControllerGetById({ id, companyId }, config)
+      return reservationOptionsControllerGetById({ id }, config)
     },
   })
 }
@@ -46,17 +41,17 @@ export function useReservationOptionsControllerGetById<
   TQueryData = ReservationOptionsControllerGetByIdQueryResponse,
   TQueryKey extends QueryKey = ReservationOptionsControllerGetByIdQueryKey,
 >(
-  { id, companyId }: { id: ReservationOptionsControllerGetByIdPathParams['id']; companyId: ReservationOptionsControllerGetByIdPathParams['companyId'] },
+  { id }: { id: ReservationOptionsControllerGetByIdPathParams['id'] },
   options: {
     query?: Partial<QueryObserverOptions<ReservationOptionsControllerGetByIdQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
   const { query: queryOptions, client: config = {} } = options ?? {}
-  const queryKey = queryOptions?.queryKey ?? reservationOptionsControllerGetByIdQueryKey({ id, companyId })
+  const queryKey = queryOptions?.queryKey ?? reservationOptionsControllerGetByIdQueryKey({ id })
 
   const query = useQuery({
-    ...(reservationOptionsControllerGetByIdQueryOptions({ id, companyId }, config) as unknown as QueryObserverOptions),
+    ...(reservationOptionsControllerGetByIdQueryOptions({ id }, config) as unknown as QueryObserverOptions),
     queryKey,
     ...(queryOptions as unknown as Omit<QueryObserverOptions, 'queryKey'>),
   }) as UseQueryResult<TData, ResponseErrorConfig<Error>> & { queryKey: TQueryKey }
