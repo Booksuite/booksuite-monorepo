@@ -1,13 +1,12 @@
 'use client'
 
-import {
-    useSeasonRulesControllerCreate,
-    useSeasonRulesControllerUpdate,
-} from '@booksuite/sdk'
+import { useSeasonRulesControllerCreate } from '@booksuite/sdk'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { enqueueSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { SeasonRulesForm } from '../components/SeasonRulesForm'
@@ -22,16 +21,37 @@ export default function CreateSeasonRules() {
     const { back } = useRouter()
 
     const companyId = useCurrentCompanyId()
-    const { mutateAsync: createSeasonRule, isLoading } =
-        useSeasonRulesControllerCreate()
+    const { mutateAsync: createSeasonRule } = useSeasonRulesControllerCreate()
 
     async function handleSubmit(formData: SeasonRuleFormData) {
-       
         const apiData = transformFormDataForSubmit(formData)
-        console.log(apiData)
+
         try {
             await createSeasonRule({ companyId, data: apiData })
-        } catch {}
+
+            enqueueSnackbar('Regras de temporada criada com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
+            })
+
+            back()
+        } catch (error) {
+            enqueueSnackbar(
+                `Erro ao criar regras de temporada: ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
+                },
+            )
+        }
     }
     return (
         <div className="CreateService">
