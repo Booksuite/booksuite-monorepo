@@ -8,8 +8,8 @@ import {
     Button,
     Stack,
 } from '@chakra-ui/react'
+import { MenuItem, TextField } from '@mui/material'
 
-import SelectBox from '@/components/atoms/SelectBox'
 import { SwitchBox } from '@/components/atoms/SwitchBox'
 import { TextAreaBox } from '@/components/atoms/TextAreaBox'
 import { PageHeader } from '@/components/organisms/PageHeader'
@@ -59,29 +59,23 @@ export default function AutomacoesPage() {
                                 }
                             />
 
-                            <SelectBox
-                                options={[
-                                    {
-                                        value: 'Imediatamente após reserva',
-                                        label: 'Imediatamente após reserva',
-                                    },
-                                    {
-                                        value: 'Nome Lorem',
-                                        label: 'Nome Lorem',
-                                    },
-                                    {
-                                        value: 'Lorem Ipsum',
-                                        label: 'Lorem Ipsum',
-                                    },
-                                ]}
-                                defaultValue={[
-                                    {
-                                        value: 'Imediatamente após reserva',
-                                        label: 'Imediatamente após reserva',
-                                    },
-                                ]}
+                            <TextField
+                                select
                                 label="Quando será feito o disparo"
-                            />
+                                defaultValue="Imediatamente após reserva"
+                                fullWidth
+                                variant="outlined"
+                            >
+                                <MenuItem value="Imediatamente após reserva">
+                                    Imediatamente após reserva
+                                </MenuItem>
+                                <MenuItem value="Nome Lorem">
+                                    Nome Lorem
+                                </MenuItem>
+                                <MenuItem value="Lorem Ipsum">
+                                    Lorem Ipsum
+                                </MenuItem>
+                            </TextField>
                         </Stack>
                     </AccordionPanel>
                 </AccordionItem>

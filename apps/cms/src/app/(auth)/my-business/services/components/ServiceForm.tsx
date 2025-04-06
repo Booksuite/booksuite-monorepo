@@ -156,27 +156,7 @@ export const ServiceForm: React.FC = () => {
                         }}
                     />
                 </Box>
-
-                <FormControl fullWidth>
-                    <TextField
-                        select
-                        label="Tipo de cobrança"
-                        fullWidth
-                        value={values.billingType}
-                        onChange={(e) =>
-                            setFieldValue('billingType', e.target.value)
-                        }
-                    >
-                        {Object.entries(BILLING_TYPE_MAPPING).map(
-                            ([key, value]) => (
-                                <MenuItem key={key} value={key}>
-                                    {value}
-                                </MenuItem>
-                            ),
-                        )}
-                    </TextField>
-                </FormControl>
-
+              
                 <Grid
                     container
                     rowSpacing={4}
@@ -186,23 +166,42 @@ export const ServiceForm: React.FC = () => {
                         md: 3,
                     }}
                 >
-                    <Grid size={6}>
-                        <Stack width={'100%'}>
-                            <NumberInput
-                                label="Mínimo de Diárias"
-                                min={1}
-                                error={!!errors.minDaily}
-                                helperText={errors.minDaily}
-                                {...getFieldProps('minDaily')}
-                                onChange={(e) => {
-                                    const newValueNumber = Number(
-                                        e.target.value,
-                                    )
-                                    if (Number.isNaN(newValueNumber)) return
-                                    setFieldValue('minDaily', newValueNumber)
-                                }}
-                            />
-                        </Stack>
+
+                    <Grid size={4}>
+                        <TextField
+                            select
+                            label="Tipo de cobrança"
+                            value={values.billingType}
+                            onChange={(e) =>
+                                setFieldValue('billingType', e.target.value)
+                            }
+                        >
+                            <MenuItem value="" disabled>
+                                Selecione um tipo de cobrança
+                            </MenuItem>
+                            {Object.entries(BILLING_TYPE_MAPPING).map(
+                                ([key, value]) => (
+                                    <MenuItem key={key} value={key}>
+                                        {value}
+                                    </MenuItem>
+                                ),
+                            )}
+                        </TextField>
+                    </Grid>
+
+                    <Grid size={4}>
+                        <NumberInput
+                            label="Mínimo de Diárias"
+                            min={1}
+                            error={!!errors.minDaily}
+                            helperText={errors.minDaily}
+                            {...getFieldProps('minDaily')}
+                            onChange={(e) => {
+                                const newValueNumber = Number(e.target.value)
+                                if (Number.isNaN(newValueNumber)) return
+                                setFieldValue('minDaily', newValueNumber)
+                            }}
+                        />
                     </Grid>
 
                     <Grid size={6}>
@@ -469,12 +468,9 @@ export const ServiceForm: React.FC = () => {
                             strategy={rectSortingStrategy}
                         >
                             <Grid container spacing={3} mt={4}>
-                                {values.medias.map((item, index) => (
+                                {values.medias.map((item) => (
                                     <Grid size={2} key={item.media.id}>
-                                        <SortableMediaItem
-                                            mediaItem={item}
-                                            index={index}
-                                        />
+                                        <SortableMediaItem mediaItem={item} />
                                     </Grid>
                                 ))}
                             </Grid>
