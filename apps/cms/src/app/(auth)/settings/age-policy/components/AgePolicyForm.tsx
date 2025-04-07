@@ -247,7 +247,9 @@ export const AgePolicyForm = () => {
                                                             ]?.chargeType
                                                         }
                                                     >
-                                                        <Select
+                                                        <TextField
+                                                            select
+                                                            label="Tipo de cobrança"
                                                             value={
                                                                 ageGroup.chargeType ||
                                                                 ''
@@ -277,14 +279,7 @@ export const AgePolicyForm = () => {
                                                                     updated,
                                                                 )
                                                             }}
-                                                            displayEmpty
                                                         >
-                                                            <MenuItem
-                                                                value=""
-                                                                disabled
-                                                            >
-                                                                Tipo de Cobrança
-                                                            </MenuItem>
                                                             {Object.entries(
                                                                 AGE_GROUP_CHARGE_TYPE,
                                                             ).map(
@@ -304,7 +299,8 @@ export const AgePolicyForm = () => {
                                                                     </MenuItem>
                                                                 ),
                                                             )}
-                                                        </Select>
+                                                        </TextField>
+
                                                         {error?.chargeType &&
                                                             touched
                                                                 ?.ageGroups?.[

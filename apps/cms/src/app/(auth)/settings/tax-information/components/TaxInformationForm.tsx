@@ -88,24 +88,20 @@ export const TaxInformationForm = () => {
                 >
                     <Grid size={6}>
                         <FormControl fullWidth>
-                            <InputLabel>Tipo de documento</InputLabel>
-                            <Select
-                                size="medium"
+                            <TextField
+                                select
                                 label="Tipo de documento"
-                                onChange={(selectedOption) =>
-                                    setFieldValue(
-                                        'docType',
-                                        selectedOption.target.value,
-                                    )
+                                value={getFieldProps('docType').value}
+                                onChange={(e) =>
+                                    setFieldValue('docType', e.target.value)
                                 }
-                                value={values.docType || ''}
                             >
                                 {DOC_TYPE.map(({ value }, index) => (
                                     <MenuItem key={index} value={value}>
                                         {value}
                                     </MenuItem>
                                 ))}
-                            </Select>
+                            </TextField>
                         </FormControl>
                     </Grid>
                     <Grid size={6}>

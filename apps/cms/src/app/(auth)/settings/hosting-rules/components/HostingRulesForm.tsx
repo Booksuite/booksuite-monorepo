@@ -8,7 +8,6 @@ import {
     Grid,
     IconButton,
     MenuItem,
-    Select,
     Stack,
     TextField,
     Typography,
@@ -16,7 +15,7 @@ import {
 } from '@mui/material'
 import { useFormikContext } from 'formik'
 import { Info, PlusCircle, Trash } from 'lucide-react'
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
@@ -97,22 +96,14 @@ export const HostingRulesForm = () => {
                 <Grid container spacing={2}>
                     <Grid size={6}>
                         <FormControl fullWidth>
-                            <Select
-                                size="medium"
-                                onChange={(
-                                    e: ChangeEvent<{ value: unknown }>,
-                                ) =>
-                                    setFieldValue(
-                                        'checkIn',
-                                        Number(e.target.value),
-                                    )
-                                }
+                            <TextField
+                                select
+                                label="Horário do Check-In"
                                 value={getFieldProps('checkIn').value}
-                                displayEmpty
+                                onChange={(e) =>
+                                    setFieldValue('checkIn', e.target.value)
+                                }
                             >
-                                <MenuItem value="" disabled>
-                                    Horário do Check-In
-                                </MenuItem>
                                 {CHECKIN_OPTIONS.map(
                                     ({ label, value }, index) => (
                                         <MenuItem key={index} value={value}>
@@ -120,27 +111,19 @@ export const HostingRulesForm = () => {
                                         </MenuItem>
                                     ),
                                 )}
-                            </Select>
+                            </TextField>
                         </FormControl>
                     </Grid>
                     <Grid size={6}>
                         <FormControl fullWidth>
-                            <Select
-                                size="medium"
-                                onChange={(
-                                    e: ChangeEvent<{ value: unknown }>,
-                                ) =>
-                                    setFieldValue(
-                                        'checkOut',
-                                        Number(e.target.value),
-                                    )
-                                }
+                            <TextField
+                                select
+                                label="Horário do Check-Out"
                                 value={getFieldProps('checkOut').value}
-                                displayEmpty
+                                onChange={(e) =>
+                                    setFieldValue('checkOut', e.target.value)
+                                }
                             >
-                                <MenuItem value="" disabled>
-                                    Horário do Check-Out
-                                </MenuItem>
                                 {CHECKOUT_OPTIONS.map(
                                     ({ label, value }, index) => (
                                         <MenuItem key={index} value={value}>
@@ -148,7 +131,7 @@ export const HostingRulesForm = () => {
                                         </MenuItem>
                                     ),
                                 )}
-                            </Select>
+                            </TextField>
                         </FormControl>
                     </Grid>
                 </Grid>
@@ -156,7 +139,12 @@ export const HostingRulesForm = () => {
                 <NumberInput
                     label="Mínimo de diárias"
                     {...getFieldProps('minDaily')}
-                    onChange={(e) => setFieldValue('minDaily', e.target.value)}
+                    value={values.minDaily}
+                    onChange={(e) => {
+                        const newValueNumber = Number(e.target.value)
+                        if (Number.isNaN(newValueNumber)) return
+                        setFieldValue('minDaily', newValueNumber)
+                    }}
                 />
             </FormSection>
 
@@ -214,46 +202,42 @@ export const HostingRulesForm = () => {
 
             <FormSection title="Janela de Disponibilidade">
                 <FormControl fullWidth>
-                    <Select
-                        value={selectedOpening || ''}
+                    <TextField
+                        select
+                        label="Janela de abertura de hospedagem"
+                        value={getFieldProps('selectedOpening').value}
                         onChange={(e) => {
                             const value = Number(e.target.value)
                             setSelectedOpening(value)
                         }}
-                        displayEmpty
                     >
-                        <MenuItem value="" disabled>
-                            Selecione a janela de abertura de hospedagem
-                        </MenuItem>
                         {OPENING_WINDOW.map(({ label }, index) => (
                             <MenuItem key={index} value={index}>
                                 {label}
                             </MenuItem>
                         ))}
-                    </Select>
+                    </TextField>
                 </FormControl>
 
                 {selectedOpening === 0 && (
                     <FormControl fullWidth>
-                        <Select
-                            value={selectedPeriods || ''}
+                        <TextField
+                            select
+                            label="Períodos"
+                            value={getFieldProps('selectedPeriods').value}
                             onChange={(e) => {
                                 const value = Number(e.target.value)
                                 setSelectedPeriods(value)
                                 setFieldValue('reservationWindowStart', null)
                                 setFieldValue('reservationWindowEnd', null)
                             }}
-                            displayEmpty
                         >
-                            <MenuItem value="" disabled>
-                                Selecione o período
-                            </MenuItem>
                             {PERIODS.map(({ label }, index) => (
                                 <MenuItem key={index} value={index}>
                                     {label}
                                 </MenuItem>
                             ))}
-                        </Select>
+                        </TextField>
                     </FormControl>
                 )}
 
@@ -364,28 +348,28 @@ export const HostingRulesForm = () => {
 
             <FormSection>
                 <FormControl fullWidth>
-                    <Select
-                        value={selectedSpecificDays || ''}
-                        onChange={(e) => {
-                            const value = Number(e.target.value)
-                            setSelectedSpecificDays(value)
-                            if (value == 0)
-                                setFieldValue(
-                                    'availableWeekDays',
-                                    [0, 1, 2, 3, 4, 5, 6],
-                                )
-                        }}
-                        displayEmpty
-                    >
-                        <MenuItem value="" disabled>
-                            Dias de Funcionamento
-                        </MenuItem>
-                        {SPECIFIC_DAYS.map(({ label }, index) => (
-                            <MenuItem key={index} value={index}>
-                                {label}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                    <FormControl fullWidth>
+                        <TextField
+                            select
+                            label="Dias de funcionamento"
+                            value={getFieldProps('selectedSpecificDays').value}
+                            onChange={(e) => {
+                                const value = Number(e.target.value)
+                                setSelectedSpecificDays(value)
+                                if (value == 0)
+                                    setFieldValue(
+                                        'availableWeekDays',
+                                        [0, 1, 2, 3, 4, 5, 6],
+                                    )
+                            }}
+                        >
+                            {SPECIFIC_DAYS.map(({ label }, index) => (
+                                <MenuItem key={index} value={index}>
+                                    {label}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </FormControl>
                 </FormControl>
 
                 {selectedSpecificDays === 1 && (

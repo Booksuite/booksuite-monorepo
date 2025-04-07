@@ -1,7 +1,10 @@
 import { CompanyFull, CompanyUpdateInput } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type GeneralDataForm = Pick<CompanyUpdateInput, 'name' | 'timezone' | 'type'>
+export type GeneralDataForm = Pick<
+    CompanyUpdateInput,
+    'name' | 'timezone' | 'type'
+>
 
 export const transformFormDataForSubmit = (
     formData: GeneralDataForm,
@@ -11,7 +14,7 @@ export const transformFormDataForSubmit = (
         timezone: formData.timezone || null,
         type: formData.type,
     }
-    
+
     return transformedFormData
 }
 
