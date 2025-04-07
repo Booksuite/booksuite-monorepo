@@ -15,6 +15,10 @@ export type Reservation = {
   /**
    * @type string
    */
+  id: string
+  /**
+   * @type string
+   */
   status: ReservationResponseDTOStatus
   /**
    * @type string
