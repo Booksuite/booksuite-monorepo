@@ -19,6 +19,10 @@ export type ReservationFull = {
   /**
    * @type string
    */
+  id: string
+  /**
+   * @type string
+   */
   status: ReservationResponseFullDTOStatus
   /**
    * @type string
