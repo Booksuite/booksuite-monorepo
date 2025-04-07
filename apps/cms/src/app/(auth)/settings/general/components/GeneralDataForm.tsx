@@ -23,35 +23,31 @@ export const GeneralForm: React.FC = () => {
 
                 <Grid container spacing={2}>
                     <Grid size={6}>
-                        <Select
+                        <TextField
+                            select
+                            label="Tipos de Negócio"
                             value={getFieldProps('type').value}
-                            fullWidth
-                            onChange={(selectedOption) =>
-                                setFieldValue(
-                                    'type',
-                                    selectedOption.target.value,
-                                )
+                            onChange={(e) =>
+                                setFieldValue('type', e.target.value)
                             }
                         >
                             {Object.entries(COMPANY_TYPES).map(
-                                ([value, label]) => (
-                                    <MenuItem key={value} value={value}>
-                                        {label}
+                                ([label, value]) => (
+                                    <MenuItem key={label} value={label}>
+                                        {value}
                                     </MenuItem>
                                 ),
                             )}
-                        </Select>
+                        </TextField>
                     </Grid>
                     <Grid size={6}>
-                        <Select
+                        <TextField
+                            select
+                            label="Fuso Horário"
                             value={getFieldProps('timezone').value}
-                            fullWidth
-                            onChange={(selectedOption) => {
-                                setFieldValue(
-                                    'timezone',
-                                    selectedOption.target.value,
-                                )
-                            }}
+                            onChange={(e) =>
+                                setFieldValue('timezone', e.target.value)
+                            }
                         >
                             {Object.entries(BRAZIL_TIMEZONES).map(
                                 ([label, value]) => (
@@ -60,7 +56,7 @@ export const GeneralForm: React.FC = () => {
                                     </MenuItem>
                                 ),
                             )}
-                        </Select>
+                        </TextField>
                     </Grid>
                 </Grid>
             </FormSection>

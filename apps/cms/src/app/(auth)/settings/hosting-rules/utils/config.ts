@@ -5,33 +5,33 @@ export type HostingRulesData = Omit<
     HostingRulesInput,
     'availableWeekDays' | 'availableWeekend'
 > & {
-    availableWeekend: string[]
     availableWeekDays: string[]
+    availableWeekend: string[]
 }
 
 export const transformFormDataForSubmit = (
     formData: HostingRulesData,
 ): HostingRulesInput => {
-    const { ...rest } = formData
+    const { availableWeekDays, availableWeekend, ...rest } = formData
 
     return {
         ...rest,
-        availableWeekDays: formData.availableWeekDays.map(Number),
-        availableWeekend: formData.availableWeekend.map(Number),
+        availableWeekDays: availableWeekDays.map(Number),
+        availableWeekend: availableWeekend.map(Number),
     }
 }
 
 export const createHostingRulesInitialValues = (
     data?: HostingRulesInput | null,
 ): HostingRulesData => ({
-    availableWeekDays: data?.availableWeekDays.map(String) || [],
-    availableWeekend: data?.availableWeekend.map(String) || [],
-    checkIn: data?.checkIn || 0,
-    checkOut: data?.checkOut || 0,
-    minDaily: data?.minDaily || 0,
-    fixedWindowPeriod: data?.fixedWindowPeriod || 0,
-    reservationWindowEnd: data?.reservationWindowEnd || null,
-    reservationWindowStart: data?.reservationWindowStart || null,
+    availableWeekDays: data?.availableWeekDays?.map(String) || [],
+    availableWeekend: data?.availableWeekend?.map(String) || [],
+    checkIn: data?.checkIn ?? 0,
+    checkOut: data?.checkOut ?? 0,
+    minDaily: data?.minDaily ?? 0,
+    fixedWindowPeriod: data?.fixedWindowPeriod ?? 0,
+    reservationWindowEnd: data?.reservationWindowEnd ?? null,
+    reservationWindowStart: data?.reservationWindowStart ?? null,
 })
 
 export const hostingRulesDataSchema = yup.object({
