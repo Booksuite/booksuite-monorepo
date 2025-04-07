@@ -10,8 +10,7 @@ export const COMPANY_TYPES: Record<CompanyResponseDTOType, string> = {
     HOTEL: 'Hotel',
     INN: 'Inn',
     OTHER: 'Outro',
-    RESORT: 'Resort'
-
+    RESORT: 'Resort',
 }
 
 export const BRAZIL_TIMEZONES: Record<string, string> = {
@@ -22,5 +21,5 @@ export const BRAZIL_TIMEZONES: Record<string, string> = {
     MANAUS: 'Manaus (GMT -04:00)',
     BOA_VISTA: 'Boa Vista (GMT -04:00)',
     PORTO_VELHO: 'Porto Velho (GMT -04:00)',
-    RIO_BRANCO: 'Rio Branco (GMT -05:00)'
-};
+    RIO_BRANCO: 'Rio Branco (GMT -05:00)',
+}

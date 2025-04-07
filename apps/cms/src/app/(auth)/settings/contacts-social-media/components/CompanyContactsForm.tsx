@@ -3,7 +3,6 @@ import {
     FormControl,
     IconButton,
     MenuItem,
-    Select,
     Stack,
     TextField,
     Typography,
@@ -69,19 +68,16 @@ export default function CompanyContactsForm() {
                             )}
                             <Stack direction="row" spacing={2}>
                                 <FormControl fullWidth>
-                                    <Select
-                                        value={selectedType || ''}
+                                    <TextField
+                                        select
+                                        label="Tipo do Email"
+                                        value={selectedType}
                                         onChange={(e) =>
                                             setSelectedType(
                                                 Number(e.target.value),
                                             )
                                         }
-                                        size="medium"
-                                        displayEmpty
                                     >
-                                        <MenuItem value="" disabled>
-                                            Selecione o tipo de email
-                                        </MenuItem>
                                         {TYPES_OPTIONS.map(
                                             ({ label }, index) => (
                                                 <MenuItem
@@ -92,7 +88,7 @@ export default function CompanyContactsForm() {
                                                 </MenuItem>
                                             ),
                                         )}
-                                    </Select>
+                                    </TextField>
                                 </FormControl>
                                 <Button
                                     variant="outlined"
@@ -162,25 +158,22 @@ export default function CompanyContactsForm() {
                             )}
                             <Stack direction="row" spacing={2}>
                                 <FormControl fullWidth>
-                                    <Select
-                                        value={selectedPhoneType || ''}
+                                    <TextField
+                                        select
+                                        label="Tipo do Telefone"
+                                        value={selectedPhoneType}
                                         onChange={(e) =>
-                                            setSelectedPhoneType(
+                                            setSelectedType(
                                                 Number(e.target.value),
                                             )
                                         }
-                                        size="medium"
-                                        displayEmpty
                                     >
-                                        <MenuItem value="" disabled>
-                                            Selecione o tipo de telefone
-                                        </MenuItem>
                                         {PHONE_TYPES.map(({ label }, index) => (
                                             <MenuItem key={index} value={index}>
                                                 {label}
                                             </MenuItem>
                                         ))}
-                                    </Select>
+                                    </TextField>
                                 </FormControl>
                                 <Button
                                     variant="outlined"
