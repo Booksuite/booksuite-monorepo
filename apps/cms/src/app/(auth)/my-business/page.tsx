@@ -1,4 +1,4 @@
-import { Archive, CircleDollarSign, CirclePlus, Home, Wine } from 'lucide-react'
+import { Archive, CircleDollarSign, Home, Wine } from 'lucide-react'
 import { Route } from 'next'
 
 import { InternalMenu } from '@/components/organisms/InternalMenu'
@@ -20,11 +20,6 @@ const menuItems: MenuItem[] = [
         icon: <CircleDollarSign size={20} />,
         title: 'Preços e Períodos',
         href: '/my-business/prices-and-periods',
-    },
-    {
-        icon: <CirclePlus size={20} />,
-        title: 'Extras',
-        href: '/my-business/services',
     },
     {
         icon: <Wine size={20} />,

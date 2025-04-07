@@ -2,6 +2,7 @@
 
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
 import { Session } from 'next-auth'
+import { SnackbarProvider } from 'notistack'
 
 import { ConfirmationDialog } from '@/components/templates/ConfirmationDialog'
 
@@ -21,10 +22,20 @@ export function Providers({ children }: ProvidersProps) {
             <ChakraThemeProvider>
                 <MaterialThemeProvider>
                     <TanstackQueryProvider>
-                        <SidebarProvider>
-                            {children}
-                            <ConfirmationDialog />
-                        </SidebarProvider>
+                        <SnackbarProvider
+                            maxSnack={3}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            autoHideDuration={3000}
+                            style={{ zIndex: 13000 }}
+                        >
+                            <SidebarProvider>
+                                {children}
+                                <ConfirmationDialog />
+                            </SidebarProvider>
+                        </SnackbarProvider>
                     </TanstackQueryProvider>
                 </MaterialThemeProvider>
             </ChakraThemeProvider>

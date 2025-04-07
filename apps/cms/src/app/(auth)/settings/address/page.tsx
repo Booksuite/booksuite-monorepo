@@ -1,6 +1,7 @@
 'use client'
 
 import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
@@ -21,8 +22,13 @@ export default function Address() {
     const companyId = useCurrentCompanyId()
     const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
+    const queryClient = useQueryClient()
 
-    const { data: companyData, isLoading } = useGetCompanyById({
+    const {
+        data: companyData,
+        isLoading,
+        queryKey,
+    } = useGetCompanyById({
         id: companyId,
     })
 
@@ -34,6 +40,8 @@ export default function Address() {
                 id: companyId,
                 data: formData,
             })
+
+            await queryClient.invalidateQueries({ queryKey })
 
             enqueueSnackbar('Endereço modificado com sucesso', {
                 variant: 'success',

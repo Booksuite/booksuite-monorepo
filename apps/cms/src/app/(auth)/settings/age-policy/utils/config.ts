@@ -6,6 +6,7 @@ export type AgePolicyFormData = AgePolicyInput
 export const createAgePolicyInitialValues = (
     data?: Partial<AgePolicyFull>,
 ): AgePolicyFormData => ({
+    id: data?.id || '',
     acceptChildren: data?.acceptChildren || false,
     adultMinAge: data?.adultMinAge || 0,
     ageGroups:
@@ -19,6 +20,7 @@ export const createAgePolicyInitialValues = (
 })
 
 export const agePolicyFormSchema = yup.object({
+    id: yup.string().optional(),
     acceptChildren: yup.boolean().required('Campo obrigatório'),
     adultMinAge: yup
         .number()
