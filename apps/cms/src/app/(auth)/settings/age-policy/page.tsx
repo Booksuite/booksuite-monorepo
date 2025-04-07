@@ -4,6 +4,7 @@ import {
     useGetCompanyAgePolicy,
     useUpsertCompanyAgePolicy,
 } from '@booksuite/sdk'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
@@ -24,8 +25,13 @@ export default function AgePolicy() {
     const companyId = useCurrentCompanyId()
     const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
+    const queryClient = useQueryClient()
 
-    const { data: companyAgePolicyData, isLoading } = useGetCompanyAgePolicy({
+    const {
+        data: companyAgePolicyData,
+        isLoading,
+        queryKey,
+    } = useGetCompanyAgePolicy({
         companyId: companyId,
     })
 
@@ -34,9 +40,13 @@ export default function AgePolicy() {
     async function handleSubmit(formData: AgePolicyFormData) {
         try {
             await updateCompanyAgePolicy({
+                id: formData.id,
                 companyId: companyId,
                 data: formData,
             })
+
+            await queryClient.invalidateQueries({ queryKey })
+
             enqueueSnackbar('Políticas de Idade modificadas com sucesso', {
                 variant: 'success',
                 anchorOrigin: {
@@ -47,6 +57,7 @@ export default function AgePolicy() {
             })
             back()
         } catch (error) {
+            alert(getErrorMessage(error))
             enqueueSnackbar(
                 `Erro ao modificar políticas: ${getErrorMessage(error)}`,
                 {
@@ -74,7 +85,7 @@ export default function AgePolicy() {
             {!isLoading && (
                 <Formik<AgePolicyFormData>
                     initialValues={createAgePolicyInitialValues(
-                        companyAgePolicyData,
+                        companyAgePolicyData ?? undefined,
                     )}
                     validationSchema={agePolicyFormSchema}
                     onSubmit={handleSubmit}

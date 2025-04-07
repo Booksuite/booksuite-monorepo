@@ -6,6 +6,10 @@ export type UpsertCompanyAgePolicyPathParams = {
    * @type string
    */
   companyId: string
+  /**
+   * @type string
+   */
+  id: string
 }
 
 export type UpsertCompanyAgePolicy200 = AgePolicyFull
