@@ -44,7 +44,9 @@ export const createFormInitialValues = (
     published: false,
     adults: data?.adults || 0,
     billingType: data?.billingType || 'DAILY',
-    availableWeekDays: data?.availableWeekDays.map(String) || [],
+    availableWeekDays: Array.isArray(data?.availableWeekDays)
+        ? data.availableWeekDays.map(String)
+        : [],
     medias: data?.medias || [],
     description: data?.name || '',
     minDaily: data?.minDaily || 1,

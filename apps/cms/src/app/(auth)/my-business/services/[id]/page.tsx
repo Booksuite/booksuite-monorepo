@@ -65,7 +65,7 @@ export default function UpdateService({ params }: UpdateServiceProps) {
     return (
         <div>
             <PageHeader
-                title="Editar Experiências"
+                title="Editar Serviços"
                 backButtonHref="/my-business/services"
                 backLButtonLabel="Meu Negócio"
             />

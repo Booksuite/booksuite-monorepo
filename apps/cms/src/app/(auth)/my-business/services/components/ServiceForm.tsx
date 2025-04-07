@@ -156,7 +156,7 @@ export const ServiceForm: React.FC = () => {
                         }}
                     />
                 </Box>
-              
+
                 <Grid
                     container
                     rowSpacing={4}
@@ -166,7 +166,6 @@ export const ServiceForm: React.FC = () => {
                         md: 3,
                     }}
                 >
-
                     <Grid size={4}>
                         <TextField
                             select
@@ -190,21 +189,25 @@ export const ServiceForm: React.FC = () => {
                     </Grid>
 
                     <Grid size={4}>
-                        <NumberInput
-                            label="Mínimo de Diárias"
-                            min={1}
-                            error={!!errors.minDaily}
-                            helperText={errors.minDaily}
-                            {...getFieldProps('minDaily')}
-                            onChange={(e) => {
-                                const newValueNumber = Number(e.target.value)
-                                if (Number.isNaN(newValueNumber)) return
-                                setFieldValue('minDaily', newValueNumber)
-                            }}
-                        />
+                        <Stack width={'100%'}>
+                            <NumberInput
+                                label="Mínimo de Diárias"
+                                min={1}
+                                error={!!errors.minDaily}
+                                helperText={errors.minDaily}
+                                {...getFieldProps('minDaily')}
+                                onChange={(e) => {
+                                    const newValueNumber = Number(
+                                        e.target.value,
+                                    )
+                                    if (Number.isNaN(newValueNumber)) return
+                                    setFieldValue('minDaily', newValueNumber)
+                                }}
+                            />
+                        </Stack>
                     </Grid>
 
-                    <Grid size={6}>
+                    <Grid size={4}>
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Antecedência mínima"
