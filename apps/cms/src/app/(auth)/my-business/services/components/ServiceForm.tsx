@@ -127,36 +127,6 @@ export const ServiceForm: React.FC = () => {
             </FormSection>
 
             <FormSection>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        width: '100%',
-                        gap: 2,
-                    }}
-                >
-                    <TextField
-                        label="Nome do Serviço"
-                        error={touched.name && Boolean(errors.name)}
-                        helperText={touched.name && errors.name}
-                        fullWidth
-                        {...getFieldProps('name')}
-                    />
-
-                    <TextField
-                        label="Preço Final do Serviço"
-                        fullWidth
-                        error={touched.price && Boolean(errors.price)}
-                        helperText={touched.price && errors.price}
-                        value={formatCurrency(values.price)}
-                        onChange={(e) => {
-                            const raw = e.target.value.replace(/\D/g, '')
-                            const numeric = Number(raw) / 100
-                            setFieldValue('price', numeric)
-                        }}
-                    />
-                </Box>
-
                 <Grid
                     container
                     rowSpacing={4}
@@ -166,7 +136,32 @@ export const ServiceForm: React.FC = () => {
                         md: 3,
                     }}
                 >
-                    <Grid size={4}>
+                    <Grid size={12}>
+                        <TextField
+                            label="Nome do Serviço"
+                            error={touched.name && Boolean(errors.name)}
+                            helperText={touched.name && errors.name}
+                            fullWidth
+                            {...getFieldProps('name')}
+                        />
+                    </Grid>
+
+                    <Grid size={6}>
+                        <TextField
+                            label="Preço Final do Serviço"
+                            fullWidth
+                            error={touched.price && Boolean(errors.price)}
+                            helperText={touched.price && errors.price}
+                            value={formatCurrency(values.price)}
+                            onChange={(e) => {
+                                const raw = e.target.value.replace(/\D/g, '')
+                                const numeric = Number(raw) / 100
+                                setFieldValue('price', numeric)
+                            }}
+                        />
+                    </Grid>
+
+                    <Grid size={6}>
                         <TextField
                             select
                             label="Tipo de cobrança"
@@ -188,7 +183,7 @@ export const ServiceForm: React.FC = () => {
                         </TextField>
                     </Grid>
 
-                    <Grid size={4}>
+                    <Grid size={6}>
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Mínimo de Diárias"
@@ -207,7 +202,7 @@ export const ServiceForm: React.FC = () => {
                         </Stack>
                     </Grid>
 
-                    <Grid size={4}>
+                    <Grid size={6}>
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Antecedência mínima"
@@ -313,21 +308,6 @@ export const ServiceForm: React.FC = () => {
                     </Grid>
                 </FormSection>
             )}
-
-            <FormSection title="Adultos">
-                <NumberInput
-                    label="Número de adultos"
-                    min={1}
-                    error={!!errors.adults}
-                    helperText={errors.adults}
-                    {...getFieldProps('adults')}
-                    onChange={(e) => {
-                        const newValueNumber = Number(e.target.value)
-                        if (Number.isNaN(newValueNumber)) return
-                        setFieldValue('adults', Math.round(newValueNumber))
-                    }}
-                />
-            </FormSection>
 
             {!isLoadingHousingUnitTypes && !!housingUnitTypes && (
                 <FormSection title="Acomodações Válidas">
