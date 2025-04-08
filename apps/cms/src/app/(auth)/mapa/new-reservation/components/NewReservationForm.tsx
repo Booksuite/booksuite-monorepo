@@ -1,193 +1,34 @@
 import {
-    useGetCompanyAgePolicy,
-    useGetCompanyHostingRules,
-} from '@booksuite/sdk'
-import {
     Box,
     Button,
+    FormControlLabel,
     Grid,
     MenuItem,
+    Switch,
     TextField,
     Typography,
 } from '@mui/material'
-import { differenceInDays, eachDayOfInterval, getDay } from 'date-fns'
-import { FieldArray, getIn, useFormikContext } from 'formik'
-import { Minus, Plus } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { getIn, useFormikContext } from 'formik'
 
-import { useCurrentCompanyId } from '@/common/contexts/user'
-import { formatCurrency } from '@/common/utils/currency'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
-import {
-    ReservationFormData,
-    useCompanyHousingUnitTypes,
-    useCompanyReservationOptions,
-    useCompanyServices,
-} from '../utils/config'
+import { ReservationFormData } from '../utils/config'
 import { CHANNEL_OPTIONS } from '../utils/constants'
-
-import { HousingUnitModal } from './HousingUnitModal'
-import { ReservationOptionsSelector } from './ReservationOptionsSelector'
-import { ServicesModal } from './ServicesModal'
 
 export const NewReservationForm: React.FC = () => {
     const { setFieldValue, touched, errors, getFieldProps, values } =
         useFormikContext<ReservationFormData>()
-    const [isHousingUnitModalOpen, setIsHousingUnitModalOpen] = useState(false)
-    const [isServicesModalOpen, setIsServicesModalOpen] = useState(false)
-    const companyId = useCurrentCompanyId()
-
-    const { data: agePolicy, isLoading } = useGetCompanyAgePolicy({ companyId })
-
-    const { data: housingUnitTypes } = useCompanyHousingUnitTypes(companyId)
-
-    const { data: hostingRules } = useGetCompanyHostingRules({ companyId })
-
-    const { data: reservationOptions } = useCompanyReservationOptions(
-        companyId,
-        values.startDate,
-        values.endDate,
-    )
-
-    const { data: services } = useCompanyServices(
-        companyId,
-        isServicesModalOpen,
-    )
-
-    const selectedHousingUnit = housingUnitTypes?.items
-        .flatMap((type) => type.housingUnits)
-        .find((unit) => unit.id === values.housingUnitId)
-
-    const selectedHousingUnitType = housingUnitTypes?.items.find((type) =>
-        type.housingUnits.some((unit) => unit.id === values.housingUnitId),
-    )
-
-    const calculateNights = (startDate: string, endDate: string) => {
-        const days = eachDayOfInterval({
-            start: new Date(startDate),
-            end: new Date(endDate),
-        })
-
-        const weekendDays = days.filter((d) =>
-            hostingRules?.availableWeekend.includes(getDay(d)),
-        )
-
-        return {
-            weekdays: days.length - weekendDays.length,
-            weekendDays: weekendDays.length,
-            totalDays: weekendDays.length + (days.length - weekendDays.length),
-        }
-    }
-    const calculateSubtotal = () => {
-        if (!selectedHousingUnitType || !values.startDate || !values.endDate)
-            return 0
-
-        const nights = calculateNights(values.startDate, values.endDate)
-        const weekendPrice =
-            (selectedHousingUnitType.weekendPrice ?? 0) * nights.weekendDays
-        const weekDaysPrice =
-            (selectedHousingUnitType.weekdaysPrice ?? 0) * nights.weekdays
-        return weekendPrice + weekDaysPrice
-    }
-
-    const calculateTotalPrice = () => {
-        if (
-            !selectedHousingUnitType ||
-            !values.startDate ||
-            !values.endDate ||
-            !Array.isArray(values.reservationOptions)
-        ) {
-            return 0
-        }
-
-        const nights = calculateNights(values.startDate, values.endDate)
-        const basePrice = calculateSubtotal()
-        const totalChildrens = values.children
-            ? values.children.reduce((sum, c) => sum + Number(c.children), 0)
-            : 0
-        const guests = values.adults ? values.adults + totalChildrens : 1
-
-        const optionsTotal = values.reservationOptions.reduce(
-            (total, optionId) => {
-                const option = reservationOptions?.items?.find(
-                    (opt) => opt.id === optionId,
-                )
-                if (!option) return total
-
-                const optionAdultPrice = values.adults
-                    ? values.adults * option.additionalAdultPrice
-                    : 0
-                const optionChildrenPrice =
-                    totalChildrens * option.additionalChildrenPrice
-
-                console.log(option.additionalAdultPrice)
-                console.log(option.additionalChildrenPrice)
-                console.log(optionChildrenPrice)
-                console.log(optionAdultPrice)
-
-                switch (option.billingType) {
-                    case 'PER_GUEST_DAILY':
-                        return (
-                            total +
-                            optionAdultPrice +
-                            optionChildrenPrice * nights.totalDays
-                        )
-                    case 'PER_GUEST':
-                        return total + optionAdultPrice + optionChildrenPrice
-                    case 'DAILY':
-                        return total + optionAdultPrice * nights.totalDays
-                    case 'PER_RESERVATION':
-                    case 'PER_HOUSING_UNIT':
-                        return total + optionAdultPrice
-                    default:
-                        return total
-                }
-            },
-            0,
-        )
-
-        return basePrice + optionsTotal
-    }
 
     const openHousingUnitSelector = () => {
-        setIsHousingUnitModalOpen(true)
+        return null
     }
 
     const openServicesSelector = () => {
-        setIsServicesModalOpen(true)
+        return null
     }
 
-    const handleUpdateServices = (serviceId: string, quantity: number) => {
-        const updatedServices = [...(values.services || [])]
-        const existingServiceIndex = updatedServices.findIndex(
-            (s) => s.serviceId === serviceId,
-        )
-
-        if (quantity === 0 && existingServiceIndex !== -1) {
-            updatedServices.splice(existingServiceIndex, 1)
-        } else if (
-            existingServiceIndex !== -1 &&
-            updatedServices[existingServiceIndex]
-        ) {
-            updatedServices[existingServiceIndex].qtd = quantity
-        } else if (quantity > 0) {
-            updatedServices.push({ serviceId, qtd: quantity, totalPrice: 0 })
-        }
-
-        setFieldValue('services', updatedServices)
-    }
-
-    useEffect(() => {
-        setFieldValue(
-            'children',
-            agePolicy?.ageGroups.map((a) => ({
-                children: 0,
-                ageGroupId: a.id,
-            })),
-        )
-    }, [agePolicy, setFieldValue])
+    const check = true
 
     return (
         <FormContainer>
@@ -282,39 +123,6 @@ export const NewReservationForm: React.FC = () => {
                         setFieldValue('adults', newValueNumber)
                     }}
                 />
-
-                <FieldArray name="children">
-                    {({ push, remove }) => (
-                        <>
-                            {agePolicy?.ageGroups.map((a, index) => (
-                                <NumberInput
-                                    key={index}
-                                    label={`Crianças (${a.initialAge} a ${a.finalAge})`}
-                                    disabled={
-                                        values.startDate && values.endDate
-                                            ? false
-                                            : true
-                                    }
-                                    value={
-                                        values.children
-                                            ? values.children[index]?.children
-                                            : 0
-                                    }
-                                    onChange={(e) => {
-                                        setFieldValue(
-                                            `children.${index}.ageGroupId`,
-                                            a.id,
-                                        )
-                                        setFieldValue(
-                                            `children.${index}.children`,
-                                            e.target.value,
-                                        )
-                                    }}
-                                />
-                            ))}
-                        </>
-                    )}
-                </FieldArray>
             </FormSection>
 
             <FormSection
