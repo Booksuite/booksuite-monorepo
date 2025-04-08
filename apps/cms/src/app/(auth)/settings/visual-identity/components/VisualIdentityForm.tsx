@@ -46,8 +46,6 @@ export default function VisualIdentityForm() {
         faviconInputRef.current?.click()
     }
 
-    const [selectedType, setSelectedType] = useState<number | null>(null)
-
     useEffect(() => {
         setLogo(values.logo)
         setFavicon(values.favIcon)
@@ -55,24 +53,6 @@ export default function VisualIdentityForm() {
 
     return (
         <FormContainer>
-            {/*<FormSection>
-                <Select
-                    value={selectedType || ''}
-                    onChange={(e) => setSelectedType(Number(e.target.value))}
-                    displayEmpty
-                    size="medium"
-                >
-                    <MenuItem value="" disabled>
-                        Proporção da Logotipo
-                    </MenuItem>
-                    {OPTIONS.map(({ label }, index) => (
-                        <MenuItem key={index} value={index}>
-                            {label}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormSection>*/}
-
             <FormSection
                 sx={{
                     border: '1px solid',
@@ -235,8 +215,8 @@ export default function VisualIdentityForm() {
                                 borderColor: 'divider',
                                 bgcolor: mainColor,
                                 borderRadius: 1,
-                                width: 55,
-                                height: 55,
+                                width: '100%',
+                                height: 60,
                                 ml: 1,
                             }}
                         />
