@@ -175,31 +175,6 @@ export const PreReservationForm: React.FC = () => {
                         setFieldValue('adults', newValueNumber)
                     }}
                 />
-
-                <FieldArray name="children">
-                    {({ push, remove }) => (
-                        <>
-                            {agePolicy?.ageGroups.map((a, index) => (
-                                <NumberInput
-                                    key={index}
-                                    label={`Crianças (${a.initialAge} a ${a.finalAge})`}
-                                    value={values.children[index]?.children}
-                                    onChange={(e) => {
-                                        const newValueNumber = Number(
-                                            e.target.value,
-                                        )
-
-                                        remove(index)
-                                        push({
-                                            children: newValueNumber,
-                                            ageGroupId: a.id,
-                                        })
-                                    }}
-                                />
-                            ))}
-                        </>
-                    )}
-                </FieldArray>
             </FormSection>
 
             <FormSection
