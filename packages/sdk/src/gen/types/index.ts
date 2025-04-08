@@ -423,3 +423,28 @@ export type { ServiceSearchBodyInput } from './ServiceSearchBodyInput.ts'
 export type { ServiceSearchFilterInput } from './ServiceSearchFilterInput.ts'
 export type { ServiceUpdateInput } from './ServiceUpdateInput.ts'
 export type { User } from './User.ts'
+export type { UtilityLinks } from './UtilityLinks.ts'
+export type { GetUtilityLinkPathParams, GetUtilityLink200, GetUtilityLinkQueryResponse, GetUtilityLinkQuery } from './UtilityLinksController/GetUtilityLink.ts'
+export type {
+  SearchUtilityLinksPathParams,
+  SearchUtilityLinksQueryParams,
+  SearchUtilityLinks200,
+  SearchUtilityLinksMutationRequest,
+  SearchUtilityLinksMutationResponse,
+  SearchUtilityLinksMutation,
+} from './UtilityLinksController/SearchUtilityLinks.ts'
+export type {
+  UtilityLinksControllerCreatePathParams,
+  UtilityLinksControllerCreate200,
+  UtilityLinksControllerCreateMutationRequest,
+  UtilityLinksControllerCreateMutationResponse,
+  UtilityLinksControllerCreateMutation,
+} from './UtilityLinksController/UtilityLinksControllerCreate.ts'
+export type {
+  UtilityLinksControllerUpdatePathParams,
+  UtilityLinksControllerUpdate200,
+  UtilityLinksControllerUpdateMutationRequest,
+  UtilityLinksControllerUpdateMutationResponse,
+  UtilityLinksControllerUpdateMutation,
+} from './UtilityLinksController/UtilityLinksControllerUpdate.ts'
+export type { UtilityLinksInput } from './UtilityLinksInput.ts'

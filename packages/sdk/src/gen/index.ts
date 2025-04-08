@@ -50,6 +50,10 @@ export type { DeleteServiceMutationKey } from './hooks/ServiceHooks/useDeleteSer
 export type { GetServiceByIdQueryKey } from './hooks/ServiceHooks/useGetServiceById.ts'
 export type { SearchServicesQueryKey } from './hooks/ServiceHooks/useSearchServices.ts'
 export type { UpdateServiceMutationKey } from './hooks/ServiceHooks/useUpdateService.ts'
+export type { GetUtilityLinkQueryKey } from './hooks/UtilityLinksHooks/useGetUtilityLink.ts'
+export type { SearchUtilityLinksQueryKey } from './hooks/UtilityLinksHooks/useSearchUtilityLinks.ts'
+export type { UtilityLinksControllerCreateMutationKey } from './hooks/UtilityLinksHooks/useUtilityLinksControllerCreate.ts'
+export type { UtilityLinksControllerUpdateMutationKey } from './hooks/UtilityLinksHooks/useUtilityLinksControllerUpdate.ts'
 export type { AgeGroupResponseDTOChargeType, AgeGroup } from './types/AgeGroup.ts'
 export type { AgeGroupDTOChargeType, AgeGroupInput } from './types/AgeGroupInput.ts'
 export type { AgePolicy } from './types/AgePolicy.ts'
@@ -499,6 +503,36 @@ export type { ServiceSearchBodyInput } from './types/ServiceSearchBodyInput.ts'
 export type { ServiceSearchFilterInput } from './types/ServiceSearchFilterInput.ts'
 export type { ServiceUpdateInput } from './types/ServiceUpdateInput.ts'
 export type { User } from './types/User.ts'
+export type { UtilityLinks } from './types/UtilityLinks.ts'
+export type {
+  GetUtilityLinkPathParams,
+  GetUtilityLink200,
+  GetUtilityLinkQueryResponse,
+  GetUtilityLinkQuery,
+} from './types/UtilityLinksController/GetUtilityLink.ts'
+export type {
+  SearchUtilityLinksPathParams,
+  SearchUtilityLinksQueryParams,
+  SearchUtilityLinks200,
+  SearchUtilityLinksMutationRequest,
+  SearchUtilityLinksMutationResponse,
+  SearchUtilityLinksMutation,
+} from './types/UtilityLinksController/SearchUtilityLinks.ts'
+export type {
+  UtilityLinksControllerCreatePathParams,
+  UtilityLinksControllerCreate200,
+  UtilityLinksControllerCreateMutationRequest,
+  UtilityLinksControllerCreateMutationResponse,
+  UtilityLinksControllerCreateMutation,
+} from './types/UtilityLinksController/UtilityLinksControllerCreate.ts'
+export type {
+  UtilityLinksControllerUpdatePathParams,
+  UtilityLinksControllerUpdate200,
+  UtilityLinksControllerUpdateMutationRequest,
+  UtilityLinksControllerUpdateMutationResponse,
+  UtilityLinksControllerUpdateMutation,
+} from './types/UtilityLinksController/UtilityLinksControllerUpdate.ts'
+export type { UtilityLinksInput } from './types/UtilityLinksInput.ts'
 export { agePolicyService } from './client/AgePolicyService/agePolicyService.ts'
 export { getGetCompanyAgePolicyUrl, getCompanyAgePolicy } from './client/AgePolicyService/getCompanyAgePolicy.ts'
 export { getUpsertCompanyAgePolicyUrl, upsertCompanyAgePolicy } from './client/AgePolicyService/upsertCompanyAgePolicy.ts'
@@ -573,6 +607,11 @@ export { getGetServiceByIdUrl, getServiceById } from './client/ServiceService/ge
 export { getSearchServicesUrl, searchServices } from './client/ServiceService/searchServices.ts'
 export { serviceService } from './client/ServiceService/serviceService.ts'
 export { getUpdateServiceUrl, updateService } from './client/ServiceService/updateService.ts'
+export { getGetUtilityLinkUrl, getUtilityLink } from './client/UtilityLinksService/getUtilityLink.ts'
+export { getSearchUtilityLinksUrl, searchUtilityLinks } from './client/UtilityLinksService/searchUtilityLinks.ts'
+export { getUtilityLinksControllerCreateUrl, utilityLinksControllerCreate } from './client/UtilityLinksService/utilityLinksControllerCreate.ts'
+export { getUtilityLinksControllerUpdateUrl, utilityLinksControllerUpdate } from './client/UtilityLinksService/utilityLinksControllerUpdate.ts'
+export { utilityLinksService } from './client/UtilityLinksService/utilityLinksService.ts'
 export { getCompanyAgePolicyQueryKey, getCompanyAgePolicyQueryOptions, useGetCompanyAgePolicy } from './hooks/AgePolicyHooks/useGetCompanyAgePolicy.ts'
 export { upsertCompanyAgePolicyMutationKey, useUpsertCompanyAgePolicy } from './hooks/AgePolicyHooks/useUpsertCompanyAgePolicy.ts'
 export { createBannerMutationKey, useCreateBanner } from './hooks/BannerHooks/useCreateBanner.ts'
@@ -672,3 +711,7 @@ export { deleteServiceMutationKey, useDeleteService } from './hooks/ServiceHooks
 export { getServiceByIdQueryKey, getServiceByIdQueryOptions, useGetServiceById } from './hooks/ServiceHooks/useGetServiceById.ts'
 export { searchServicesQueryKey, searchServicesQueryOptions, useSearchServices } from './hooks/ServiceHooks/useSearchServices.ts'
 export { updateServiceMutationKey, useUpdateService } from './hooks/ServiceHooks/useUpdateService.ts'
+export { getUtilityLinkQueryKey, getUtilityLinkQueryOptions, useGetUtilityLink } from './hooks/UtilityLinksHooks/useGetUtilityLink.ts'
+export { searchUtilityLinksQueryKey, searchUtilityLinksQueryOptions, useSearchUtilityLinks } from './hooks/UtilityLinksHooks/useSearchUtilityLinks.ts'
+export { utilityLinksControllerCreateMutationKey, useUtilityLinksControllerCreate } from './hooks/UtilityLinksHooks/useUtilityLinksControllerCreate.ts'
+export { utilityLinksControllerUpdateMutationKey, useUtilityLinksControllerUpdate } from './hooks/UtilityLinksHooks/useUtilityLinksControllerUpdate.ts'
