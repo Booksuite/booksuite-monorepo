@@ -1,82 +1,10 @@
 import {
-    ReservationAgeGroupInput,
     ReservationFull,
     ReservationResponseFullDTOSaleChannel,
     ReservationResponseFullDTOStatus,
     User,
-    useSearchHousingUnitTypes,
-    useSearchReservationOption,
-    useSearchServices,
 } from '@booksuite/sdk'
-import { eachDayOfInterval, getDay } from 'date-fns'
 import * as yup from 'yup'
-
-export const useCompanyHousingUnitTypes = (
-    companyId: string | undefined,
-    open?: boolean,
-) => {
-    return useSearchHousingUnitTypes(
-        { companyId },
-        {
-            pagination: { page: 1, itemsPerPage: 100 },
-            filter: { published: true },
-        },
-        undefined,
-        {
-            query: {
-                enabled: !!companyId && open,
-            },
-        },
-    )
-}
-
-export const useCompanyReservationOptions = (
-    companyId: string | undefined,
-    startDate: string,
-    endDate: string,
-) => {
-    return useSearchReservationOption(
-        { companyId },
-        {
-            pagination: { page: 1, itemsPerPage: 100 },
-            filter: {
-                published: true,
-            },
-            fields: [
-                'id',
-                'name',
-                'billingType',
-                'additionalAdultPrice',
-                'availableHousingUnitTypes',
-            ],
-        },
-        undefined,
-        {
-            query: {
-                enabled: !!(companyId && startDate && endDate),
-            },
-        },
-    )
-}
-
-export const useCompanyServices = (
-    companyId: string | undefined,
-    open: boolean,
-) => {
-    return useSearchServices(
-        { companyId },
-        {
-            pagination: { page: 1, itemsPerPage: 100 },
-            filter: { published: true },
-        },
-        undefined,
-        {
-            query: {
-                enabled: !!companyId && open,
-            },
-        },
-    )
-}
 
 export type ReservationServiceFormItem = {
     serviceId: string
@@ -91,13 +19,12 @@ export type ReservationFormData = {
     endDate: string
     totalDays: number | null
     adults: number | null
-    children: ReservationAgeGroupInput[]
+    children: number | null
     notes: string
     housingUnitId: string
     services: ReservationServiceFormItem[]
     guestUser: User | null
     sellerUser: User | null
-    reservationOptions: string[]
 }
 
 export const transformReservationFormDataForSubmit = (
@@ -131,7 +58,7 @@ export const createReservationFormInitialValues = (
     endDate: data?.endDate || '',
     totalDays: data?.totalDays ?? null,
     adults: data?.adults ?? null,
-    children: data?.children || [],
+    children: data?.children ?? null,
     notes: data?.notes || '',
     housingUnitId: data?.housingUnit?.id || '',
     services:
@@ -142,7 +69,6 @@ export const createReservationFormInitialValues = (
         })) || [],
     guestUser: data?.guestUser || null,
     sellerUser: data?.sellerUser || null,
-    reservationOptions: [],
 })
 
 export const reservationFormSchema = yup.object({
@@ -152,7 +78,7 @@ export const reservationFormSchema = yup.object({
     endDate: yup.string().required('Data de término é obrigatória'),
     totalDays: yup.number().nullable(),
     adults: yup.number().nullable(),
-    children: yup.array(),
+    children: yup.number().nullable(),
     notes: yup.string().optional(),
     housingUnitId: yup.string().required('Unidade habitacional é obrigatória'),
     services: yup
@@ -167,10 +93,26 @@ export const reservationFormSchema = yup.object({
             }),
         )
         .min(0),
-    guestUser: yup.object().nullable(),
+    guestUser: yup
+        .object()
+        .shape({
+            email: yup.string().email().required(),
+            firstName: yup.string().required(),
+            lastName: yup.string().nullable(),
+            phone: yup.string().nullable(),
+            password: yup.string().required(),
+            metaData: yup.object().nullable(),
+        })
+        .nullable(),
     sellerUser: yup
         .object()
-
+        .shape({
+            email: yup.string().email().required(),
+            firstName: yup.string().required(),
+            lastName: yup.string().nullable(),
+            phone: yup.string().nullable(),
+            password: yup.string().required(),
+            metaData: yup.object().nullable(),
+        })
         .nullable(),
-    reservationOptions: yup.array().min(0),
 })
