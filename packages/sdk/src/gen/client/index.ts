@@ -66,3 +66,8 @@ export { getGetServiceByIdUrl, getServiceById } from './ServiceService/getServic
 export { getSearchServicesUrl, searchServices } from './ServiceService/searchServices.ts'
 export { serviceService } from './ServiceService/serviceService.ts'
 export { getUpdateServiceUrl, updateService } from './ServiceService/updateService.ts'
+export { getGetUtilityLinkUrl, getUtilityLink } from './UtilityLinksService/getUtilityLink.ts'
+export { getSearchUtilityLinksUrl, searchUtilityLinks } from './UtilityLinksService/searchUtilityLinks.ts'
+export { getUtilityLinksControllerCreateUrl, utilityLinksControllerCreate } from './UtilityLinksService/utilityLinksControllerCreate.ts'
+export { getUtilityLinksControllerUpdateUrl, utilityLinksControllerUpdate } from './UtilityLinksService/utilityLinksControllerUpdate.ts'
+export { utilityLinksService } from './UtilityLinksService/utilityLinksService.ts'
