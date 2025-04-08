@@ -46,88 +46,6 @@ export const BudgetForm: React.FC = () => {
         return null
     }
 
-    const calculateNights = (startDate: string, endDate: string) => {
-        return differenceInDays(new Date(endDate), new Date(startDate))
-    }
-
-    const calculateSubtotal = () => {
-        if (!selectedHousingUnitType || !values.startDate || !values.endDate)
-            return 0
-
-        const nights = calculateNights(values.startDate, values.endDate)
-        return (selectedHousingUnitType.weekdaysPrice ?? 0) * nights
-    }
-
-    const selectedHousingUnit = housingUnitTypes?.items
-        .flatMap((type) => type.housingUnits)
-        .find((unit) => unit.id === values.housingUnitId)
-
-    const selectedHousingUnitType = housingUnitTypes?.items.find((type) =>
-        type.housingUnits.some((unit) => unit.id === values.housingUnitId),
-    )
-
-    const { data: reservationOptions } = useCompanyReservationOptions(
-        companyId,
-        values.startDate,
-        values.endDate,
-    )
-
-    const { data: agePolicy } = useGetCompanyAgePolicy({ companyId })
-    const [isHousingUnitModalOpen, setIsHousingUnitModalOpen] = useState(false)
-
-    const calculateTotalPrice = () => {
-        if (
-            !selectedHousingUnitType ||
-            !values.startDate ||
-            !values.endDate ||
-            !Array.isArray(values.reservationOptions)
-        ) {
-            return 0
-        }
-
-        const nights = calculateNights(values.startDate, values.endDate)
-        const basePrice = (selectedHousingUnitType.weekdaysPrice ?? 0) * nights
-        const adults = values.adults ?? 1
-
-        const optionsTotal = values.reservationOptions.reduce(
-            (total, optionId) => {
-                const option = reservationOptions?.items?.find(
-                    (opt) => opt.id === optionId,
-                )
-                if (!option) return total
-
-                const price = option.additionalAdultPrice ?? 0
-
-                switch (option.billingType) {
-                    case 'PER_GUEST_DAILY':
-                        return total + price * adults * nights
-                    case 'PER_GUEST':
-                        return total + price * adults
-                    case 'DAILY':
-                        return total + price * nights
-                    case 'PER_RESERVATION':
-                    case 'PER_HOUSING_UNIT':
-                        return total + price
-                    default:
-                        return total
-                }
-            },
-            0,
-        )
-
-        return basePrice + optionsTotal
-    }
-
-    useEffect(() => {
-        setFieldValue(
-            'children',
-            agePolicy?.ageGroups.map((a) => ({
-                children: 0,
-                ageGroupId: a.id,
-            })),
-        )
-    }, [agePolicy, setFieldValue])
-
     const check = true
 
     return (
@@ -257,39 +175,6 @@ export const BudgetForm: React.FC = () => {
                         setFieldValue('adults', newValueNumber)
                     }}
                 />
-
-                <FieldArray name="children">
-                    {({ push, remove }) => (
-                        <>
-                            {agePolicy?.ageGroups.map((a, index) => (
-                                <NumberInput
-                                    key={index}
-                                    label={`Crianças (${a.initialAge} a ${a.finalAge})`}
-                                    disabled={
-                                        values.startDate && values.endDate
-                                            ? false
-                                            : true
-                                    }
-                                    value={
-                                        values.children
-                                            ? values.children[index]?.children
-                                            : 0
-                                    }
-                                    onChange={(e) => {
-                                        setFieldValue(
-                                            `children.${index}.ageGroupId`,
-                                            a.id,
-                                        )
-                                        setFieldValue(
-                                            `children.${index}.children`,
-                                            e.target.value,
-                                        )
-                                    }}
-                                />
-                            ))}
-                        </>
-                    )}
-                </FieldArray>
             </FormSection>
 
             <FormSection
