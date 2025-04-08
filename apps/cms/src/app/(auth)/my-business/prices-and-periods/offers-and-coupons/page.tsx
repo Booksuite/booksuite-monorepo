@@ -8,6 +8,8 @@ import { LinkButton } from '@/components/atoms/LinkButton'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
+import { OffersAndCouponsForm } from './components/OffersAndCouponsForm'
+
 export default function OfertasECupons() {
     const [searchInputValue, setSearchInputValue] = useState<string>('')
     const [selectedFilters, setSelectedFilters] = useState<string[]>([])
@@ -33,7 +35,6 @@ export default function OfertasECupons() {
                     </LinkButton>
                 }
             />
-
             <Stack
                 direction="row"
                 flex={1}
@@ -75,6 +76,7 @@ export default function OfertasECupons() {
                     }}
                 />
             </Stack>
+            <OffersAndCouponsForm />
         </div>
     )
 }
