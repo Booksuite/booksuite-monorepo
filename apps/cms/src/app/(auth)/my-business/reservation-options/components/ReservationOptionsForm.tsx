@@ -129,6 +129,12 @@ export const ReservationOptionForm: React.FC = () => {
                         error={!!errors.additionalAdultPrice}
                         helperText={errors.additionalAdultPrice}
                         {...getFieldProps('additionalAdultPrice')}
+                        onChange={(e) => {
+                            setFieldValue(
+                                'additionalAdultPrice',
+                                e.target.value,
+                            )
+                        }}
                     />
                     <TextFieldCurrency
                         fullWidth
@@ -136,6 +142,12 @@ export const ReservationOptionForm: React.FC = () => {
                         error={!!errors.additionalChildrenPrice}
                         helperText={errors.additionalChildrenPrice}
                         {...getFieldProps('additionalChildrenPrice')}
+                        onChange={(e) => {
+                            setFieldValue(
+                                'additionalChildrenPrice',
+                                e.target.value,
+                            )
+                        }}
                     />
                 </Box>
                 {agePolicy?.ageGroups?.map((a, index) => {
