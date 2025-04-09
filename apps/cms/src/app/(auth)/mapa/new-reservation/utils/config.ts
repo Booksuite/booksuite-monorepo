@@ -3,8 +3,52 @@ import {
     ReservationResponseFullDTOSaleChannel,
     ReservationResponseFullDTOStatus,
     User,
+    useSearchHousingUnitTypes,
+    useSearchReservationOption,
 } from '@booksuite/sdk'
 import * as yup from 'yup'
+
+export const useCompanyHousingUnitTypes = (
+    companyId: string | undefined,
+    open: boolean,
+) => {
+    return useSearchHousingUnitTypes(
+        { companyId },
+        {
+            pagination: { page: 1, itemsPerPage: 100 },
+            filter: { published: true },
+        },
+        undefined,
+        {
+            query: {
+                enabled: !!companyId && open,
+            },
+        },
+    )
+}
+
+export const useCompanyReservationOptions = (
+    companyId: string | undefined,
+    startDate: string,
+    endDate: string,
+) => {
+    return useSearchReservationOption(
+        { companyId },
+        {
+            pagination: { page: 1, itemsPerPage: 100 },
+            filter: {
+                published: true,
+                billingType: 'DAILY',
+            },
+        },
+        undefined,
+        {
+            query: {
+                enabled: !!(companyId && startDate && endDate),
+            },
+        },
+    )
+}
 
 export type ReservationServiceFormItem = {
     serviceId: string
@@ -25,6 +69,7 @@ export type ReservationFormData = {
     services: ReservationServiceFormItem[]
     guestUser: User | null
     sellerUser: User | null
+    reservationOptions: string[]
 }
 
 export const transformReservationFormDataForSubmit = (
@@ -69,6 +114,7 @@ export const createReservationFormInitialValues = (
         })) || [],
     guestUser: data?.guestUser || null,
     sellerUser: data?.sellerUser || null,
+    reservationOptions: [],
 })
 
 export const reservationFormSchema = yup.object({
@@ -115,4 +161,5 @@ export const reservationFormSchema = yup.object({
             metaData: yup.object().nullable(),
         })
         .nullable(),
+    reservationOptions: yup.array().of(yup.string()).min(0),
 })

@@ -21,8 +21,6 @@ interface HousingUnitModalProps {
     open: boolean
     onClose: () => void
     onSelect: (housingUnitId: string) => void
-    adults: number
-    childrens: number
     selectedHousingUnitId?: string
     numberOfNights?: number
 }
@@ -31,8 +29,6 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
     open,
     onClose,
     onSelect,
-    adults = 0,
-    childrens = 0,
     selectedHousingUnitId,
     numberOfNights = 1,
 }) => {
@@ -156,93 +152,57 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                 ) : (
                     <>
                         <Box>
-                            {filteredHousingTypes.map((type) => {
-                                const isDisabled =
-                                    adults > type.maxAdults ||
-                                    childrens > type.maxChildren ||
-                                    adults + childrens > type.maxGuests
-
-                                return type.housingUnits.map((unit) => (
+                            {filteredHousingTypes.map((type) =>
+                                type.housingUnits.map((unit) => (
                                     <Box
                                         key={unit.id}
                                         onClick={() => handleSelect(unit.id)}
-                                        sx={() => {
-                                            return {
-                                                border: '1px solid',
-                                                borderColor:
-                                                    selectedHousingUnitId ===
-                                                    unit.id
-                                                        ? 'blue.900'
-                                                        : isDisabled
-                                                          ? '#D1D5DB'
-                                                          : '#E5E7EB',
-                                                borderRadius: 1,
-                                                p: 3,
-                                                mb: 2,
-                                                cursor: isDisabled
-                                                    ? 'not-allowed'
-                                                    : 'pointer',
-                                                bgcolor: isDisabled
-                                                    ? '#F3F4F6'
-                                                    : selectedHousingUnitId ===
-                                                        unit.id
-                                                      ? '#F3F6FF'
-                                                      : '#FFFFFF',
-                                                color: isDisabled
-                                                    ? '#6B7280'
-                                                    : 'inherit',
-                                                opacity: isDisabled ? 0.9 : 1,
-                                                '&:hover': {
-                                                    borderColor: isDisabled
-                                                        ? '#D1D5DB'
-                                                        : 'blue.900',
-                                                    bgcolor: isDisabled
-                                                        ? '#F3F4F6'
-                                                        : '#F3F6FF',
-                                                },
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                                alignItems: 'center',
-                                                transition:
-                                                    'all 0.2s ease-in-out',
-                                                pointerEvents: isDisabled
-                                                    ? 'none'
-                                                    : 'auto',
-                                            }
+                                        sx={{
+                                            border: '1px solid',
+                                            borderColor:
+                                                selectedHousingUnitId ===
+                                                unit.id
+                                                    ? 'blue.900'
+                                                    : '#E5E7EB',
+                                            borderRadius: 1,
+                                            p: 3,
+                                            mb: 2,
+                                            cursor: 'pointer',
+                                            bgcolor:
+                                                selectedHousingUnitId ===
+                                                unit.id
+                                                    ? '#F3F6FF'
+                                                    : '#FFFFFF',
+                                            '&:hover': {
+                                                borderColor: 'blue.900',
+                                                bgcolor: '#F3F6FF',
+                                            },
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            transition: 'all 0.2s ease-in-out',
                                         }}
                                     >
-                                        <Box>
+                                        <Box display={'flex'} gap={1}>
                                             <Typography
                                                 variant="h6"
                                                 sx={{
                                                     fontSize: '1rem',
                                                     fontWeight: 400,
-                                                    color:
-                                                        isDisabled
-                                                            ? '#6B7280'
-                                                            : '#1F2937',
+                                                    color: '#1F2937',
                                                 }}
                                             >
-                                                {type.name} {unit.name}
+                                                {type.name}
                                             </Typography>
                                             <Typography
-                                                variant="body2"
+                                                variant="h6"
                                                 sx={{
-                                                    fontSize: '0.875rem',
-                                                    color: isDisabled
-                                                        ? '#FCA5A5'
-                                                        : '#6B7280',
+                                                    fontSize: '1rem',
+                                                    fontWeight: 400,
+                                                    color: '#1F2937',
                                                 }}
                                             >
-                                                {`${
-                                                    isDisabled
-                                                        ? 'Adultos ' +
-                                                          type.maxAdults +
-                                                          ' Crianças ' +
-                                                          type.maxChildren
-                                                        : 'Máx. Hóspedes ' +
-                                                          type.maxGuests
-                                                }`}
+                                                {unit.name}
                                             </Typography>
                                         </Box>
 
@@ -252,9 +212,7 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                                                 sx={{
                                                     fontSize: '1rem',
                                                     fontWeight: 600,
-                                                    color: isDisabled
-                                                        ? '#6B7280'
-                                                        : '#1F2937',
+                                                    color: '#1F2937',
                                                     mb: 0.5,
                                                 }}
                                             >
@@ -265,9 +223,7 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                                             <Typography
                                                 variant="body2"
                                                 sx={{
-                                                    color: isDisabled
-                                                        ? '#6B7280'
-                                                        : '#1F2937',
+                                                    color: '#6B7280',
                                                     fontSize: '0.875rem',
                                                 }}
                                             >
@@ -275,8 +231,8 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                                             </Typography>
                                         </Box>
                                     </Box>
-                                ))
-                            })}
+                                )),
+                            )}
                         </Box>
                         {selectedHousingUnitId && (
                             <Box
