@@ -28,10 +28,15 @@ export const ReservationOptionsSelector: React.FC<
     )
 
     const handleOptionChange = (optionId: string) => {
-        setFieldValue('reservationOptions', [optionId])
+        const newOptions = values.reservationOptions.includes(optionId)
+            ? values.reservationOptions.filter((id) => id !== optionId)
+            : [...values.reservationOptions, optionId]
+        setFieldValue('reservationOptions', newOptions)
     }
 
-    if (!reservationOptions?.items?.length) return null
+    if (!reservationOptions?.items?.length) {
+        return null
+    }
 
     const availableOptions = reservationOptions.items.filter((option) => {
         if (!housingUnitTypeId) return true
@@ -40,32 +45,8 @@ export const ReservationOptionsSelector: React.FC<
         )
     })
 
-    if (!availableOptions.length) return null
-
-    const groupedOptions = availableOptions.reduce<
-        Record<string, typeof availableOptions>
-    >((acc, option) => {
-        const billingType = option.billingType || 'OUTRO'
-        if (!acc[billingType]) acc[billingType] = []
-        acc[billingType].push(option)
-        return acc
-    }, {})
-
-    const getBillingTypeLabel = (type: string) => {
-        switch (type) {
-            case 'DAILY':
-                return `por diária`
-            case 'PER_GUEST_DAILY':
-                return `por hóspede por diária`
-            case 'PER_GUEST':
-                return `por hóspede`
-            case 'PER_RESERVATION':
-                return `por reserva`
-            case 'PER_HOUSING_UNIT':
-                return `+$por unidade`
-            default:
-                return ``
-        }
+    if (!availableOptions.length) {
+        return null
     }
 
     return (
@@ -73,8 +54,8 @@ export const ReservationOptionsSelector: React.FC<
             <Typography
                 variant="h6"
                 sx={{
-                    fontSize: '1.0rem',
-                    fontWeight: 500,
+                    fontSize: '1.25rem',
+                    fontWeight: 600,
                     color: '#1F2937',
                     mb: 2,
                 }}
@@ -82,135 +63,105 @@ export const ReservationOptionsSelector: React.FC<
                 Tipo de tarifa
             </Typography>
 
-            {Object.entries(groupedOptions).map(([billingType, options]) => (
-                <Box key={billingType}>
-                    <Typography
-                        variant="subtitle2"
-                        sx={{ mt: 3, mb: 1, color: '#4B5563', fontWeight: 500 }}
-                    ></Typography>
-
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2,
+                }}
+            >
+                {availableOptions.map((option) => (
                     <Box
+                        key={option.id}
+                        onClick={() => handleOptionChange(option.id)}
                         sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: 2,
+                            border: '1px solid',
+                            borderColor: values.reservationOptions.includes(
+                                option.id,
+                            )
+                                ? 'blue.900'
+                                : 'blueGrey.100',
+                            borderRadius: 1,
+                            p: 3,
+                            cursor: 'pointer',
+                            bgcolor: values.reservationOptions.includes(
+                                option.id,
+                            )
+                                ? 'blueGrey.50'
+                                : 'transparent',
+                            '&:hover': {
+                                borderColor: 'blue.900',
+                                bgcolor: 'blueGrey.50',
+                            },
+                            position: 'relative',
                         }}
                     >
-                        {options.map((option) => {
-                            const isSelected =
-                                values.reservationOptions.includes(option.id)
-
-                            return (
-                                <Box
-                                    key={option.id}
-                                    onClick={() =>
-                                        handleOptionChange(option.id)
-                                    }
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography
+                                variant="subtitle1"
+                                sx={{
+                                    fontSize: '1rem',
+                                    fontWeight: 400,
+                                    color: '#1F2937',
+                                }}
+                            >
+                                {option.name}
+                            </Typography>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: 2,
+                                }}
+                            >
+                                <Typography
+                                    variant="subtitle1"
                                     sx={{
-                                        border: '1px solid',
-                                        borderColor: isSelected
-                                            ? 'blue.900'
-                                            : 'grey.300',
-                                        borderRadius: 2,
-                                        p: 2,
-                                        cursor: 'pointer',
-                                        bgcolor: isSelected
-                                            ? 'primary.lighter'
-                                            : 'transparent',
-                                        '&:hover': {
-                                            borderColor: 'blue.900',
-                                            bgcolor: 'primary.lighter',
-                                        },
-                                        transition: 'all 0.2s ease-in-out',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'space-between',
+                                        fontSize: '1rem',
+                                        fontWeight: 500,
+                                        color: '#6B7280',
                                     }}
                                 >
-                                    <Typography
-                                        variant="subtitle1"
-                                        sx={{
-                                            fontSize: '1rem',
-                                            fontWeight: 500,
-                                            color: isSelected
-                                                ? 'blue.900'
-                                                : 'text.primary',
-                                        }}
-                                    >
-                                        {option.name}
-                                    </Typography>
+                                    +
+                                    {formatCurrency(
+                                        option.additionalAdultPrice,
+                                    )}{' '}
+                                    por diária
+                                </Typography>
+                                {values.reservationOptions.includes(
+                                    option.id,
+                                ) && (
                                     <Box
                                         sx={{
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: 2,
+                                            width: 25,
+                                            height: 25,
+                                            borderRadius: '50%',
+                                            bgcolor: 'blue.900',
+                                            alignContent: 'center',
                                         }}
                                     >
                                         <Box
                                             sx={{
-                                                display: 'flex',
-                                                flexDirection: 'column',
-                                                textAlign: 'right',
-                                            }}
-                                        >
-                                            <Typography
-                                                variant="body2"
-                                                sx={{
-                                                    fontWeight: 600,
-                                                    fontSize: 14,
-                                                    color: isSelected
-                                                        ? 'blue.900'
-                                                        : 'text.primary',
-                                                }}
-                                            >
-                                                {`+${formatCurrency(
-                                                    option.additionalAdultPrice,
-                                                )}`}
-                                            </Typography>
-                                            <Typography
-                                                variant="caption"
-                                                sx={{ color: 'text.secondary' }}
-                                                fontWeight={400}
-                                                fontSize={13}
-                                            >
-                                                {getBillingTypeLabel(
-                                                    option.billingType,
-                                                )}
-                                            </Typography>
-                                        </Box>
-
-                                        <Box
-                                            sx={{
-                                                width: 20,
-                                                height: 20,
+                                                margin: 'auto',
+                                                width: 10,
+                                                height: 10,
                                                 borderRadius: '50%',
-                                                border: '2px solid',
-                                                borderColor: isSelected
-                                                    ? 'blue.900'
-                                                    : 'grey.400',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
+                                                bgcolor: 'blueGrey.50',
                                             }}
-                                        >
-                                            {isSelected && (
-                                                <Box
-                                                    sx={{
-                                                        width: 10,
-                                                        height: 10,
-                                                        borderRadius: '50%',
-                                                        bgcolor: 'blue.900',
-                                                    }}
-                                                />
-                                            )}
-                                        </Box>
+                                        />
                                     </Box>
-                                </Box>
-                            )
-                        })}
+                                )}
+                            </Box>
+                        </Box>
                     </Box>
-                </Box>
-            ))}
+                ))}
+            </Box>
         </>
     )
 }
