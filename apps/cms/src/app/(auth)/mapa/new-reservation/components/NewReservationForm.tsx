@@ -1,4 +1,8 @@
 import {
+    useSearchHousingUnitTypes,
+    useSearchReservationOption,
+} from '@booksuite/sdk'
+import {
     Box,
     Button,
     FormControlLabel,
@@ -8,20 +12,120 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
+import { differenceInDays } from 'date-fns'
 import { getIn, useFormikContext } from 'formik'
+import { useState } from 'react'
 
+import { useCurrentCompanyId } from '@/common/contexts/user'
+import { formatCurrency } from '@/common/utils/currency'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { ReservationFormData } from '../utils/config'
 import { CHANNEL_OPTIONS } from '../utils/constants'
 
+import { HousingUnitModal } from './HousingUnitModal'
+import { ReservationOptionsSelector } from './ReservationOptionsSelector'
+
 export const NewReservationForm: React.FC = () => {
     const { setFieldValue, touched, errors, getFieldProps, values } =
         useFormikContext<ReservationFormData>()
+    const [isHousingUnitModalOpen, setIsHousingUnitModalOpen] = useState(false)
+    const companyId = useCurrentCompanyId()
+
+    const { data: housingUnitTypes } = useSearchHousingUnitTypes(
+        { companyId },
+        {
+            pagination: { page: 1, itemsPerPage: 100 },
+            filter: { published: true },
+        },
+    )
+
+    const { data: reservationOptions } = useSearchReservationOption(
+        { companyId },
+        {
+            pagination: { page: 1, itemsPerPage: 100 },
+            filter: {
+                published: true,
+                billingType: 'DAILY',
+            },
+        },
+        undefined,
+        {
+            query: {
+                enabled: !!(values.startDate && values.endDate),
+            },
+        },
+    )
+
+    const selectedHousingUnit = housingUnitTypes?.items
+        .flatMap((type) => type.housingUnits)
+        .find((unit) => unit.id === values.housingUnitId)
+
+    const selectedHousingUnitType = housingUnitTypes?.items.find((type) =>
+        type.housingUnits.some((unit) => unit.id === values.housingUnitId),
+    )
+
+    const calculateNights = (startDate: string, endDate: string) => {
+        return differenceInDays(new Date(endDate), new Date(startDate))
+    }
+
+    const calculateSubtotal = () => {
+        if (!selectedHousingUnitType || !values.startDate || !values.endDate)
+            return 0
+
+        const nights = calculateNights(values.startDate, values.endDate)
+        return (selectedHousingUnitType.weekdaysPrice ?? 0) * nights
+    }
+
+    const calculateTotalPrice = () => {
+        if (!selectedHousingUnitType || !values.startDate || !values.endDate)
+            return 0
+
+        const nights = calculateNights(values.startDate, values.endDate)
+        const basePrice = (selectedHousingUnitType.weekdaysPrice ?? 0) * nights
+
+        const optionsTotal = values.reservationOptions.reduce(
+            (total, optionId) => {
+                const option = reservationOptions?.items?.find(
+                    (opt) => opt.id === optionId,
+                )
+                if (!option) return total
+
+                switch (option.billingType) {
+                    case 'PER_GUEST_DAILY':
+                        return (
+                            total +
+                            (option.additionalAdultPrice ?? 0) *
+                                (values.adults ?? 0) *
+                                nights
+                        )
+                    case 'PER_GUEST':
+                        return (
+                            total +
+                            (option.additionalAdultPrice ?? 0) *
+                                (values.adults ?? 0)
+                        )
+                    case 'DAILY':
+                        return (
+                            total + (option.additionalAdultPrice ?? 0) * nights
+                        )
+                    case 'PER_RESERVATION':
+                        return total + (option.additionalAdultPrice ?? 0)
+                    case 'PER_HOUSING_UNIT':
+                        return total + (option.additionalAdultPrice ?? 0)
+                    default:
+                        return total
+                }
+            },
+            0,
+        )
+
+        return basePrice + optionsTotal
+    }
 
     const openHousingUnitSelector = () => {
-        return null
+        setIsHousingUnitModalOpen(true)
     }
 
     const openServicesSelector = () => {
@@ -143,7 +247,7 @@ export const NewReservationForm: React.FC = () => {
                         <Typography
                             variant="h6"
                             sx={{
-                                fontSize: '1rem',
+                                fontSize: '1.25rem',
                                 fontWeight: 600,
 
                                 mb: 0.5,
@@ -179,7 +283,7 @@ export const NewReservationForm: React.FC = () => {
                                     }
                                     alt={selectedHousingUnit?.name}
                                     sx={{
-                                        width: 150,
+                                        width: 200,
                                         height: 150,
                                         borderRadius: 1,
                                         objectFit: 'cover',
@@ -294,7 +398,7 @@ export const NewReservationForm: React.FC = () => {
                             <Typography
                                 variant="h6"
                                 sx={{
-                                    fontSize: '1.25rem',
+                                    fontSize: '1.5rem',
                                     fontWeight: 600,
                                 }}
                             >
@@ -600,6 +704,31 @@ export const NewReservationForm: React.FC = () => {
                     helperText={touched.notes && errors.notes}
                     fullWidth
                     {...getFieldProps('notes')}
+                />
+            </FormSection>
+
+            <FormSection title="Enviar para o hóspede">
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={check}
+                            onChange={(e) =>
+                                setFieldValue('', e.target.checked)
+                            }
+                        />
+                    }
+                    label="Publicado"
+                />
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={check}
+                            onChange={(e) =>
+                                setFieldValue('', e.target.checked)
+                            }
+                        />
+                    }
+                    label="Publicado"
                 />
             </FormSection>
 
