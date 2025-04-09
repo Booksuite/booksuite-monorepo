@@ -10,14 +10,14 @@ import {
     Typography,
 } from '@mui/material'
 import { getIn, useFormikContext } from 'formik'
+import { Info, Link2 } from 'lucide-react'
 
+import { theme } from '@/common/theme'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { ReservationFormData } from '../utils/config'
 import { CHANNEL_OPTIONS, PAYMENT_TIME } from '../utils/constants'
-import { Info, Link2 } from 'lucide-react'
-import { theme } from '@/common/theme'
 
 export const BudgetForm: React.FC = () => {
     const { setFieldValue, touched, errors, getFieldProps, values } =
@@ -443,11 +443,11 @@ export const BudgetForm: React.FC = () => {
 
             <TextField
                 label="Link da pré-reserva"
-                variant="standard"
                 fullWidth
                 // error={touched. && Boolean(errors.)}
                 // helperText={touched. && errors.}
                 // {...getFieldProps('')}
+                disabled
                 InputProps={{
                     disableUnderline: true,
                     endAdornment: (
