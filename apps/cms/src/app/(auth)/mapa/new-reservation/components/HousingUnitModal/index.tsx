@@ -1,0 +1,318 @@
+import SearchIcon from '@mui/icons-material/Search'
+import {
+    Box,
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    InputAdornment,
+    TextField,
+    Typography,
+} from '@mui/material'
+import { useState } from 'react'
+
+import { useCurrentCompanyId } from '@/common/contexts/user'
+import { formatCurrency } from '@/common/utils/currency'
+import { useCompanyHousingUnitTypes } from '../../utils/config'
+
+interface HousingUnitModalProps {
+    open: boolean
+    onClose: () => void
+    onSelect: (housingUnitId: string) => void
+    selectedHousingUnitId?: string
+    numberOfNights?: number
+}
+
+export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
+    open,
+    onClose,
+    onSelect,
+    selectedHousingUnitId,
+    numberOfNights = 1,
+}) => {
+    const [searchQuery, setSearchQuery] = useState('')
+    const companyId = useCurrentCompanyId()
+
+    const {
+        data: housingUnitTypes,
+        isLoading,
+        error,
+    } = useCompanyHousingUnitTypes(companyId, open)
+
+    const handleSelect = (unitId: string) => {
+        onSelect(unitId)
+        onClose()
+    }
+
+    const filteredHousingTypes =
+        housingUnitTypes?.items
+            .map((type) => ({
+                ...type,
+                housingUnits: type.housingUnits.filter((unit) =>
+                    unit.name.toLowerCase().includes(searchQuery.toLowerCase()),
+                ),
+            }))
+            .filter((type) => type.housingUnits.length > 0) || []
+
+    const calculateSubtotal = () => {
+        if (!selectedHousingUnitId || !housingUnitTypes) return 0
+
+        const selectedType = housingUnitTypes.items.find((type) =>
+            type.housingUnits.some((unit) => unit.id === selectedHousingUnitId),
+        )
+
+        const price = selectedType?.weekdaysPrice ?? 0
+        return price * numberOfNights
+    }
+
+    const getUnitPrice = (type: (typeof filteredHousingTypes)[0]) => {
+        return type.weekdaysPrice ?? 0
+    }
+    return (
+        <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
+            <DialogTitle sx={{ pb: 0 }}>
+                <Box sx={{ mb: 3 }}>
+                    <Typography
+                        variant="h6"
+                        sx={{
+                            fontSize: '1.5rem',
+                            fontWeight: 600,
+                            color: '#1F2937',
+                            mb: 1,
+                        }}
+                    >
+                        Acomodação
+                    </Typography>
+                    <Typography
+                        variant="subtitle1"
+                        sx={{
+                            fontSize: '1rem',
+                            color: '#6B7280',
+                        }}
+                    >
+                        Selecione uma acomodação
+                    </Typography>
+                </Box>
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    placeholder="Pesquisar"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position="start">
+                                <SearchIcon sx={{ color: '#9CA3AF' }} />
+                            </InputAdornment>
+                        ),
+                        sx: {
+                            bgcolor: '#F9FAFB',
+                            '& fieldset': {
+                                borderColor: '#E5E7EB',
+                            },
+                            '&:hover fieldset': {
+                                borderColor: '#D1D5DB',
+                            },
+                            '&.Mui-focused fieldset': {
+                                borderColor: 'blue.900',
+                            },
+                        },
+                    }}
+                    sx={{ mb: 3 }}
+                />
+            </DialogTitle>
+            <DialogContent>
+                {isLoading ? (
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            p: 4,
+                        }}
+                    >
+                        <CircularProgress />
+                    </Box>
+                ) : error ? (
+                    <Box sx={{ p: 2, textAlign: 'center' }}>
+                        <Typography color="error">
+                            Erro ao carregar acomodações. Por favor, tente
+                            novamente.
+                        </Typography>
+                    </Box>
+                ) : !filteredHousingTypes.length ? (
+                    <Box sx={{ p: 2, textAlign: 'center' }}>
+                        <Typography color="text.secondary">
+                            Nenhuma acomodação disponível.
+                        </Typography>
+                    </Box>
+                ) : (
+                    <>
+                        <Box>
+                            {filteredHousingTypes.map((type) =>
+                                type.housingUnits.map((unit) => (
+                                    <Box
+                                        key={unit.id}
+                                        onClick={() => handleSelect(unit.id)}
+                                        sx={{
+                                            border: '1px solid',
+                                            borderColor:
+                                                selectedHousingUnitId ===
+                                                unit.id
+                                                    ? 'blue.900'
+                                                    : '#E5E7EB',
+                                            borderRadius: 1,
+                                            p: 3,
+                                            mb: 2,
+                                            cursor: 'pointer',
+                                            bgcolor:
+                                                selectedHousingUnitId ===
+                                                unit.id
+                                                    ? '#F3F6FF'
+                                                    : '#FFFFFF',
+                                            '&:hover': {
+                                                borderColor: 'blue.900',
+                                                bgcolor: '#F3F6FF',
+                                            },
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            transition: 'all 0.2s ease-in-out',
+                                        }}
+                                    >
+                                        <Box display={'flex'} gap={1}>
+                                            <Typography
+                                                variant="h6"
+                                                sx={{
+                                                    fontSize: '1rem',
+                                                    fontWeight: 400,
+                                                    color: '#1F2937',
+                                                }}
+                                            >
+                                                {type.name}
+                                            </Typography>
+                                            <Typography
+                                                variant="h6"
+                                                sx={{
+                                                    fontSize: '1rem',
+                                                    fontWeight: 400,
+                                                    color: '#1F2937',
+                                                }}
+                                            >
+                                                {unit.name}
+                                            </Typography>
+                                        </Box>
+
+                                        <Box sx={{ textAlign: 'right' }}>
+                                            <Typography
+                                                variant="h6"
+                                                sx={{
+                                                    fontSize: '1rem',
+                                                    fontWeight: 600,
+                                                    color: '#1F2937',
+                                                    mb: 0.5,
+                                                }}
+                                            >
+                                                {formatCurrency(
+                                                    getUnitPrice(type),
+                                                )}
+                                            </Typography>
+                                            <Typography
+                                                variant="body2"
+                                                sx={{
+                                                    color: '#6B7280',
+                                                    fontSize: '0.875rem',
+                                                }}
+                                            >
+                                                por diária
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                )),
+                            )}
+                        </Box>
+                        {selectedHousingUnitId && (
+                            <Box
+                                sx={{
+                                    borderTop: 1,
+                                    borderColor: '#E5E7EB',
+                                    pt: 3,
+                                    mt: 2,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Typography
+                                    variant="subtitle1"
+                                    sx={{
+                                        fontSize: '1.125rem',
+                                        fontWeight: 500,
+                                        color: '#1F2937',
+                                    }}
+                                >
+                                    Sub total das diárias:
+                                </Typography>
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontSize: '1.25rem',
+                                        fontWeight: 600,
+                                        color: '#1F2937',
+                                    }}
+                                >
+                                    {formatCurrency(calculateSubtotal())}
+                                </Typography>
+                            </Box>
+                        )}
+                    </>
+                )}
+            </DialogContent>
+            <DialogActions sx={{ p: 3, gap: 2 }}>
+                <Button
+                    onClick={onClose}
+                    variant="outlined"
+                    size="large"
+                    sx={{
+                        minWidth: 120,
+                        textTransform: 'none',
+                        fontSize: '1rem',
+                        fontWeight: 500,
+                        borderColor: '#E5E7EB',
+                        color: '#374151',
+                        '&:hover': {
+                            borderColor: '#D1D5DB',
+                            bgcolor: '#F9FAFB',
+                        },
+                    }}
+                >
+                    Cancelar
+                </Button>
+                <Button
+                    onClick={() =>
+                        selectedHousingUnitId &&
+                        handleSelect(selectedHousingUnitId)
+                    }
+                    variant="contained"
+                    size="large"
+                    disabled={!selectedHousingUnitId}
+                    sx={{
+                        minWidth: 120,
+                        textTransform: 'none',
+                        fontSize: '1rem',
+                        fontWeight: 500,
+                        boxShadow: 'none',
+                        '&:hover': {
+                            boxShadow: 'none',
+                        },
+                    }}
+                >
+                    Confirmar
+                </Button>
+            </DialogActions>
+        </Dialog>
+    )
+}
