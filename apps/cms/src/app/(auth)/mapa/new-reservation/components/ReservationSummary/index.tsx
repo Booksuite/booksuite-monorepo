@@ -34,6 +34,7 @@ const ReservationSummary = () => {
                 width: '100%',
                 maxWidth: 400,
                 overflow: 'hidden',
+                maxHeight: 400,
             }}
         >
             <Box
