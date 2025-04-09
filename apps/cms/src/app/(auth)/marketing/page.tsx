@@ -1,3 +1,5 @@
+'use client'
+
 import {
     Bell,
     CircleHelp,
@@ -50,7 +52,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <Link2 size={20} />,
         title: 'Link Bio',
-        href: `/marketing`,
+        href: `/marketing/utilityLinks`,
     },
     {
         icon: <Star size={20} />,
