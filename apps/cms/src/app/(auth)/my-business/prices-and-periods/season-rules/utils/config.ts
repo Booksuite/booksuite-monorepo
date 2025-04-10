@@ -60,7 +60,10 @@ export const seasonRuleFormSchema = yup.object({
         .number()
         .min(1, 'Mínimo de diárias deve ser pelo menos 1')
         .required('Mínimo de diárias é obrigatório'),
-    availableWeekend: yup.array().required('Finais de semana são obrigatórios'),
+    availableWeekend: yup
+        .array()
+        .of(yup.string().oneOf(['0', '1', '2', '3', '4', '5', '6']))
+        .required('Dias da semana disponíveis são obrigatórios'),
     priceVariationType: yup.string().required('Tipo de variação é obrigatório'),
     price: yup.number().min(0).required('Preço é obrigatório'),
     housingUnitTypePrices: yup
