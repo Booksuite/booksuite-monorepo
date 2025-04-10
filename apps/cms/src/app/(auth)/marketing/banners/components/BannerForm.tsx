@@ -1,4 +1,15 @@
+import { BannerMedia, Media } from '@booksuite/sdk'
 import {
+    closestCenter,
+    DndContext,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core'
+import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
+import {
+    Box,
+    Button,
     FormControlLabel,
     Grid,
     MenuItem,
@@ -10,17 +21,44 @@ import { useState } from 'react'
 
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
+import { MediaGallery } from '@/components/organisms/MediaGallery'
 import { BannerFormData } from '../utils/config'
 import {
     ACTION_BUTTON_OPTIONS,
     BANNER_POSITION_OPTIONS,
 } from '../utils/constants'
 
+import { SortableBannerMediaItem } from './SortableBannerMediaItem'
+
 export const BannerForm = () => {
     const { setFieldValue, values, touched, errors, getFieldProps } =
         useFormikContext<BannerFormData>()
 
     const [specificPeriods, setSpecificPeriods] = useState(false)
+
+    const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
+
+    const handleMediaChange = (selectedMedia: Media[]) => {
+        const [media] = selectedMedia
+
+        if (!media) return
+
+        const formattedMedia: BannerMedia = {
+            order: 0,
+            media,
+        }
+
+        setFieldValue('medias', [formattedMedia])
+        setIsMediaGalleryOpen(false)
+    }
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 8,
+            },
+        }),
+    )
 
     return (
         <FormContainer>
@@ -132,6 +170,42 @@ export const BannerForm = () => {
                         />
                     </Grid>
                 </Grid>
+            </FormSection>
+
+            <FormSection
+                title="Imagem do Banner"
+                variant="outlined"
+                rightAction={
+                    <Button onClick={() => setIsMediaGalleryOpen(true)}>
+                        Selecionar Mídia
+                    </Button>
+                }
+            >
+                <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                >
+                    <SortableContext
+                        items={values.medias.map((item) => item.media.id)}
+                        strategy={rectSortingStrategy}
+                    >
+                        {values.medias.map((item) => (
+                            <Box key={item.media.id} mt={5} mb={5}>
+                                <SortableBannerMediaItem mediaItem={item} />
+                            </Box>
+                        ))}
+                    </SortableContext>
+                </DndContext>
+
+                <MediaGallery
+                    isOpen={isMediaGalleryOpen}
+                    onClose={() => setIsMediaGalleryOpen(false)}
+                    selectedItems={values.medias.map((item) => item.media.id)}
+                    initialItems={values.medias.map((item) => item.media)}
+                    onItemsChange={handleMediaChange}
+                    maxItems={2}
+                    minItems={1}
+                />
             </FormSection>
 
             <FormSection>

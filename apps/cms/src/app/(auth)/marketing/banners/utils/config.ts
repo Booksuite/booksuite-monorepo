@@ -1,7 +1,9 @@
-import { Banner } from '@booksuite/sdk'
+import { Banner, BannerMedia } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type BannerFormData = Omit<Banner, 'id'>
+export type BannerFormData = Omit<Banner, 'id'> & {
+    medias: BannerMedia[]
+}
 
 export const createBannerInitialValues = (
     data?: Partial<BannerFormData> | null,
@@ -17,6 +19,7 @@ export const createBannerInitialValues = (
     actionButtonLink: data?.actionButtonLink ?? '',
     startAt: data?.startAt ?? '',
     endAt: data?.endAt ?? '',
+    medias: data?.medias ?? [],
 })
 
 export const bannerFormSchema = yup.object({
@@ -44,4 +47,29 @@ export const bannerFormSchema = yup.object({
         .url('O link do botão deve ser uma URL válida'),
     startAt: yup.string().nullable(),
     endAt: yup.string().nullable(),
+    medias: yup
+        .array()
+        .of(
+            yup.object({
+                order: yup
+                    .number()
+                    .nullable()
+                    .transform((_, val) => (val === '' ? null : Number(val)))
+                    .typeError('A ordem da mídia deve ser um número'),
+                media: yup
+                    .object({
+                        id: yup.string().required(),
+                        url: yup.string().url().required(),
+                        companyId: yup.string().required(),
+                        metadata: yup
+                            .object({
+                                mimetype: yup.string().required(),
+                            })
+                            .required(),
+                    })
+                    .required(),
+            }),
+        )
+        .required('É necessário pelo menos uma mídia')
+        .min(1, 'Adicione pelo menos uma mídia ao banner'),
 })
