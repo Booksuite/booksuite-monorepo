@@ -1,6 +1,7 @@
 import {
     useSearchHousingUnitTypes,
     useSearchReservationOption,
+    useSearchServices,
 } from '@booksuite/sdk'
 import {
     Box,
@@ -26,11 +27,19 @@ import { CHANNEL_OPTIONS } from '../utils/constants'
 
 import { HousingUnitModal } from './HousingUnitModal'
 import { ReservationOptionsSelector } from './ReservationOptionsSelector'
+import { ServicesModal } from './ServicesModal'
+import { Minus, Plus } from 'lucide-react'
+
+interface ReservationServiceFormItem {
+    serviceId: string
+    qtd: number
+}
 
 export const NewReservationForm: React.FC = () => {
     const { setFieldValue, touched, errors, getFieldProps, values } =
         useFormikContext<ReservationFormData>()
     const [isHousingUnitModalOpen, setIsHousingUnitModalOpen] = useState(false)
+    const [isServicesModalOpen, setIsServicesModalOpen] = useState(false)
     const companyId = useCurrentCompanyId()
 
     const { data: housingUnitTypes } = useSearchHousingUnitTypes(
@@ -55,6 +64,14 @@ export const NewReservationForm: React.FC = () => {
             query: {
                 enabled: !!(values.startDate && values.endDate),
             },
+        },
+    )
+
+    const { data: services } = useSearchServices(
+        { companyId },
+        {
+            pagination: { page: 1, itemsPerPage: 100 },
+            filter: { published: true },
         },
     )
 
@@ -129,7 +146,27 @@ export const NewReservationForm: React.FC = () => {
     }
 
     const openServicesSelector = () => {
-        return null
+        setIsServicesModalOpen(true)
+    }
+
+    const handleUpdateServices = (serviceId: string, quantity: number) => {
+        const updatedServices = [...(values.services || [])]
+        const existingServiceIndex = updatedServices.findIndex(
+            (s) => s.serviceId === serviceId,
+        )
+
+        if (quantity === 0 && existingServiceIndex !== -1) {
+            updatedServices.splice(existingServiceIndex, 1)
+        } else if (
+            existingServiceIndex !== -1 &&
+            updatedServices[existingServiceIndex]
+        ) {
+            updatedServices[existingServiceIndex].qtd = quantity
+        } else if (quantity > 0) {
+            updatedServices.push({ serviceId, qtd: quantity, totalPrice: 0 })
+        }
+
+        setFieldValue('services', updatedServices)
     }
 
     const check = true
@@ -414,7 +451,7 @@ export const NewReservationForm: React.FC = () => {
                     mb={2}
                 >
                     <Box>
-                        <Typography variant="h6" fontWeight={600} gutterBottom>
+                        <Typography variant="h6" fontWeight={600}>
                             Itens Adicionais
                         </Typography>
                     </Box>
@@ -426,25 +463,225 @@ export const NewReservationForm: React.FC = () => {
                         Adicionar
                     </Button>
                 </Grid>
-                <Box
-                    sx={{
-                        borderRadius: 1,
-                        p: 3,
-                        bgcolor: 'grey.100',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        minHeight: 70,
-                    }}
-                >
-                    {values.services ? (
-                        <Box>
-                            <Typography color="text.disabled">Lista</Typography>
+                <Box>
+                    {values.services?.map((service) => {
+                        const serviceDetails = services?.items.find(
+                            (s) => s.id === service.serviceId,
+                        )
+                        if (!serviceDetails) return null
+
+                        const priceLabel =
+                            serviceDetails.billingType === 'PER_GUEST'
+                                ? 'por pessoa'
+                                : serviceDetails.billingType === 'DAILY'
+                                  ? 'por dia'
+                                  : 'un'
+
+                        const total = serviceDetails.price * service.qtd
+
+                        return (
+                            <Box
+                                key={service.serviceId}
+                                sx={{
+                                    border: '1px solid',
+                                    borderColor: 'grey.200',
+                                    borderRadius: 1,
+                                    p: 3,
+                                    mb: 2,
+                                    bgcolor: '#FFFFFF',
+                                }}
+                            >
+                                <Box sx={{ display: 'flex', gap: 3 }}>
+                                    {serviceDetails.medias?.[0]?.media?.url && (
+                                        <Box
+                                            component="img"
+                                            src={
+                                                serviceDetails.medias[0].media
+                                                    .url
+                                            }
+                                            alt={serviceDetails.name}
+                                            sx={{
+                                                width: 120,
+                                                height: 90,
+                                                borderRadius: 1,
+                                                objectFit: 'cover',
+                                            }}
+                                        />
+                                    )}
+                                    <Box sx={{ flex: 1 }}>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                mb: 1,
+                                            }}
+                                        >
+                                            <Box>
+                                                <Typography
+                                                    variant="h6"
+                                                    sx={{
+                                                        fontSize: '1.125rem',
+                                                        fontWeight: 500,
+                                                        color: '#1F2937',
+                                                        mb: 1,
+                                                    }}
+                                                >
+                                                    {serviceDetails.name}
+                                                </Typography>
+                                                <Typography
+                                                    variant="body2"
+                                                    sx={{ color: '#6B7280' }}
+                                                >
+                                                    {formatCurrency(
+                                                        serviceDetails.price,
+                                                    )}{' '}
+                                                    {priceLabel}
+                                                </Typography>
+                                            </Box>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    gap: 2,
+                                                }}
+                                            >
+                                                <Button
+                                                    onClick={() =>
+                                                        handleUpdateServices(
+                                                            service.serviceId,
+                                                            service.qtd - 1,
+                                                        )
+                                                    }
+                                                    sx={{
+                                                        minWidth: '32px',
+                                                        width: '32px',
+                                                        height: '32px',
+                                                        p: 0,
+                                                        border: '2px solid',
+                                                        borderColor: 'blue.900',
+                                                        borderRadius: '50%',
+                                                        color: 'blue.900',
+                                                        bgcolor: 'white',
+                                                    }}
+                                                >
+                                                    <Minus size={20} />
+                                                </Button>
+
+                                                <Typography
+                                                    sx={{
+                                                        fontSize: '1.125rem',
+                                                        fontWeight: 600,
+                                                        width: '32px',
+                                                        textAlign: 'center',
+                                                    }}
+                                                >
+                                                    {service.qtd}
+                                                </Typography>
+                                                <Button
+                                                    onClick={() =>
+                                                        handleUpdateServices(
+                                                            service.serviceId,
+                                                            service.qtd + 1,
+                                                        )
+                                                    }
+                                                    sx={{
+                                                        minWidth: '32px',
+                                                        width: '32px',
+                                                        height: '32px',
+                                                        p: 0,
+                                                        border: '2px solid',
+                                                        borderColor: 'blue.900',
+                                                        borderRadius: '50%',
+                                                        color: 'blue.900',
+                                                        bgcolor: 'white',
+                                                    }}
+                                                >
+                                                    <Plus size={20} />
+                                                </Button>
+                                            </Box>
+                                        </Box>
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'flex-end',
+                                            }}
+                                        >
+                                            <Typography
+                                                sx={{
+                                                    fontSize: '1rem',
+                                                    fontWeight: 500,
+                                                    color: '#6B7280',
+                                                }}
+                                            >
+                                                Total: {formatCurrency(total)}
+                                            </Typography>
+                                        </Box>
+                                    </Box>
+                                </Box>
+                            </Box>
+                        )
+                    })}
+                    {(!values.services || values.services.length === 0) && (
+                        <Box
+                            sx={{
+                                borderRadius: 1,
+                                p: 3,
+                                bgcolor: '#F9FAFB',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                minHeight: 70,
+                            }}
+                        >
+                            <Typography color="text.disabled">
+                                Nenhum item adicionado
+                            </Typography>
                         </Box>
-                    ) : (
-                        <Typography color="text.disabled">
-                            Nenhuma item adicionado
-                        </Typography>
+                    )}
+                    {values.services && values.services.length > 0 && (
+                        <Box
+                            sx={{
+                                borderTop: '1px solid',
+                                borderColor: '#E5E7EB',
+                                mt: 3,
+                                pt: 3,
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Typography
+                                variant="subtitle1"
+                                sx={{
+                                    fontSize: '1.125rem',
+                                    fontWeight: 500,
+                                }}
+                            >
+                                Sub total:
+                            </Typography>
+                            <Typography
+                                variant="h6"
+                                sx={{
+                                    fontSize: '1.5rem',
+                                    fontWeight: 600,
+                                }}
+                            >
+                                {formatCurrency(
+                                    values.services.reduce((total, service) => {
+                                        const serviceDetails =
+                                            services?.items.find(
+                                                (s) =>
+                                                    s.id === service.serviceId,
+                                            )
+                                        return (
+                                            total +
+                                            (serviceDetails?.price || 0) *
+                                                service.qtd
+                                        )
+                                    }, 0),
+                                )}
+                            </Typography>
+                        </Box>
                     )}
                 </Box>
             </FormSection>
@@ -522,6 +759,13 @@ export const NewReservationForm: React.FC = () => {
                     setFieldValue('housingUnitId', housingUnitId)
                 }
                 selectedHousingUnitId={values.housingUnitId}
+            />
+
+            <ServicesModal
+                open={isServicesModalOpen}
+                onClose={() => setIsServicesModalOpen(false)}
+                onUpdateServices={handleUpdateServices}
+                selectedServices={values.services || []}
             />
         </FormContainer>
     )
