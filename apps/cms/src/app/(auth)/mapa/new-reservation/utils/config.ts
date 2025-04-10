@@ -39,8 +39,14 @@ export const useCompanyReservationOptions = (
             pagination: { page: 1, itemsPerPage: 100 },
             filter: {
                 published: true,
-                billingType: 'DAILY',
             },
+            fields: [
+                'id',
+                'name',
+                'billingType',
+                'additionalAdultPrice',
+                'availableHousingUnitTypes',
+            ],
         },
         undefined,
         {
