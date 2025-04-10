@@ -1,87 +1,256 @@
 'use client'
 
-import { Button, Link } from '@chakra-ui/react'
+import { BannerFull, useSearchBanners, useUpdateBanner } from '@booksuite/sdk'
+import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
+import {
+    Check,
+    CheckCheck,
+    Copy,
+    Edit,
+    Plus,
+    Search,
+    Trash,
+    X,
+} from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { debounce } from 'radash'
+import { useEffect, useRef, useState } from 'react'
 
+import { useCurrentCompanyId } from '@/common/contexts/user'
+import { useSearchParamsPagination } from '@/common/hooks/usePagination'
+import { LinkButton } from '@/components/atoms/LinkButton'
+import { PaginationControls } from '@/components/molecules/PaginationControl'
+import { TableRowActionItem } from '@/components/molecules/TableRowActionItem'
 import { ChipFilter } from '@/components/organisms/ChipFilter'
-import { List } from '@/components/organisms/List'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { Icons } from '@/components/svgs/icons'
+import { Table } from '@/components/organisms/Table'
+import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
+
+import { COLUMNS_DEFINITION } from './utils/constants'
 
 export interface BannersProps {}
 
+const chipItems = [
+    { key: 'published', label: 'Publicadas' },
+    { key: 'unpublished', label: 'Não publicadas' },
+    { key: 'all', label: 'Todos' },
+]
+
 export default function Banners() {
-    const chipItems = [
-        { key: '1', label: 'Ativas' },
-        { key: '2', label: 'Inativas' },
-        { key: '3', label: 'Todas' },
-    ]
+    const { push } = useRouter()
+    const { showDialog } = useConfirmationDialog()
+
+    const { mutateAsync: updateBanner } = useUpdateBanner()
+
+    const [selectedFilters, setSelectedFilters] = useState<string[]>(['all'])
+    const [searchQuery, setSearchQuery] = useState<string>('')
+    const [searchInputValue, setSearchInputValue] = useState<string>('')
+
+    const { page, itemsPerPage, setPage, setItemsPerPage } =
+        useSearchParamsPagination({
+            currentPath: '/marketing/banners',
+        })
+
+    const debouncedSearch = useRef(
+        debounce({ delay: 350 }, (search: string) => {
+            setSearchQuery(search)
+        }),
+    )
+
+    useEffect(() => {
+        debouncedSearch.current(searchInputValue)
+    }, [debouncedSearch, searchInputValue])
+
+    const companyId = useCurrentCompanyId()
+
+    const { data: banners, error } = useSearchBanners(
+        {
+            companyId,
+        },
+        !selectedFilters.includes('all')
+            ? {
+                  pagination: { page, itemsPerPage },
+                  filter:
+                      selectedFilters.length > 0
+                          ? {
+                                published:
+                                    selectedFilters.includes('published'),
+                            }
+                          : undefined,
+              }
+            : { pagination: { page, itemsPerPage } },
+        { query: searchQuery.length > 0 ? searchQuery : undefined },
+        { query: { enabled: undefined } },
+    )
+
+    const handleDuplicate = (item: BannerFull) => {
+        // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
+    }
+
+    const handleRowClick = (row: BannerFull) => {
+        push(`/marketing/banners/${row.id}`)
+    }
+
+    const handleTogglePublished = (item: BannerFull) => {
+        showDialog({
+            title: 'Confirmar publicação',
+            description: `Tem certeza que deseja ${
+                item.published ? 'despublicar' : 'publicar'
+            } "${item.title}"?`,
+            confirmButton: {
+                children: 'Confirmar',
+                onClick: () => {
+                    updateBanner({
+                        companyId,
+                        id: item.id,
+                        data: { published: !item.published },
+                    })
+                },
+            },
+            cancelButton: {
+                children: 'Cancelar',
+            },
+        })
+    }
+
+    const handleDelete = (item: BannerFull) => {
+        showDialog({
+            title: 'Confirmar exclusão',
+            description: `Tem certeza que deseja excluir "${item.title}"? Esta ação não pode ser desfeita.`,
+            confirmButton: {
+                children: 'Excluir',
+                onClick: () => {
+                    console.log('Excluir', item.id)
+                    // TODO: implement actual delete functionality
+                },
+            },
+            variant: 'error',
+        })
+    }
+
+    const handleEdit = (item: BannerFull) => {
+        push(`/marketing/banners/${item.id}`)
+    }
 
     return (
-        <div className="Banners">
-            <PageHeader.Root>
-                <PageHeader.BackLink href="/marketing">
-                    Marketing
-                </PageHeader.BackLink>
+        <>
+            <PageHeader
+                title="Banners"
+                backLButtonLabel="Marketing"
+                backButtonHref="/marketing"
+                headerRight={
+                    <LinkButton
+                        href="/marketing/banners/create"
+                        startIcon={<Plus size={16} />}
+                    >
+                        Adicionar
+                    </LinkButton>
+                }
+            />
 
-                <PageHeader.Title>Banners</PageHeader.Title>
-            </PageHeader.Root>
-
-            <div>
-                <ChipFilter items={chipItems} />
-
-                <section>
-                    <h3>Página Inicial</h3>
-                    <List.Root>
-                        <Link href="banner/detalhes">
-                            <List.Item
-                                title="Banner Institucional"
-                                subtitle={<>Banner Fixado</>}
-                                status="Ativo"
-                            />
-                        </Link>
-
-                        <Link href="banner/detalhes">
-                            <List.Item
-                                title="Banner Promo Mês dos Namorados"
-                                subtitle={<>01/06/2024 a 30/06/2024</>}
-                                status="Inativo"
-                            />
-                        </Link>
-                    </List.Root>
-                </section>
-
-                <section className="mt-8">
-                    <h3 className="mb-0">Banner Institucional</h3>
-                    <p style={{ color: 'var(--clr-tertiary-600)' }}>
-                        Exibido entre sessões e áreas estratégicas do site
-                    </p>
-
-                    <List.Root>
-                        <Link href="banners/detalhes">
-                            <List.Item
-                                title="Banner de reservas padrão"
-                                subtitle={<>Banner fixado</>}
-                                status="Ativo"
-                            />
-                        </Link>
-
-                        <Link href="banners/detalhes">
-                            <List.Item
-                                title="Sorteio de dias dos namorados"
-                                subtitle={<>01/06/2024 a 30/06/2024</>}
-                                status="Ativo"
-                            />
-                        </Link>
-                    </List.Root>
-                </section>
-
-                <Button
-                    className="mt-[2.5rem] w-full"
-                    leftIcon={<Icons.Plus />}
+            <Stack spacing={2}>
+                <Stack
+                    direction="row"
+                    flex={1}
+                    justifyContent="space-between"
+                    alignItems="center"
                 >
-                    Adicionar Banner
-                </Button>
-            </div>
-        </div>
+                    <ChipFilter
+                        items={chipItems}
+                        value={selectedFilters}
+                        onChange={setSelectedFilters}
+                    />
+
+                    <TextField
+                        variant="outlined"
+                        size="small"
+                        placeholder="Pesquisar"
+                        value={searchInputValue}
+                        onChange={(e) => setSearchInputValue(e.target.value)}
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <IconButton
+                                            size="small"
+                                            onClick={() => {
+                                                setSearchInputValue('')
+                                                setSearchQuery('')
+                                            }}
+                                        >
+                                            {searchQuery.length > 0 ? (
+                                                <X size={16} />
+                                            ) : (
+                                                <Search size={16} />
+                                            )}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                    />
+                </Stack>
+
+                <Table
+                    columns={COLUMNS_DEFINITION}
+                    data={banners?.items ?? []}
+                    error={error}
+                    enableRowActions
+                    renderRowActionMenuItems={({ row, closeMenu }) => [
+                        <TableRowActionItem
+                            key="edit"
+                            label="Editar"
+                            Icon={Edit}
+                            onClick={() => {
+                                handleEdit(row.original)
+                                closeMenu()
+                            }}
+                        />,
+                        <TableRowActionItem
+                            key="toggle-published"
+                            label={
+                                row.original.published
+                                    ? 'Despublicar'
+                                    : 'Publicar'
+                            }
+                            Icon={row.original.published ? CheckCheck : Check}
+                            onClick={() => {
+                                handleTogglePublished(row.original)
+                                closeMenu()
+                            }}
+                        />,
+                        <TableRowActionItem
+                            key="duplicate"
+                            label="Duplicar"
+                            Icon={Copy}
+                            onClick={() => {
+                                handleDuplicate(row.original)
+                                closeMenu()
+                            }}
+                        />,
+                        <TableRowActionItem
+                            key="delete"
+                            label="Excluir"
+                            Icon={Trash}
+                            onClick={() => {
+                                handleDelete(row.original)
+                                closeMenu()
+                            }}
+                        />,
+                    ]}
+                    onRowClick={handleRowClick}
+                />
+
+                <Stack direction="row" justifyContent="flex-end">
+                    <PaginationControls
+                        page={page}
+                        itemsPerPage={itemsPerPage}
+                        onItemsPerPageChange={setItemsPerPage}
+                        count={banners?.totalPages ?? 0}
+                        onChange={(_, value) => setPage(value)}
+                    />
+                </Stack>
+            </Stack>
+        </>
     )
 }

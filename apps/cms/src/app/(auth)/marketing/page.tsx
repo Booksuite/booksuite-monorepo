@@ -16,7 +16,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <Flag size={20} />,
         title: 'Banners',
-        href: `/marketing`,
+        href: `/marketing/banners`,
     },
     // {
     //     icon: <Bell size={20} />,
