@@ -33,7 +33,6 @@ export interface BannersProps {}
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
     { key: 'unpublished', label: 'Não publicadas' },
-    { key: 'all', label: 'Todos' },
 ]
 
 export default function Banners() {
