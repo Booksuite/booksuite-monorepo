@@ -1,10 +1,8 @@
 import {
     Box,
     Button,
-    FormControlLabel,
     Grid,
     MenuItem,
-    Switch,
     TextField,
     Typography,
 } from '@mui/material'
@@ -71,11 +69,18 @@ export const NewReservationForm: React.FC = () => {
     }
 
     const calculateTotalPrice = () => {
-        if (!selectedHousingUnitType || !values.startDate || !values.endDate)
+        if (
+            !selectedHousingUnitType ||
+            !values.startDate ||
+            !values.endDate ||
+            !Array.isArray(values.reservationOptions)
+        ) {
             return 0
+        }
 
         const nights = calculateNights(values.startDate, values.endDate)
         const basePrice = (selectedHousingUnitType.weekdaysPrice ?? 0) * nights
+        const adults = values.adults ?? 1
 
         const optionsTotal = values.reservationOptions.reduce(
             (total, optionId) => {
@@ -84,28 +89,18 @@ export const NewReservationForm: React.FC = () => {
                 )
                 if (!option) return total
 
+                const price = option.additionalAdultPrice ?? 0
+
                 switch (option.billingType) {
                     case 'PER_GUEST_DAILY':
-                        return (
-                            total +
-                            (option.additionalAdultPrice ?? 0) *
-                                (values.adults ?? 0) *
-                                nights
-                        )
+                        return total + price * adults * nights
                     case 'PER_GUEST':
-                        return (
-                            total +
-                            (option.additionalAdultPrice ?? 0) *
-                                (values.adults ?? 0)
-                        )
+                        return total + price * adults
                     case 'DAILY':
-                        return (
-                            total + (option.additionalAdultPrice ?? 0) * nights
-                        )
+                        return total + price * nights
                     case 'PER_RESERVATION':
-                        return total + (option.additionalAdultPrice ?? 0)
                     case 'PER_HOUSING_UNIT':
-                        return total + (option.additionalAdultPrice ?? 0)
+                        return total + price
                     default:
                         return total
                 }
@@ -257,7 +252,7 @@ export const NewReservationForm: React.FC = () => {
                         <Typography
                             variant="h6"
                             sx={{
-                                fontSize: '1.25rem',
+                                fontSize: '1rem',
                                 fontWeight: 600,
 
                                 mb: 0.5,
