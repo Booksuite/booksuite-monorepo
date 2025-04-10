@@ -1,6 +1,7 @@
 import {
     useSearchHousingUnitTypes,
     useSearchReservationOption,
+    useSearchServices,
 } from '@booksuite/sdk'
 import {
     Box,
@@ -26,11 +27,19 @@ import { CHANNEL_OPTIONS } from '../utils/constants'
 
 import { HousingUnitModal } from './HousingUnitModal'
 import { ReservationOptionsSelector } from './ReservationOptionsSelector'
+import { ServicesModal } from './ServicesModal'
+import { Minus, Plus } from 'lucide-react'
+
+interface ReservationServiceFormItem {
+    serviceId: string
+    qtd: number
+}
 
 export const NewReservationForm: React.FC = () => {
     const { setFieldValue, touched, errors, getFieldProps, values } =
         useFormikContext<ReservationFormData>()
     const [isHousingUnitModalOpen, setIsHousingUnitModalOpen] = useState(false)
+    const [isServicesModalOpen, setIsServicesModalOpen] = useState(false)
     const companyId = useCurrentCompanyId()
 
     const { data: housingUnitTypes } = useSearchHousingUnitTypes(
@@ -55,6 +64,14 @@ export const NewReservationForm: React.FC = () => {
             query: {
                 enabled: !!(values.startDate && values.endDate),
             },
+        },
+    )
+
+    const { data: services } = useSearchServices(
+        { companyId },
+        {
+            pagination: { page: 1, itemsPerPage: 100 },
+            filter: { published: true },
         },
     )
 
@@ -129,7 +146,27 @@ export const NewReservationForm: React.FC = () => {
     }
 
     const openServicesSelector = () => {
-        return null
+        setIsServicesModalOpen(true)
+    }
+
+    const handleUpdateServices = (serviceId: string, quantity: number) => {
+        const updatedServices = [...(values.services || [])]
+        const existingServiceIndex = updatedServices.findIndex(
+            (s) => s.serviceId === serviceId,
+        )
+
+        if (quantity === 0 && existingServiceIndex !== -1) {
+            updatedServices.splice(existingServiceIndex, 1)
+        } else if (
+            existingServiceIndex !== -1 &&
+            updatedServices[existingServiceIndex]
+        ) {
+            updatedServices[existingServiceIndex].qtd = quantity
+        } else if (quantity > 0) {
+            updatedServices.push({ serviceId, qtd: quantity, totalPrice: 0 })
+        }
+
+        setFieldValue('services', updatedServices)
     }
 
     const check = true
@@ -481,7 +518,7 @@ export const NewReservationForm: React.FC = () => {
                                             }
                                             alt={serviceDetails.name}
                                             sx={{
-                                                width: 90,
+                                                width: 120,
                                                 height: 90,
                                                 borderRadius: 1,
                                                 objectFit: 'cover',
@@ -642,7 +679,7 @@ export const NewReservationForm: React.FC = () => {
                             <Typography
                                 variant="h6"
                                 sx={{
-                                    fontSize: '1.25rem',
+                                    fontSize: '1.5rem',
                                     fontWeight: 600,
                                 }}
                             >
@@ -748,6 +785,13 @@ export const NewReservationForm: React.FC = () => {
                           )
                         : 0
                 }
+            />
+
+            <ServicesModal
+                open={isServicesModalOpen}
+                onClose={() => setIsServicesModalOpen(false)}
+                onUpdateServices={handleUpdateServices}
+                selectedServices={values.services || []}
             />
 
             <ServicesModal
