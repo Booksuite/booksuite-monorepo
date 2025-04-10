@@ -1,6 +1,6 @@
 'use client'
 
-import { useCreateBanner } from '@booksuite/sdk'
+import { useUpdateBanner } from '@booksuite/sdk'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
@@ -15,12 +15,12 @@ import {
     createBannerInitialValues,
 } from '../utils/config'
 
-export default function CreateBanner() {
+export default function UpdateBanner() {
     const companyId = useCurrentCompanyId()
     const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
 
-    const { mutateAsync: createBanner } = useCreateBanner()
+    const { mutateAsync: updateBanner } = useUpdateBanner()
 
     async function handleSubmit(formData: BannerFormData) {
         try {
@@ -33,12 +33,13 @@ export default function CreateBanner() {
                 })),
             }
 
-            await createBanner({
+            await updateBanner({
                 companyId,
+                id: params.id,
                 data: transformedFormData,
             })
 
-            enqueueSnackbar('Banner criado com sucesso', {
+            enqueueSnackbar('Banner atualizado com sucesso', {
                 variant: 'success',
                 anchorOrigin: {
                     vertical: 'top',
@@ -49,7 +50,7 @@ export default function CreateBanner() {
 
             back()
         } catch {
-            enqueueSnackbar(`Ocorreu um erro ao criar banner}`, {
+            enqueueSnackbar(`Ocorreu um erro ao atualizar banner`, {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',
@@ -63,7 +64,7 @@ export default function CreateBanner() {
     return (
         <>
             <PageHeader
-                title="Criar Banner"
+                title="Editar Banner"
                 backLButtonLabel="Banners"
                 backButtonHref="/marketing/banners"
             />

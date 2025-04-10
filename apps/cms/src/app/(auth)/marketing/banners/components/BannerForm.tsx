@@ -1,4 +1,4 @@
-import { BannerMedia, Media } from '@booksuite/sdk'
+import { Media } from '@booksuite/sdk'
 import {
     closestCenter,
     DndContext,
@@ -43,7 +43,7 @@ export const BannerForm = () => {
 
         if (!media) return
 
-        const formattedMedia: BannerMedia = {
+        const formattedMedia = {
             order: 0,
             media,
         }
@@ -123,53 +123,55 @@ export const BannerForm = () => {
                             {...getFieldProps('description')}
                         />
                     </Grid>
-                    <Grid size={4}>
-                        <TextField
-                            select
-                            label="Botão de ação do banner"
-                            value={values.action}
-                            onChange={(e) =>
-                                setFieldValue('action', e.target.value)
-                            }
-                        >
-                            {ACTION_BUTTON_OPTIONS.map(({ label, value }) => (
-                                <MenuItem key={value} value={value}>
-                                    {label}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Grid>
-                    <Grid size={4}>
-                        <TextField
-                            label="Texto do Botão (CTA)"
-                            error={
-                                touched.actionButtonText &&
-                                Boolean(errors.actionButtonText)
-                            }
-                            helperText={
-                                touched.actionButtonText &&
-                                errors.actionButtonText
-                            }
-                            fullWidth
-                            {...getFieldProps('actionButtonText')}
-                        />
-                    </Grid>
-                    <Grid size={4}>
-                        <TextField
-                            label="Link do Botão (URL)"
-                            error={
-                                touched.actionButtonLink &&
-                                Boolean(errors.actionButtonLink)
-                            }
-                            helperText={
-                                touched.actionButtonLink &&
-                                errors.actionButtonLink
-                            }
-                            fullWidth
-                            {...getFieldProps('actionButtonLink')}
-                        />
-                    </Grid>
                 </Grid>
+
+                <TextField
+                    select
+                    label="Botão de ação do banner"
+                    value={values.action}
+                    onChange={(e) => setFieldValue('action', e.target.value)}
+                >
+                    {ACTION_BUTTON_OPTIONS.map(({ label, value }) => (
+                        <MenuItem key={value} value={value}>
+                            {label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+
+                {values.action !== 'NONE' && (
+                    <Grid container spacing={2}>
+                        <Grid size={6}>
+                            <TextField
+                                label="Texto do Botão (CTA)"
+                                error={
+                                    touched.actionButtonText &&
+                                    Boolean(errors.actionButtonText)
+                                }
+                                helperText={
+                                    touched.actionButtonText &&
+                                    errors.actionButtonText
+                                }
+                                fullWidth
+                                {...getFieldProps('actionButtonText')}
+                            />
+                        </Grid>
+                        <Grid size={6}>
+                            <TextField
+                                label="Link do Botão (URL)"
+                                error={
+                                    touched.actionButtonLink &&
+                                    Boolean(errors.actionButtonLink)
+                                }
+                                helperText={
+                                    touched.actionButtonLink &&
+                                    errors.actionButtonLink
+                                }
+                                fullWidth
+                                {...getFieldProps('actionButtonLink')}
+                            />
+                        </Grid>
+                    </Grid>
+                )}
             </FormSection>
 
             <FormSection
