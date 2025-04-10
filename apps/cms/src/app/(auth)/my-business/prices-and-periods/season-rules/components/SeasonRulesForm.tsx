@@ -215,6 +215,7 @@ export const SeasonRulesForm: React.FC = () => {
                                                                   v !==
                                                                   night.value,
                                                           )
+
                                                     setFieldValue(
                                                         'availableWeekend',
                                                         newValue,
