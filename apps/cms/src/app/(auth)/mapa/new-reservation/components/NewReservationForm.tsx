@@ -1,9 +1,4 @@
 import {
-    useSearchHousingUnitTypes,
-    useSearchReservationOption,
-    useSearchServices,
-} from '@booksuite/sdk'
-import {
     Box,
     Button,
     FormControlLabel,
@@ -15,6 +10,7 @@ import {
 } from '@mui/material'
 import { differenceInDays } from 'date-fns'
 import { getIn, useFormikContext } from 'formik'
+import { Minus, Plus } from 'lucide-react'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -22,18 +18,17 @@ import { formatCurrency } from '@/common/utils/currency'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
-import { ReservationFormData } from '../utils/config'
+import {
+    ReservationFormData,
+    useCompanyHousingUnitTypes,
+    useCompanyReservationOptions,
+    useCompanyServices,
+} from '../utils/config'
 import { CHANNEL_OPTIONS } from '../utils/constants'
 
 import { HousingUnitModal } from './HousingUnitModal'
 import { ReservationOptionsSelector } from './ReservationOptionsSelector'
 import { ServicesModal } from './ServicesModal'
-import { Minus, Plus } from 'lucide-react'
-
-interface ReservationServiceFormItem {
-    serviceId: string
-    qtd: number
-}
 
 export const NewReservationForm: React.FC = () => {
     const { setFieldValue, touched, errors, getFieldProps, values } =
@@ -42,37 +37,17 @@ export const NewReservationForm: React.FC = () => {
     const [isServicesModalOpen, setIsServicesModalOpen] = useState(false)
     const companyId = useCurrentCompanyId()
 
-    const { data: housingUnitTypes } = useSearchHousingUnitTypes(
-        { companyId },
-        {
-            pagination: { page: 1, itemsPerPage: 100 },
-            filter: { published: true },
-        },
+    const { data: housingUnitTypes } = useCompanyHousingUnitTypes(companyId)
+
+    const { data: reservationOptions } = useCompanyReservationOptions(
+        companyId,
+        values.startDate,
+        values.endDate,
     )
 
-    const { data: reservationOptions } = useSearchReservationOption(
-        { companyId },
-        {
-            pagination: { page: 1, itemsPerPage: 100 },
-            filter: {
-                published: true,
-                billingType: 'DAILY',
-            },
-        },
-        undefined,
-        {
-            query: {
-                enabled: !!(values.startDate && values.endDate),
-            },
-        },
-    )
-
-    const { data: services } = useSearchServices(
-        { companyId },
-        {
-            pagination: { page: 1, itemsPerPage: 100 },
-            filter: { published: true },
-        },
+    const { data: services } = useCompanyServices(
+        companyId,
+        isServicesModalOpen,
     )
 
     const selectedHousingUnit = housingUnitTypes?.items
@@ -168,8 +143,6 @@ export const NewReservationForm: React.FC = () => {
 
         setFieldValue('services', updatedServices)
     }
-
-    const check = true
 
     return (
         <FormContainer>
@@ -425,7 +398,7 @@ export const NewReservationForm: React.FC = () => {
                             <Typography
                                 variant="h6"
                                 sx={{
-                                    fontSize: '1.5rem',
+                                    fontSize: '1.25rem',
                                     fontWeight: 600,
                                 }}
                             >
@@ -662,7 +635,7 @@ export const NewReservationForm: React.FC = () => {
                             <Typography
                                 variant="h6"
                                 sx={{
-                                    fontSize: '1.5rem',
+                                    fontSize: '1.25rem',
                                     fontWeight: 600,
                                 }}
                             >
@@ -724,31 +697,6 @@ export const NewReservationForm: React.FC = () => {
                     helperText={touched.notes && errors.notes}
                     fullWidth
                     {...getFieldProps('notes')}
-                />
-            </FormSection>
-
-            <FormSection title="Enviar para o hóspede">
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={check}
-                            onChange={(e) =>
-                                setFieldValue('', e.target.checked)
-                            }
-                        />
-                    }
-                    label="Publicado"
-                />
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={check}
-                            onChange={(e) =>
-                                setFieldValue('', e.target.checked)
-                            }
-                        />
-                    }
-                    label="Publicado"
                 />
             </FormSection>
 
