@@ -1,4 +1,3 @@
-import { useSearchServices } from '@booksuite/sdk'
 import SearchIcon from '@mui/icons-material/Search'
 import {
     Box,
@@ -15,6 +14,7 @@ import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { formatCurrency } from '@/common/utils/currency'
+import { useCompanyServices } from '../../utils/config'
 
 interface ServicesModalProps {
     open: boolean
@@ -32,19 +32,7 @@ export const ServicesModal: React.FC<ServicesModalProps> = ({
     const [searchQuery, setSearchQuery] = useState('')
     const companyId = useCurrentCompanyId()
 
-    const { data: services } = useSearchServices(
-        { companyId },
-        {
-            pagination: { page: 1, itemsPerPage: 100 },
-            filter: { published: true },
-        },
-        undefined,
-        {
-            query: {
-                enabled: !!companyId && open,
-            },
-        },
-    )
+    const { data: services } = useCompanyServices(companyId, open)
 
     const filteredServices = services?.items.filter((service) =>
         service.name.toLowerCase().includes(searchQuery.toLowerCase()),

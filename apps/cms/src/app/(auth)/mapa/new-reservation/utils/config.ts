@@ -5,12 +5,13 @@ import {
     User,
     useSearchHousingUnitTypes,
     useSearchReservationOption,
+    useSearchServices,
 } from '@booksuite/sdk'
 import * as yup from 'yup'
 
 export const useCompanyHousingUnitTypes = (
     companyId: string | undefined,
-    open: boolean,
+    open?: boolean,
 ) => {
     return useSearchHousingUnitTypes(
         { companyId },
@@ -45,6 +46,25 @@ export const useCompanyReservationOptions = (
         {
             query: {
                 enabled: !!(companyId && startDate && endDate),
+            },
+        },
+    )
+}
+
+export const useCompanyServices = (
+    companyId: string | undefined,
+    open: boolean,
+) => {
+    return useSearchServices(
+        { companyId },
+        {
+            pagination: { page: 1, itemsPerPage: 100 },
+            filter: { published: true },
+        },
+        undefined,
+        {
+            query: {
+                enabled: !!companyId && open,
             },
         },
     )
