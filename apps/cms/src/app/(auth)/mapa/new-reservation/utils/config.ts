@@ -1,4 +1,5 @@
 import {
+    ReservationAgeGroupInput,
     ReservationFull,
     ReservationResponseFullDTOSaleChannel,
     ReservationResponseFullDTOStatus,
@@ -7,6 +8,7 @@ import {
     useSearchReservationOption,
     useSearchServices,
 } from '@booksuite/sdk'
+import { eachDayOfInterval, getDay } from 'date-fns'
 import * as yup from 'yup'
 
 export const useCompanyHousingUnitTypes = (
@@ -89,7 +91,7 @@ export type ReservationFormData = {
     endDate: string
     totalDays: number | null
     adults: number | null
-    children: number | null
+    children: ReservationAgeGroupInput[]
     notes: string
     housingUnitId: string
     services: ReservationServiceFormItem[]
@@ -129,7 +131,7 @@ export const createReservationFormInitialValues = (
     endDate: data?.endDate || '',
     totalDays: data?.totalDays ?? null,
     adults: data?.adults ?? null,
-    children: data?.children ?? null,
+    children: data?.children || [],
     notes: data?.notes || '',
     housingUnitId: data?.housingUnit?.id || '',
     services:
@@ -150,7 +152,7 @@ export const reservationFormSchema = yup.object({
     endDate: yup.string().required('Data de término é obrigatória'),
     totalDays: yup.number().nullable(),
     adults: yup.number().nullable(),
-    children: yup.number().nullable(),
+    children: yup.array(),
     notes: yup.string().optional(),
     housingUnitId: yup.string().required('Unidade habitacional é obrigatória'),
     services: yup
@@ -165,27 +167,10 @@ export const reservationFormSchema = yup.object({
             }),
         )
         .min(0),
-    guestUser: yup
-        .object()
-        .shape({
-            email: yup.string().email().required(),
-            firstName: yup.string().required(),
-            lastName: yup.string().nullable(),
-            phone: yup.string().nullable(),
-            password: yup.string().required(),
-            metaData: yup.object().nullable(),
-        })
-        .nullable(),
+    guestUser: yup.object().nullable(),
     sellerUser: yup
         .object()
-        .shape({
-            email: yup.string().email().required(),
-            firstName: yup.string().required(),
-            lastName: yup.string().nullable(),
-            phone: yup.string().nullable(),
-            password: yup.string().required(),
-            metaData: yup.object().nullable(),
-        })
+
         .nullable(),
-    reservationOptions: yup.array().of(yup.string()).min(0),
+    reservationOptions: yup.array().min(0),
 })
