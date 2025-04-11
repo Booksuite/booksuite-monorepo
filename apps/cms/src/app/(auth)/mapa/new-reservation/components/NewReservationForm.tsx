@@ -1,4 +1,8 @@
 import {
+    useGetCompanyAgePolicy,
+    useGetCompanyHostingRules,
+} from '@booksuite/sdk'
+import {
     Box,
     Button,
     Grid,
@@ -6,10 +10,10 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
-import { differenceInDays } from 'date-fns'
-import { getIn, useFormikContext } from 'formik'
+import { differenceInDays, eachDayOfInterval, getDay } from 'date-fns'
+import { FieldArray, getIn, useFormikContext } from 'formik'
 import { Minus, Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { formatCurrency } from '@/common/utils/currency'
@@ -35,7 +39,11 @@ export const NewReservationForm: React.FC = () => {
     const [isServicesModalOpen, setIsServicesModalOpen] = useState(false)
     const companyId = useCurrentCompanyId()
 
+    const { data: agePolicy, isLoading } = useGetCompanyAgePolicy({ companyId })
+
     const { data: housingUnitTypes } = useCompanyHousingUnitTypes(companyId)
+
+    const { data: hostingRules } = useGetCompanyHostingRules({ companyId })
 
     const { data: reservationOptions } = useCompanyReservationOptions(
         companyId,
@@ -57,15 +65,31 @@ export const NewReservationForm: React.FC = () => {
     )
 
     const calculateNights = (startDate: string, endDate: string) => {
-        return differenceInDays(new Date(endDate), new Date(startDate))
-    }
+        const days = eachDayOfInterval({
+            start: new Date(startDate),
+            end: new Date(endDate),
+        })
 
+        const weekendDays = days.filter((d) =>
+            hostingRules?.availableWeekend.includes(getDay(d)),
+        )
+
+        return {
+            weekdays: days.length - weekendDays.length,
+            weekendDays: weekendDays.length,
+            totalDays: weekendDays.length + (days.length - weekendDays.length),
+        }
+    }
     const calculateSubtotal = () => {
         if (!selectedHousingUnitType || !values.startDate || !values.endDate)
             return 0
 
         const nights = calculateNights(values.startDate, values.endDate)
-        return (selectedHousingUnitType.weekdaysPrice ?? 0) * nights
+        const weekendPrice =
+            (selectedHousingUnitType.weekendPrice ?? 0) * nights.weekendDays
+        const weekDaysPrice =
+            (selectedHousingUnitType.weekdaysPrice ?? 0) * nights.weekdays
+        return weekendPrice + weekDaysPrice
     }
 
     const calculateTotalPrice = () => {
@@ -79,8 +103,11 @@ export const NewReservationForm: React.FC = () => {
         }
 
         const nights = calculateNights(values.startDate, values.endDate)
-        const basePrice = (selectedHousingUnitType.weekdaysPrice ?? 0) * nights
-        const adults = values.adults ?? 1
+        const basePrice = calculateSubtotal()
+        const totalChildrens = values.children
+            ? values.children.reduce((sum, c) => sum + Number(c.children), 0)
+            : 0
+        const guests = values.adults ? values.adults + totalChildrens : 1
 
         const optionsTotal = values.reservationOptions.reduce(
             (total, optionId) => {
@@ -89,18 +116,35 @@ export const NewReservationForm: React.FC = () => {
                 )
                 if (!option) return total
 
-                const price = option.additionalAdultPrice ?? 0
+                const optionAdultPrice = values.adults
+                    ? values.adults * option.additionalAdultPrice
+                    : 0
+                const optionChildrenPrice =
+                    totalChildrens * option.additionalChildrenPrice
+
+                console.log(option.additionalAdultPrice)
+                console.log(option.additionalChildrenPrice)
+                console.log(optionChildrenPrice)
+                console.log(optionAdultPrice)
 
                 switch (option.billingType) {
                     case 'PER_GUEST_DAILY':
-                        return total + price * adults * nights
+                        return (
+                            total +
+                            optionAdultPrice +
+                            optionChildrenPrice * nights.totalDays
+                        )
                     case 'PER_GUEST':
-                        return total + price * adults
+                        return (
+                            total +
+                            optionAdultPrice +
+                            optionChildrenPrice 
+                        )
                     case 'DAILY':
-                        return total + price * nights
+                        return total + optionAdultPrice * nights.totalDays
                     case 'PER_RESERVATION':
                     case 'PER_HOUSING_UNIT':
-                        return total + price
+                        return total + optionAdultPrice
                     default:
                         return total
                 }
@@ -138,6 +182,16 @@ export const NewReservationForm: React.FC = () => {
 
         setFieldValue('services', updatedServices)
     }
+
+    useEffect(() => {
+        setFieldValue(
+            'children',
+            agePolicy?.ageGroups.map((a) => ({
+                children: 0,
+                ageGroupId: a.id,
+            })),
+        )
+    }, [agePolicy, setFieldValue])
 
     return (
         <FormContainer>
@@ -232,6 +286,39 @@ export const NewReservationForm: React.FC = () => {
                         setFieldValue('adults', newValueNumber)
                     }}
                 />
+
+                <FieldArray name="children">
+                    {({ push, remove }) => (
+                        <>
+                            {agePolicy?.ageGroups.map((a, index) => (
+                                <NumberInput
+                                    key={index}
+                                    label={`Crianças (${a.initialAge} a ${a.finalAge})`}
+                                    disabled={
+                                        values.startDate && values.endDate
+                                            ? false
+                                            : true
+                                    }
+                                    value={
+                                        values.children
+                                            ? values.children[index]?.children
+                                            : 0
+                                    }
+                                    onChange={(e) => {
+                                        setFieldValue(
+                                            `children.${index}.ageGroupId`,
+                                            a.id,
+                                        )
+                                        setFieldValue(
+                                            `children.${index}.children`,
+                                            e.target.value,
+                                        )
+                                    }}
+                                />
+                            ))}
+                        </>
+                    )}
+                </FieldArray>
             </FormSection>
 
             <FormSection
