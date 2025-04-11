@@ -15,7 +15,14 @@ import {
     rectSortingStrategy,
     SortableContext,
 } from '@dnd-kit/sortable'
-import { Button, Grid, Stack, TextField } from '@mui/material'
+import {
+    Button,
+    FormControlLabel,
+    Grid,
+    Stack,
+    Switch,
+    TextField,
+} from '@mui/material'
 import { FieldArray, useFormikContext } from 'formik'
 import { useState } from 'react'
 
@@ -97,6 +104,20 @@ export const RoomsForm: React.FC = () => {
     return (
         <FormContainer>
             <FormSection>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={values.published}
+                            onChange={(e) =>
+                                setFieldValue('published', e.target.checked)
+                            }
+                        />
+                    }
+                    label="Publicado"
+                />
+            </FormSection>
+
+            <FormSection>
                 <TextField
                     label="Nome da Acomodação"
                     error={!!errors.name}
@@ -111,6 +132,13 @@ export const RoomsForm: React.FC = () => {
                     error={!!errors.description}
                     helperText={errors.description}
                     {...getFieldProps('description')}
+                />
+
+                <TextField
+                    label="Slug"
+                    error={!!errors.slug}
+                    helperText={errors.slug}
+                    {...getFieldProps('slug')}
                 />
             </FormSection>
             <FormSection title="Unidades disponíveis">

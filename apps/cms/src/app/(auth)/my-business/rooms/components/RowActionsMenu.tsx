@@ -1,11 +1,10 @@
 import { HousingUnitTypeFull, useUpdateHousingUnitType } from '@booksuite/sdk'
-
+import { Box, MenuItem } from '@mui/material'
 import { Copy, Edit, Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
-import { Box, MenuItem } from '@mui/material'
 
 interface RowActionsMenuProps {
     item: HousingUnitTypeFull
