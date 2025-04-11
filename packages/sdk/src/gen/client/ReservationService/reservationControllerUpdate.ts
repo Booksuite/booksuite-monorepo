@@ -22,7 +22,7 @@ export function getReservationControllerUpdateUrl({
  */
 export async function reservationControllerUpdate(
   { companyId, id }: { companyId: ReservationControllerUpdatePathParams['companyId']; id: ReservationControllerUpdatePathParams['id'] },
-  data?: ReservationControllerUpdateMutationRequest,
+  data: ReservationControllerUpdateMutationRequest,
   config: Partial<RequestConfig<ReservationControllerUpdateMutationRequest>> & { client?: typeof client } = {},
 ) {
   const { client: request = client, ...requestConfig } = config

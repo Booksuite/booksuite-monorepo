@@ -107,6 +107,18 @@ export type CompanyUpdateInput = {
    * @type string | undefined
    */
   city?: string
+  /**
+   * @type string
+   */
+  privacyPolicyDescription: string
+  /**
+   * @type string
+   */
+  privacyPolicySimpleModel: string
+  /**
+   * @type string
+   */
+  privacyPolicyFullModel: string
   mapCoordinates?: MapCoordinatesInput
   /**
    * @type string

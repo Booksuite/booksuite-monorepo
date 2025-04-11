@@ -1,3 +1,5 @@
+import type { ReservationAgeGroupInput } from './ReservationAgeGroupInput.ts'
+import type { ReservationReservationOptionInput } from './ReservationReservationOptionInput.ts'
 import type { ReservationServiceInput } from './ReservationServiceInput.ts'
 
 export type ReservationCreateDTOStatus =
@@ -47,9 +49,9 @@ export type ReservationCreateInput = {
    */
   adults: number
   /**
-   * @type number
+   * @type array
    */
-  children: number
+  children: ReservationAgeGroupInput[]
   /**
    * @type string
    */
@@ -62,4 +64,8 @@ export type ReservationCreateInput = {
    * @type array
    */
   services: ReservationServiceInput[]
+  /**
+   * @type array
+   */
+  reservationOption: ReservationReservationOptionInput[]
 }

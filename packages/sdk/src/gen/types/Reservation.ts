@@ -41,10 +41,6 @@ export type Reservation = {
    */
   adults: number | null
   /**
-   * @type number
-   */
-  children: number | null
-  /**
    * @type string
    */
   notes: string

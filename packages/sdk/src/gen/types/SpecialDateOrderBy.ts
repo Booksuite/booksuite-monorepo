@@ -1,0 +1,1 @@
+export type SpecialDateOrderBy = 'name' | 'startDate' | 'endDate' | 'price'
