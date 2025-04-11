@@ -1,7 +1,7 @@
 import { Facility } from '@booksuite/sdk'
-import { Box, Text } from '@chakra-ui/react'
-import { HStack } from '@chakra-ui/react'
+import { Box, Stack, Typography } from '@mui/material'
 import { Star } from 'lucide-react'
+import { useCallback } from 'react'
 
 interface HousintUnitTypeFacilityItemProps {
     facility: Facility
@@ -14,29 +14,40 @@ export const HousintUnitTypeFacilityItem = ({
     isFeatured,
     onClick,
 }: HousintUnitTypeFacilityItemProps) => {
+    const handleClick = useCallback(() => {
+        onClick?.(facility)
+    }, [onClick, facility])
+
     return (
         <Box
             px={3}
-            h={10}
-            borderRadius="md"
-            bg="gray.100"
-            cursor="pointer"
-            onClick={() => onClick?.(facility)}
-            _hover={{
-                bg: 'gray.200',
+            height={40}
+            borderRadius={1}
+            bgcolor="grey.100"
+            sx={{
+                cursor: 'pointer',
+                '&:hover': {
+                    bgcolor: 'grey.200',
+                },
             }}
+            onClick={handleClick}
         >
-            <HStack align="center" justify="space-between" h="100%">
-                <Text flex={1} m={0} color="#102A43">
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                height="100%"
+            >
+                <Typography flex={1} m={0} color="#102A43">
                     {facility.name}
-                </Text>
+                </Typography>
 
                 <Star
                     size={20}
                     color={isFeatured ? '#F35627' : '#334E68'}
                     fill={isFeatured ? '#F35627' : 'none'}
                 />
-            </HStack>
+            </Stack>
         </Box>
     )
 }
