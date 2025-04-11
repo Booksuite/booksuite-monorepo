@@ -83,14 +83,9 @@ export default function Rooms() {
                 direction: orderDirection,
             },
             filter:
-                selectedFilters.includes('published') ||
-                selectedFilters.includes('unpublished')
+                selectedFilters.length > 0
                     ? {
-                          published: selectedFilters.includes('published')
-                              ? true
-                              : selectedFilters.includes('unpublished')
-                                ? false
-                                : undefined,
+                          published: selectedFilters.includes('published'),
                       }
                     : undefined,
         },
