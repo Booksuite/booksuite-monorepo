@@ -1,13 +1,12 @@
 'use client'
 
 import { useCreateHousingUnitType } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { RoomsForm } from '../components/RoomsForm'
@@ -17,14 +16,14 @@ import {
     roomsFormSchema,
     transformFormDataForSubmit,
 } from '../utils/config'
+
 export default function CreateRoom() {
     const { push } = useRouter()
     const companyId = useCurrentCompanyId()
     const queryClient = useQueryClient()
+    const { enqueueSnackbar } = useSnackbar()
 
     const { mutateAsync: createHousintUnitType } = useCreateHousingUnitType()
-
-    const toast = useToast()
 
     async function handleSubmit(formData: RoomsFormData) {
         try {
@@ -42,15 +41,22 @@ export default function CreateRoom() {
 
             push('/my-business/rooms')
 
-            toast({
-                title: 'Acomodação criada com sucesso',
-                status: 'success',
+            enqueueSnackbar('Acomodação criada com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
             })
-        } catch (error) {
-            toast({
-                title: 'Erro ao criar acomodação',
-                description: getErrorMessage(error),
-                status: 'error',
+        } catch {
+            enqueueSnackbar(`Erro ao criar acomodação`, {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 5000,
             })
         }
     }

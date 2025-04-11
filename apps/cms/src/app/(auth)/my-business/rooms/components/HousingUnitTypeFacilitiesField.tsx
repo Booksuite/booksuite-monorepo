@@ -3,17 +3,9 @@ import {
     HousingUnitTypeFacilityInput,
     useSearchFacilities,
 } from '@booksuite/sdk'
-import {
-    Box,
-    Flex,
-    HStack,
-    Stack,
-    Text,
-    useToast,
-    VStack,
-} from '@chakra-ui/react'
-import { Button, useTheme } from '@mui/material'
+import { Box, Button, Stack, Typography, useTheme } from '@mui/material'
 import { useFormikContext } from 'formik'
+import { useSnackbar } from 'notistack'
 import { useCallback, useMemo, useState } from 'react'
 
 import { COMODITIES_TAB_FILTER } from '@/common/constants/facility'
@@ -26,7 +18,7 @@ import { HousintUnitTypeFacilityItem } from './HousintUnitTypeFacilityItem'
 
 export const HousingUnitTypeFacilitiesField = () => {
     const theme = useTheme()
-    const toast = useToast()
+    const { enqueueSnackbar } = useSnackbar()
     const [isOpen, setIsOpen] = useState(false)
     const { values, setFieldValue } = useFormikContext<RoomsFormData>()
 
@@ -74,7 +66,12 @@ export const HousingUnitTypeFacilitiesField = () => {
             }
         >
             <Stack>
-                <HStack gap={2} align="center" justify="space-between">
+                <Stack
+                    direction="row"
+                    gap={2}
+                    alignItems="center"
+                    justifyContent="space-between"
+                >
                     {!!facilities && (
                         <SelectModal
                             items={facilities.items}
@@ -98,14 +95,14 @@ export const HousingUnitTypeFacilitiesField = () => {
                             description="Selecione as opções"
                         />
                     )}
-                </HStack>
+                </Stack>
 
-                <Flex gap={8}>
+                <Stack direction="row" gap={8}>
                     <Box flex={1}>
-                        <Text fontWeight="bold" mb={3}>
+                        <Typography fontWeight="bold" mb={3}>
                             Top 5 destaques no site
-                        </Text>
-                        <VStack align="stretch" spacing={2}>
+                        </Typography>
+                        <Stack spacing={2}>
                             {featuredFacilities.slice(0, 5).map((facility) => (
                                 <HousintUnitTypeFacilityItem
                                     key={facility.id}
@@ -138,32 +135,33 @@ export const HousingUnitTypeFacilitiesField = () => {
                                     MAX_FEATURED_FACILITIES -
                                     featuredFacilities.length,
                             }).map((_, index) => (
-                                <Flex
+                                <Box
                                     key={index}
-                                    align="center"
-                                    justify="center"
-                                    bg="gray.50"
-                                    height={10}
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    bgcolor="grey.50"
+                                    height={40}
                                     p={3}
-                                    borderRadius="md"
-                                    color="gray.300"
+                                    borderRadius={1}
+                                    color="grey.300"
                                 >
                                     Comodidade em destaque
-                                </Flex>
+                                </Box>
                             ))}
-                        </VStack>
+                        </Stack>
                     </Box>
 
                     <Box
                         borderLeft="1px solid"
-                        borderLeftColor={theme.palette.blueGrey[200]}
+                        borderColor={theme.palette.grey[300]}
                         pl={8}
                         flex={1}
                     >
-                        <Text fontWeight="bold" mb={3}>
+                        <Typography fontWeight="bold" mb={3}>
                             Demais comodidades
-                        </Text>
-                        <VStack align="stretch" spacing={2}>
+                        </Typography>
+                        <Stack spacing={2}>
                             {nonFeaturedFacilities.map((facility) => (
                                 <HousintUnitTypeFacilityItem
                                     key={facility.id}
@@ -173,10 +171,10 @@ export const HousingUnitTypeFacilitiesField = () => {
                                             featuredFacilities.length >=
                                             MAX_FEATURED_FACILITIES
                                         ) {
-                                            return toast({
-                                                title: `Você pode selecionar no máximo ${MAX_FEATURED_FACILITIES} comodidades destacadas`,
-                                                status: 'warning',
-                                            })
+                                            return enqueueSnackbar(
+                                                `Você pode selecionar no máximo ${MAX_FEATURED_FACILITIES} comodidades destacadas`,
+                                                { variant: 'warning' },
+                                            )
                                         }
 
                                         const facilityIndex =
@@ -201,20 +199,21 @@ export const HousingUnitTypeFacilitiesField = () => {
                                 />
                             ))}
                             {nonFeaturedFacilities.length === 0 && (
-                                <Flex
-                                    align="center"
-                                    justify="center"
-                                    bg="gray.50"
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    bgcolor="grey.50"
                                     p={3}
-                                    borderRadius="md"
-                                    color="gray.500"
+                                    borderRadius={1}
+                                    color="grey.500"
                                 >
                                     Nenhuma comodidade adicional
-                                </Flex>
+                                </Box>
                             )}
-                        </VStack>
+                        </Stack>
                     </Box>
-                </Flex>
+                </Stack>
             </Stack>
         </FormSection>
     )

@@ -83,14 +83,23 @@ export default function Rooms() {
                 direction: orderDirection,
             },
             filter:
-                selectedFilters.length > 0
+                selectedFilters.includes('published') ||
+                selectedFilters.includes('unpublished')
                     ? {
-                          published: selectedFilters.includes('published'),
+                          published: selectedFilters.includes('published')
+                              ? true
+                              : selectedFilters.includes('unpublished')
+                                ? false
+                                : undefined,
                       }
                     : undefined,
         },
         { query: searchQuery.length > 0 ? searchQuery : undefined },
-        { query: { enabled: undefined } },
+        {
+            query: {
+                enabled: !!companyId,
+            },
+        },
     )
 
     const handleRowClick = (row: HousingUnitTypeFull) => {
