@@ -3,16 +3,12 @@ import {
     AtSign,
     Baby,
     BadgePercent,
-    CircleDollarSign,
     File,
-    FileText,
     Home,
     Hotel,
     MapPin,
     Pencil,
     ScanText,
-    Telescope,
-    UserRound,
 } from 'lucide-react'
 import { Route } from 'next'
 
@@ -46,11 +42,11 @@ const menuItems: MenuItem[] = [
         title: 'Identidade Visual',
         href: `/settings/visual-identity`,
     },
-    {
-        icon: <Telescope size={20} />,
-        title: 'Comodidades',
-        href: `/settings/comodidades`,
-    },
+    // {
+    //     icon: <Telescope size={20} />,
+    //     title: 'Comodidades',
+    //     href: `/settings/comodidades`,
+    // },
     {
         icon: <AtSign size={20} />,
         title: 'Contato e Redes Sociais',
@@ -66,16 +62,16 @@ const menuItems: MenuItem[] = [
         title: 'Regras de Hospedagem',
         href: `/settings/hosting-rules`,
     },
-    {
-        icon: <CircleDollarSign size={20} />,
-        title: 'Formas de Pagamento',
-        href: `/settings/formas-de-pagamento`,
-    },
-    {
-        icon: <FileText size={20} />,
-        title: 'Políticas de Reservas',
-        href: `/settings/politicas-de-reservas`,
-    },
+    // {
+    //     icon: <CircleDollarSign size={20} />,
+    //     title: 'Formas de Pagamento',
+    //     href: `/settings/formas-de-pagamento`,
+    // },
+    // {
+    //     icon: <FileText size={20} />,
+    //     title: 'Políticas de Reservas',
+    //     href: `/settings/politicas-de-reservas`,
+    // },
     {
         icon: <File size={20} />,
         title: 'Políticas de Cancelamento',
@@ -91,11 +87,11 @@ const menuItems: MenuItem[] = [
         title: 'Política de Privacidade',
         href: `/settings/politica-de-privacidade`,
     },
-    {
-        icon: <UserRound size={20} />,
-        title: 'Usuários e Permissões',
-        href: `/settings/users-and-permissions`,
-    },
+    // {
+    //     icon: <UserRound size={20} />,
+    //     title: 'Usuários e Permissões',
+    //     href: `/settings/users-and-permissions`,
+    // },
 ]
 
 export default function Settings() {
