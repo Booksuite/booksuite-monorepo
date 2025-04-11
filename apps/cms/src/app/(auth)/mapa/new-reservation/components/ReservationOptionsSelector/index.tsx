@@ -15,31 +15,6 @@ type ReservationOptionsSelectorProps = {
     housingUnitTypeId?: string
 }
 
-type BillingType =
-    | 'DAILY'
-    | 'PER_GUEST_DAILY'
-    | 'PER_GUEST'
-    | 'PER_RESERVATION'
-    | 'PER_HOUSING_UNIT'
-    | string
-
-const translateBillingType = (type: BillingType) => {
-    switch (type) {
-        case 'DAILY':
-            return 'Por diária'
-        case 'PER_GUEST_DAILY':
-            return 'Por hóspede por diária'
-        case 'PER_GUEST':
-            return 'Por hóspede'
-        case 'PER_RESERVATION':
-            return 'Por reserva'
-        case 'PER_HOUSING_UNIT':
-            return 'Por unidade'
-        default:
-            return 'Outro tipo'
-    }
-}
-
 export const ReservationOptionsSelector: React.FC<
     ReservationOptionsSelectorProps
 > = ({ startDate, endDate, housingUnitTypeId }) => {
@@ -53,12 +28,7 @@ export const ReservationOptionsSelector: React.FC<
     )
 
     const handleOptionChange = (optionId: string) => {
-        const isSelected = values.reservationOptions.includes(optionId)
-        const updatedOptions = isSelected
-            ? values.reservationOptions.filter((id) => id !== optionId)
-            : [...values.reservationOptions, optionId]
-
-        setFieldValue('reservationOptions', updatedOptions)
+        setFieldValue('reservationOptions', [optionId])
     }
 
     if (!reservationOptions?.items?.length) return null
@@ -81,22 +51,20 @@ export const ReservationOptionsSelector: React.FC<
         return acc
     }, {})
 
-    const getBillingTypeLabelWithPrice = (type: string, price: number) => {
-        const formatted = formatCurrency(price)
-
+    const getBillingTypeLabel = (type: string) => {
         switch (type) {
             case 'DAILY':
-                return `+${formatted} por diária`
+                return `por diária`
             case 'PER_GUEST_DAILY':
-                return `+${formatted} por hóspede por diária`
+                return `por hóspede por diária`
             case 'PER_GUEST':
-                return `+${formatted} por hóspede`
+                return `por hóspede`
             case 'PER_RESERVATION':
-                return `+${formatted} por reserva`
+                return `por reserva`
             case 'PER_HOUSING_UNIT':
-                return `+${formatted} por unidade`
+                return `+$por unidade`
             default:
-                return `+${formatted}`
+                return ``
         }
     }
 
@@ -105,8 +73,8 @@ export const ReservationOptionsSelector: React.FC<
             <Typography
                 variant="h6"
                 sx={{
-                    fontSize: '1.25rem',
-                    fontWeight: 600,
+                    fontSize: '1.0rem',
+                    fontWeight: 500,
                     color: '#1F2937',
                     mb: 2,
                 }}
@@ -119,9 +87,7 @@ export const ReservationOptionsSelector: React.FC<
                     <Typography
                         variant="subtitle2"
                         sx={{ mt: 3, mb: 1, color: '#4B5563', fontWeight: 500 }}
-                    >
-                        {translateBillingType(billingType)}
-                    </Typography>
+                    ></Typography>
 
                     <Box
                         sx={{
@@ -145,8 +111,8 @@ export const ReservationOptionsSelector: React.FC<
                                         borderColor: isSelected
                                             ? 'blue.900'
                                             : 'grey.300',
-                                        borderRadius: 1,
-                                        p: 2.5,
+                                        borderRadius: 2,
+                                        p: 2,
                                         cursor: 'pointer',
                                         bgcolor: isSelected
                                             ? 'primary.lighter'
@@ -156,69 +122,86 @@ export const ReservationOptionsSelector: React.FC<
                                             bgcolor: 'primary.lighter',
                                         },
                                         transition: 'all 0.2s ease-in-out',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'space-between',
                                     }}
                                 >
+                                    <Typography
+                                        variant="subtitle1"
+                                        sx={{
+                                            fontSize: '1rem',
+                                            fontWeight: 500,
+                                            color: isSelected
+                                                ? 'blue.900'
+                                                : 'text.primary',
+                                        }}
+                                    >
+                                        {option.name}
+                                    </Typography>
                                     <Box
                                         sx={{
                                             display: 'flex',
-                                            justifyContent: 'space-between',
                                             alignItems: 'center',
+                                            gap: 2,
                                         }}
                                     >
-                                        <Typography
-                                            variant="subtitle1"
-                                            sx={{
-                                                fontSize: '1rem',
-                                                fontWeight: 500,
-                                                color: 'text.primary',
-                                            }}
-                                        >
-                                            {option.name}
-                                        </Typography>
-
                                         <Box
                                             sx={{
                                                 display: 'flex',
-                                                alignItems: 'center',
-                                                gap: 2,
+                                                flexDirection: 'column',
+                                                textAlign: 'right',
                                             }}
                                         >
                                             <Typography
                                                 variant="body2"
                                                 sx={{
-                                                    fontWeight: 500,
-                                                    color: 'text.secondary',
+                                                    fontWeight: 600,
+                                                    fontSize: 14,
+                                                    color: isSelected
+                                                        ? 'blue.900'
+                                                        : 'text.primary',
                                                 }}
                                             >
-                                                {getBillingTypeLabelWithPrice(
-                                                    option.billingType,
+                                                {`+${formatCurrency(
                                                     option.additionalAdultPrice,
+                                                )}`}
+                                            </Typography>
+                                            <Typography
+                                                variant="caption"
+                                                sx={{ color: 'text.secondary' }}
+                                                fontWeight={400}
+                                                fontSize={13}
+                                            >
+                                                {getBillingTypeLabel(
+                                                    option.billingType,
                                                 )}
                                             </Typography>
+                                        </Box>
 
+                                        <Box
+                                            sx={{
+                                                width: 20,
+                                                height: 20,
+                                                borderRadius: '50%',
+                                                border: '2px solid',
+                                                borderColor: isSelected
+                                                    ? 'blue.900'
+                                                    : 'grey.400',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                            }}
+                                        >
                                             {isSelected && (
                                                 <Box
                                                     sx={{
-                                                        width: 20,
-                                                        height: 20,
+                                                        width: 10,
+                                                        height: 10,
                                                         borderRadius: '50%',
                                                         bgcolor: 'blue.900',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        justifyContent:
-                                                            'center',
                                                     }}
-                                                >
-                                                    <Box
-                                                        sx={{
-                                                            width: 10,
-                                                            height: 10,
-                                                            borderRadius: '50%',
-                                                            bgcolor:
-                                                                'background.paper',
-                                                        }}
-                                                    />
-                                                </Box>
+                                                />
                                             )}
                                         </Box>
                                     </Box>
