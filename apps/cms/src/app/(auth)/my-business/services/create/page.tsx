@@ -1,13 +1,12 @@
 'use client'
 
 import { useCreateService } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { ServiceForm } from '../components/ServiceForm'
@@ -22,9 +21,8 @@ export default function CreateServicePage() {
     const companyId = useCurrentCompanyId()
     const { back } = useRouter()
     const queryClient = useQueryClient()
+    const { enqueueSnackbar } = useSnackbar()
     const { mutateAsync: createService } = useCreateService()
-
-    const toast = useToast()
 
     async function handleSubmit(formData: ServiceFormData) {
         const apiData = transformFormDataForSubmit(formData)
@@ -35,9 +33,13 @@ export default function CreateServicePage() {
                 data: apiData,
             })
 
-            toast({
-                title: 'Serviço Criada com sucesso',
-                status: 'success',
+            enqueueSnackbar('Serviço criado com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
             })
 
             await queryClient.invalidateQueries({
@@ -46,11 +48,14 @@ export default function CreateServicePage() {
             })
 
             back()
-        } catch (error) {
-            toast({
-                title: 'Erro ao criar Serviço',
-                description: getErrorMessage(error),
-                status: 'error',
+        } catch {
+            enqueueSnackbar('Erro ao criar serviço', {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
             })
         }
     }

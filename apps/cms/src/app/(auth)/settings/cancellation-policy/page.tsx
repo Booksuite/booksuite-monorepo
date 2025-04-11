@@ -8,10 +8,8 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { SnackbarProvider, useSnackbar } from 'notistack'
-import { useEffect } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
@@ -59,28 +57,17 @@ function CancellationPolicyContent() {
             )
 
             back()
-        } catch (error) {
-            enqueueSnackbar(
-                `Erro ao modificar políticas: ${getErrorMessage(error)}`,
-                {
-                    variant: 'error',
-                    anchorOrigin: {
-                        vertical: 'top',
-                        horizontal: 'right',
-                    },
-                    autoHideDuration: 5000,
-                },
-            )
-        }
-    }
-
-    useEffect(() => {
-        if (!isLoading && !cancellatonPolicyData) {
-            enqueueSnackbar('Erro ao cargar políticas de cancelamento', {
+        } catch {
+            enqueueSnackbar(`Erro ao modificar políticas`, {
                 variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 5000,
             })
         }
-    }, [isLoading, cancellatonPolicyData, enqueueSnackbar])
+    }
 
     return (
         <div className="cancellation_policy">

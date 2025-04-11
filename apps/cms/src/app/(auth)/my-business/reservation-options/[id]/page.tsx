@@ -5,14 +5,12 @@ import {
     useReservationOptionsControllerGetById,
     useReservationOptionsControllerUpdate,
 } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { ReservationOptionForm } from '../components/ReservationOptionsForm'
@@ -45,8 +43,6 @@ export default function UpdateReservationOption({
         id: params.id,
     })
 
-    const toast = useToast()
-
     async function handleSubmit(formData: ReservationOptionInput) {
         try {
             await createReservationOption({
@@ -75,11 +71,11 @@ export default function UpdateReservationOption({
                 variant: 'success',
                 anchorOrigin: {
                     vertical: 'top',
-                        horizontal: 'right',
-                    },
+                    horizontal: 'right',
+                },
                 autoHideDuration: 3000,
             })
-        } catch (error) {
+        } catch {
             enqueueSnackbar('Erro ao modificadar tarifa', {
                 variant: 'error',
                 anchorOrigin: {
