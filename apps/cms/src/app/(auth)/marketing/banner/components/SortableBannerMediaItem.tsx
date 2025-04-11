@@ -28,7 +28,7 @@ export const SortableBannerMediaItem: React.FC<
         <div ref={setNodeRef} style={style} {...attributes}>
             <Box
                 width={600}
-                height={360}
+                height={370}
                 overflow="hidden"
                 borderRadius={1}
                 position="relative"

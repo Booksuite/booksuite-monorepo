@@ -47,7 +47,7 @@ export default function Banners() {
 
     const { page, itemsPerPage, setPage, setItemsPerPage } =
         useSearchParamsPagination({
-            currentPath: '/marketing/banners',
+            currentPath: '/marketing/banner',
         })
 
     const debouncedSearch = useRef(
@@ -87,7 +87,7 @@ export default function Banners() {
     }
 
     const handleRowClick = (row: BannerFull) => {
-        push(`/marketing/banners/${row.id}`)
+        push(`/marketing/banner/${row.id}`)
     }
 
     const handleTogglePublished = (item: BannerFull) => {
@@ -128,7 +128,7 @@ export default function Banners() {
     }
 
     const handleEdit = (item: BannerFull) => {
-        push(`/marketing/banners/${item.id}`)
+        push(`/marketing/banner/${item.id}`)
     }
 
     return (
@@ -139,7 +139,7 @@ export default function Banners() {
                 backButtonHref="/marketing"
                 headerRight={
                     <LinkButton
-                        href="/marketing/banners/create"
+                        href="/marketing/banner/create"
                         startIcon={<Plus size={16} />}
                     >
                         Adicionar

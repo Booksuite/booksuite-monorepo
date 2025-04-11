@@ -49,7 +49,7 @@ export default function CreateBanner() {
 
             back()
         } catch {
-            enqueueSnackbar(`Ocorreu um erro ao criar banner}`, {
+            enqueueSnackbar(`Ocorreu um erro ao criar banner`, {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',
@@ -65,7 +65,7 @@ export default function CreateBanner() {
             <PageHeader
                 title="Criar Banner"
                 backLButtonLabel="Banners"
-                backButtonHref="/marketing/banners"
+                backButtonHref="/marketing/banner"
             />
 
             <Formik<BannerFormData>

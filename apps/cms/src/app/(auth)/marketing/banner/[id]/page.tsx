@@ -66,7 +66,7 @@ export default function UpdateBanner() {
             <PageHeader
                 title="Editar Banner"
                 backLButtonLabel="Banners"
-                backButtonHref="/marketing/banners"
+                backButtonHref="/marketing/banner"
             />
 
             <Formik<BannerFormData>
