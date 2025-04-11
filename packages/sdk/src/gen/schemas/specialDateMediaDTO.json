@@ -1,0 +1,1 @@
+{"type":"object","properties":{"mediaId":{"type":"string"},"order":{"type":"number"}},"required":["mediaId"],"x-readme-ref-name":"SpecialDateMediaDTO"}

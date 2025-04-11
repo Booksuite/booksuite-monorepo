@@ -1,4 +1,6 @@
 import type { HousingUnit } from './HousingUnit.ts'
+import type { ReservationAgeGroup } from './ReservationAgeGroup.ts'
+import type { ReservationReservationOption } from './ReservationReservationOption.ts'
 import type { ReservationService } from './ReservationService.ts'
 import type { User } from './User.ts'
 
@@ -45,10 +47,6 @@ export type ReservationFull = {
    */
   adults: number | null
   /**
-   * @type number
-   */
-  children: number | null
-  /**
    * @type string
    */
   notes: string
@@ -70,4 +68,12 @@ export type ReservationFull = {
   services: ReservationService[]
   guestUser: User | null
   sellerUser: User | null
+  /**
+   * @type array
+   */
+  children: ReservationAgeGroup[]
+  /**
+   * @type array
+   */
+  reservationOption: ReservationReservationOption[]
 }

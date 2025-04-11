@@ -1,0 +1,56 @@
+import type { PriceVariationType } from './PriceVariationType.ts'
+import type { SpecialDateHousingUnitTypeInput } from './SpecialDateHousingUnitTypeInput.ts'
+import type { SpecialDateMediaInput } from './SpecialDateMediaInput.ts'
+import type { SpecialDateServiceInput } from './SpecialDateServiceInput.ts'
+
+export type SpecialDateUpdateInput = {
+  /**
+   * @type string | undefined
+   */
+  name?: string
+  /**
+   * @type boolean | undefined
+   */
+  published?: boolean
+  /**
+   * @type string | undefined
+   */
+  startDate?: string
+  /**
+   * @type string | undefined, date-time
+   */
+  endDate?: string
+  /**
+   * @type number | undefined
+   */
+  minDaily?: number
+  /**
+   * @type string
+   */
+  description?: string | null
+  /**
+   * @type string
+   */
+  generalDescription?: string | null
+  /**
+   * @type array | undefined
+   */
+  availableWeekDays?: number[]
+  priceVariationType?: PriceVariationType
+  /**
+   * @type number | undefined
+   */
+  price?: number
+  /**
+   * @type array | undefined
+   */
+  housingUnitTypePrices?: SpecialDateHousingUnitTypeInput[]
+  /**
+   * @type array | undefined
+   */
+  includedServices?: SpecialDateServiceInput[]
+  /**
+   * @type array | undefined
+   */
+  medias?: SpecialDateMediaInput[]
+}

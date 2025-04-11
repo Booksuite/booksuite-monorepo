@@ -1,0 +1,1 @@
+export type CompanyBioOrderBy = 'title' | 'startDate' | 'endDate'

@@ -1,0 +1,1 @@
+{"type":"object","properties":{"orderBy":{"allOf":[{"type":"string","enum":["name","startDate","endDate","price"],"x-readme-ref-name":"SpecialDateOrderBy"}]},"direction":{"allOf":[{"type":"string","enum":["asc","desc"],"x-readme-ref-name":"OrderDirection"}]}},"required":["orderBy","direction"],"x-readme-ref-name":"SpecialDateOrderByDTO"}

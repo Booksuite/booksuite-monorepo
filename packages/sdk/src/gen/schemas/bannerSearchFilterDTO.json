@@ -1,1 +1,1 @@
-{"type":"object","properties":{"position":{"allOf":[{"type":"string","enum":["HOME_TOP","FEATURED_CONTENT"],"x-readme-ref-name":"BannerPosition"}]}},"x-readme-ref-name":"BannerSearchFilterDTO"}
+{"type":"object","properties":{"position":{"allOf":[{"type":"string","enum":["HOME_TOP","FEATURED_CONTENT"],"x-readme-ref-name":"BannerPosition"}]},"published":{"type":"boolean"}},"x-readme-ref-name":"BannerSearchFilterDTO"}

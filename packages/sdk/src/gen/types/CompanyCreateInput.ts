@@ -101,6 +101,18 @@ export type CompanyCreateInput = {
    */
   city?: string
   /**
+   * @type string | undefined
+   */
+  privacyPolicyDescription?: string
+  /**
+   * @type string | undefined
+   */
+  privacyPolicySimpleModel?: string
+  /**
+   * @type string | undefined
+   */
+  privacyPolicyFullModel?: string
+  /**
    * @type array | undefined
    */
   facilities?: CompanyFacilityInput[]
