@@ -131,7 +131,7 @@ export const createReservationFormInitialValues = (
     endDate: data?.endDate || '',
     totalDays: data?.totalDays ?? null,
     adults: data?.adults ?? null,
-    children: data?.children ?? null,
+    children: data?.children || [],
     notes: data?.notes || '',
     housingUnitId: data?.housingUnit?.id || '',
     services:
