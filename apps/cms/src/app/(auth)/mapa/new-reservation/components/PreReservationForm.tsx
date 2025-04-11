@@ -1,3 +1,4 @@
+import { useGetCompanyAgePolicy } from '@booksuite/sdk'
 import {
     Box,
     Button,
@@ -9,9 +10,11 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
-import { getIn, useFormikContext } from 'formik'
+import { FieldArray, getIn, useFormikContext } from 'formik'
 import { Info, Link2 } from 'lucide-react'
+import { useEffect } from 'react'
 
+import { useCurrentCompanyId } from '@/common/contexts/user'
 import { theme } from '@/common/theme'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
@@ -31,7 +34,20 @@ export const PreReservationForm: React.FC = () => {
         return null
     }
 
+    const companyId = useCurrentCompanyId()
+    const { data: agePolicy } = useGetCompanyAgePolicy({ companyId })
+
     const check = true
+
+    useEffect(() => {
+        setFieldValue(
+            'children',
+            agePolicy?.ageGroups.map((a) => ({
+                children: 0,
+                ageGroupId: a.id,
+            })),
+        )
+    }, [agePolicy, setFieldValue])
 
     return (
         <FormContainer>
@@ -159,6 +175,31 @@ export const PreReservationForm: React.FC = () => {
                         setFieldValue('adults', newValueNumber)
                     }}
                 />
+
+                <FieldArray name="children">
+                    {({ push, remove }) => (
+                        <>
+                            {agePolicy?.ageGroups.map((a, index) => (
+                                <NumberInput
+                                    key={index}
+                                    label={`Crianças (${a.initialAge} a ${a.finalAge})`}
+                                    value={values.children[index]?.children}
+                                    onChange={(e) => {
+                                        const newValueNumber = Number(
+                                            e.target.value,
+                                        )
+
+                                        remove(index)
+                                        push({
+                                            children: newValueNumber,
+                                            ageGroupId: a.id,
+                                        })
+                                    }}
+                                />
+                            ))}
+                        </>
+                    )}
+                </FieldArray>
             </FormSection>
 
             <FormSection
