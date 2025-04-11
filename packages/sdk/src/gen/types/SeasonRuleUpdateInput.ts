@@ -25,7 +25,7 @@ export type SeasonRuleUpdateInput = {
   /**
    * @type array | undefined
    */
-  availableWeekend?: number[]
+  availableWeekDays?: number[]
   priceVariationType?: PriceVariationType
   /**
    * @type number | undefined

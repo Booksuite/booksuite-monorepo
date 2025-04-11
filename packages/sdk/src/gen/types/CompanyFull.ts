@@ -103,6 +103,18 @@ export type CompanyFull = {
    * @type string
    */
   city: string | null
+  /**
+   * @type string
+   */
+  privacyPolicyDescription: string
+  /**
+   * @type string
+   */
+  privacyPolicySimpleModel: string
+  /**
+   * @type string
+   */
+  privacyPolicyFullModel: string
   mapCoordinates: MapCoordinatesInput | null
   /**
    * @type string

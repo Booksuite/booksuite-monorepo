@@ -1,0 +1,1 @@
+{"type":"string","enum":["name","startDate","endDate","price"],"x-readme-ref-name":"SpecialDateOrderBy"}

@@ -29,7 +29,7 @@ export type SeasonRuleFull = {
   /**
    * @type array
    */
-  availableWeekend: number[]
+  availableWeekDays: number[]
   priceVariationType: PriceVariationType
   /**
    * @type number
