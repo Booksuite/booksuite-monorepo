@@ -345,8 +345,8 @@ export const PreReservationForm: React.FC = () => {
                             component="img"
                             src={values.housingUnitId}
                             sx={{
-                                width: 70,
-                                height: 70,
+                                width: 150,
+                                height: 150,
                                 borderRadius: '50%',
                                 objectFit: 'cover',
                             }}
