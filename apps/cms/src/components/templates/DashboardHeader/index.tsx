@@ -2,11 +2,8 @@ import {
     AppBar,
     Avatar,
     Box,
-    Button,
     IconButton,
     InputAdornment,
-    Menu,
-    MenuItem,
     Stack,
     TextField,
     Toolbar,
@@ -14,14 +11,7 @@ import {
     useMediaQuery,
     useTheme,
 } from '@mui/material'
-import {
-    Bell,
-    ChevronDown,
-    ExternalLink,
-    Menu as MenuIcon,
-    Search,
-} from 'lucide-react'
-import { useState } from 'react'
+import { Bell, ExternalLink, Menu as MenuIcon, Search } from 'lucide-react'
 
 import { Logo } from '@/components/atoms/Logo'
 
@@ -33,133 +23,98 @@ export const DashboardHeader = ({
 }: DashboardHeaderProps) => {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-    const open = Boolean(anchorEl)
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget)
-    }
+    return (
+        <AppBar
+            position="static"
+            elevation={1}
+            sx={{
+                bgcolor: 'background.paper',
+                color: 'blue.900',
+            }}
+        >
+            <Toolbar>
+                <IconButton
+                    color="inherit"
+                    onClick={onToggleSidebar}
+                    edge="start"
+                    sx={{
+                        marginLeft: 2,
+                        color: 'blue.900',
+                        marginRight: 2,
+                        ...(isMobile && {
+                            display: 'none',
+                        }),
+                    }}
+                >
+                    <MenuIcon size={24} />
+                </IconButton>
 
-    const handleClose = () => {
-        setAnchorEl(null)
-    }
-
-    if (isMobile) {
-        return (
-            <AppBar position="static">
-                <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <IconButton
-                        color="inherit"
-                        onClick={onToggleSidebar}
-                        edge="start"
-                        sx={{
-                            '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.2)' },
-                        }}
-                    >
-                        <MenuIcon size={24} />
-                    </IconButton>
-
+                {isMobile && (
                     <Box
                         sx={{
-                            fontSize: '2xl',
-                            fontWeight: 'regular',
-                            color: 'white',
+                            flexGrow: 1,
+                            display: 'flex',
+                            justifyContent: 'center',
                         }}
                     >
                         <Logo.LogoText />
                     </Box>
+                )}
 
-                    <Stack direction="row" spacing={1}>
-                        <IconButton
-                            color="inherit"
-                            sx={{
-                                '&:hover': {
-                                    bgcolor: 'rgba(255, 255, 255, 0.2)',
-                                },
-                            }}
-                        >
-                            <Bell size={24} />
-                        </IconButton>
-                        <Avatar
-                            sx={{
-                                width: 32,
-                                height: 32,
-                                bgcolor: 'primary.900',
-                                color: 'white',
-                            }}
-                            src={userImageSrc}
-                        />
-                    </Stack>
-                </Toolbar>
-            </AppBar>
-        )
-    }
-
-    return (
-        <AppBar position="static">
-            <Toolbar sx={{ justifyContent: 'space-between' }}>
-                <Stack direction="row" alignItems="center" spacing={2}>
-                    <IconButton
-                        onClick={onToggleSidebar}
-                        edge="start"
-                        size="medium"
-                    >
-                        <MenuIcon size={24} />
-                    </IconButton>
+                {!isMobile && (
                     <TextField
                         variant="outlined"
                         placeholder="Pesquisar"
                         size="small"
-                        sx={{ maxWidth: '400px' }}
+                        sx={{
+                            maxWidth: '400px',
+                            '& .MuiOutlinedInput-root': {
+                                bgcolor: 'background.default',
+                            },
+                            '& .MuiInputBase-input::placeholder': {
+                                color: 'blue.900',
+                                opacity: 0.7,
+                            },
+                        }}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <Search color="gray" size={20} />
+                                    <Search
+                                        color={theme.palette.blue[900]}
+                                        size={20}
+                                    />
                                 </InputAdornment>
                             ),
                         }}
                     />
-                </Stack>
+                )}
 
-                <Stack direction="row" alignItems="center" spacing={2}>
-                    <Button
-                        endIcon={<ChevronDown size={20} />}
-                        onClick={handleClick}
-                        variant="text"
-                        disableRipple
-                    >
-                        <Typography
-                            variant="body1"
-                            sx={{
-                                fontWeight: 500,
-                                display: { xs: 'none', md: 'block' },
-                            }}
-                        >
-                            BookSuite Admin
-                        </Typography>
-                    </Button>
-                    <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-                        <MenuItem onClick={handleClose}>Perfil</MenuItem>
-                        <MenuItem onClick={handleClose}>Sair</MenuItem>
-                    </Menu>
+                <Box sx={{ flexGrow: 1 }} />
+
+                <Stack direction="row" alignItems="center" spacing={4}>
+                    <Typography variant="body1" fontWeight="medium">
+                        Admin Booksuite
+                    </Typography>
 
                     <Avatar
+                        src={userImageSrc}
                         sx={{
                             width: 32,
                             height: 32,
-                            bgcolor: 'primary.900',
-                            color: 'white',
+                            bgcolor: theme.palette.primary.main,
                         }}
-                        src={userImageSrc}
                     />
 
-                    <IconButton size="medium">
+                    <IconButton size="small" color="inherit">
                         <ExternalLink size={20} />
                     </IconButton>
 
-                    <IconButton size="medium">
-                        <Bell size={20} />
-                    </IconButton>
+                    <Stack direction="row" alignItems="center" spacing={1}>
+                        <IconButton size="small" color="inherit">
+                            <Bell size={20} />
+                        </IconButton>
+                    </Stack>
                 </Stack>
             </Toolbar>
         </AppBar>
