@@ -135,11 +135,7 @@ export const NewReservationForm: React.FC = () => {
                             optionChildrenPrice * nights.totalDays
                         )
                     case 'PER_GUEST':
-                        return (
-                            total +
-                            optionAdultPrice +
-                            optionChildrenPrice 
-                        )
+                        return total + optionAdultPrice + optionChildrenPrice
                     case 'DAILY':
                         return total + optionAdultPrice * nights.totalDays
                     case 'PER_RESERVATION':
@@ -375,7 +371,7 @@ export const NewReservationForm: React.FC = () => {
                                     }
                                     alt={selectedHousingUnit?.name}
                                     sx={{
-                                        width: 200,
+                                        width: 150,
                                         height: 150,
                                         borderRadius: 1,
                                         objectFit: 'cover',
@@ -573,7 +569,7 @@ export const NewReservationForm: React.FC = () => {
                                             }
                                             alt={serviceDetails.name}
                                             sx={{
-                                                width: 120,
+                                                width: 90,
                                                 height: 90,
                                                 borderRadius: 1,
                                                 objectFit: 'cover',
