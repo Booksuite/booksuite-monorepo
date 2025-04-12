@@ -1,4 +1,4 @@
-import { Avatar, Stack, Text } from '@chakra-ui/react'
+import { Avatar, Stack, Typography } from '@mui/material'
 import { ChevronDown } from 'lucide-react'
 
 interface UserProfileProps {
@@ -11,8 +11,10 @@ export const UserProfile: React.FC<UserProfileProps> = ({
     avatarUrl,
 }) => (
     <Stack direction="row" alignItems="center" spacing={2}>
-        <Text>{name}</Text>
+        <Typography variant="body1" fontWeight="medium">
+            {name}
+        </Typography>
         <ChevronDown size={16} />
-        <Avatar name={name} src={avatarUrl} size="sm" />
+        <Avatar src={avatarUrl} sizes="sm" />
     </Stack>
 )

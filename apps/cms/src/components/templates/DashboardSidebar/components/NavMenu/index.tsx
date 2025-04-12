@@ -1,23 +1,25 @@
-import { VStack } from '@chakra-ui/react'
+import { Stack } from '@mui/material'
 import { usePathname } from 'next/navigation'
 
 import { NavLink } from './components/NavLink'
 import type { NavMenuProps } from './types'
 
-export const NavMenu: React.FC<NavMenuProps> = ({ links }) => {
+export const NavMenu: React.FC<NavMenuProps> = ({ links, isCollapsed }) => {
     const pathname = usePathname()
 
     return (
-        <VStack as="nav" spacing={1} align="stretch">
+        <Stack component="nav" spacing={3}>
             {links.map((link) => (
                 <NavLink
                     key={link.href}
                     href={link.href}
                     isActive={pathname === link.href}
+                    icon={link.icon}
+                    isCollapsed={isCollapsed}
                 >
                     {link.label}
                 </NavLink>
             ))}
-        </VStack>
+        </Stack>
     )
 }
