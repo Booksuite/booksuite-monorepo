@@ -13,6 +13,7 @@ import {
     BannerFormData,
     bannerFormSchema,
     createBannerInitialValues,
+    transformToApiData,
 } from '../utils/config'
 
 export default function CreateBanner() {
@@ -24,18 +25,9 @@ export default function CreateBanner() {
 
     async function handleSubmit(formData: BannerFormData) {
         try {
-            const transformedFormData = {
-                ...formData,
-                order: Number(formData.order) || 0,
-                medias: formData.medias.map((m, index) => ({
-                    mediaId: m.media.id,
-                    order: m.order ?? index,
-                })),
-            }
-
             await createBanner({
                 companyId,
-                data: transformedFormData,
+                data: transformToApiData(formData, true),
             })
 
             enqueueSnackbar('Banner criado com sucesso', {
@@ -49,7 +41,7 @@ export default function CreateBanner() {
 
             back()
         } catch {
-            enqueueSnackbar(`Ocorreu um erro ao criar banner`, {
+            enqueueSnackbar('Ocorreu um erro ao criar banner', {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',

@@ -1,7 +1,14 @@
 'use client'
 
-import { BannerFull, useSearchBanners, useUpdateBanner } from '@booksuite/sdk'
+import {
+    Banner,
+    BannerMedia,
+    getBannerById,
+    useSearchBanners,
+    useUpdateBanner,
+} from '@booksuite/sdk'
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
+import { useQueries } from '@tanstack/react-query'
 import {
     Check,
     CheckCheck,
@@ -12,9 +19,10 @@ import {
     Trash,
     X,
 } from 'lucide-react'
+import { MRT_ColumnDef } from 'material-react-table'
 import { useRouter } from 'next/navigation'
 import { debounce } from 'radash'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { useSearchParamsPagination } from '@/common/hooks/usePagination'
@@ -34,6 +42,10 @@ const chipItems = [
     { key: 'published', label: 'Publicadas' },
     { key: 'unpublished', label: 'Não publicadas' },
 ]
+
+export interface BannerWithMedias extends Banner {
+    medias: BannerMedia[]
+}
 
 export default function Banners() {
     const { push } = useRouter()
@@ -79,18 +91,37 @@ export default function Banners() {
               }
             : { pagination: { page, itemsPerPage } },
         { query: searchQuery.length > 0 ? searchQuery : undefined },
-        { query: { enabled: undefined } },
     )
 
-    const handleDuplicate = (item: BannerFull) => {
-        // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
+    const bannersQueries = useQueries({
+        queries: (banners?.items || []).map((banner) => ({
+            queryKey: ['banner', banner.id],
+            queryFn: () => getBannerById({ companyId, id: banner.id }),
+            enabled: !!banner.id,
+        })),
+    })
+
+    const bannersWithMedias = useMemo(() => {
+        if (!banners?.items) return []
+
+        return banners.items.map((banner, index) => {
+            const fullBanner = bannersQueries[index]?.data
+            return {
+                ...banner,
+                medias: fullBanner?.medias || [],
+            } satisfies BannerWithMedias
+        })
+    }, [banners?.items, bannersQueries])
+
+    const handleDuplicate = () => {
+        // TODO: implement duplicate functionality
     }
 
-    const handleRowClick = (row: BannerFull) => {
+    const handleRowClick = (row: BannerWithMedias) => {
         push(`/marketing/banner/${row.id}`)
     }
 
-    const handleTogglePublished = (item: BannerFull) => {
+    const handleTogglePublished = (item: BannerWithMedias) => {
         showDialog({
             title: 'Confirmar publicação',
             description: `Tem certeza que deseja ${
@@ -112,14 +143,13 @@ export default function Banners() {
         })
     }
 
-    const handleDelete = (item: BannerFull) => {
+    const handleDelete = (item: BannerWithMedias) => {
         showDialog({
             title: 'Confirmar exclusão',
             description: `Tem certeza que deseja excluir "${item.title}"? Esta ação não pode ser desfeita.`,
             confirmButton: {
                 children: 'Excluir',
                 onClick: () => {
-                    console.log('Excluir', item.id)
                     // TODO: implement actual delete functionality
                 },
             },
@@ -127,7 +157,7 @@ export default function Banners() {
         })
     }
 
-    const handleEdit = (item: BannerFull) => {
+    const handleEdit = (item: BannerWithMedias) => {
         push(`/marketing/banner/${item.id}`)
     }
 
@@ -191,8 +221,10 @@ export default function Banners() {
                 </Stack>
 
                 <Table
-                    columns={COLUMNS_DEFINITION}
-                    data={banners?.items ?? []}
+                    columns={
+                        COLUMNS_DEFINITION as MRT_ColumnDef<BannerWithMedias>[]
+                    }
+                    data={(bannersWithMedias as BannerWithMedias[]) ?? []}
                     error={error}
                     enableRowActions
                     renderRowActionMenuItems={({ row, closeMenu }) => [
@@ -223,7 +255,7 @@ export default function Banners() {
                             label="Duplicar"
                             Icon={Copy}
                             onClick={() => {
-                                handleDuplicate(row.original)
+                                handleDuplicate()
                                 closeMenu()
                             }}
                         />,

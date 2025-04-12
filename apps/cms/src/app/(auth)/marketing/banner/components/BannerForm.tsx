@@ -35,7 +35,6 @@ export const BannerForm = () => {
         useFormikContext<BannerFormData>()
 
     const [specificPeriods, setSpecificPeriods] = useState(false)
-
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
     const handleMediaChange = (selectedMedia: Media[]) => {
@@ -43,12 +42,20 @@ export const BannerForm = () => {
 
         if (!media) return
 
-        const formattedMedia = {
-            order: 0,
-            media,
-        }
+        const formattedMedia = [
+            {
+                mediaId: media.id,
+                order: 0,
+                media: {
+                    id: media.id,
+                    url: media.url,
+                    companyId: media.companyId,
+                    metadata: media.metadata,
+                },
+            },
+        ]
 
-        setFieldValue('medias', [formattedMedia])
+        setFieldValue('medias', formattedMedia)
         setIsMediaGalleryOpen(false)
     }
 
@@ -188,11 +195,11 @@ export const BannerForm = () => {
                     collisionDetection={closestCenter}
                 >
                     <SortableContext
-                        items={values.medias.map((item) => item.media.id)}
+                        items={values.medias.map((item) => item.mediaId)}
                         strategy={rectSortingStrategy}
                     >
                         {values.medias.map((item) => (
-                            <Box key={item.media.id} mt={5} mb={5}>
+                            <Box key={item.mediaId} mt={5} mb={5}>
                                 <SortableBannerMediaItem mediaItem={item} />
                             </Box>
                         ))}
@@ -202,7 +209,7 @@ export const BannerForm = () => {
                 <MediaGallery
                     isOpen={isMediaGalleryOpen}
                     onClose={() => setIsMediaGalleryOpen(false)}
-                    selectedItems={values.medias.map((item) => item.media.id)}
+                    selectedItems={values.medias.map((item) => item.mediaId)}
                     initialItems={values.medias.map((item) => item.media)}
                     onItemsChange={handleMediaChange}
                     maxItems={2}

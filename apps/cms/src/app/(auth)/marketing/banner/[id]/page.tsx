@@ -1,8 +1,8 @@
 'use client'
 
-import { useUpdateBanner } from '@booksuite/sdk'
+import { useGetBannerById, useUpdateBanner } from '@booksuite/sdk'
 import { Formik } from 'formik'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -13,30 +13,28 @@ import {
     BannerFormData,
     bannerFormSchema,
     createBannerInitialValues,
+    transformFromApiData,
+    transformToApiData,
 } from '../utils/config'
 
 export default function UpdateBanner() {
+    const params = useParams()
     const companyId = useCurrentCompanyId()
     const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
 
     const { mutateAsync: updateBanner } = useUpdateBanner()
+    const { data: banner } = useGetBannerById({
+        id: params.id as string,
+        companyId,
+    })
 
     async function handleSubmit(formData: BannerFormData) {
         try {
-            const transformedFormData = {
-                ...formData,
-                order: Number(formData.order) || 0,
-                medias: formData.medias.map((m, index) => ({
-                    mediaId: m.media.id,
-                    order: m.order ?? index,
-                })),
-            }
-
             await updateBanner({
                 companyId,
-                id: params.id,
-                data: transformedFormData,
+                id: params.id as string,
+                data: transformToApiData(formData, false),
             })
 
             enqueueSnackbar('Banner atualizado com sucesso', {
@@ -50,7 +48,7 @@ export default function UpdateBanner() {
 
             back()
         } catch {
-            enqueueSnackbar(`Ocorreu um erro ao atualizar banner`, {
+            enqueueSnackbar('Ocorreu um erro ao atualizar banner', {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',
@@ -61,6 +59,10 @@ export default function UpdateBanner() {
         }
     }
 
+    const initialValues = banner
+        ? transformFromApiData(banner)
+        : createBannerInitialValues()
+
     return (
         <>
             <PageHeader
@@ -70,9 +72,10 @@ export default function UpdateBanner() {
             />
 
             <Formik<BannerFormData>
-                initialValues={createBannerInitialValues()}
+                initialValues={initialValues}
                 validationSchema={bannerFormSchema}
                 onSubmit={handleSubmit}
+                enableReinitialize
             >
                 <FormikController onCancel={() => back()}>
                     <BannerForm />

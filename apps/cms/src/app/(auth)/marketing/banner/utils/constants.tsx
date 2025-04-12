@@ -1,5 +1,6 @@
-import { BannerFull, BannerPosition } from '@booksuite/sdk'
-import { Typography } from '@mui/material'
+import { Banner, BannerMedia, BannerPosition } from '@booksuite/sdk'
+import { Box, Typography } from '@mui/material'
+import { ImageOff } from 'lucide-react'
 import { MRT_ColumnDef } from 'material-react-table'
 
 import { themeOptions } from '@/common/theme'
@@ -21,7 +22,46 @@ export const BannerPositionMap: Record<BannerPosition, string> = {
     FEATURED_CONTENT: 'Banner Fixado',
 }
 
-export const COLUMNS_DEFINITION: MRT_ColumnDef<BannerFull>[] = [
+type BannerWithMedias = Banner & { medias?: BannerMedia[] }
+
+export const COLUMNS_DEFINITION: MRT_ColumnDef<BannerWithMedias>[] = [
+    {
+        id: 'image',
+        header: '',
+        size: 85,
+        Cell: ({ row }) => {
+            const imageUrl = row.original.medias?.[0]?.media?.url
+
+            return imageUrl ? (
+                <Box
+                    component="img"
+                    src={imageUrl}
+                    alt={row.original.name}
+                    sx={{
+                        objectFit: 'cover',
+                        borderRadius: 1,
+                        width: '80px',
+                        height: '80px',
+                        backgroundColor: (theme) => theme.palette.grey[100],
+                    }}
+                />
+            ) : (
+                <Box
+                    sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        width: '72px',
+                        height: '40px',
+                        borderRadius: 1,
+                        backgroundColor: (theme) => theme.palette.grey[100],
+                    }}
+                >
+                    <ImageOff size={20} color="#9E9E9E" />
+                </Box>
+            )
+        },
+    },
     {
         id: 'name',
         header: 'Nome',
