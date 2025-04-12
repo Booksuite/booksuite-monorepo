@@ -90,7 +90,11 @@ export default function Rooms() {
                     : undefined,
         },
         { query: searchQuery.length > 0 ? searchQuery : undefined },
-        { query: { enabled: undefined } },
+        {
+            query: {
+                enabled: !!companyId,
+            },
+        },
     )
 
     const handleRowClick = (row: HousingUnitTypeFull) => {

@@ -10,14 +10,14 @@ import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
-import { AddressForm } from './components/AddressForm'
+import { FacilitiesForm } from './components/FacilitiesForm'
 import {
-    AddressFormData,
-    addressFormSchema,
-    createAddressInitialValues,
+    createFacilitiesInitialValues,
+    FacilitiesFormData,
+    facilitiesFormSchema,
 } from './utils/config'
 
-export default function Address() {
+export default function Facilities() {
     const companyId = useCurrentCompanyId()
     const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
@@ -27,22 +27,31 @@ export default function Address() {
         data: companyData,
         isLoading,
         queryKey,
-    } = useGetCompanyById({
-        id: companyId,
-    })
+    } = useGetCompanyById({ id: companyId })
 
-    const { mutateAsync: updateCompanyAddress } = useUpdateCompany()
+    const { mutateAsync: updateCompany } = useUpdateCompany()
 
-    async function handleSubmit(formData: AddressFormData) {
+    async function handleSubmit(formData: FacilitiesFormData) {
         try {
-            await updateCompanyAddress({
+            await updateCompany({
                 id: companyId,
-                data: formData,
+                data: {
+                    facilities: formData.facilities.map((facilityInput) => ({
+                        facilityId: facilityInput.facilityId,
+                        order: facilityInput.isFeatured ? 0 : undefined,
+                    })),
+                    privacyPolicyDescription:
+                        companyData?.privacyPolicyDescription ?? '',
+                    privacyPolicySimpleModel:
+                        companyData?.privacyPolicySimpleModel ?? '',
+                    privacyPolicyFullModel:
+                        companyData?.privacyPolicyFullModel ?? '',
+                },
             })
 
             await queryClient.invalidateQueries({ queryKey })
 
-            enqueueSnackbar('Endereço modificado com sucesso', {
+            enqueueSnackbar('Comodidades atualizadas com sucesso', {
                 variant: 'success',
                 anchorOrigin: {
                     vertical: 'top',
@@ -53,7 +62,7 @@ export default function Address() {
 
             back()
         } catch {
-            enqueueSnackbar(`Erro ao modificar endereço`, {
+            enqueueSnackbar('Erro ao atualizar comodidades', {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',
@@ -65,23 +74,23 @@ export default function Address() {
     }
 
     return (
-        <div className="address">
+        <div className="facilities">
             <PageHeader.Root>
                 <PageHeader.BackLink href="/settings">
                     Configurações
                 </PageHeader.BackLink>
 
-                <PageHeader.Title>Endereço</PageHeader.Title>
+                <PageHeader.Title>Comodidades</PageHeader.Title>
             </PageHeader.Root>
 
-            {!isLoading && (
-                <Formik<AddressFormData>
-                    initialValues={createAddressInitialValues(companyData)}
-                    validationSchema={addressFormSchema}
+            {!isLoading && companyData && (
+                <Formik<FacilitiesFormData>
+                    initialValues={createFacilitiesInitialValues(companyData)}
+                    validationSchema={facilitiesFormSchema}
                     onSubmit={handleSubmit}
                 >
                     <FormikController onCancel={() => back()}>
-                        <AddressForm />
+                        <FacilitiesForm />
                     </FormikController>
                 </Formik>
             )}

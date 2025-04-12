@@ -9,6 +9,7 @@ import {
     MapPin,
     Pencil,
     ScanText,
+    Telescope,
 } from 'lucide-react'
 import { Route } from 'next'
 
@@ -42,11 +43,11 @@ const menuItems: MenuItem[] = [
         title: 'Identidade Visual',
         href: `/settings/visual-identity`,
     },
-    // {
-    //     icon: <Telescope size={20} />,
-    //     title: 'Comodidades',
-    //     href: `/settings/comodidades`,
-    // },
+    {
+        icon: <Telescope size={20} />,
+        title: 'Comodidades',
+        href: `/settings/facilities`,
+    },
     {
         icon: <AtSign size={20} />,
         title: 'Contato e Redes Sociais',
@@ -85,7 +86,7 @@ const menuItems: MenuItem[] = [
     {
         icon: <ScanText size={20} />,
         title: 'Política de Privacidade',
-        href: `/settings/politica-de-privacidade`,
+        href: `/settings/privacy-policy`,
     },
     // {
     //     icon: <UserRound size={20} />,

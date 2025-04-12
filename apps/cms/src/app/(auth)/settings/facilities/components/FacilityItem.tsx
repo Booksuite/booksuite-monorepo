@@ -3,17 +3,17 @@ import { Box, Stack, Typography } from '@mui/material'
 import { Star } from 'lucide-react'
 import { useCallback } from 'react'
 
-interface HousintUnitTypeFacilityItemProps {
+interface FacilityItemProps {
     facility: Facility
     onClick?: (item: Facility) => void
     isFeatured?: boolean
 }
 
-export const HousintUnitTypeFacilityItem = ({
+export const FacilityItem = ({
     facility,
     isFeatured,
     onClick,
-}: HousintUnitTypeFacilityItemProps) => {
+}: FacilityItemProps) => {
     const handleClick = useCallback(() => {
         onClick?.(facility)
     }, [onClick, facility])

@@ -8,6 +8,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
+import { useSnackbar } from 'notistack'
 import { omit } from 'radash'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -23,6 +24,7 @@ import {
 
 export default function VisualIdentity() {
     const { back } = useRouter()
+    const { enqueueSnackbar } = useSnackbar()
 
     const companyId = useCurrentCompanyId()
     const {
@@ -63,8 +65,26 @@ export default function VisualIdentity() {
 
             queryClient.invalidateQueries({ queryKey })
 
+            enqueueSnackbar('Identidade visual modificada com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
+            })
+
             back()
-        } catch {}
+        } catch {
+            enqueueSnackbar(`Erro ao modificar identidade visual`, {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 5000,
+            })
+        }
     }
 
     return (

@@ -4,10 +4,9 @@ import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
-import { SnackbarProvider, useSnackbar } from 'notistack'
+import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
@@ -57,9 +56,9 @@ export default function ContactsSocialMediaPage() {
             )
 
             back()
-        } catch (error) {
+        } catch {
             enqueueSnackbar(
-                `Erro ao modificar os contatos e/ou redes sociais: ${getErrorMessage(error)}`,
+                `Erro ao modificar os contatos e/ou redes sociais`,
                 {
                     variant: 'error',
                     anchorOrigin: {
