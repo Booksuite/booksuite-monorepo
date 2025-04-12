@@ -344,7 +344,7 @@ export const BudgetForm: React.FC = () => {
                                     }
                                     alt={selectedHousingUnit?.name}
                                     sx={{
-                                        width: 200,
+                                        width: 150,
                                         height: 150,
                                         borderRadius: 1,
                                         objectFit: 'cover',
