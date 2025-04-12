@@ -1,134 +1,280 @@
 import {
     Avatar,
     Box,
+    Button,
     Drawer,
-    DrawerContent,
-    DrawerOverlay,
-    Flex,
     IconButton,
-    useBreakpointValue,
-    VStack,
-} from '@chakra-ui/react'
-import { Bell, X } from 'lucide-react'
+    Stack,
+    styled,
+    Typography,
+    useMediaQuery,
+    useTheme,
+} from '@mui/material'
+import {
+    BarChart2,
+    Bell,
+    Building2,
+    ExternalLink,
+    HelpCircle,
+    Home,
+    Map,
+    Megaphone,
+    Settings,
+    ShoppingCart,
+    X,
+} from 'lucide-react'
 import type React from 'react'
 
+import { useCurrentCompanyStore } from '@/common/contexts/user'
 import { Logo } from '@/components/atoms/Logo'
 
 import { NavMenu } from './components/NavMenu'
 import type { LinkItem } from './components/NavMenu/types'
 import type { DashboardSidebarProps } from './types'
 
+const StyledBox = styled(Box)(({ theme }) => ({
+    background: theme.palette.primary.dark,
+    color: 'white',
+    transition: 'width 0.3s',
+    overflow: 'hidden',
+    position: 'relative',
+    minHeight: '100vh',
+}))
+
+const CollapseButton = styled(IconButton)(({ theme }) => ({
+    position: 'absolute',
+    right: '-12px',
+    top: '50%',
+    transform: 'translateY(-50%)',
+    backgroundColor: theme.palette.primary.dark,
+    color: 'white',
+    '&:hover': {
+        backgroundColor: theme.palette.primary.main,
+    },
+    borderRadius: '50%',
+}))
+
+const BusinessSelectorButton = styled(Button)(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    padding: theme.spacing(1.5),
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    color: 'white',
+    '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    },
+    borderRadius: theme.shape.borderRadius,
+}))
+
 export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
     isOpen,
     onClose,
     userImageSrc,
+    isCollapsed,
+    onToggleCollapse,
 }) => {
+    const theme = useTheme()
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+    const { company } = useCurrentCompanyStore()
+
     const mainLinks: LinkItem[] = [
-        { href: '/', label: 'Início' },
-        { href: '/mapa', label: 'Mapa' },
-        { href: '/relatorios', label: 'Relatórios' },
-        { href: '/my-business', label: 'Meu Negócio' },
-        { href: '/marketing', label: 'Marketing' },
+        { href: '/', label: 'Dashboard', icon: Home },
+        { href: '/map', label: 'Mapa', icon: Map },
+        { href: '/reports', label: 'Relatórios', icon: BarChart2 },
+        { href: '/my-business', label: 'Meu negócio', icon: Building2 },
+        { href: '/marketing', label: 'Marketing', icon: Megaphone },
+        { href: '/bookstore', label: 'Bookstore', icon: ShoppingCart },
+        { href: '/settings', label: 'Configurações', icon: Settings },
     ]
 
-    const footerLinks: LinkItem[] = [
-        { href: '/settings', label: 'Configurações' },
+    const bottomLinks: LinkItem[] = [
+        { href: '/site', label: 'Ir para o site', icon: ExternalLink },
+        { href: '/support', label: 'Suporte', icon: HelpCircle },
     ]
 
-    const isMobile = useBreakpointValue({ base: true, md: false })
+    const BusinessSelector = (
+        <BusinessSelectorButton
+            variant="text"
+            disableRipple
+            sx={{
+                justifyContent: isCollapsed ? 'center' : 'space-between',
+            }}
+        >
+            <Stack direction="row" spacing={2} alignItems="center">
+                <Avatar
+                    src={company?.logo || ''}
+                    sx={{
+                        width: 40,
+                        height: 40,
+                        bgcolor: 'white',
+                    }}
+                />
+                {!isCollapsed && (
+                    <Typography variant="body1" fontWeight="medium" noWrap>
+                        {company?.name || 'Empresa'}
+                    </Typography>
+                )}
+            </Stack>
+        </BusinessSelectorButton>
+    )
 
     const SidebarContent = (
-        <VStack spacing={6} h="full" py={6} px={4} w="full" align="stretch">
-            <Logo.FullLogo />
-            <NavMenu links={mainLinks} />
-            <NavMenu links={footerLinks} />
-        </VStack>
+        <Stack
+            spacing={3}
+            sx={{
+                height: '100vh',
+                py: 3,
+                px: 2,
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+        >
+            <Stack px={3} py={10}>
+                {!isCollapsed ? <Logo.FullLogo /> : <Logo.LogoIcon />}
+            </Stack>
+
+            <Stack alignItems="center">{BusinessSelector}</Stack>
+
+            {!isCollapsed && (
+                <Typography
+                    variant="body2"
+                    sx={{
+                        color: 'white',
+                        fontWeight: 500,
+                        px: 1,
+                    }}
+                >
+                    Menu
+                </Typography>
+            )}
+
+            <Stack sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                <Box>
+                    <NavMenu links={mainLinks} isCollapsed={isCollapsed} />
+                </Box>
+
+                <Box sx={{ mt: 'auto', mb: 4 }}>
+                    <NavMenu links={bottomLinks} isCollapsed={isCollapsed} />
+                </Box>
+            </Stack>
+
+            {!isMobile && onToggleCollapse && (
+                <CollapseButton
+                    size="small"
+                    onClick={onToggleCollapse}
+                    aria-label="Toggle sidebar"
+                ></CollapseButton>
+            )}
+        </Stack>
     )
 
     if (isMobile) {
         return (
             <Drawer
-                isOpen={isOpen}
-                placement="left"
+                open={isOpen}
                 onClose={onClose}
-                size="full"
+                anchor="left"
+                PaperProps={{
+                    sx: {
+                        backgroundColor: theme.palette.primary.dark,
+                        color: 'white',
+                        width: '100%',
+                    },
+                }}
             >
-                <DrawerOverlay>
-                    <DrawerContent bg="primary.900" color="white">
-                        <VStack
-                            spacing={100}
-                            h="full"
-                            py={6}
-                            px={2}
-                            w="full"
-                            align="center"
-                            textAlign="center"
+                <Stack
+                    sx={{
+                        height: '100%',
+                        py: 3,
+                        px: 2,
+                        width: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                    }}
+                >
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        sx={{ mb: 3 }}
+                    >
+                        <IconButton
+                            onClick={onClose}
+                            sx={{
+                                color: 'white',
+                                '&:hover': {
+                                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                },
+                            }}
                         >
-                            <Flex
-                                as="header"
-                                align="center"
-                                justify="space-between"
-                                w="full"
-                                px={4}
-                                bg="primary.900"
-                                color="white"
+                            <X />
+                        </IconButton>
+
+                        <Box sx={{ flex: 1, textAlign: 'center' }}>
+                            <Logo.LogoText />
+                        </Box>
+
+                        <Stack direction="row" spacing={1}>
+                            <IconButton
+                                sx={{
+                                    color: 'white',
+                                    '&:hover': {
+                                        backgroundColor:
+                                            'rgba(255, 255, 255, 0.1)',
+                                    },
+                                }}
                             >
-                                <IconButton
-                                    icon={<X />}
-                                    onClick={onClose}
-                                    variant="ghost"
-                                    color="white"
-                                    aria-label="Close menu"
-                                    _hover={{ bg: 'whiteAlpha.200' }}
-                                />
+                                <Bell size={24} />
+                            </IconButton>
+                            <Avatar
+                                src={userImageSrc}
+                                sx={{
+                                    width: 32,
+                                    height: 32,
+                                    bgcolor: theme.palette.primary.dark,
+                                }}
+                            />
+                        </Stack>
+                    </Stack>
 
-                                <Box
-                                    fontSize="2xl"
-                                    fontWeight="bold"
-                                    color="white"
-                                >
-                                    <Logo.LogoText />
-                                </Box>
+                    {BusinessSelector}
 
-                                <Flex gap={2}>
-                                    <IconButton
-                                        icon={<Bell size={24} />}
-                                        aria-label="Notifications"
-                                        variant="ghost"
-                                        color="white"
-                                        _hover={{ bg: 'whiteAlpha.200' }}
-                                    />
-                                    <Avatar
-                                        size="sm"
-                                        bg="blue.900"
-                                        color="white"
-                                        src={userImageSrc}
-                                        alignSelf="center"
-                                    />
-                                </Flex>
-                            </Flex>
+                    <Typography
+                        variant="body2"
+                        sx={{
+                            color: 'white',
+                            fontWeight: 500,
+                            px: 1,
+                            mt: 3,
+                            mb: 2,
+                        }}
+                    >
+                        Menu
+                    </Typography>
 
-                            <NavMenu links={mainLinks} />
-                            <NavMenu links={footerLinks} />
-                        </VStack>
-                    </DrawerContent>
-                </DrawerOverlay>
+                    <Stack
+                        sx={{
+                            flex: 1,
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <Box>
+                            <NavMenu links={mainLinks} isCollapsed={false} />
+                        </Box>
+
+                        <Box sx={{ mt: 'auto', mb: 4 }}>
+                            <NavMenu links={bottomLinks} isCollapsed={false} />
+                        </Box>
+                    </Stack>
+                </Stack>
             </Drawer>
         )
     }
 
     return (
-        <Box
-            as="aside"
-            bg="primary.900"
-            color="white"
-            width={isOpen ? '280px' : '0'}
-            transition="width 0.3s"
-            overflow="hidden"
-            position="relative"
-            minH="100vh"
-        >
-            {SidebarContent}
-        </Box>
+        <StyledBox width={isCollapsed ? 80 : 280}>{SidebarContent}</StyledBox>
     )
 }
