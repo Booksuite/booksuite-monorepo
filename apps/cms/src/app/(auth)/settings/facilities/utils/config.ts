@@ -1,25 +1,45 @@
-import { HousingUnitTypeFacilityInput } from '@booksuite/sdk'
+import { CompanyFacility } from '@booksuite/sdk'
 import * as yup from 'yup'
 
+export type ExistingFacilityData = {
+    facilityId: string
+    isFeatured: boolean
+    isNew?: false
+}
+
+export type FacilityInput = ExistingFacilityData
+
 export type FacilitiesFormData = {
-    facilities: HousingUnitTypeFacilityInput[]
+    facilities: FacilityInput[]
 }
 
 export const createFacilitiesInitialValues = (
-    data: Partial<FacilitiesFormData> | undefined,
+    data: { facilities?: CompanyFacility[] } | undefined,
 ): FacilitiesFormData => ({
     facilities:
-        data?.facilities?.map((f: HousingUnitTypeFacilityInput) => ({
-            facilityId: f.id,
-            isFeatured: f.isFeatured || false,
+        data?.facilities?.map((f) => ({
+            facilityId: f.facility.id,
+            isFeatured: f.order === 0,
         })) || [],
 })
 
 export const facilitiesFormSchema = yup.object({
     facilities: yup.array().of(
-        yup.object().shape({
-            facilityId: yup.string().required('ID da comodidade é obrigatório'),
-            isFeatured: yup.boolean().required(),
+        yup.lazy((value) => {
+            if (value.isNew) {
+                return yup.object().shape({
+                    name: yup.string().required('Nome é obrigatório'),
+                    category: yup.string().required('Categoria é obrigatória'),
+                    isNew: yup.boolean().required(),
+                    isFeatured: yup.boolean().required(),
+                })
+            }
+            return yup.object().shape({
+                facilityId: yup
+                    .string()
+                    .required('ID da comodidade é obrigatório'),
+                isFeatured: yup.boolean().required(),
+            })
         }),
     ),
 })

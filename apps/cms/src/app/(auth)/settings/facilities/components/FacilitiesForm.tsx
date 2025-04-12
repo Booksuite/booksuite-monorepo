@@ -80,12 +80,21 @@ export const FacilitiesForm = () => {
                             isOpen={isOpen}
                             onClose={() => setIsOpen(false)}
                             onSelect={(items) => {
+                                const existingFeatured = new Map(
+                                    values.facilities.map((f) => [
+                                        f.facilityId,
+                                        f.isFeatured,
+                                    ]),
+                                )
                                 setFieldValue(
                                     'facilities',
                                     items.map<HousingUnitTypeFacilityInput>(
                                         (facility) => ({
                                             facilityId: facility.id,
-                                            isFeatured: false,
+                                            isFeatured:
+                                                existingFeatured.get(
+                                                    facility.id,
+                                                ) ?? false,
                                         }),
                                     ),
                                 )

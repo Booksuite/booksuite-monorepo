@@ -1,6 +1,6 @@
 'use client'
 
-import { useGetCompanyById, useUpdateFacility } from '@booksuite/sdk'
+import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -27,20 +27,27 @@ export default function Facilities() {
         data: companyData,
         isLoading,
         queryKey,
-    } = useGetCompanyById(companyId)
+    } = useGetCompanyById({ id: companyId })
 
-    const { mutateAsync: updateFacilities } = useUpdateFacility()
+    const { mutateAsync: updateCompany } = useUpdateCompany()
 
     async function handleSubmit(formData: FacilitiesFormData) {
         try {
-            await Promise.all(
-                formData.facilities.map(async (facilityInput) => {
-                    await updateFacilities({
-                        id: facilityInput.facilityId,
-                        data: facilityInput.isFeatured,
-                    })
-                }),
-            )
+            await updateCompany({
+                id: companyId,
+                data: {
+                    facilities: formData.facilities.map((facilityInput) => ({
+                        facilityId: facilityInput.facilityId,
+                        order: facilityInput.isFeatured ? 0 : undefined,
+                    })),
+                    privacyPolicyDescription:
+                        companyData?.privacyPolicyDescription ?? '',
+                    privacyPolicySimpleModel:
+                        companyData?.privacyPolicySimpleModel ?? '',
+                    privacyPolicyFullModel:
+                        companyData?.privacyPolicyFullModel ?? '',
+                },
+            })
 
             await queryClient.invalidateQueries({ queryKey })
 
@@ -76,7 +83,7 @@ export default function Facilities() {
                 <PageHeader.Title>Comodidades</PageHeader.Title>
             </PageHeader.Root>
 
-            {!isLoading && (
+            {!isLoading && companyData && (
                 <Formik<FacilitiesFormData>
                     initialValues={createFacilitiesInitialValues(companyData)}
                     validationSchema={facilitiesFormSchema}
