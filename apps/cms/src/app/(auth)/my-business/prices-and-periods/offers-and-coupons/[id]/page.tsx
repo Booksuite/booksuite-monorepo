@@ -1,6 +1,10 @@
 'use client'
 
-import { useCreateOffer, useSearchHousingUnitTypes } from '@booksuite/sdk'
+import {
+    useSearchHousingUnitTypes,
+    useSearchOffers,
+    useUpdateOffer,
+} from '@booksuite/sdk'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
@@ -16,16 +20,31 @@ import {
     transformOfferFormDataForSubmit,
 } from '../utils/config'
 
-export default function CreateOffer() {
+type Props = {
+    params: {
+        id: string
+    }
+}
+
+export default function UpdateOffer({ params: { id } }: Props) {
     const { back } = useRouter()
     const companyId = useCurrentCompanyId()
-    const { mutateAsync: createOffer } = useCreateOffer()
+    const { mutateAsync: updateOffer } = useUpdateOffer()
     const { data: housingUnitTypes } = useSearchHousingUnitTypes(
         { companyId },
         {
             pagination: { itemsPerPage: 1000, page: 1 },
         },
     )
+
+    const { data: offers } = useSearchOffers(
+        { companyId },
+        {
+            pagination: { itemsPerPage: 1000, page: 1 },
+        },
+    )
+
+    const offer = offers?.items?.find((item) => item.id === id)
 
     const handleSubmit = async (formData: OfferFormData) => {
         const apiData = transformOfferFormDataForSubmit({
@@ -34,9 +53,9 @@ export default function CreateOffer() {
         })
 
         try {
-            await createOffer({ companyId, data: apiData })
+            await updateOffer({ id, data: apiData })
 
-            enqueueSnackbar('Oferta criada com sucesso', {
+            enqueueSnackbar('Oferta atualizada com sucesso', {
                 variant: 'success',
                 anchorOrigin: {
                     vertical: 'top',
@@ -47,7 +66,7 @@ export default function CreateOffer() {
 
             back()
         } catch {
-            enqueueSnackbar(`Erro ao criar oferta`, {
+            enqueueSnackbar(`Erro ao atualizar oferta`, {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',
@@ -61,12 +80,12 @@ export default function CreateOffer() {
     return (
         <>
             <PageHeader
-                title="Criar Oferta"
+                title="Editar Oferta"
                 backLButtonLabel="Ofertas e Cupons"
                 backButtonHref="/my-business/prices-and-periods/offers-and-coupons"
             />
             <Formik<OfferFormData>
-                initialValues={createOfferFormInitialValues()}
+                initialValues={createOfferFormInitialValues(offer)}
                 validationSchema={offerFormSchema}
                 onSubmit={handleSubmit}
             >
