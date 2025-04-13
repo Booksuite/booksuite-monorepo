@@ -37,22 +37,14 @@ export default function BusinessDescription() {
     const queryClient = useQueryClient()
 
     const { mutateAsync: updateCompanyBusinessDescription } = useUpdateCompany()
-    const { mutateAsync: uploadMedia } = useUploadMedia()
 
     async function handleSubmit(formData: BusinessDescriptionFormData) {
         try {
-            const uploadedMedia = formData.bannerFile
-                ? await uploadMedia({
-                      companyId,
-                      data: { file: formData.bannerFile },
-                  })
-                : undefined
-
             await updateCompanyBusinessDescription({
                 id: companyId,
                 data: {
-                    ...omit(formData, ['bannerFile', 'bannerImage']),
-                    bannerImageId: uploadedMedia?.id,
+                    ...omit(formData, ['medias', 'bannerImage']),
+                    bannerImageId: formData.medias[0].mediaId,
                 },
             })
 
