@@ -1,0 +1,1 @@
+{"type":"object","properties":{"published":{"type":"boolean"},"companyId":{"type":"string"}},"x-readme-ref-name":"OfferSearchFilterDTO"}

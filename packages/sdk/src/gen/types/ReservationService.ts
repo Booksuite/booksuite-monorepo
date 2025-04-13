@@ -8,7 +8,7 @@ export type ReservationService = {
   /**
    * @type number
    */
-  qtd: number
+  quantity: number
   /**
    * @type number
    */
