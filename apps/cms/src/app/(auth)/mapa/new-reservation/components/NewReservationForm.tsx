@@ -39,7 +39,7 @@ export const NewReservationForm: React.FC = () => {
     const [isServicesModalOpen, setIsServicesModalOpen] = useState(false)
     const companyId = useCurrentCompanyId()
 
-    const { data: agePolicy, isLoading } = useGetCompanyAgePolicy({ companyId })
+    const { data: agePolicy } = useGetCompanyAgePolicy({ companyId })
 
     const { data: housingUnitTypes } = useCompanyHousingUnitTypes(companyId)
 
@@ -104,8 +104,8 @@ export const NewReservationForm: React.FC = () => {
 
         const nights = calculateNights(values.startDate, values.endDate)
         const basePrice = calculateSubtotal()
-        const totalChildrens = values.children
-            ? values.children.reduce((sum, c) => sum + Number(c.children), 0)
+        const totalChildrens = values.ageGroups
+            ? values.ageGroups.reduce((sum, c) => sum + Number(c.quantity), 0)
             : 0
         const guests = values.adults ? values.adults + totalChildrens : 1
 
@@ -180,13 +180,15 @@ export const NewReservationForm: React.FC = () => {
     }
 
     useEffect(() => {
-        setFieldValue(
-            'children',
-            agePolicy?.ageGroups.map((a) => ({
-                children: 0,
-                ageGroupId: a.id,
-            })),
-        )
+        if (agePolicy?.ageGroups) {
+            setFieldValue(
+                'children',
+                agePolicy?.ageGroups.map((a) => ({
+                    children: 0,
+                    ageGroupId: a.id,
+                })),
+            )
+        }
     }, [agePolicy, setFieldValue])
 
     return (
@@ -283,38 +285,41 @@ export const NewReservationForm: React.FC = () => {
                     }}
                 />
 
-                <FieldArray name="children">
-                    {({ push, remove }) => (
-                        <>
-                            {agePolicy?.ageGroups.map((a, index) => (
-                                <NumberInput
-                                    key={index}
-                                    label={`Crianças (${a.initialAge} a ${a.finalAge})`}
-                                    disabled={
-                                        values.startDate && values.endDate
-                                            ? false
-                                            : true
-                                    }
-                                    value={
-                                        values.children
-                                            ? values.children[index]?.children
-                                            : 0
-                                    }
-                                    onChange={(e) => {
-                                        setFieldValue(
-                                            `children.${index}.ageGroupId`,
-                                            a.id,
-                                        )
-                                        setFieldValue(
-                                            `children.${index}.children`,
-                                            e.target.value,
-                                        )
-                                    }}
-                                />
-                            ))}
-                        </>
-                    )}
-                </FieldArray>
+                {agePolicy?.ageGroups ? (
+                    <FieldArray name="children">
+                        {({ push, remove }) => (
+                            <>
+                                {agePolicy?.ageGroups.map((a, index) => (
+                                    <NumberInput
+                                        key={index}
+                                        label={`Crianças (${a.initialAge} a ${a.finalAge})`}
+                                        disabled={
+                                            values.startDate && values.endDate
+                                                ? false
+                                                : true
+                                        }
+                                        value={
+                                            values.ageGroups
+                                                ? values.ageGroups[index]
+                                                      ?.quantity
+                                                : 0
+                                        }
+                                        onChange={(e) => {
+                                            setFieldValue(
+                                                `children.${index}.ageGroupId`,
+                                                a.id,
+                                            )
+                                            setFieldValue(
+                                                `children.${index}.children`,
+                                                e.target.value,
+                                            )
+                                        }}
+                                    />
+                                ))}
+                            </>
+                        )}
+                    </FieldArray>
+                ) : undefined}
             </FormSection>
 
             <FormSection
@@ -804,13 +809,15 @@ export const NewReservationForm: React.FC = () => {
                 selectedHousingUnitId={values.housingUnitId}
                 adults={values.adults ? values.adults : 0}
                 childrens={
-                    values.children
-                        ? values.children.reduce(
-                              (sum, c) => sum + Number(c.children),
+                    values.ageGroups
+                        ? values.ageGroups.reduce(
+                              (sum, c) => sum + Number(c.quantity),
                               0,
                           )
                         : 0
                 }
+                startDate={values.startDate}
+                endDate={values.endDate}
             />
 
             <ServicesModal

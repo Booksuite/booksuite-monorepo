@@ -25,6 +25,8 @@ interface HousingUnitModalProps {
     childrens: number
     selectedHousingUnitId?: string
     numberOfNights?: number
+    startDate: string
+    endDate: string
 }
 
 export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
@@ -35,6 +37,8 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
     childrens = 0,
     selectedHousingUnitId,
     numberOfNights = 1,
+    startDate,
+    endDate,
 }) => {
     const [searchQuery, setSearchQuery] = useState('')
     const companyId = useCurrentCompanyId()
@@ -217,10 +221,9 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                                                 sx={{
                                                     fontSize: '1rem',
                                                     fontWeight: 400,
-                                                    color:
-                                                        isDisabled
-                                                            ? '#6B7280'
-                                                            : '#1F2937',
+                                                    color: isDisabled
+                                                        ? '#6B7280'
+                                                        : '#1F2937',
                                                 }}
                                             >
                                                 {type.name} {unit.name}
