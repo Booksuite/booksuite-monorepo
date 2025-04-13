@@ -13,6 +13,7 @@ import {
     Typography,
     useTheme,
 } from '@mui/material'
+import dayjs from 'dayjs'
 import { useFormikContext } from 'formik'
 import { Info, PlusCircle, Trash } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -36,11 +37,20 @@ export const HostingRulesForm = () => {
     const { getFieldProps, values, setFieldValue, errors } =
         useFormikContext<HostingRulesData>()
 
-    const [selectedOpening, setSelectedOpening] = useState<number | null>(null)
-    const [selectedPeriods, setSelectedPeriods] = useState<number | null>(null)
-    const [selectedSpecificDays, setSelectedSpecificDays] = useState<
-        number | null
-    >(null)
+    const getPeriodFromDays = (days: number | null) => {
+        switch (days) {
+            case 90:
+                return 0
+            case 180:
+                return 1
+            case 365:
+                return 2
+            case 730:
+                return 3
+            default:
+                return 4
+        }
+    }
 
     const getDaysForPeriod = (selectedPeriods: number | null) => {
         switch (selectedPeriods) {
@@ -53,9 +63,21 @@ export const HostingRulesForm = () => {
             case 3:
                 return 730
             default:
-                return ''
+                return 0
         }
     }
+
+    const [selectedOpening, setSelectedOpening] = useState<number | null>(
+        values.reservationWindowStart && values.reservationWindowEnd ? 1 : 0,
+    )
+    const [selectedPeriods, setSelectedPeriods] = useState<number | null>(
+        PERIODS.every((period) => period.days !== values.fixedWindowPeriod)
+            ? 4
+            : getPeriodFromDays(values.fixedWindowPeriod),
+    )
+    const [selectedSpecificDays, setSelectedSpecificDays] = useState<
+        number | null
+    >(values.availableWeekDays.length < 7 ? 1 : 0)
 
     const [periods, setPeriods] = useState([
         { id: 1, startDate: '', endDate: '' },
@@ -72,23 +94,23 @@ export const HostingRulesForm = () => {
         setPeriods(periods.filter((period) => period.id !== id))
     }
 
-    useEffect(() => {
-        if (!getDaysForPeriod(values.fixedWindowPeriod)) {
-            setSelectedOpening(0)
-            setSelectedPeriods(4)
-        }
+    // useEffect(() => {
+    //     if (values.reservationWindowStart && values.reservationWindowEnd) {
+    //         setSelectedOpening(1)
+    //     } else {
+    //         setSelectedOpening(0)
 
-        if (values.availableWeekDays.length < 7) setSelectedSpecificDays(1)
-
-        if (values.reservationWindowStart) {
-            setSelectedOpening(1)
-        }
-
-        const foundPeriod = PERIODS.find(
-            (period) => period.days == values.fixedWindowPeriod,
-        )
-        setSelectedPeriods(foundPeriod?.days || 4)
-    }, [])
+    //         if (
+    //             PERIODS.every(
+    //                 (period) => period.days !== values.fixedWindowPeriod,
+    //             )
+    //         ) {
+    //             setSelectedPeriods(4)
+    //         } else {
+    //             setSelectedPeriods(getPeriodFromDays(values.fixedWindowPeriod))
+    //         }
+    //     }
+    // }, [values])
 
     return (
         <FormContainer>
@@ -205,10 +227,16 @@ export const HostingRulesForm = () => {
                     <TextField
                         select
                         label="Janela de abertura de hospedagem"
-                        value={getFieldProps('selectedOpening').value}
+                        value={selectedOpening}
                         onChange={(e) => {
-                            const value = Number(e.target.value)
-                            setSelectedOpening(value)
+                            setSelectedOpening(Number(e.target.value))
+
+                            if (Number(e.target.value) == 1) {
+                                setFieldValue('fixedWindowPeriod', 1)
+                            } else {
+                                setFieldValue('reservationWindowStart', null)
+                                setFieldValue('reservationWindowEnd', null)
+                            }
                         }}
                     >
                         {OPENING_WINDOW.map(({ label }, index) => (
@@ -224,10 +252,15 @@ export const HostingRulesForm = () => {
                         <TextField
                             select
                             label="Períodos"
-                            value={getFieldProps('selectedPeriods').value}
+                            value={selectedPeriods}
                             onChange={(e) => {
                                 const value = Number(e.target.value)
                                 setSelectedPeriods(value)
+
+                                setFieldValue(
+                                    'fixedWindowPeriod',
+                                    getDaysForPeriod(value),
+                                )
                                 setFieldValue('reservationWindowStart', null)
                                 setFieldValue('reservationWindowEnd', null)
                             }}
@@ -244,12 +277,20 @@ export const HostingRulesForm = () => {
                 <NumberInput
                     label="Janela de abertura (dias)"
                     value={getFieldProps('fixedWindowPeriod').value}
+                    disabled={selectedOpening == 1}
                     onChange={(e) => {
-                        setFieldValue('fixedWindowPeriod', e.target.value)
-                        if (selectedPeriods !== 4) {
+                        if (selectedOpening != 1) {
+                            if (
+                                PERIODS.every(
+                                    (period) =>
+                                        period.days !== Number(e.target.value),
+                                )
+                            ) {
+                                setSelectedPeriods(4)
+                            }
                             setFieldValue(
                                 'fixedWindowPeriod',
-                                getDaysForPeriod(selectedPeriods),
+                                Number(e.target.value),
                             )
                         }
                     }}
@@ -285,12 +326,12 @@ export const HostingRulesForm = () => {
                                                 values.reservationWindowStart ||
                                                 ''
                                             }
-                                            onChange={(e) =>
+                                            onChange={(e) => {
                                                 setFieldValue(
                                                     'reservationWindowStart',
                                                     e.target.value,
                                                 )
-                                            }
+                                            }}
                                             error={
                                                 !!errors.reservationWindowStart
                                             }
@@ -311,12 +352,33 @@ export const HostingRulesForm = () => {
                                                 values.reservationWindowEnd ||
                                                 ''
                                             }
-                                            onChange={(e) =>
+                                            onChange={(e) => {
+                                                if (
+                                                    values.reservationWindowStart
+                                                ) {
+                                                    const start = dayjs(
+                                                        values.reservationWindowStart,
+                                                    )
+                                                    const end = dayjs(
+                                                        e.target.value,
+                                                    )
+                                                    const diffInDays = end.diff(
+                                                        start,
+                                                        'day',
+                                                    )
+
+                                                    if (diffInDays > 0)
+                                                        setFieldValue(
+                                                            'fixedWindowPeriod',
+                                                            diffInDays,
+                                                        )
+                                                }
+
                                                 setFieldValue(
                                                     'reservationWindowEnd',
                                                     e.target.value,
                                                 )
-                                            }
+                                            }}
                                             error={
                                                 !!errors.reservationWindowEnd
                                             }
@@ -352,7 +414,7 @@ export const HostingRulesForm = () => {
                         <TextField
                             select
                             label="Dias de funcionamento"
-                            value={getFieldProps('selectedSpecificDays').value}
+                            value={selectedSpecificDays}
                             onChange={(e) => {
                                 const value = Number(e.target.value)
                                 setSelectedSpecificDays(value)
