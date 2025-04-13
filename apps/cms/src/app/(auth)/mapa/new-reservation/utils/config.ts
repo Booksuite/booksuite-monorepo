@@ -3,12 +3,12 @@ import {
     ReservationFull,
     ReservationResponseFullDTOSaleChannel,
     ReservationResponseFullDTOStatus,
+    useGetCalendarFromHousingUnitTypeId,
     User,
     useSearchHousingUnitTypes,
     useSearchReservationOption,
     useSearchServices,
 } from '@booksuite/sdk'
-import { eachDayOfInterval, getDay } from 'date-fns'
 import * as yup from 'yup'
 
 export const useCompanyHousingUnitTypes = (
@@ -91,7 +91,7 @@ export type ReservationFormData = {
     endDate: string
     totalDays: number | null
     adults: number | null
-    children: ReservationAgeGroupInput[]
+    ageGroups: ReservationAgeGroupInput[]
     notes: string
     housingUnitId: string
     services: ReservationServiceFormItem[]
@@ -131,13 +131,13 @@ export const createReservationFormInitialValues = (
     endDate: data?.endDate || '',
     totalDays: data?.totalDays ?? null,
     adults: data?.adults ?? null,
-    children: data?.children || [],
+    ageGroups: data?.ageGroups || [],
     notes: data?.notes || '',
     housingUnitId: data?.housingUnit?.id || '',
     services:
         data?.services?.map((s) => ({
             serviceId: s.service.id,
-            qtd: s.qtd,
+            qtd: s.quantity,
             totalPrice: s.totalPrice,
         })) || [],
     guestUser: data?.guestUser || null,
