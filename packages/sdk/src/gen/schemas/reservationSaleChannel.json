@@ -1,0 +1,1 @@
+{"type":"string","enum":["RECEPTION","PHONE","WHATSAPP","INSTAGRAM","TIKTOK","EMAIL","BOOKSUITE","OTHER"],"description":"The sale channel of the reservation","x-readme-ref-name":"ReservationSaleChannel"}
