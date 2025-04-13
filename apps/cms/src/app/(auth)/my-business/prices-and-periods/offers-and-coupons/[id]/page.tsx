@@ -5,11 +5,9 @@ import {
     useSearchOffers,
     useUpdateOffer,
 } from '@booksuite/sdk'
-import { CircularProgress, Stack } from '@mui/material'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
-import { useEffect } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormikController } from '@/components/molecules/FormikController'
@@ -39,7 +37,7 @@ export default function UpdateOffer({ params: { id } }: Props) {
         },
     )
 
-    const { data: offers, isLoading } = useSearchOffers(
+    const { data: offers } = useSearchOffers(
         { companyId },
         {
             pagination: { itemsPerPage: 1000, page: 1 },
@@ -47,20 +45,6 @@ export default function UpdateOffer({ params: { id } }: Props) {
     )
 
     const offer = offers?.items?.find((item) => item.id === id)
-
-    useEffect(() => {
-        if (!isLoading && !offer) {
-            enqueueSnackbar('Oferta não encontrada', {
-                variant: 'error',
-                anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right',
-                },
-                autoHideDuration: 5000,
-            })
-            back()
-        }
-    }, [isLoading, offer, back])
 
     const handleSubmit = async (formData: OfferFormData) => {
         const apiData = transformOfferFormDataForSubmit({
@@ -91,18 +75,6 @@ export default function UpdateOffer({ params: { id } }: Props) {
                 autoHideDuration: 5000,
             })
         }
-    }
-
-    if (isLoading) {
-        return (
-            <Stack alignItems="center" justifyContent="center" height="100vh">
-                <CircularProgress />
-            </Stack>
-        )
-    }
-
-    if (!offer) {
-        return null
     }
 
     return (
