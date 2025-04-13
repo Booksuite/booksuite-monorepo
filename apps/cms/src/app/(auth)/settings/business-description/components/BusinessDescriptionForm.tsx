@@ -1,4 +1,12 @@
 import {
+    closestCenter,
+    DndContext,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core'
+import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
+import {
     Box,
     Button,
     Grid,
@@ -10,8 +18,10 @@ import { useFormikContext } from 'formik'
 import { Info } from 'lucide-react'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
+import { SortableBannerMediaItem } from '@/app/(auth)/marketing/banner/components/SortableBannerMediaItem'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
+import { MediaGallery } from '@/components/organisms/MediaGallery'
 import { BusinessDescriptionFormData } from '../utils/config'
 
 export const BusinessDescriptionForm = () => {
@@ -40,6 +50,38 @@ export const BusinessDescriptionForm = () => {
     const openbannerSelector = () => {
         bannerInputRef.current?.click()
     }
+
+    const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
+
+    const handleMediaChange = (selectedMedia: Media[]) => {
+        const [media] = selectedMedia
+
+        if (!media) return
+
+        const formattedMedia = [
+            {
+                mediaId: media.id,
+                order: 0,
+                media: {
+                    id: media.id,
+                    url: media.url,
+                    companyId: media.companyId,
+                    metadata: media.metadata,
+                },
+            },
+        ]
+
+        setFieldValue('medias', formattedMedia)
+        setIsMediaGalleryOpen(false)
+    }
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 8,
+            },
+        }),
+    )
 
     useEffect(() => {
         setbanner(values.bannerImage?.url || '')
@@ -82,85 +124,41 @@ export const BusinessDescriptionForm = () => {
             </FormSection>
 
             <FormSection title="Banner de compartilhamento">
-                <Box
-                    bgcolor="grey.100"
-                    p={4}
-                    borderRadius={1}
-                    display="flex"
-                    alignItems="center"
-                    width={'100%'}
+                <FormSection
+                    title="Banner Inicial"
+                    variant="outlined"
+                    rightAction={
+                        <Button onClick={() => setIsMediaGalleryOpen(true)}>
+                            Selecionar Mídia
+                        </Button>
+                    }
                 >
-                    <FormSection
-                        sx={{
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            p: 3,
-                            borderRadius: 1,
-                            width: '100%',
-                        }}
+                    <DndContext
+                        sensors={sensors}
+                        collisionDetection={closestCenter}
                     >
-                        <Grid
-                            container
-                            justifyContent="space-between"
-                            alignItems="center"
-                            mb={2}
-                            width={'100%'}
+                        <SortableContext
+                            items={values.medias.map((item) => item.mediaId)}
+                            strategy={rectSortingStrategy}
                         >
-                            <Typography
-                                variant="h6"
-                                fontWeight={600}
-                                gutterBottom
-                            >
-                                Adicionar seu Banner
-                            </Typography>
-                            <Button
-                                onClick={openbannerSelector}
-                                variant="contained"
-                                color="primary"
-                            >
-                                Adicionar
-                            </Button>
-                        </Grid>
+                            {values.medias.map((item) => (
+                                <Box key={item.mediaId} mt={5} mb={5}>
+                                    <SortableBannerMediaItem mediaItem={item} />
+                                </Box>
+                            ))}
+                        </SortableContext>
+                    </DndContext>
 
-                        <Box
-                            sx={{
-                                borderRadius: 1,
-                                p: 3,
-                                bgcolor: 'grey.100',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                minHeight: 120,
-                            }}
-                        >
-                            {banner ? (
-                                <Box
-                                    component="img"
-                                    src={banner}
-                                    alt="bannertipo"
-                                    sx={{
-                                        width: 600,
-                                        height: 300,
-                                        objectFit: 'cover',
-                                        borderRadius: 2,
-                                    }}
-                                />
-                            ) : (
-                                <Typography color="text.disabled">
-                                    Nenhuma imagem selecionada
-                                </Typography>
-                            )}
-                        </Box>
-
-                        <input
-                            type="file"
-                            ref={bannerInputRef}
-                            onChange={handlebannerChange}
-                            accept="image/*"
-                            style={{ display: 'none' }}
-                        />
-                    </FormSection>
-                </Box>
+                    <MediaGallery
+                        isOpen={isMediaGalleryOpen}
+                        onClose={() => setIsMediaGalleryOpen(false)}
+                        selectedItems={values.medias.map((item) => item.mediaId)}
+                        initialItems={values.medias.map((item) => item.media)}
+                        onItemsChange={handleMediaChange}
+                        maxItems={2}
+                        minItems={1}
+                    />
+                </FormSection>
 
                 <FormSection>
                     <Box

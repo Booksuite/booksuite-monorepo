@@ -1,5 +1,7 @@
 export type { GetCompanyAgePolicyQueryKey } from './hooks/AgePolicyHooks/useGetCompanyAgePolicy.ts'
 export type { UpsertCompanyAgePolicyMutationKey } from './hooks/AgePolicyHooks/useUpsertCompanyAgePolicy.ts'
+export type { GetCalendarMutationKey } from './hooks/Availability and PricingHooks/useGetCalendar.ts'
+export type { GetCalendarFromHousingUnitTypeIdMutationKey } from './hooks/Availability and PricingHooks/useGetCalendarFromHousingUnitTypeId.ts'
 export type { CreateBannerMutationKey } from './hooks/BannerHooks/useCreateBanner.ts'
 export type { DeleteBannerMutationKey } from './hooks/BannerHooks/useDeleteBanner.ts'
 export type { GetBannerByIdQueryKey } from './hooks/BannerHooks/useGetBannerById.ts'
@@ -53,10 +55,10 @@ export type { SeasonRulesControllerUpdateMutationKey } from './hooks/SeasonRules
 export type { CreateServiceMutationKey } from './hooks/ServiceHooks/useCreateService.ts'
 export type { DeleteServiceMutationKey } from './hooks/ServiceHooks/useDeleteService.ts'
 export type { GetServiceByIdQueryKey } from './hooks/ServiceHooks/useGetServiceById.ts'
-export type { SearchServicesQueryKey } from './hooks/ServiceHooks/useSearchServices.ts'
 export type { UpdateServiceMutationKey } from './hooks/ServiceHooks/useUpdateService.ts'
 export type { CreateSpecialDateMutationKey } from './hooks/SpecialDateHooks/useCreateSpecialDate.ts'
 export type { GetSpecialDateByIdQueryKey } from './hooks/SpecialDateHooks/useGetSpecialDateById.ts'
+export type { SearchServicesQueryKey } from './hooks/SpecialDateHooks/useSearchServices.ts'
 export type { UpdateSpecialDateMutationKey } from './hooks/SpecialDateHooks/useUpdateSpecialDate.ts'
 export type { GetUtilityLinkQueryKey } from './hooks/UtilityLinksHooks/useGetUtilityLink.ts'
 export type { SearchUtilityLinksQueryKey } from './hooks/UtilityLinksHooks/useSearchUtilityLinks.ts'
@@ -86,6 +88,26 @@ export type {
 } from './types/AgePolicyController/UpsertCompanyAgePolicy.ts'
 export type { AgePolicyFull } from './types/AgePolicyFull.ts'
 export type { AgePolicyInput } from './types/AgePolicyInput.ts'
+export type {
+    GetCalendarQueryParams,
+    GetCalendar200,
+    GetCalendarMutationRequest,
+    GetCalendarMutationResponse,
+    GetCalendarMutation,
+} from './types/Availability and PricingController/GetCalendar.ts'
+export type {
+    GetCalendarFromHousingUnitTypeIdPathParams,
+    GetCalendarFromHousingUnitTypeId200,
+    GetCalendarFromHousingUnitTypeIdMutationRequest,
+    GetCalendarFromHousingUnitTypeIdMutationResponse,
+    GetCalendarFromHousingUnitTypeIdMutation,
+} from './types/Availability and PricingController/GetCalendarFromHousingUnitTypeId.ts'
+export type { AvailabilityAndPricing } from './types/AvailabilityAndPricing.ts'
+export type { AvailabilityInput } from './types/AvailabilityInput.ts'
+export type { AvailAndPricingOffersInput } from './types/AvailAndPricingOffersInput.ts'
+export type { AvailAndPricingReservationInput } from './types/AvailAndPricingReservationInput.ts'
+export type { AvailAndPricingSeasonRulesInput } from './types/AvailAndPricingSeasonRulesInput.ts'
+export type { AvailAndPricingSpecialDatesInput } from './types/AvailAndPricingSpecialDatesInput.ts'
 export type { Banner } from './types/Banner.ts'
 export type { BannerAction } from './types/BannerAction.ts'
 export type {
@@ -138,6 +160,8 @@ export type {
     BannerUpdateInput,
 } from './types/BannerUpdateInput.ts'
 export type { BillingType } from './types/BillingType.ts'
+export type { CalendarBodyInput } from './types/CalendarBodyInput.ts'
+export type { CalendarDay } from './types/CalendarDay.ts'
 export type {
     DeleteCompanyCancellationPolicyPathParams,
     DeleteCompanyCancellationPolicy200,
@@ -274,6 +298,7 @@ export type {
     FacilitySearchFilterDTOType,
     FacilitySearchFilterInput,
 } from './types/FacilitySearchFilterInput.ts'
+export type { HostingRules } from './types/HostingRules.ts'
 export type {
     GetCompanyHostingRulesPathParams,
     GetCompanyHostingRules200,
@@ -557,6 +582,7 @@ export type { ReservationOrderByInput } from './types/ReservationOrderByInput.ts
 export type { ReservationPaginated } from './types/ReservationPaginated.ts'
 export type { ReservationReservationOption } from './types/ReservationReservationOption.ts'
 export type { ReservationReservationOptionInput } from './types/ReservationReservationOptionInput.ts'
+export type { ReservationSaleChannel } from './types/ReservationSaleChannel.ts'
 export type { ReservationSearchBodyInput } from './types/ReservationSearchBodyInput.ts'
 export type {
     ReservationSearchFilterDTOSaleChannel,
@@ -565,6 +591,7 @@ export type {
 } from './types/ReservationSearchFilterInput.ts'
 export type { ReservationService } from './types/ReservationService.ts'
 export type { ReservationServiceInput } from './types/ReservationServiceInput.ts'
+export type { ReservationStatus } from './types/ReservationStatus.ts'
 export type {
     ReservationUpdateDTOStatus,
     ReservationUpdateDTOSaleChannel,
@@ -630,14 +657,6 @@ export type {
     GetServiceByIdQuery,
 } from './types/ServiceController/GetServiceById.ts'
 export type {
-    SearchServicesPathParams,
-    SearchServicesQueryParams,
-    SearchServices200,
-    SearchServicesMutationRequest,
-    SearchServicesMutationResponse,
-    SearchServicesMutation,
-} from './types/ServiceController/SearchServices.ts'
-export type {
     UpdateServicePathParams,
     UpdateService200,
     UpdateServiceMutationRequest,
@@ -671,6 +690,14 @@ export type {
     GetSpecialDateByIdQuery,
 } from './types/SpecialDateController/GetSpecialDateById.ts'
 export type {
+    SearchServicesPathParams,
+    SearchServicesQueryParams,
+    SearchServices200,
+    SearchServicesMutationRequest,
+    SearchServicesMutationResponse,
+    SearchServicesMutation,
+} from './types/SpecialDateController/SearchServices.ts'
+export type {
     UpdateSpecialDatePathParams,
     UpdateSpecialDate200,
     UpdateSpecialDateMutationRequest,
@@ -691,6 +718,8 @@ export type { SpecialDateSearchFilterInput } from './types/SpecialDateSearchFilt
 export type { SpecialDateService } from './types/SpecialDateService.ts'
 export type { SpecialDateServiceInput } from './types/SpecialDateServiceInput.ts'
 export type { SpecialDateUpdateInput } from './types/SpecialDateUpdateInput.ts'
+export type { UnavailabilityReason } from './types/UnavailabilityReason.ts'
+export type { UnavailableSource } from './types/UnavailableSource.ts'
 export type { UpdateOfferDto } from './types/UpdateOfferDto.ts'
 export type { User } from './types/User.ts'
 export type { UtilityLinks } from './types/UtilityLinks.ts'
@@ -737,6 +766,15 @@ export {
     getUpsertCompanyAgePolicyUrl,
     upsertCompanyAgePolicy,
 } from './client/AgePolicyService/upsertCompanyAgePolicy.ts'
+export { availabilityAndPricingService } from './client/Availability and PricingService/availabilityAndPricingService.ts'
+export {
+    getGetCalendarUrl,
+    getCalendar,
+} from './client/Availability and PricingService/getCalendar.ts'
+export {
+    getGetCalendarFromHousingUnitTypeIdUrl,
+    getCalendarFromHousingUnitTypeId,
+} from './client/Availability and PricingService/getCalendarFromHousingUnitTypeId.ts'
 export { bannerService } from './client/BannerService/bannerService.ts'
 export {
     getCreateBannerUrl,
@@ -1010,6 +1048,14 @@ export {
     useUpsertCompanyAgePolicy,
 } from './hooks/AgePolicyHooks/useUpsertCompanyAgePolicy.ts'
 export {
+    getCalendarMutationKey,
+    useGetCalendar,
+} from './hooks/Availability and PricingHooks/useGetCalendar.ts'
+export {
+    getCalendarFromHousingUnitTypeIdMutationKey,
+    useGetCalendarFromHousingUnitTypeId,
+} from './hooks/Availability and PricingHooks/useGetCalendarFromHousingUnitTypeId.ts'
+export {
     createBannerMutationKey,
     useCreateBanner,
 } from './hooks/BannerHooks/useCreateBanner.ts'
@@ -1244,11 +1290,6 @@ export {
     useGetServiceById,
 } from './hooks/ServiceHooks/useGetServiceById.ts'
 export {
-    searchServicesQueryKey,
-    searchServicesQueryOptions,
-    useSearchServices,
-} from './hooks/ServiceHooks/useSearchServices.ts'
-export {
     updateServiceMutationKey,
     useUpdateService,
 } from './hooks/ServiceHooks/useUpdateService.ts'
@@ -1261,6 +1302,11 @@ export {
     getSpecialDateByIdQueryOptions,
     useGetSpecialDateById,
 } from './hooks/SpecialDateHooks/useGetSpecialDateById.ts'
+export {
+    searchServicesQueryKey,
+    searchServicesQueryOptions,
+    useSearchServices,
+} from './hooks/SpecialDateHooks/useSearchServices.ts'
 export {
     updateSpecialDateMutationKey,
     useUpdateSpecialDate,

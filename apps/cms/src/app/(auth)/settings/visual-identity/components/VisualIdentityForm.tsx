@@ -196,15 +196,20 @@ export default function VisualIdentityForm() {
                 <Grid container alignItems="center" spacing={2} p={1}>
                     <Grid size={11}>
                         <TextField
+                            placeholder="#"
                             label="Cor principal (HEX)"
                             value={values.settings.theme?.color}
                             fullWidth
                             onChange={(e) => {
+                                const formatted = e.target.value.includes('#')
+                                    ? e.target.value
+                                    : `#${e.target.value}`
+
                                 setFieldValue(
                                     'settings.theme.color',
-                                    e.target.value,
+                                    formatted,
                                 )
-                                setMainColor(e.target.value)
+                                setMainColor(formatted)
                             }}
                         />
                     </Grid>

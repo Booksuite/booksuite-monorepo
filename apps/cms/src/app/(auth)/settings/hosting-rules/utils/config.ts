@@ -12,12 +12,15 @@ export type HostingRulesData = Omit<
 export const transformFormDataForSubmit = (
     formData: HostingRulesData,
 ): HostingRulesInput => {
-    const { availableWeekDays, availableWeekend, ...rest } = formData
+    const { availableWeekDays, availableWeekend, checkIn, checkOut, ...rest } =
+        formData
 
     return {
         ...rest,
         availableWeekDays: availableWeekDays.map(Number),
         availableWeekend: availableWeekend.map(Number),
+        checkIn: checkIn * 60,
+        checkOut: checkOut * 60,
     }
 }
 
@@ -26,8 +29,8 @@ export const createHostingRulesInitialValues = (
 ): HostingRulesData => ({
     availableWeekDays: data?.availableWeekDays?.map(String) || [],
     availableWeekend: data?.availableWeekend?.map(String) || [],
-    checkIn: data?.checkIn ?? 0,
-    checkOut: data?.checkOut ?? 0,
+    checkIn: data?.checkIn ? data?.checkIn / 60 : 0,
+    checkOut: data?.checkOut ? data.checkOut / 60 : 0,
     minDaily: data?.minDaily ?? 0,
     fixedWindowPeriod: data?.fixedWindowPeriod ?? 0,
     reservationWindowEnd: data?.reservationWindowEnd ?? null,

@@ -36,16 +36,12 @@ export default function Facilities() {
             await updateCompany({
                 id: companyId,
                 data: {
-                    facilities: formData.facilities.map((facilityInput) => ({
-                        facilityId: facilityInput.facilityId,
-                        order: facilityInput.isFeatured ? 0 : undefined,
-                    })),
-                    privacyPolicyDescription:
-                        companyData?.privacyPolicyDescription ?? '',
-                    privacyPolicySimpleModel:
-                        companyData?.privacyPolicySimpleModel ?? '',
-                    privacyPolicyFullModel:
-                        companyData?.privacyPolicyFullModel ?? '',
+                    facilities: formData.facilities.map(
+                        (facilityInput, index) => ({
+                            facilityId: facilityInput.facilityId,
+                            order: facilityInput.isFeatured ? 0 : index + 5,
+                        }),
+                    ),
                 },
             })
 

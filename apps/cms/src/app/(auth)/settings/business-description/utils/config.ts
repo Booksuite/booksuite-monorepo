@@ -1,5 +1,11 @@
-import { CompanyFull } from '@booksuite/sdk'
+import { Banner, CompanyFull, Media } from '@booksuite/sdk'
 import * as yup from 'yup'
+
+export interface BannerMedia {
+    mediaId: string
+    order: number
+    media: Media
+}
 
 export type BusinessDescriptionFormData = Pick<
     CompanyFull,
@@ -10,8 +16,22 @@ export type BusinessDescriptionFormData = Pick<
     | 'name'
     | 'bannerImage'
 > & {
-    bannerFile?: File
+    medias: BannerMedia[]
 }
+
+function normalize(media: Media | undefined | null): BannerMedia {
+    return {
+        media: media || {
+            id: '',
+            url: '',
+            companyId: '',
+            metadata: { mimetype: '' },
+        },
+        mediaId: media?.id || '',
+        order: 0,
+    }
+}
+
 export const businessDescriptionInitialValues = (
     data?: Partial<CompanyFull> | null,
 ): BusinessDescriptionFormData => ({
@@ -21,20 +41,8 @@ export const businessDescriptionInitialValues = (
     bannerTitle: data?.bannerTitle || '',
     bannerDescription: data?.bannerDescription || '',
     bannerImage: data?.bannerImage || null,
-    bannerFile: undefined,
+    medias: [normalize(data?.bannerImage)],
 })
-
-// Adicionar galeria ou file explorer no front para enviar uma imagem
-// export const transformBusinessDescriptionForSubmit = (
-//     formData: BusinessDescriptionFormData,
-// ): Partial<CompanyFull> => {
-//     const { bannerImage, ...rest } = formData
-
-//     return {
-//         ...rest,
-//         bannerImage: bannerImage.length > 0 ? bannerImage[0] : null,
-//     }
-// }
 
 export const businessDescriptionFormSchema = yup.object({
     name: yup.string().required('Nome é obrigatório'),
