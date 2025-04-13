@@ -7,7 +7,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
-import { SnackbarProvider, useSnackbar } from 'notistack'
+import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormikController } from '@/components/molecules/FormikController'
@@ -20,7 +20,7 @@ import {
     createCancellationPolicyInitialValues,
 } from './utils/config'
 
-function CancellationPolicyContent() {
+export default function CancellationPolicy() {
     const companyId = useCurrentCompanyId()
     const { enqueueSnackbar } = useSnackbar()
     const { back } = useRouter()
@@ -92,13 +92,5 @@ function CancellationPolicyContent() {
                 </Formik>
             )}
         </div>
-    )
-}
-
-export default function CancellationPolicy() {
-    return (
-        <SnackbarProvider maxSnack={3}>
-            <CancellationPolicyContent />
-        </SnackbarProvider>
     )
 }

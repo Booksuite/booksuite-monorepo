@@ -19,6 +19,7 @@ import {
     agePolicyFormSchema,
     createAgePolicyInitialValues,
 } from './utils/config'
+import { getErrorMessage } from '@/common/utils'
 
 export default function AgePolicy() {
     const companyId = useCurrentCompanyId()
@@ -55,15 +56,18 @@ export default function AgePolicy() {
                 autoHideDuration: 3000,
             })
             back()
-        } catch {
-            enqueueSnackbar(`Erro ao modificar políticas`, {
-                variant: 'error',
-                anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right',
+        } catch (error) {
+            enqueueSnackbar(
+                `Erro ao modificar políticas ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
                 },
-                autoHideDuration: 5000,
-            })
+            )
         }
     }
 
