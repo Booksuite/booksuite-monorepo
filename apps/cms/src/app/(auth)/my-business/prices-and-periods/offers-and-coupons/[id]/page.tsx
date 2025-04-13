@@ -1,9 +1,15 @@
 'use client'
 
-import { useCreateOffer, useSearchHousingUnitTypes } from '@booksuite/sdk'
+import {
+    useSearchHousingUnitTypes,
+    useSearchOffers,
+    useUpdateOffer,
+} from '@booksuite/sdk'
+import { CircularProgress, Stack } from '@mui/material'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
+import { useEffect } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormikController } from '@/components/molecules/FormikController'
@@ -16,16 +22,45 @@ import {
     transformOfferFormDataForSubmit,
 } from '../utils/config'
 
-export default function CreateOffer() {
+type Props = {
+    params: {
+        id: string
+    }
+}
+
+export default function UpdateOffer({ params: { id } }: Props) {
     const { back } = useRouter()
     const companyId = useCurrentCompanyId()
-    const { mutateAsync: createOffer } = useCreateOffer()
+    const { mutateAsync: updateOffer } = useUpdateOffer()
     const { data: housingUnitTypes } = useSearchHousingUnitTypes(
         { companyId },
         {
             pagination: { itemsPerPage: 1000, page: 1 },
         },
     )
+
+    const { data: offers, isLoading } = useSearchOffers(
+        { companyId },
+        {
+            pagination: { itemsPerPage: 1000, page: 1 },
+        },
+    )
+
+    const offer = offers?.items?.find((item) => item.id === id)
+
+    useEffect(() => {
+        if (!isLoading && !offer) {
+            enqueueSnackbar('Oferta não encontrada', {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 5000,
+            })
+            back()
+        }
+    }, [isLoading, offer, back])
 
     const handleSubmit = async (formData: OfferFormData) => {
         const apiData = transformOfferFormDataForSubmit({
@@ -34,9 +69,9 @@ export default function CreateOffer() {
         })
 
         try {
-            await createOffer({ companyId, data: apiData })
+            await updateOffer({ id, data: apiData })
 
-            enqueueSnackbar('Oferta criada com sucesso', {
+            enqueueSnackbar('Oferta atualizada com sucesso', {
                 variant: 'success',
                 anchorOrigin: {
                     vertical: 'top',
@@ -47,7 +82,7 @@ export default function CreateOffer() {
 
             back()
         } catch {
-            enqueueSnackbar(`Erro ao criar oferta`, {
+            enqueueSnackbar(`Erro ao atualizar oferta`, {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',
@@ -58,15 +93,27 @@ export default function CreateOffer() {
         }
     }
 
+    if (isLoading) {
+        return (
+            <Stack alignItems="center" justifyContent="center" height="100vh">
+                <CircularProgress />
+            </Stack>
+        )
+    }
+
+    if (!offer) {
+        return null
+    }
+
     return (
         <>
             <PageHeader
-                title="Criar Oferta"
+                title="Editar Oferta"
                 backLButtonLabel="Ofertas e Cupons"
                 backButtonHref="/my-business/prices-and-periods/offers-and-coupons"
             />
             <Formik<OfferFormData>
-                initialValues={createOfferFormInitialValues()}
+                initialValues={createOfferFormInitialValues(offer)}
                 validationSchema={offerFormSchema}
                 onSubmit={handleSubmit}
             >
