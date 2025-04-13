@@ -44,7 +44,7 @@ export default function BusinessDescription() {
                 id: companyId,
                 data: {
                     ...omit(formData, ['medias', 'bannerImage']),
-                    bannerImageId: formData.medias[0].mediaId,
+                    bannerImageId: formData.medias[0] ? formData.medias[0].mediaId : '',
                 },
             })
 
