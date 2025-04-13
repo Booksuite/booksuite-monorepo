@@ -1,0 +1,1 @@
+export type UnavailabilityReason = 'MIN_DAYS_NOT_REACHED' | 'ALL_ROOMS_OCCUPIED' | 'WEEKDAY_NOT_AVAILABLE'

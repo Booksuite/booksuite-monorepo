@@ -1,0 +1,10 @@
+export type ReservationStatus =
+  | 'WAITING_PAYMENT'
+  | 'CONFIRMED'
+  | 'CHECKED_IN'
+  | 'CHECKED_OUT'
+  | 'ABANDONED'
+  | 'CANCELLED'
+  | 'PAYMENT_FAILED'
+  | 'OVERBOOKED'
+  | 'WAITING_LIST'

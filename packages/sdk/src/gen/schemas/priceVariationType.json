@@ -1,1 +1,1 @@
-{"type":"string","enum":["ABSOLUTE_INCREASE","ABSOLUTE_REDUCTION","PERCENTAGE_INCREASE","PERCENTAGE_REDUCTION","CUSTOM"],"x-readme-ref-name":"PriceVariationType"}
+{"type":"string","enum":["ABSOLUTE_INCREASE","ABSOLUTE_REDUCTION","PERCENTAGE_INCREASE","PERCENTAGE_REDUCTION","CUSTOM"],"description":"Price variation type","x-readme-ref-name":"PriceVariationType"}

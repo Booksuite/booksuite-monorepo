@@ -8,6 +8,10 @@ export type HousingUnit = {
    */
   name: string
   /**
+   * @type number
+   */
+  order: number
+  /**
    * @type string
    */
   housingUnitTypeId: string
@@ -15,4 +19,8 @@ export type HousingUnit = {
    * @type string, date-time
    */
   createdAt: string
+  /**
+   * @type string, date-time
+   */
+  updatedAt: string
 }
