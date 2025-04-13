@@ -2,7 +2,7 @@ export type ReservationAgeGroupInput = {
   /**
    * @type number
    */
-  children: number
+  quantity: number
   /**
    * @type string
    */

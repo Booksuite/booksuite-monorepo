@@ -41,31 +41,31 @@ export type ReservationUpdateInput = {
    */
   endDate?: string
   /**
-   * @type number
+   * @type number | undefined
    */
-  totalDays?: number | null
+  totalDays?: number
   /**
    * @type number | undefined
    */
   adults?: number
   /**
-   * @type array
+   * @type array | undefined
    */
-  children: ReservationAgeGroupInput[]
+  ageGroups?: ReservationAgeGroupInput[]
   /**
    * @type string | undefined
    */
   notes?: string
   /**
-   * @type string
+   * @type string | undefined
    */
-  housingUnitId?: string | null
+  housingUnitId?: string
   /**
    * @type array | undefined
    */
   services?: ReservationServiceInput[]
   /**
-   * @type array
+   * @type array | undefined
    */
-  reservationOption: ReservationReservationOptionInput[]
+  reservationOption?: ReservationReservationOptionInput[]
 }
