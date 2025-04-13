@@ -53,10 +53,10 @@ export type { SeasonRulesControllerUpdateMutationKey } from './hooks/SeasonRules
 export type { CreateServiceMutationKey } from './hooks/ServiceHooks/useCreateService.ts'
 export type { DeleteServiceMutationKey } from './hooks/ServiceHooks/useDeleteService.ts'
 export type { GetServiceByIdQueryKey } from './hooks/ServiceHooks/useGetServiceById.ts'
+export type { SearchServicesQueryKey } from './hooks/ServiceHooks/useSearchServices.ts'
 export type { UpdateServiceMutationKey } from './hooks/ServiceHooks/useUpdateService.ts'
 export type { CreateSpecialDateMutationKey } from './hooks/SpecialDateHooks/useCreateSpecialDate.ts'
 export type { GetSpecialDateByIdQueryKey } from './hooks/SpecialDateHooks/useGetSpecialDateById.ts'
-export type { SearchServicesQueryKey } from './hooks/SpecialDateHooks/useSearchServices.ts'
 export type { UpdateSpecialDateMutationKey } from './hooks/SpecialDateHooks/useUpdateSpecialDate.ts'
 export type { GetUtilityLinkQueryKey } from './hooks/UtilityLinksHooks/useGetUtilityLink.ts'
 export type { SearchUtilityLinksQueryKey } from './hooks/UtilityLinksHooks/useSearchUtilityLinks.ts'
@@ -630,6 +630,14 @@ export type {
     GetServiceByIdQuery,
 } from './types/ServiceController/GetServiceById.ts'
 export type {
+    SearchServicesPathParams,
+    SearchServicesQueryParams,
+    SearchServices200,
+    SearchServicesMutationRequest,
+    SearchServicesMutationResponse,
+    SearchServicesMutation,
+} from './types/ServiceController/SearchServices.ts'
+export type {
     UpdateServicePathParams,
     UpdateService200,
     UpdateServiceMutationRequest,
@@ -662,14 +670,6 @@ export type {
     GetSpecialDateByIdQueryResponse,
     GetSpecialDateByIdQuery,
 } from './types/SpecialDateController/GetSpecialDateById.ts'
-export type {
-    SearchServicesPathParams,
-    SearchServicesQueryParams,
-    SearchServices200,
-    SearchServicesMutationRequest,
-    SearchServicesMutationResponse,
-    SearchServicesMutation,
-} from './types/SpecialDateController/SearchServices.ts'
 export type {
     UpdateSpecialDatePathParams,
     UpdateSpecialDate200,
@@ -961,6 +961,10 @@ export {
     getGetServiceByIdUrl,
     getServiceById,
 } from './client/ServiceService/getServiceById.ts'
+export {
+    getSearchServicesUrl,
+    searchServices,
+} from './client/ServiceService/searchServices.ts'
 export { serviceService } from './client/ServiceService/serviceService.ts'
 export {
     getUpdateServiceUrl,
@@ -974,10 +978,6 @@ export {
     getGetSpecialDateByIdUrl,
     getSpecialDateById,
 } from './client/SpecialDateService/getSpecialDateById.ts'
-export {
-    getSearchServicesUrl,
-    searchServices,
-} from './client/SpecialDateService/searchServices.ts'
 export { specialDateService } from './client/SpecialDateService/specialDateService.ts'
 export {
     getUpdateSpecialDateUrl,
@@ -1261,7 +1261,6 @@ export {
     getSpecialDateByIdQueryOptions,
     useGetSpecialDateById,
 } from './hooks/SpecialDateHooks/useGetSpecialDateById.ts'
-
 export {
     updateSpecialDateMutationKey,
     useUpdateSpecialDate,
