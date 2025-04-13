@@ -31,21 +31,17 @@ export default function Facilities() {
 
     const { mutateAsync: updateCompany } = useUpdateCompany()
 
+    
+
     async function handleSubmit(formData: FacilitiesFormData) {
         try {
             await updateCompany({
                 id: companyId,
                 data: {
-                    facilities: formData.facilities.map((facilityInput) => ({
+                    facilities: formData.facilities.map((facilityInput, index) => ({
                         facilityId: facilityInput.facilityId,
-                        order: facilityInput.isFeatured ? 0 : undefined,
+                        order: facilityInput.isFeatured ? 0 : index + 5,
                     })),
-                    privacyPolicyDescription:
-                        companyData?.privacyPolicyDescription ?? '',
-                    privacyPolicySimpleModel:
-                        companyData?.privacyPolicySimpleModel ?? '',
-                    privacyPolicyFullModel:
-                        companyData?.privacyPolicyFullModel ?? '',
                 },
             })
 
@@ -60,7 +56,7 @@ export default function Facilities() {
                 autoHideDuration: 3000,
             })
 
-            back()
+           
         } catch {
             enqueueSnackbar('Erro ao atualizar comodidades', {
                 variant: 'error',
