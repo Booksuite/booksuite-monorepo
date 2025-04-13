@@ -25,9 +25,9 @@ export default function CreateSpecialDatePage() {
     const { mutateAsync: createSpecialDate } = useCreateSpecialDate()
 
     async function handleSubmit(formData: SpecialDateFormData) {
-        const apiData = transformSpecialDateFormDataForSubmit(formData)
-
         try {
+            const apiData = transformSpecialDateFormDataForSubmit(formData)
+
             await createSpecialDate({
                 companyId,
                 data: {
@@ -39,7 +39,7 @@ export default function CreateSpecialDatePage() {
                 },
             })
 
-            enqueueSnackbar('Data especial criada com sucesso', {
+            enqueueSnackbar('Data especial criada com sucesso!', {
                 variant: 'success',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
                 autoHideDuration: 3000,
@@ -52,26 +52,20 @@ export default function CreateSpecialDatePage() {
 
             back()
         } catch {
-            enqueueSnackbar('Erro ao criar data especial ', {
+            enqueueSnackbar(`Erro ao criar data especial `, {
                 variant: 'error',
                 anchorOrigin: { vertical: 'top', horizontal: 'right' },
-                autoHideDuration: 3000,
+                autoHideDuration: 5000,
             })
         }
     }
 
     return (
-        <div className="CreateSpecialDate">
-            <PageHeader.Root>
-                <PageHeader.BackLink
-                    href={
-                        '/my-business/prices-and-periods/special-dates' as const
-                    }
-                >
-                    Datas Especiais
-                </PageHeader.BackLink>
-                <PageHeader.Title>Criar Data Especial</PageHeader.Title>
-            </PageHeader.Root>
+        <>
+            <PageHeader
+                title="Criar Data Especial"
+                backLButtonLabel="Datas Especiais"
+            />
 
             <Formik<SpecialDateFormData>
                 initialValues={createSpecialDateFormInitialValues()}
@@ -82,6 +76,6 @@ export default function CreateSpecialDatePage() {
                     <SpecialDateForm />
                 </FormikController>
             </Formik>
-        </div>
+        </>
     )
 }

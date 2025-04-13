@@ -19,7 +19,7 @@ const menuItems: MenuItem[] = [
     },
     {
         icon: <Gift size={20} />,
-        title: 'Pacotes e Feriados',
+        title: 'Datas Especiais',
         href: '/my-business/prices-and-periods/special-dates',
     },
     {

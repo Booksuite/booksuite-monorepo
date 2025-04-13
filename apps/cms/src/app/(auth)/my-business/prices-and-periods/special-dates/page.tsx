@@ -32,6 +32,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { useSearchParamsOrder } from '@/common/hooks/useOrder'
 import { useSearchParamsPagination } from '@/common/hooks/usePagination'
+import { Image } from '@/components/atoms/Image'
 import { LinkButton } from '@/components/atoms/LinkButton'
 import { PaginationControls } from '@/components/molecules/PaginationControl'
 import { TableRowActionItem } from '@/components/molecules/TableRowActionItem'
@@ -46,6 +47,23 @@ const chipItems = [
 ]
 
 const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
+    {
+        id: 'image',
+        header: '',
+        size: 85,
+        Cell: ({ row }) => (
+            <Image
+                src={row.original.medias[0]?.media.url}
+                alt={row.original.name}
+                sx={{
+                    objectFit: 'cover',
+                    borderRadius: 2,
+                    width: '72px',
+                    height: '72px',
+                }}
+            />
+        ),
+    },
     {
         id: 'name',
         header: 'Nome',

@@ -22,7 +22,6 @@ export type SpecialDateFormData = Omit<
     medias: SpecialDateMedia[]
     housingUnitTypePrices: SpecialDateHousingUnitType[]
     services: string[]
-    servicesData: Array<{ id: string; name: string }>
     availableWeekDays: string[]
     description?: string
     generalDescription?: string
@@ -37,30 +36,39 @@ export const transformSpecialDateFormDataForSubmit = (
         services,
         description,
         generalDescription,
-        ...rest
     } = formData
 
-    return {
-        ...rest,
+    const startDate = new Date(formData.startDate + 'T00:00:00.000Z')
+    const endDate = new Date(formData.endDate + 'T23:59:59.999Z')
+
+    const transformedData = {
+        name: formData.name,
+        published: formData.published,
+        startDate: startDate.toISOString(),
+        endDate: endDate.toISOString(),
+        minDaily: formData.minDaily,
+        priceVariationType: formData.priceVariationType,
+        price: formData.price,
+        description: description || undefined,
+        generalDescription: generalDescription || undefined,
+        availableWeekDays: formData.availableWeekDays.map(Number),
         medias: medias.map((media) => ({
             mediaId: media.media.id,
-            id: media.id,
-            order: media.order ?? null,
+            order: typeof media.order === 'number' ? media.order : undefined,
         })),
         housingUnitTypePrices: housingUnitTypePrices.map((unit) => ({
             housingUnitTypeId: unit.housingUnitType.id,
-            baseWeekPrice: unit.baseWeekPrice,
-            newWeekPrice: unit.newWeekPrice,
-            weekendBasePrice: unit.weekendBasePrice,
-            weekendNewPrice: unit.weekendNewPrice,
+            baseWeekPrice: Number(unit.baseWeekPrice),
+            newWeekPrice: Number(unit.newWeekPrice),
+            weekendBasePrice: Number(unit.weekendBasePrice),
+            weekendNewPrice: Number(unit.weekendNewPrice),
         })),
         includedServices: services.map((serviceId) => ({
             serviceId,
         })),
-        availableWeekDays: formData.availableWeekDays.map(Number),
-        description: description || null,
-        generalDescription: generalDescription || null,
     }
+
+    return transformedData
 }
 
 export const createSpecialDateFormInitialValues = (
@@ -83,11 +91,6 @@ export const createSpecialDateFormInitialValues = (
     medias: data?.medias || [],
     housingUnitTypePrices: data?.housingUnitTypePrices || [],
     services: data?.includedServices?.map((s) => s.service.id) || [],
-    servicesData:
-        data?.includedServices?.map((s) => ({
-            id: s.service.id,
-            name: s.service.name,
-        })) || [],
 })
 
 export const specialDateFormSchema = yup.object({

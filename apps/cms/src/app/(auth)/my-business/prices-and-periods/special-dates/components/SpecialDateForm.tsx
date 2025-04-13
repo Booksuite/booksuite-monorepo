@@ -3,6 +3,7 @@ import {
     SpecialDateMedia,
     useSearchHousingUnitTypes,
 } from '@booksuite/sdk'
+import { useSearchServices } from '@booksuite/sdk/src/gen/hooks/ServiceHooks'
 import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core'
 import {
     arrayMove,
@@ -65,6 +66,16 @@ export const SpecialDateForm: React.FC = () => {
     const companyId = useCurrentCompanyId()
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
+    const { data: housingUnitTypesData } = useSearchHousingUnitTypes(
+        { companyId },
+        { pagination: { page: 1, itemsPerPage: 100 } },
+    )
+
+    const { data: servicesData } = useSearchServices(
+        { companyId },
+        { pagination: { page: 1, itemsPerPage: 100 } },
+    )
+
     const handleMediaChange = (selectedMedia: Media[]) => {
         const formattedMedia: SpecialDateMedia[] = selectedMedia.map(
             (media, index) => {
@@ -104,11 +115,6 @@ export const SpecialDateForm: React.FC = () => {
             setFieldValue('medias', newMedias)
         }
     }
-
-    const { data: housingUnitTypesData } = useSearchHousingUnitTypes(
-        { companyId },
-        { pagination: { page: 1, itemsPerPage: 100 } },
-    )
 
     useEffect(() => {
         if (
@@ -300,48 +306,11 @@ export const SpecialDateForm: React.FC = () => {
                 </FormControl>
             </FormSection>
 
-            <FormSection title="Visibilidade de venda">
-                <Grid container spacing={2}>
-                    <Grid size={6}>
-                        <TextField
-                            label="Início da visibilidade de venda"
-                            type="date"
-                            fullWidth
-                            // value={values. || ''}
-                            // onChange={(e) =>
-                            //     setFieldValue('', e.target.value)
-                            // }
-                            // error={!!errors.}
-                            // helperText={errors.}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </Grid>
-                    <Grid size={6}>
-                        <TextField
-                            label="Final da visibilidade de venda"
-                            type="date"
-                            fullWidth
-                            // value={values. || ''}
-                            // onChange={(e) =>
-                            //     setFieldValue('', e.target.value)
-                            // }
-                            // error={!!errors.}
-                            // helperText={errors.}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </Grid>
-                </Grid>
-            </FormSection>
-
             <FormSection title="Extras e Experiências Inclusas">
                 <FormControl component="fieldset">
                     <FormGroup>
                         <Grid container spacing={2}>
-                            {values.servicesData?.map((service) => (
+                            {servicesData?.items?.map((service) => (
                                 <Grid size={6} key={service.id}>
                                     <FormControlLabel
                                         control={
