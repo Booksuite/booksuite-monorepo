@@ -24,7 +24,7 @@ export function useReservationControllerUpdate<TContext>(
       {
         companyId: ReservationControllerUpdatePathParams['companyId']
         id: ReservationControllerUpdatePathParams['id']
-        data: ReservationControllerUpdateMutationRequest
+        data?: ReservationControllerUpdateMutationRequest
       },
       TContext
     >
@@ -40,7 +40,7 @@ export function useReservationControllerUpdate<TContext>(
     {
       companyId: ReservationControllerUpdatePathParams['companyId']
       id: ReservationControllerUpdatePathParams['id']
-      data: ReservationControllerUpdateMutationRequest
+      data?: ReservationControllerUpdateMutationRequest
     },
     TContext
   >({

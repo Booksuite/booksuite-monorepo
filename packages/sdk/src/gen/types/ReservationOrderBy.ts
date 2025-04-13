@@ -1,1 +1,1 @@
-export type ReservationOrderBy = 'createdAt' | 'updatedAt' | 'status' | 'startDate' | 'endDate' | 'totalDays' | 'adults' | 'children'
+export type ReservationOrderBy = 'createdAt' | 'updatedAt' | 'status' | 'startDate' | 'endDate' | 'totalDays' | 'adults' | 'ageGroups'

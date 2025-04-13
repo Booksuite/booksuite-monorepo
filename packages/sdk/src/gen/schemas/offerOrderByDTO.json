@@ -1,0 +1,1 @@
+{"type":"object","properties":{"orderBy":{"type":"string","enum":["name","createdAt","purchaseStartDate","purchaseEndDate"],"default":"createdAt"},"direction":{"type":"string","enum":["asc","desc"],"default":"desc"}},"required":["orderBy","direction"],"x-readme-ref-name":"OfferOrderByDTO"}
