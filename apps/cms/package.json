@@ -29,6 +29,7 @@
         "cep-promise": "^4.4.1",
         "chakra-react-select": "^5.0.4",
         "cookies-next": "^4.3.0",
+        "dayjs": "^1.11.13",
         "formik": "^2.4.6",
         "framer-motion": "^11.3.7",
         "immer": "^10.1.1",
