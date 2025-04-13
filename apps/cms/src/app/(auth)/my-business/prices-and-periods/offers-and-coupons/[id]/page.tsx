@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { OffersAndCouponsForm } from '../components/OffersAndCouponsForm'
@@ -47,13 +48,10 @@ export default function UpdateOffer({ params: { id } }: Props) {
     const offer = offers?.items?.find((item) => item.id === id)
 
     const handleSubmit = async (formData: OfferFormData) => {
-        const apiData = transformOfferFormDataForSubmit({
-            ...formData,
-            companyId,
-        })
+        const apiData = transformOfferFormDataForSubmit(formData)
 
         try {
-            await updateOffer({ id, data: apiData })
+            await updateOffer({ id, companyId, data: apiData })
 
             enqueueSnackbar('Oferta atualizada com sucesso', {
                 variant: 'success',
@@ -65,16 +63,45 @@ export default function UpdateOffer({ params: { id } }: Props) {
             })
 
             back()
-        } catch {
-            enqueueSnackbar(`Erro ao atualizar oferta`, {
-                variant: 'error',
-                anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right',
+        } catch (error) {
+            enqueueSnackbar(
+                `Erro ao atualizar oferta ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
                 },
-                autoHideDuration: 5000,
-            })
+            )
         }
+    }
+
+    if (!companyId) {
+        return (
+            <div>
+                <PageHeader
+                    title="Editar Oferta"
+                    backLButtonLabel="Ofertas e Cupons"
+                    backButtonHref="/my-business/prices-and-periods/offers-and-coupons"
+                />
+                <div>Carregando dados da empresa...</div>
+            </div>
+        )
+    }
+
+    if (!offer) {
+        return (
+            <div>
+                <PageHeader
+                    title="Editar Oferta"
+                    backLButtonLabel="Ofertas e Cupons"
+                    backButtonHref="/my-business/prices-and-periods/offers-and-coupons"
+                />
+                <div>Carregando dados da oferta...</div>
+            </div>
+        )
     }
 
     return (
@@ -85,9 +112,13 @@ export default function UpdateOffer({ params: { id } }: Props) {
                 backButtonHref="/my-business/prices-and-periods/offers-and-coupons"
             />
             <Formik<OfferFormData>
-                initialValues={createOfferFormInitialValues(offer)}
+                initialValues={createOfferFormInitialValues({
+                    ...offer,
+                    availableHousingUnitTypes: housingUnitTypes?.items,
+                })}
                 validationSchema={offerFormSchema}
                 onSubmit={handleSubmit}
+                enableReinitialize
             >
                 <FormikController onCancel={() => back()}>
                     <OffersAndCouponsForm
