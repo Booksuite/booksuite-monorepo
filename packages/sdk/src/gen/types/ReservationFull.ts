@@ -71,7 +71,7 @@ export type ReservationFull = {
   /**
    * @type array
    */
-  children: ReservationAgeGroup[]
+  ageGroups: ReservationAgeGroup[]
   /**
    * @type array
    */

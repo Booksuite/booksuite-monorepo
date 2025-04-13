@@ -51,7 +51,7 @@ export type ReservationCreateInput = {
   /**
    * @type array
    */
-  children: ReservationAgeGroupInput[]
+  ageGroups: ReservationAgeGroupInput[]
   /**
    * @type string
    */

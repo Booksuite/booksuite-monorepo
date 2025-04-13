@@ -30,6 +30,11 @@ export type { GetMediaByIdQueryKey } from './hooks/MediaHooks/useGetMediaById.ts
 export type { SearchMediaQueryKey } from './hooks/MediaHooks/useSearchMedia.ts'
 export type { UploadMediaMutationKey } from './hooks/MediaHooks/useUploadMedia.ts'
 export type { UpsertMediaMutationKey } from './hooks/MediaHooks/useUpsertMedia.ts'
+export type { CreateOfferMutationKey } from './hooks/OfferHooks/useCreateOffer.ts'
+export type { DeleteOfferMutationKey } from './hooks/OfferHooks/useDeleteOffer.ts'
+export type { GetOfferByIdQueryKey } from './hooks/OfferHooks/useGetOfferById.ts'
+export type { SearchOffersQueryKey } from './hooks/OfferHooks/useSearchOffers.ts'
+export type { UpdateOfferMutationKey } from './hooks/OfferHooks/useUpdateOffer.ts'
 export type { GetCompanyReservationConfigQueryKey } from './hooks/ReservationConfigHooks/useGetCompanyReservationConfig.ts'
 export type { UpsertCompanyReservationConfigMutationKey } from './hooks/ReservationConfigHooks/useUpsertCompanyReservationConfig.ts'
 export type { CreateReservationMutationKey } from './hooks/ReservationHooks/useCreateReservation.ts'
@@ -48,10 +53,10 @@ export type { SeasonRulesControllerUpdateMutationKey } from './hooks/SeasonRules
 export type { CreateServiceMutationKey } from './hooks/ServiceHooks/useCreateService.ts'
 export type { DeleteServiceMutationKey } from './hooks/ServiceHooks/useDeleteService.ts'
 export type { GetServiceByIdQueryKey } from './hooks/ServiceHooks/useGetServiceById.ts'
+export type { SearchServicesQueryKey } from './hooks/ServiceHooks/useSearchServices.ts'
 export type { UpdateServiceMutationKey } from './hooks/ServiceHooks/useUpdateService.ts'
 export type { CreateSpecialDateMutationKey } from './hooks/SpecialDateHooks/useCreateSpecialDate.ts'
 export type { GetSpecialDateByIdQueryKey } from './hooks/SpecialDateHooks/useGetSpecialDateById.ts'
-export type { SearchServicesQueryKey } from './hooks/SpecialDateHooks/useSearchServices.ts'
 export type { UpdateSpecialDateMutationKey } from './hooks/SpecialDateHooks/useUpdateSpecialDate.ts'
 export type { GetUtilityLinkQueryKey } from './hooks/UtilityLinksHooks/useGetUtilityLink.ts'
 export type { SearchUtilityLinksQueryKey } from './hooks/UtilityLinksHooks/useSearchUtilityLinks.ts'
@@ -217,6 +222,7 @@ export type {
     CompanyUpdateDTOType,
     CompanyUpdateInput,
 } from './types/CompanyUpdateInput.ts'
+export type { CreateOfferDto } from './types/CreateOfferDto.ts'
 export type { DateRangeInput } from './types/DateRangeInput.ts'
 export type {
     FacilityResponseDTOType,
@@ -377,6 +383,52 @@ export type { MediaPaginated } from './types/MediaPaginated.ts'
 export type { MediaSearchBodyInput } from './types/MediaSearchBodyInput.ts'
 export type { MediaType } from './types/MediaType.ts'
 export type { MetadataDto } from './types/MetadataDto.ts'
+export type {
+    OfferResponseDTOPriceAdjustmentType,
+    Offer,
+} from './types/Offer.ts'
+export type {
+    CreateOfferPathParams,
+    CreateOffer200,
+    CreateOfferMutationRequest,
+    CreateOfferMutationResponse,
+    CreateOfferMutation,
+} from './types/OfferController/CreateOffer.ts'
+export type {
+    DeleteOfferPathParams,
+    DeleteOffer200,
+    DeleteOfferMutationResponse,
+    DeleteOfferMutation,
+} from './types/OfferController/DeleteOffer.ts'
+export type {
+    GetOfferByIdPathParams,
+    GetOfferById200,
+    GetOfferByIdQueryResponse,
+    GetOfferByIdQuery,
+} from './types/OfferController/GetOfferById.ts'
+export type {
+    SearchOffersPathParams,
+    SearchOffersQueryParams,
+    SearchOffers200,
+    SearchOffersMutationRequest,
+    SearchOffersMutationResponse,
+    SearchOffersMutation,
+} from './types/OfferController/SearchOffers.ts'
+export type {
+    UpdateOfferPathParams,
+    UpdateOffer200,
+    UpdateOfferMutationRequest,
+    UpdateOfferMutationResponse,
+    UpdateOfferMutation,
+} from './types/OfferController/UpdateOffer.ts'
+export type {
+    OfferOrderByDTOOrderBy,
+    OfferOrderByDTODirection,
+    OfferOrderByInput,
+} from './types/OfferOrderByInput.ts'
+export type { OfferPaginated } from './types/OfferPaginated.ts'
+export type { OfferSearchBodyInput } from './types/OfferSearchBodyInput.ts'
+export type { OfferSearchFilterInput } from './types/OfferSearchFilterInput.ts'
 export type { OrderDirection } from './types/OrderDirection.ts'
 export type { PaginationQueryInput } from './types/PaginationQueryInput.ts'
 export type {
@@ -577,7 +629,14 @@ export type {
     GetServiceByIdQueryResponse,
     GetServiceByIdQuery,
 } from './types/ServiceController/GetServiceById.ts'
-
+export type {
+    SearchServicesPathParams,
+    SearchServicesQueryParams,
+    SearchServices200,
+    SearchServicesMutationRequest,
+    SearchServicesMutationResponse,
+    SearchServicesMutation,
+} from './types/ServiceController/SearchServices.ts'
 export type {
     UpdateServicePathParams,
     UpdateService200,
@@ -612,14 +671,6 @@ export type {
     GetSpecialDateByIdQuery,
 } from './types/SpecialDateController/GetSpecialDateById.ts'
 export type {
-    SearchServicesPathParams,
-    SearchServicesQueryParams,
-    SearchServices200,
-    SearchServicesMutationRequest,
-    SearchServicesMutationResponse,
-    SearchServicesMutation,
-} from './types/SpecialDateController/SearchServices.ts'
-export type {
     UpdateSpecialDatePathParams,
     UpdateSpecialDate200,
     UpdateSpecialDateMutationRequest,
@@ -640,6 +691,7 @@ export type { SpecialDateSearchFilterInput } from './types/SpecialDateSearchFilt
 export type { SpecialDateService } from './types/SpecialDateService.ts'
 export type { SpecialDateServiceInput } from './types/SpecialDateServiceInput.ts'
 export type { SpecialDateUpdateInput } from './types/SpecialDateUpdateInput.ts'
+export type { UpdateOfferDto } from './types/UpdateOfferDto.ts'
 export type { User } from './types/User.ts'
 export type { UtilityLinks } from './types/UtilityLinks.ts'
 export type {
@@ -813,6 +865,27 @@ export {
     upsertMedia,
 } from './client/MediaService/upsertMedia.ts'
 export {
+    getCreateOfferUrl,
+    createOffer,
+} from './client/OfferService/createOffer.ts'
+export {
+    getDeleteOfferUrl,
+    deleteOffer,
+} from './client/OfferService/deleteOffer.ts'
+export {
+    getGetOfferByIdUrl,
+    getOfferById,
+} from './client/OfferService/getOfferById.ts'
+export { offerService } from './client/OfferService/offerService.ts'
+export {
+    getSearchOffersUrl,
+    searchOffers,
+} from './client/OfferService/searchOffers.ts'
+export {
+    getUpdateOfferUrl,
+    updateOffer,
+} from './client/OfferService/updateOffer.ts'
+export {
     getGetCompanyReservationConfigUrl,
     getCompanyReservationConfig,
 } from './client/ReservationConfigService/getCompanyReservationConfig.ts'
@@ -888,6 +961,10 @@ export {
     getGetServiceByIdUrl,
     getServiceById,
 } from './client/ServiceService/getServiceById.ts'
+export {
+    getSearchServicesUrl,
+    searchServices,
+} from './client/ServiceService/searchServices.ts'
 export { serviceService } from './client/ServiceService/serviceService.ts'
 export {
     getUpdateServiceUrl,
@@ -901,10 +978,6 @@ export {
     getGetSpecialDateByIdUrl,
     getSpecialDateById,
 } from './client/SpecialDateService/getSpecialDateById.ts'
-export {
-    getSearchServicesUrl,
-    searchServices,
-} from './client/SpecialDateService/searchServices.ts'
 export { specialDateService } from './client/SpecialDateService/specialDateService.ts'
 export {
     getUpdateSpecialDateUrl,
@@ -1069,6 +1142,28 @@ export {
     useUpsertMedia,
 } from './hooks/MediaHooks/useUpsertMedia.ts'
 export {
+    createOfferMutationKey,
+    useCreateOffer,
+} from './hooks/OfferHooks/useCreateOffer.ts'
+export {
+    deleteOfferMutationKey,
+    useDeleteOffer,
+} from './hooks/OfferHooks/useDeleteOffer.ts'
+export {
+    getOfferByIdQueryKey,
+    getOfferByIdQueryOptions,
+    useGetOfferById,
+} from './hooks/OfferHooks/useGetOfferById.ts'
+export {
+    searchOffersQueryKey,
+    searchOffersQueryOptions,
+    useSearchOffers,
+} from './hooks/OfferHooks/useSearchOffers.ts'
+export {
+    updateOfferMutationKey,
+    useUpdateOffer,
+} from './hooks/OfferHooks/useUpdateOffer.ts'
+export {
     getCompanyReservationConfigQueryKey,
     getCompanyReservationConfigQueryOptions,
     useGetCompanyReservationConfig,
@@ -1149,6 +1244,11 @@ export {
     useGetServiceById,
 } from './hooks/ServiceHooks/useGetServiceById.ts'
 export {
+    searchServicesQueryKey,
+    searchServicesQueryOptions,
+    useSearchServices,
+} from './hooks/ServiceHooks/useSearchServices.ts'
+export {
     updateServiceMutationKey,
     useUpdateService,
 } from './hooks/ServiceHooks/useUpdateService.ts'
@@ -1161,11 +1261,6 @@ export {
     getSpecialDateByIdQueryOptions,
     useGetSpecialDateById,
 } from './hooks/SpecialDateHooks/useGetSpecialDateById.ts'
-export {
-    searchServicesQueryKey,
-    searchServicesQueryOptions,
-    useSearchServices,
-} from './hooks/SpecialDateHooks/useSearchServices.ts'
 export {
     updateSpecialDateMutationKey,
     useUpdateSpecialDate,

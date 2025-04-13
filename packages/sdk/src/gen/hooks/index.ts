@@ -30,6 +30,11 @@ export type { GetMediaByIdQueryKey } from './MediaHooks/useGetMediaById.ts'
 export type { SearchMediaQueryKey } from './MediaHooks/useSearchMedia.ts'
 export type { UploadMediaMutationKey } from './MediaHooks/useUploadMedia.ts'
 export type { UpsertMediaMutationKey } from './MediaHooks/useUpsertMedia.ts'
+export type { CreateOfferMutationKey } from './OfferHooks/useCreateOffer.ts'
+export type { DeleteOfferMutationKey } from './OfferHooks/useDeleteOffer.ts'
+export type { GetOfferByIdQueryKey } from './OfferHooks/useGetOfferById.ts'
+export type { SearchOffersQueryKey } from './OfferHooks/useSearchOffers.ts'
+export type { UpdateOfferMutationKey } from './OfferHooks/useUpdateOffer.ts'
 export type { GetCompanyReservationConfigQueryKey } from './ReservationConfigHooks/useGetCompanyReservationConfig.ts'
 export type { UpsertCompanyReservationConfigMutationKey } from './ReservationConfigHooks/useUpsertCompanyReservationConfig.ts'
 export type { CreateReservationMutationKey } from './ReservationHooks/useCreateReservation.ts'
@@ -102,6 +107,11 @@ export { getMediaByIdQueryKey, getMediaByIdQueryOptions, useGetMediaById } from 
 export { searchMediaQueryKey, searchMediaQueryOptions, useSearchMedia } from './MediaHooks/useSearchMedia.ts'
 export { uploadMediaMutationKey, useUploadMedia } from './MediaHooks/useUploadMedia.ts'
 export { upsertMediaMutationKey, useUpsertMedia } from './MediaHooks/useUpsertMedia.ts'
+export { createOfferMutationKey, useCreateOffer } from './OfferHooks/useCreateOffer.ts'
+export { deleteOfferMutationKey, useDeleteOffer } from './OfferHooks/useDeleteOffer.ts'
+export { getOfferByIdQueryKey, getOfferByIdQueryOptions, useGetOfferById } from './OfferHooks/useGetOfferById.ts'
+export { searchOffersQueryKey, searchOffersQueryOptions, useSearchOffers } from './OfferHooks/useSearchOffers.ts'
+export { updateOfferMutationKey, useUpdateOffer } from './OfferHooks/useUpdateOffer.ts'
 export {
   getCompanyReservationConfigQueryKey,
   getCompanyReservationConfigQueryOptions,
