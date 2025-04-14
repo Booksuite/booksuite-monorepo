@@ -3,7 +3,6 @@ import {
     ReservationFull,
     ReservationResponseFullDTOSaleChannel,
     ReservationResponseFullDTOStatus,
-    useGetCalendarFromHousingUnitTypeId,
     User,
     useSearchHousingUnitTypes,
     useSearchReservationOption,
@@ -90,6 +89,7 @@ export type ReservationFormData = {
     startDate: string
     endDate: string
     totalDays: number | null
+    finalReservationPrice: number
     adults: number | null
     ageGroups: ReservationAgeGroupInput[]
     notes: string
@@ -132,6 +132,7 @@ export const createReservationFormInitialValues = (
     totalDays: data?.totalDays ?? null,
     adults: data?.adults ?? null,
     ageGroups: data?.ageGroups || [],
+    finalReservationPrice: data?.finalReservationPrice || 0,
     notes: data?.notes || '',
     housingUnitId: data?.housingUnit?.id || '',
     services:
