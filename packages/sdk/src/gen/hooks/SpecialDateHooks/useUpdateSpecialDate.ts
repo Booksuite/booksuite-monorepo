@@ -21,7 +21,7 @@ export function useUpdateSpecialDate<TContext>(
     mutation?: UseMutationOptions<
       UpdateSpecialDateMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateSpecialDatePathParams['id']; data?: UpdateSpecialDateMutationRequest },
+      { id: UpdateSpecialDatePathParams['id']; companyId: UpdateSpecialDatePathParams['companyId']; data?: UpdateSpecialDateMutationRequest },
       TContext
     >
     client?: Partial<RequestConfig<UpdateSpecialDateMutationRequest>> & { client?: typeof client }
@@ -33,11 +33,11 @@ export function useUpdateSpecialDate<TContext>(
   return useMutation<
     UpdateSpecialDateMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: UpdateSpecialDatePathParams['id']; data?: UpdateSpecialDateMutationRequest },
+    { id: UpdateSpecialDatePathParams['id']; companyId: UpdateSpecialDatePathParams['companyId']; data?: UpdateSpecialDateMutationRequest },
     TContext
   >({
-    mutationFn: async ({ id, data }) => {
-      return updateSpecialDate({ id }, data, config)
+    mutationFn: async ({ id, companyId, data }) => {
+      return updateSpecialDate({ id, companyId }, data, config)
     },
     mutationKey,
     ...mutationOptions,

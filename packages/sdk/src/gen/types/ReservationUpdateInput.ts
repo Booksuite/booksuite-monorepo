@@ -61,6 +61,10 @@ export type ReservationUpdateInput = {
    */
   housingUnitId?: string
   /**
+   * @type number | undefined
+   */
+  finalReservationPrice?: number
+  /**
    * @type array | undefined
    */
   services?: ReservationServiceInput[]
