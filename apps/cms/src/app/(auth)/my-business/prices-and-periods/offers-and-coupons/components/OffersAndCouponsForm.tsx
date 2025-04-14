@@ -47,6 +47,20 @@ export const OffersAndCouponsForm = ({
     return (
         <FormContainer>
             <FormSection>
+                <FormControlLabel
+                    control={
+                        <Switch
+                            checked={values.published}
+                            onChange={(e) =>
+                                setFieldValue('published', e.target.checked)
+                            }
+                        />
+                    }
+                    label="Publicado"
+                />
+            </FormSection>
+
+            <FormSection>
                 <TextField
                     label={'Nome da oferta'}
                     error={touched.name && Boolean(errors.name)}
