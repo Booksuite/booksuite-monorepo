@@ -5,22 +5,27 @@ import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/r
 import { getSpecialDateById } from '../../client/SpecialDateService/getSpecialDateById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
-export const getSpecialDateByIdQueryKey = ({ id }: { id: GetSpecialDateByIdPathParams['id'] }) =>
-  ['getSpecialDateById', { companyId: companyId, id: id }] as const
+export const getSpecialDateByIdQueryKey = ({
+  id,
+  companyId,
+}: {
+  id: GetSpecialDateByIdPathParams['id']
+  companyId: GetSpecialDateByIdPathParams['companyId']
+}) => ['getSpecialDateById', { companyId: companyId, id: id }] as const
 
 export type GetSpecialDateByIdQueryKey = ReturnType<typeof getSpecialDateByIdQueryKey>
 
 export function getSpecialDateByIdQueryOptions(
-  { id }: { id: GetSpecialDateByIdPathParams['id'] },
+  { id, companyId }: { id: GetSpecialDateByIdPathParams['id']; companyId: GetSpecialDateByIdPathParams['companyId'] },
   config: Partial<RequestConfig> & { client?: typeof client } = {},
 ) {
-  const queryKey = getSpecialDateByIdQueryKey({ id })
+  const queryKey = getSpecialDateByIdQueryKey({ id, companyId })
   return queryOptions<GetSpecialDateByIdQueryResponse, ResponseErrorConfig<Error>, GetSpecialDateByIdQueryResponse, typeof queryKey>({
-    enabled: !!id,
+    enabled: !!(id && companyId),
     queryKey,
     queryFn: async ({ signal }) => {
       config.signal = signal
-      return getSpecialDateById({ id }, config)
+      return getSpecialDateById({ id, companyId }, config)
     },
   })
 }
@@ -33,17 +38,17 @@ export function useGetSpecialDateById<
   TQueryData = GetSpecialDateByIdQueryResponse,
   TQueryKey extends QueryKey = GetSpecialDateByIdQueryKey,
 >(
-  { id }: { id: GetSpecialDateByIdPathParams['id'] },
+  { id, companyId }: { id: GetSpecialDateByIdPathParams['id']; companyId: GetSpecialDateByIdPathParams['companyId'] },
   options: {
     query?: Partial<QueryObserverOptions<GetSpecialDateByIdQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
   const { query: queryOptions, client: config = {} } = options ?? {}
-  const queryKey = queryOptions?.queryKey ?? getSpecialDateByIdQueryKey({ id })
+  const queryKey = queryOptions?.queryKey ?? getSpecialDateByIdQueryKey({ id, companyId })
 
   const query = useQuery({
-    ...(getSpecialDateByIdQueryOptions({ id }, config) as unknown as QueryObserverOptions),
+    ...(getSpecialDateByIdQueryOptions({ id, companyId }, config) as unknown as QueryObserverOptions),
     queryKey,
     ...(queryOptions as unknown as Omit<QueryObserverOptions, 'queryKey'>),
   }) as UseQueryResult<TData, ResponseErrorConfig<Error>> & { queryKey: TQueryKey }
