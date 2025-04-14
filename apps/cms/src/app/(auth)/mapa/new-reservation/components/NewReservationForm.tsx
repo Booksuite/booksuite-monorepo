@@ -92,7 +92,7 @@ export const NewReservationForm: React.FC = () => {
         return weekendPrice + weekDaysPrice
     }
 
-    const calculateTotalPrice = () => {
+    const calculateHousingUnitTypeTotal = () => {
         if (
             !selectedHousingUnitType ||
             !values.startDate ||
@@ -102,12 +102,9 @@ export const NewReservationForm: React.FC = () => {
             return 0
         }
 
-        const nights = calculateNights(values.startDate, values.endDate)
-        const basePrice = calculateSubtotal()
         const totalChildrens = values.ageGroups
             ? values.ageGroups.reduce((sum, c) => sum + Number(c.quantity), 0)
             : 0
-        const guests = values.adults ? values.adults + totalChildrens : 1
 
         const optionsTotal = values.reservationOptions.reduce(
             (total, optionId) => {
@@ -129,15 +126,11 @@ export const NewReservationForm: React.FC = () => {
 
                 switch (option.billingType) {
                     case 'PER_GUEST_DAILY':
-                        return (
-                            total +
-                            optionAdultPrice +
-                            optionChildrenPrice * nights.totalDays
-                        )
+                        return total + optionAdultPrice + optionChildrenPrice
                     case 'PER_GUEST':
                         return total + optionAdultPrice + optionChildrenPrice
                     case 'DAILY':
-                        return total + optionAdultPrice * nights.totalDays
+                        return total + optionAdultPrice
                     case 'PER_RESERVATION':
                     case 'PER_HOUSING_UNIT':
                         return total + optionAdultPrice
@@ -148,7 +141,7 @@ export const NewReservationForm: React.FC = () => {
             0,
         )
 
-        return basePrice + optionsTotal
+        return optionsTotal
     }
 
     const openHousingUnitSelector = () => {
@@ -180,16 +173,15 @@ export const NewReservationForm: React.FC = () => {
     }
 
     useEffect(() => {
-        if (agePolicy?.ageGroups) {
-            setFieldValue(
-                'children',
-                agePolicy?.ageGroups.map((a) => ({
-                    children: 0,
-                    ageGroupId: a.id,
-                })),
-            )
-        }
-    }, [agePolicy, setFieldValue])
+        if (values.ageGroups.length || !agePolicy?.ageGroups.length) return
+        setFieldValue(
+            'ageGroups',
+            agePolicy?.ageGroups.map((policyAgeGroup) => ({
+                quantity: 0,
+                ageGroupId: policyAgeGroup.id,
+            })),
+        )
+    }, [agePolicy, setFieldValue, values])
 
     return (
         <FormContainer>
@@ -277,6 +269,7 @@ export const NewReservationForm: React.FC = () => {
                 <NumberInput
                     label="Adultos"
                     value={values.adults}
+                    min={0}
                     disabled={values.startDate && values.endDate ? false : true}
                     onChange={(e) => {
                         const newValueNumber = Number(e.target.value)
@@ -285,41 +278,27 @@ export const NewReservationForm: React.FC = () => {
                     }}
                 />
 
-                {agePolicy?.ageGroups ? (
-                    <FieldArray name="children">
-                        {({ push, remove }) => (
-                            <>
-                                {agePolicy?.ageGroups.map((a, index) => (
-                                    <NumberInput
-                                        key={index}
-                                        label={`Crianças (${a.initialAge} a ${a.finalAge})`}
-                                        disabled={
-                                            values.startDate && values.endDate
-                                                ? false
-                                                : true
-                                        }
-                                        value={
-                                            values.ageGroups
-                                                ? values.ageGroups[index]
-                                                      ?.quantity
-                                                : 0
-                                        }
-                                        onChange={(e) => {
-                                            setFieldValue(
-                                                `children.${index}.ageGroupId`,
-                                                a.id,
-                                            )
-                                            setFieldValue(
-                                                `children.${index}.children`,
-                                                e.target.value,
-                                            )
-                                        }}
-                                    />
-                                ))}
-                            </>
-                        )}
-                    </FieldArray>
-                ) : undefined}
+                {agePolicy?.ageGroups.map((policyAgeGroup, index) => (
+                    <NumberInput
+                        key={policyAgeGroup.id}
+                        min={0}
+                        label={`Crianças (${policyAgeGroup.initialAge} a ${policyAgeGroup.finalAge})`}
+                        disabled={
+                            values.startDate && values.endDate ? false : true
+                        }
+                        value={
+                            values.ageGroups
+                                ? values.ageGroups[index]?.quantity
+                                : 0
+                        }
+                        onChange={(e) => {
+                            setFieldValue(
+                                `ageGroups.${index}.quantity`,
+                                e.target.value,
+                            )
+                        }}
+                    />
+                ))}
             </FormSection>
 
             <FormSection
@@ -448,7 +427,9 @@ export const NewReservationForm: React.FC = () => {
                                             fontWeight: 600,
                                         }}
                                     >
-                                        {formatCurrency(calculateSubtotal())}
+                                        {formatCurrency(
+                                            values.finalReservationPrice,
+                                        )}
                                     </Typography>
                                 </Box>
                             </Box>
@@ -495,7 +476,9 @@ export const NewReservationForm: React.FC = () => {
                                     fontWeight: 600,
                                 }}
                             >
-                                {formatCurrency(calculateTotalPrice())}
+                                {formatCurrency(
+                                    calculateHousingUnitTypeTotal(),
+                                )}
                             </Typography>
                         </Box>
                     </Box>
