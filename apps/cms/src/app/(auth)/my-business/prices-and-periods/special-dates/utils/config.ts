@@ -4,6 +4,7 @@ import {
     SpecialDateHousingUnitType,
     SpecialDateMedia,
 } from '@booksuite/sdk'
+import moment from 'moment'
 import * as yup from 'yup'
 
 interface LocalizedText {
@@ -77,8 +78,8 @@ export const createSpecialDateFormInitialValues = (
     id: data?.id || '',
     name: data?.name || '',
     published: data?.published || false,
-    startDate: data?.startDate || '',
-    endDate: data?.endDate || '',
+    startDate: data?.startDate.split('T').at(0) || '',
+    endDate: data?.endDate.split('T').at(0) || '',
     minDaily: data?.minDaily || 1,
     priceVariationType: data?.priceVariationType || 'ABSOLUTE_INCREASE',
     price: data?.price || 0,

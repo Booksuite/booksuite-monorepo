@@ -65,6 +65,7 @@ export const SpecialDateForm: React.FC = () => {
         useFormikContext<SpecialDateFormData>()
     const companyId = useCurrentCompanyId()
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
+    console.log(values.startDate)
 
     const { data: housingUnitTypesData } = useSearchHousingUnitTypes(
         { companyId },

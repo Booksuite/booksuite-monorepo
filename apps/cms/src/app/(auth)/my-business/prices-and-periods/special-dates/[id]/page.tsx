@@ -64,7 +64,8 @@ export default function UpdateSeasonRule({ params }: UpdateSeasonRuleProps) {
             })
 
             back()
-        } catch {
+        } catch(error) {
+            consoe.log(error)
             enqueueSnackbar(`Erro ao editar data especial`, {
                 variant: 'error',
                 anchorOrigin: {
