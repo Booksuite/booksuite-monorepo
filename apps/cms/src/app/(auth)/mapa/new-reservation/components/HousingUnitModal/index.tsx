@@ -1,3 +1,10 @@
+import {
+    AvailabilityAndPricing,
+    HousingUnitType,
+    useGetCalendar,
+    useGetCalendarFromHousingUnitTypeId,
+} from '@booksuite/sdk'
+import { useSearchServices } from '@booksuite/sdk/src/gen/hooks/ServiceHooks/useSearchServices'
 import SearchIcon from '@mui/icons-material/Search'
 import {
     Box,
@@ -11,11 +18,13 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
+import { useFormikContext } from 'formik'
+import moment from 'moment'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { formatCurrency } from '@/common/utils/currency'
-import { useCompanyHousingUnitTypes } from '../../utils/config'
+import { ReservationFormData, useCompanyHousingUnitTypes } from '../../utils/config'
 
 interface HousingUnitModalProps {
     open: boolean
@@ -43,41 +52,69 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
     const [searchQuery, setSearchQuery] = useState('')
     const companyId = useCurrentCompanyId()
 
+    const { setFieldValue, values } = useFormikContext<ReservationFormData>()
+
+    function transformAvailAndPricing(
+        availAndPricing: AvailabilityAndPricing,
+        housingUnitType: HousingUnitType,
+    ) {
+        return {
+            ...availAndPricing,
+            housingUnitType: housingUnitType,
+        }
+    }
+
+    const { data: availAndPricing, isLoadingCalendar } = useGetCalendar(
+        {
+            companyId,
+        },
+        {
+            currentDate: moment().startOf('day').toISOString(),
+            dateRange: {
+                start: moment(startDate).toISOString(),
+                end: moment(endDate).toISOString(),
+            },
+        },
+    )
+
     const {
-        data: housingUnitTypes,
-        isLoading,
+        data: allhousingUnitTypes,
+        isLoading: isLoadingHousingUnitType,
         error,
     } = useCompanyHousingUnitTypes(companyId, open)
+
+    const pricing = availAndPricing?.filter((avail) =>
+        Object.entries(avail.calendar).every(
+            (day) => day[1].availability.available === true,
+        ),
+    )
+    const housingUnitTypesAvailAndPricing = pricing?.map((availAndPrice) => ({
+        ...availAndPrice,
+        housingUnitType: allhousingUnitTypes?.items.find(
+            (type) => type.id === availAndPrice.id,
+        ),
+    }))
 
     const handleSelect = (unitId: string) => {
         onSelect(unitId)
         onClose()
     }
 
-    const filteredHousingTypes =
-        housingUnitTypes?.items
-            .map((type) => ({
-                ...type,
-                housingUnits: type.housingUnits.filter((unit) =>
-                    unit.name.toLowerCase().includes(searchQuery.toLowerCase()),
-                ),
-            }))
-            .filter((type) => type.housingUnits.length > 0) || []
-
     const calculateSubtotal = () => {
-        if (!selectedHousingUnitId || !housingUnitTypes) return 0
+        if (!selectedHousingUnitId || !housingUnitTypesAvailAndPricing) return 0
 
-        const selectedType = housingUnitTypes.items.find((type) =>
-            type.housingUnits.some((unit) => unit.id === selectedHousingUnitId),
+        const selectedType = housingUnitTypesAvailAndPricing.find((type) =>
+            type.housingUnits.find((unit) => unit.id === selectedHousingUnitId),
         )
 
-        const price = selectedType?.weekdaysPrice ?? 0
-        return price * numberOfNights
+        const price = Object.entries(selectedType?.calendar ?? {}).reduce(
+            (sum, [, calendarDay]) => sum + calendarDay.finalPrice,
+            0,
+        )
+        setFieldValue('finalReservationPrice', price)
+        return price
     }
 
-    const getUnitPrice = (type: (typeof filteredHousingTypes)[0]) => {
-        return type.weekdaysPrice ?? 0
-    }
     return (
         <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
             <DialogTitle sx={{ pb: 0 }}>
@@ -133,7 +170,7 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                 />
             </DialogTitle>
             <DialogContent>
-                {isLoading ? (
+                {isLoadingHousingUnitType ? (
                     <Box
                         sx={{
                             display: 'flex',
@@ -151,7 +188,7 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                             novamente.
                         </Typography>
                     </Box>
-                ) : !filteredHousingTypes.length ? (
+                ) : !housingUnitTypesAvailAndPricing?.length ? (
                     <Box sx={{ p: 2, textAlign: 'center' }}>
                         <Typography color="text.secondary">
                             Nenhuma acomodação disponível.
@@ -160,11 +197,13 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                 ) : (
                     <>
                         <Box>
-                            {filteredHousingTypes.map((type) => {
+                            {housingUnitTypesAvailAndPricing.map((type) => {
                                 const isDisabled =
-                                    adults > type.maxAdults ||
-                                    childrens > type.maxChildren ||
-                                    adults + childrens > type.maxGuests
+                                    adults > type.housingUnitType?.maxAdults ||
+                                    childrens >
+                                        type.housingUnitType?.maxChildren ||
+                                    adults + childrens >
+                                        type.housingUnitType?.maxChildren
 
                                 return type.housingUnits.map((unit) => (
                                     <Box
@@ -240,11 +279,14 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                                                 {`${
                                                     isDisabled
                                                         ? 'Adultos ' +
-                                                          type.maxAdults +
+                                                          type.housingUnitType
+                                                              ?.maxAdults +
                                                           ' Crianças ' +
-                                                          type.maxChildren
+                                                          type.housingUnitType
+                                                              ?.maxChildren
                                                         : 'Máx. Hóspedes ' +
-                                                          type.maxGuests
+                                                          type.housingUnitType
+                                                              ?.maxGuests
                                                 }`}
                                             </Typography>
                                         </Box>
@@ -262,7 +304,8 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                                                 }}
                                             >
                                                 {formatCurrency(
-                                                    getUnitPrice(type),
+                                                    type.housingUnitType
+                                                        ?.weekdaysPrice || 0,
                                                 )}
                                             </Typography>
                                             <Typography
