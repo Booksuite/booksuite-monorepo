@@ -22,7 +22,11 @@ export function useGetCalendarFromHousingUnitTypeId<TContext>(
     mutation?: UseMutationOptions<
       GetCalendarFromHousingUnitTypeIdMutationResponse,
       ResponseErrorConfig<Error>,
-      { housingUnitTypeId: GetCalendarFromHousingUnitTypeIdPathParams['housingUnitTypeId']; data: GetCalendarFromHousingUnitTypeIdMutationRequest },
+      {
+        housingUnitTypeId: GetCalendarFromHousingUnitTypeIdPathParams['housingUnitTypeId']
+        companyId: GetCalendarFromHousingUnitTypeIdPathParams['companyId']
+        data: GetCalendarFromHousingUnitTypeIdMutationRequest
+      },
       TContext
     >
     client?: Partial<RequestConfig<GetCalendarFromHousingUnitTypeIdMutationRequest>> & { client?: typeof client }
@@ -34,11 +38,15 @@ export function useGetCalendarFromHousingUnitTypeId<TContext>(
   return useMutation<
     GetCalendarFromHousingUnitTypeIdMutationResponse,
     ResponseErrorConfig<Error>,
-    { housingUnitTypeId: GetCalendarFromHousingUnitTypeIdPathParams['housingUnitTypeId']; data: GetCalendarFromHousingUnitTypeIdMutationRequest },
+    {
+      housingUnitTypeId: GetCalendarFromHousingUnitTypeIdPathParams['housingUnitTypeId']
+      companyId: GetCalendarFromHousingUnitTypeIdPathParams['companyId']
+      data: GetCalendarFromHousingUnitTypeIdMutationRequest
+    },
     TContext
   >({
-    mutationFn: async ({ housingUnitTypeId, data }) => {
-      return getCalendarFromHousingUnitTypeId({ housingUnitTypeId }, data, config)
+    mutationFn: async ({ housingUnitTypeId, companyId, data }) => {
+      return getCalendarFromHousingUnitTypeId({ housingUnitTypeId, companyId }, data, config)
     },
     mutationKey,
     ...mutationOptions,

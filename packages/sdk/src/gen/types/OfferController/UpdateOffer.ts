@@ -6,6 +6,10 @@ export type UpdateOfferPathParams = {
    * @type string
    */
   id: string
+  /**
+   * @type string
+   */
+  companyId: string
 }
 
 export type UpdateOffer200 = Offer

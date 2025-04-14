@@ -3,7 +3,7 @@ import client from '../../../axios-client'
 import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type { UpdateOfferMutationRequest, UpdateOfferMutationResponse, UpdateOfferPathParams } from '../../types/OfferController/UpdateOffer.ts'
 
-export function getUpdateOfferUrl({ id }: { id: UpdateOfferPathParams['id'] }) {
+export function getUpdateOfferUrl({ id, companyId }: { id: UpdateOfferPathParams['id']; companyId: UpdateOfferPathParams['companyId'] }) {
   return `/company/${companyId}/offers/${id}` as const
 }
 
@@ -11,7 +11,7 @@ export function getUpdateOfferUrl({ id }: { id: UpdateOfferPathParams['id'] }) {
  * {@link /company/:companyId/offers/:id}
  */
 export async function updateOffer(
-  { id }: { id: UpdateOfferPathParams['id'] },
+  { id, companyId }: { id: UpdateOfferPathParams['id']; companyId: UpdateOfferPathParams['companyId'] },
   data?: UpdateOfferMutationRequest,
   config: Partial<RequestConfig<UpdateOfferMutationRequest>> & { client?: typeof client } = {},
 ) {
@@ -19,7 +19,7 @@ export async function updateOffer(
 
   const res = await request<UpdateOfferMutationResponse, ResponseErrorConfig<Error>, UpdateOfferMutationRequest>({
     method: 'PATCH',
-    url: getUpdateOfferUrl({ id }).toString(),
+    url: getUpdateOfferUrl({ id, companyId }).toString(),
     data,
     ...requestConfig,
   })

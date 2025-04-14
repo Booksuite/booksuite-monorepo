@@ -17,7 +17,7 @@ export function useUpdateOffer<TContext>(
     mutation?: UseMutationOptions<
       UpdateOfferMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateOfferPathParams['id']; data?: UpdateOfferMutationRequest },
+      { id: UpdateOfferPathParams['id']; companyId: UpdateOfferPathParams['companyId']; data?: UpdateOfferMutationRequest },
       TContext
     >
     client?: Partial<RequestConfig<UpdateOfferMutationRequest>> & { client?: typeof client }
@@ -26,13 +26,16 @@ export function useUpdateOffer<TContext>(
   const { mutation: mutationOptions, client: config = {} } = options ?? {}
   const mutationKey = mutationOptions?.mutationKey ?? updateOfferMutationKey()
 
-  return useMutation<UpdateOfferMutationResponse, ResponseErrorConfig<Error>, { id: UpdateOfferPathParams['id']; data?: UpdateOfferMutationRequest }, TContext>(
-    {
-      mutationFn: async ({ id, data }) => {
-        return updateOffer({ id }, data, config)
-      },
-      mutationKey,
-      ...mutationOptions,
+  return useMutation<
+    UpdateOfferMutationResponse,
+    ResponseErrorConfig<Error>,
+    { id: UpdateOfferPathParams['id']; companyId: UpdateOfferPathParams['companyId']; data?: UpdateOfferMutationRequest },
+    TContext
+  >({
+    mutationFn: async ({ id, companyId, data }) => {
+      return updateOffer({ id, companyId }, data, config)
     },
-  )
+    mutationKey,
+    ...mutationOptions,
+  })
 }

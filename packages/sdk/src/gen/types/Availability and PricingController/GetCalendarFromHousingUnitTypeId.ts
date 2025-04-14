@@ -7,6 +7,7 @@ export type GetCalendarFromHousingUnitTypeIdPathParams = {
    * @type string
    */
   housingUnitTypeId: string
+  companyId: any
 }
 
 /**

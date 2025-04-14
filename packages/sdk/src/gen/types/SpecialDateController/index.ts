@@ -7,13 +7,13 @@ export type {
 } from './CreateSpecialDate.ts'
 export type { GetSpecialDateByIdPathParams, GetSpecialDateById200, GetSpecialDateByIdQueryResponse, GetSpecialDateByIdQuery } from './GetSpecialDateById.ts'
 export type {
-  SearchServicesPathParams,
-  SearchServicesQueryParams,
-  SearchServices200,
-  SearchServicesMutationRequest,
-  SearchServicesMutationResponse,
-  SearchServicesMutation,
-} from './SearchServices.ts'
+  SearchSpecialDatesPathParams,
+  SearchSpecialDatesQueryParams,
+  SearchSpecialDates200,
+  SearchSpecialDatesMutationRequest,
+  SearchSpecialDatesMutationResponse,
+  SearchSpecialDatesMutation,
+} from './SearchSpecialDates.ts'
 export type {
   UpdateSpecialDatePathParams,
   UpdateSpecialDate200,
