@@ -11,16 +11,12 @@ import {
     useTheme,
 } from '@mui/material'
 import {
-    BarChart2,
     Bell,
     Building2,
-    ExternalLink,
-    HelpCircle,
     Home,
     Map,
     Megaphone,
     Settings,
-    ShoppingCart,
     X,
 } from 'lucide-react'
 import type React from 'react'
@@ -81,16 +77,9 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
     const mainLinks: LinkItem[] = [
         { href: '/', label: 'Dashboard', icon: Home },
         { href: '/map', label: 'Mapa', icon: Map },
-        { href: '/reports', label: 'Relatórios', icon: BarChart2 },
         { href: '/my-business', label: 'Meu negócio', icon: Building2 },
         { href: '/marketing', label: 'Marketing', icon: Megaphone },
-        { href: '/bookstore', label: 'Bookstore', icon: ShoppingCart },
         { href: '/settings', label: 'Configurações', icon: Settings },
-    ]
-
-    const bottomLinks: LinkItem[] = [
-        { href: '/site', label: 'Ir para o site', icon: ExternalLink },
-        { href: '/support', label: 'Suporte', icon: HelpCircle },
     ]
 
     const BusinessSelector = (
@@ -121,7 +110,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
 
     const SidebarContent = (
         <Stack
-            spacing={3}
+            spacing={7}
             sx={{
                 height: '100vh',
                 py: 3,
@@ -153,10 +142,6 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
             <Stack sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                 <Box>
                     <NavMenu links={mainLinks} isCollapsed={isCollapsed} />
-                </Box>
-
-                <Box sx={{ mt: 'auto', mb: 4 }}>
-                    <NavMenu links={bottomLinks} isCollapsed={isCollapsed} />
                 </Box>
             </Stack>
 
@@ -263,10 +248,6 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                     >
                         <Box>
                             <NavMenu links={mainLinks} isCollapsed={false} />
-                        </Box>
-
-                        <Box sx={{ mt: 'auto', mb: 4 }}>
-                            <NavMenu links={bottomLinks} isCollapsed={false} />
                         </Box>
                     </Stack>
                 </Stack>
