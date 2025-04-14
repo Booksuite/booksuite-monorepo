@@ -45,6 +45,10 @@ export type ReservationFull = {
   /**
    * @type number
    */
+  finalReservationPrice: number
+  /**
+   * @type number
+   */
   adults: number | null
   /**
    * @type string

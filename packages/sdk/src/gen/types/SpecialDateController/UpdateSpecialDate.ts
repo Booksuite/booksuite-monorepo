@@ -6,6 +6,10 @@ export type UpdateSpecialDatePathParams = {
    * @type string
    */
   id: string
+  /**
+   * @type string
+   */
+  companyId: string
 }
 
 export type UpdateSpecialDate200 = SpecialDate

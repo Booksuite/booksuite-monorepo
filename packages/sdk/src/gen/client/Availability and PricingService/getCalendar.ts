@@ -4,10 +4,10 @@ import type { RequestConfig, ResponseErrorConfig } from '../../../axios-client'
 import type {
   GetCalendarMutationRequest,
   GetCalendarMutationResponse,
-  GetCalendarQueryParams,
+  GetCalendarPathParams,
 } from '../../types/Availability and PricingController/GetCalendar.ts'
 
-export function getGetCalendarUrl() {
+export function getGetCalendarUrl({ companyId }: { companyId: GetCalendarPathParams['companyId'] }) {
   return `/company/${companyId}/calendar` as const
 }
 
@@ -16,16 +16,15 @@ export function getGetCalendarUrl() {
  * {@link /company/:companyId/calendar}
  */
 export async function getCalendar(
+  { companyId }: { companyId: GetCalendarPathParams['companyId'] },
   data: GetCalendarMutationRequest,
-  params: GetCalendarQueryParams,
   config: Partial<RequestConfig<GetCalendarMutationRequest>> & { client?: typeof client } = {},
 ) {
   const { client: request = client, ...requestConfig } = config
 
   const res = await request<GetCalendarMutationResponse, ResponseErrorConfig<Error>, GetCalendarMutationRequest>({
     method: 'POST',
-    url: getGetCalendarUrl().toString(),
-    params,
+    url: getGetCalendarUrl({ companyId }).toString(),
     data,
     ...requestConfig,
   })

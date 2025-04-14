@@ -1,4 +1,4 @@
-export type { GetCalendarQueryParams, GetCalendar200, GetCalendarMutationRequest, GetCalendarMutationResponse, GetCalendarMutation } from './GetCalendar.ts'
+export type { GetCalendarPathParams, GetCalendar200, GetCalendarMutationRequest, GetCalendarMutationResponse, GetCalendarMutation } from './GetCalendar.ts'
 export type {
   GetCalendarFromHousingUnitTypeIdPathParams,
   GetCalendarFromHousingUnitTypeId200,
