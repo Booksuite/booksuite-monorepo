@@ -273,6 +273,7 @@ __metadata:
     cep-promise: "npm:^4.4.1"
     chakra-react-select: "npm:^5.0.4"
     cookies-next: "npm:^4.3.0"
+    dayjs: "npm:^1.11.13"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.4"
     formik: "npm:^2.4.6"
@@ -4598,6 +4599,13 @@ __metadata:
   version: 4.1.0
   resolution: "date-fns@npm:4.1.0"
   checksum: 10c0/b79ff32830e6b7faa009590af6ae0fb8c3fd9ffad46d930548fbb5acf473773b4712ae887e156ba91a7b3dc30591ce0f517d69fd83bd9c38650fdc03b4e0bac8
+  languageName: node
+  linkType: hard
+
+"dayjs@npm:^1.11.13":
+  version: 1.11.13
+  resolution: "dayjs@npm:1.11.13"
+  checksum: 10c0/a3caf6ac8363c7dade9d1ee797848ddcf25c1ace68d9fe8678ecf8ba0675825430de5d793672ec87b24a69bf04a1544b176547b2539982275d5542a7955f35b7
   languageName: node
   linkType: hard
 

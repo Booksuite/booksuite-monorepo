@@ -1,16 +1,9 @@
-import { Button } from '@chakra-ui/react'
-import Link from 'next/link'
-
-import { CompaniesList } from './(components)/CompaniesList'
+import { Button } from '@mui/material'
 
 export default function Home() {
     return (
         <main>
-            <Button as={Link} href={'/nova-empresa'}>
-                Adicionar Empresa
-            </Button>
-
-            <CompaniesList />
+            <Button>Adicionar Empresa</Button>
         </main>
     )
 }

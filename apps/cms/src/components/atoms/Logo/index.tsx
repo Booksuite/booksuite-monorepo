@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react'
+import { Box } from '@mui/material'
 
 import { LogoIcon } from './LogoIcon'
 import { LogoText } from './LogoText'
@@ -8,9 +8,9 @@ export const Logo = {
     LogoIcon: LogoIcon,
 
     FullLogo: () => (
-        <Flex align={'center'} gap={2}>
+        <Box display="flex" alignItems="center" gap={2}>
             <LogoIcon />
             <LogoText />
-        </Flex>
+        </Box>
     ),
 }
