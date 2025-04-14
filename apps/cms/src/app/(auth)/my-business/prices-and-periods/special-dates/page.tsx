@@ -3,7 +3,7 @@
 import {
     SpecialDateFull,
     SpecialDateOrderBy,
-    useSearchServices,
+    useSearchSpecialDates,
     useUpdateSpecialDate,
 } from '@booksuite/sdk'
 import {
@@ -153,7 +153,7 @@ export default function SpecialDates() {
         data: specialDates,
         isLoading,
         error,
-    } = useSearchServices(
+    } = useSearchSpecialDates(
         { companyId },
         {
             pagination: { page, itemsPerPage },
@@ -185,6 +185,7 @@ export default function SpecialDates() {
                 onClick: () => {
                     updateSpecialDate({
                         id: item.id!,
+                        companyId,
                         data: { published: !item.published },
                     })
                 },
@@ -202,6 +203,7 @@ export default function SpecialDates() {
                 onClick: () => {
                     updateSpecialDate({
                         id: item.id!,
+                        companyId,
                         data: { published: false },
                     })
                 },

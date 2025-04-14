@@ -44,6 +44,7 @@ export default function UpdateSeasonRule({ params }: UpdateSeasonRuleProps) {
 
             await updateSpecialDate({
                 id: params.id,
+                companyId,
                 data: apiData,
             })
 
