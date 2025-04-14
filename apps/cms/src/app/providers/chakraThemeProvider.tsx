@@ -1,17 +1,12 @@
 'use client'
 
-import { alertAnatomy } from '@chakra-ui/anatomy'
 import {
-    AlertProps,
     ChakraProvider,
-    createMultiStyleConfigHelpers,
     defineStyle,
     defineStyleConfig,
     extendTheme,
 } from '@chakra-ui/react'
 import React from 'react'
-
-const { definePartsStyle } = createMultiStyleConfigHelpers(alertAnatomy.keys)
 
 interface ChakraThemeProviderProps {
     children: React.ReactNode
@@ -79,32 +74,6 @@ export default function ChakraThemeProvider({
 
     const linkTheme = defineStyleConfig({
         variants: { primary: linkPrimary },
-    })
-
-    const AlertBaseStyle = definePartsStyle((props: AlertProps) => {
-        const { status } = props
-
-        const base = {
-            container: {
-                background: 'tertiary.50',
-                color: 'primary.900',
-                borderRadius: '4px',
-            },
-        }
-
-        const infoBase = status === 'info' && {
-            ...base,
-            container: {
-                ...base.container,
-                background: 'tertiary.50',
-                color: 'primary.900',
-            },
-        }
-
-        return {
-            ...base,
-            ...infoBase,
-        }
     })
 
     const AccordionTheme = defineStyleConfig({
