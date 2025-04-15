@@ -5,7 +5,9 @@ const nextConfig = {
     rewrites: async () => [
         {
             source: '/api/:path*',
-            destination: `${process.env.API_URL}/:path*`|| 'https://localhost:3000/:path*',
+            destination: process.env.API_URL
+                ? `${process.env.API_URL}/:path*`
+                : 'http://localhost:3000/:path*',
         },
     ],
     experimental: {
