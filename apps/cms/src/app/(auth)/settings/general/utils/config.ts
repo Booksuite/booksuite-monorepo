@@ -18,6 +18,18 @@ export const transformFormDataForSubmit = (
     return transformedFormData
 }
 
+export const transformFormDataForSubmit = (
+    formData: GeneralDataForm,
+): CompanyUpdateInput => {
+    const transformedFormData = {
+        name: formData.name,
+        timezone: formData.timezone || null,
+        type: formData.type,
+    }
+    
+    return transformedFormData
+}
+
 export const createFormInitialValues = (
     data?: Partial<CompanyFull>,
 ): GeneralDataForm => ({
