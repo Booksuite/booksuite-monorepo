@@ -1,8 +1,4 @@
 export const colors = {
-    primary: {
-        color: '',
-    },
-
     blueGrey: {
         100: '#F0F4F8',
         200: '#D9E2EC',
@@ -50,6 +46,13 @@ export const colors = {
         800: '#504A40',
         primary: '#504A40',
         secondary: '#857F72',
+    },
+    systemColors: {
+        blueLight: '#E5ECF6',
+        blue: '#4D84FF',
+        orange: '#ED774A',
+        red: '#CC4444',
+        green: '#4BA35F',
     },
 } as const
 

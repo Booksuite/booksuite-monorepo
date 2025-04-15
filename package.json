@@ -16,5 +16,9 @@
         "eslint-plugin-simple-import-sort": "^12.1.1",
         "prettier": "^3.4.2",
         "typescript-eslint": "^8.26.0"
+    },
+    "dependencies": {
+        "clsx": "^2.1.1",
+        "tailwind-merge": "^3.2.0"
     }
 }
