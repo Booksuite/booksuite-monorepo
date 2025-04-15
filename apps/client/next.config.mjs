@@ -1,11 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
-  env: {
-    API_URL: "https://api-booksuite.hivegroup.com.br/api/v1",
-    GOOGLE_MAPS_API: "AIzaSyCp3KfAPsYDEOulVMYOY7c3MTRvXbWYGN4",
-    COMPANY_ID: "1",
+  rewrites: async () => [
+      {
+          source: '/api/:path*',
+          destination: `${process.env.API_URL}/:path*`|| 'https://localhost:3000/:path*',
+      },
+  ],
+  experimental: {
+      typedRoutes: true,
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig
