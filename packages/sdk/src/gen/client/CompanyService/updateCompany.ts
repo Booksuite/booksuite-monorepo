@@ -12,7 +12,7 @@ export function getUpdateCompanyUrl({ id }: { id: UpdateCompanyPathParams['id'] 
  */
 export async function updateCompany(
   { id }: { id: UpdateCompanyPathParams['id'] },
-  data: UpdateCompanyMutationRequest,
+  data?: UpdateCompanyMutationRequest,
   config: Partial<RequestConfig<UpdateCompanyMutationRequest>> & { client?: typeof client } = {},
 ) {
   const { client: request = client, ...requestConfig } = config
