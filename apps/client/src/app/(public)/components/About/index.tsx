@@ -1,0 +1,90 @@
+'use client'
+
+import { Gift, MapPin } from 'lucide-react'
+import { Button } from '@/components/atoms/Button'
+import { useCurrentCompanyStore } from '@/common/contexts/company'
+import { ImageSlider } from '@/components/molecules/ImageSlider'
+
+export const About: React.FC = () => {
+    const { company } = useCurrentCompanyStore()
+
+    const bannerUrl = company?.bannerImage?.url || '/placeholder.svg'
+    const images = Array(9).fill(bannerUrl)
+
+    return (
+        <div className="container mx-auto px-4 py-16 flex flex-col gap-20 items-center">
+            <div className="flex flex-col items-center">
+                <h1 className="text-4xl font-bold mb-4">{company?.name}</h1>
+                <div className="flex items-center text-amber-800">
+                    <MapPin className="h-5 w-5 mr-2" />
+                    <span>
+                        {company?.city}, {company?.state} - {company?.country}
+                    </span>
+                </div>
+            </div>
+
+            <div className="flex w-screen">
+                <div className="w-1/2 space-y-8 flex flex-col items-center px-16">
+                    <div className="w-full">
+                        <h2 className="text-2xl font-bold mb-4">Sobre nós</h2>
+                        <p className="text-gray-600 mb-4">
+                            {company?.description}
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-5 gap-4 w-full">
+                        {company?.facilities
+                            ?.filter((facility) => facility.order !== null)
+                            ?.sort((a, b) => (a.order || 0) - (b.order || 0))
+                            ?.slice(0, 5)
+                            ?.map((facility, index) => (
+                                <div
+                                    key={index}
+                                    className="text-center flex flex-col items-center justify-center"
+                                >
+                                    <div className="text-3xl mb-2 flex items-center justify-center">
+                                        {facility.facility.icon || (
+                                            <Gift className="w-8 h-8" />
+                                        )}
+                                    </div>
+                                    <div className="text-sm font-medium">
+                                        {facility.facility.name}
+                                    </div>
+                                    <div className="text-sm text-gray-600">
+                                        {facility.facility.category
+                                            .toLowerCase()
+                                            .split('_')
+                                            .map(
+                                                (word: string) =>
+                                                    word
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                    word.slice(1),
+                                            )
+                                            .join(' ')}
+                                    </div>
+                                </div>
+                            ))}
+                    </div>
+                    <div className="self-start">
+                        <Button
+                            variant="outline"
+                            className="border-amber-800 text-amber-800 hover:bg-amber-50"
+                        >
+                            Sobre nós
+                        </Button>
+                    </div>
+                </div>
+
+                <div className="w-1/2 space-y-8 flex flex-col items-center px-16">
+                    <ImageSlider
+                        images={images}
+                        aspectRatio="square"
+                        showPlayButton={false}
+                        autoPlayInterval={3000}
+                    />
+                </div>
+            </div>
+        </div>
+    )
+}

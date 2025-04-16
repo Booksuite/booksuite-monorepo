@@ -6,8 +6,9 @@ import { Search } from 'lucide-react'
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Button } from '@/components/atoms/Button'
 import { Navbar } from '@/components/templates/Navbar'
+import { SlideIndicator } from '@/components/atoms/SlideIndicator'
 
-export default function HeaderHome() {
+export const HeaderHome: React.FC = () => {
     const { company } = useCurrentCompanyStore()
     const [activeSlide, setActiveSlide] = useState(0)
 
@@ -62,20 +63,11 @@ export default function HeaderHome() {
                     </div>
                 </div>
 
-                <div className="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-2">
-                    {[0, 1, 2].map((index) => (
-                        <button
-                            key={index}
-                            onClick={() => setActiveSlide(index)}
-                            className={`h-3 rounded-full transition-all duration-300 ${
-                                activeSlide === index
-                                    ? 'w-7 bg-white'
-                                    : 'w-3 bg-white/50'
-                            }`}
-                            aria-label={`Slide ${index + 1}`}
-                        />
-                    ))}
-                </div>
+                <SlideIndicator
+                    activeSlide={activeSlide}
+                    setActiveSlide={setActiveSlide}
+                    totalSlides={3}
+                />
             </div>
         </div>
     )
