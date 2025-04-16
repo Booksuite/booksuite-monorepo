@@ -110,16 +110,16 @@ export type CompanyUpdateInput = {
   /**
    * @type string
    */
-  privacyPolicyDescription: string
+  privacyPolicyDescriptio?: string | null
   /**
    * @type string
    */
-  privacyPolicySimpleModel: string
+  privacyPolicySimpleModel?: string | null
   /**
    * @type string
    */
-  privacyPolicyFullModel: string
-  mapCoordinates?: MapCoordinatesInput
+  privacyPolicyFullModel?: string | null
+  mapCoordinates?: MapCoordinatesInput | null
   /**
    * @type string
    */
