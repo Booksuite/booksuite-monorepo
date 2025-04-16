@@ -63,7 +63,7 @@ export type ReservationUpdateInput = {
   /**
    * @type number | undefined
    */
-  finalReservationPrice?: number
+  finalPrice?: number
   /**
    * @type array | undefined
    */

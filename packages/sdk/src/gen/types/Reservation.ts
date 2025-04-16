@@ -39,7 +39,7 @@ export type Reservation = {
   /**
    * @type number
    */
-  finalReservationPrice: number
+  finalPrice: number
   /**
    * @type number
    */
