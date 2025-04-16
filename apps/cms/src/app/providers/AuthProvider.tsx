@@ -1,11 +1,12 @@
 'use client'
 
 import { useGetCompanyById } from '@booksuite/sdk'
-import { Spinner } from '@chakra-ui/react'
+
 import { useEffect } from 'react'
 
 import { TEST_COMPANY, useCurrentCompanyStore } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
+import { CircularProgress } from '@mui/material'
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { setCompany, company } = useCurrentCompanyStore()
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [data, setCompany])
 
     if (!error && (isLoading || isFetching || !company)) {
-        return <Spinner />
+        return <CircularProgress />
     }
 
     if (error) {

@@ -64,7 +64,7 @@ export const SelectModal = <T extends { name: string; id: string }>({
 
     useEffect(() => {
         setSelectedItems(initialSelectedItems)
-    }, [initialSelectedItems, props.isOpen])
+    }, [initialSelectedItems, props.open])
 
     const filterItems = useCallback(
         (items: T[], query: string, group?: string) => {
@@ -124,7 +124,7 @@ export const SelectModal = <T extends { name: string; id: string }>({
 
     const handleConfirm = () => {
         onSelect(selectedItems)
-        props.onClose?.()
+        props.onClose?.({}, 'escapeKeyDown')
     }
 
     const getTabDisplayName = (tabItem: string): string => {
@@ -152,7 +152,6 @@ export const SelectModal = <T extends { name: string; id: string }>({
         <Dialog
             maxWidth="md"
             fullWidth
-            open={props.isOpen || false}
             {...props}
             slotProps={{
                 paper: {
@@ -271,7 +270,11 @@ export const SelectModal = <T extends { name: string; id: string }>({
             </DialogContent>
 
             <DialogActions sx={{ px: 6, pb: 6 }}>
-                <Button variant="outlined" onClick={props.onClose} size="small">
+                <Button
+                    variant="outlined"
+                    onClick={() => props.onClose?.({}, 'escapeKeyDown')}
+                    size="small"
+                >
                     {cancelButtonText}
                 </Button>
                 <Button

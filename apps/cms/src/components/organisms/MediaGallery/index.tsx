@@ -6,7 +6,7 @@ import {
     useUploadMedia,
     useUpsertMedia,
 } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
+
 import {
     Box,
     Button,
@@ -35,6 +35,7 @@ import {
 import { ITEMS_PER_PAGE } from './constants'
 import { MediaGalleryProps, MediaUrlInfo } from './types'
 import { getGalleryDescription } from './utils'
+import { useSnackbar } from 'notistack'
 
 export const MediaGallery: React.FC<MediaGalleryProps> = ({
     isOpen,
@@ -52,7 +53,7 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
     const queryClient = useQueryClient()
     const companyId = useCurrentCompanyId()
 
-    const toast = useToast()
+    const { enqueueSnackbar } = useSnackbar()
 
     const [selectedItems, setSelectedItems] = useState<string[]>(
         initialItems.map((item) => item.id),
@@ -171,14 +172,12 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
             setSelectedItems(selectedItems.filter((id) => id !== itemId))
         } else {
             if (maxItems && selectedItems.length >= maxItems) {
-                toast({
-                    title: 'Máximo de mídias atingido',
-                    description:
-                        'Você pode selecionar no máximo ' +
-                        maxItems +
-                        ' mídias',
-                    status: 'error',
-                })
+                enqueueSnackbar(
+                    `Você pode selecionar no máximo ${maxItems} mídias`,
+                    {
+                        variant: 'error',
+                    },
+                )
                 return
             }
             setSelectedItems([...selectedItems, itemId])
@@ -219,13 +218,8 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                 fileInputRef.current.value = ''
             }
         } catch (error) {
-            toast({
-                title: 'Erro ao fazer upload',
-                description: getErrorMessage(
-                    error,
-                    'Verifique se o arquivo é uma imagem válida',
-                ),
-                status: 'error',
+            enqueueSnackbar('Verifique se o arquivo é uma imagem válida', {
+                variant: 'error',
             })
         }
     }

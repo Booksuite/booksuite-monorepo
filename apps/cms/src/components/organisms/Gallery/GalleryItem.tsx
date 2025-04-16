@@ -1,36 +1,62 @@
-import { Box, Flex, IconButton, Image, Text } from '@chakra-ui/react'
-import { MoreVertical } from 'lucide-react'
+import { Box, IconButton } from '@mui/material'
+import { MoreVert } from '@mui/icons-material'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const GalleryItem: React.FC<any> = ({ index, src, alt }) => {
     return (
-        <Box position="relative" borderRadius="md" overflow="hidden">
-            <Image w="full" src={src} alt={alt} />
+        <Box
+            sx={{
+                position: 'relative',
+                borderRadius: 1,
+                overflow: 'hidden',
+                '& img': {
+                    width: '100%',
+                    height: 'auto',
+                },
+            }}
+        >
+            <img src={src} alt={alt} />
 
-            <Flex
-                position="absolute"
-                top={0}
-                left={0}
-                w="full"
-                h="full"
-                p={1}
-                justifyContent="space-between"
+            <Box
+                sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    p: 1,
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                }}
             >
                 {index !== undefined && (
-                    <Text fontSize="xs" fontWeight="bold" color="white" px={2}>
+                    <Box
+                        sx={{
+                            fontSize: '0.75rem',
+                            fontWeight: 'bold',
+                            color: 'white',
+                            px: 2,
+                        }}
+                    >
                         {index + 1}
-                    </Text>
+                    </Box>
                 )}
 
                 <IconButton
                     aria-label="Opções"
-                    icon={<MoreVertical />}
-                    size="sm"
-                    bg="white"
-                    color={'blue.900'}
-                    borderBottomLeftRadius="md"
-                />
-            </Flex>
+                    size="small"
+                    sx={{
+                        bgcolor: 'white',
+                        color: 'primary.dark',
+                        borderBottomLeftRadius: 1,
+                        '&:hover': {
+                            bgcolor: 'white',
+                        },
+                    }}
+                >
+                    <MoreVert />
+                </IconButton>
+            </Box>
         </Box>
     )
 }

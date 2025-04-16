@@ -1,0 +1,47 @@
+name: Deploy CMS
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - 'apps/cms/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+          cache: 'npm'
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      #   - name: Build CMS
+      #     run: |
+      #       cd apps/cms
+      #       yarn build
+      #     env:
+      #       NODE_ENV: development
+
+    #   - name: Install SSH Key
+    #     uses: shimataro/ssh-key-action@v2
+    #     with:
+    #       key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #       known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+
+    #   - name: Deploy to VPS
+    #     run: |
+    #       rsync -avz --delete ./apps/cms/build ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/cms
+    #       ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} 'cd /home/cms && pm2 restart cms'
+    #     env:
+    #       SSH_AUTH_SOCK: /tmp/ssh_agent.sock
