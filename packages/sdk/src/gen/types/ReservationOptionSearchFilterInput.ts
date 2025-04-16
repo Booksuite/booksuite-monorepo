@@ -5,5 +5,8 @@ export type ReservationOptionSearchFilterInput = {
    * @type boolean | undefined
    */
   published?: boolean
-  billingType: BillingType
+  /**
+   * @type array | undefined
+   */
+  billingType?: BillingType[]
 }
