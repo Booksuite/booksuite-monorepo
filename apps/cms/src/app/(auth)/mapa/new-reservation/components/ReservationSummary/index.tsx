@@ -33,66 +33,17 @@ const ReservationSummary = () => {
     )
     const { data: services } = useCompanyServices(companyId, false)
 
-    const selectedHousingUnitType = housingUnitTypes?.items.find((type) =>
-        type.housingUnits.some((unit) => unit.id === values.housingUnitId),
-    )
-
-    const calculateDailyTotal = () => {
-        if (!selectedHousingUnitType || !values.startDate || !values.endDate)
-            return 0
-
-        const start = new Date(values.startDate)
-        const end = new Date(values.endDate)
-
-        if (isNaN(start.getTime()) || isNaN(end.getTime()) || end < start) {
-            return 0
-        }
-
-        const days = Math.ceil(
-            (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
+    const dailyTotal =
+        values.summary.dailyTotal + values.summary.reservationOption.price
+    const additionsTotal = values.services.reduce((total, service) => {
+        const serviceDetails = services?.items.find(
+            (s) => s.id === service.serviceId,
         )
-        return (selectedHousingUnitType.weekdaysPrice ?? 0) * (days || 1)
-    }
-
-    const calculateAdditionsTotal = () => {
-        if (!values.services || !services?.items) return 0
-
-        return values.services.reduce((total, service) => {
-            const serviceDetails = services.items.find(
-                (s) => s.id === service.serviceId,
-            )
-            return total + (serviceDetails?.price || 0) * service.qtd
-        }, 0)
-    }
-
-    const calculateOptionsTotal = () => {
-        if (!values.reservationOptions || !reservationOptions?.items) return 0
-
-        const totalChildrens = values.children
-            ? values.children.reduce((sum, c) => sum + Number(c.children), 0)
-            : 0
-
-        return values.reservationOptions.reduce((total, optionId) => {
-            const option = reservationOptions.items.find(
-                (opt) => opt.id === optionId,
-            )
-            if (!option) return total
-
-            const optionAdultPrice = values.adults
-                ? values.adults * option.additionalAdultPrice
-                : 0
-            const optionChildrenPrice =
-                totalChildrens * option.additionalChildrenPrice
-
-            return total + optionAdultPrice + optionChildrenPrice
-        }, 0)
-    }
-
-    const dailyTotal = calculateDailyTotal()
-    const additionsTotal = calculateAdditionsTotal() + calculateOptionsTotal()
+        return total + (serviceDetails?.price || 0) * service.quantity
+    }, 0)
     const reservationTotal = dailyTotal + additionsTotal
-    const receivedTotal = 0
-    const openAmount = reservationTotal - receivedTotal
+    const totalReceived = values.summary.totalReceived
+    const openAmount = reservationTotal - totalReceived
 
     const rows = [
         { label: 'Total das diárias', value: formatCurrency(dailyTotal) },
@@ -102,7 +53,7 @@ const ReservationSummary = () => {
         { label: 'Acréscimo', value: formatCurrency(0) },
         { label: 'Taxas', value: formatCurrency(0) },
         { label: 'Total da reserva', value: formatCurrency(reservationTotal) },
-        { label: 'Total recebido', value: formatCurrency(receivedTotal) },
+        { label: 'Total recebido', value: formatCurrency(totalReceived) },
     ]
 
     const finalRow = {

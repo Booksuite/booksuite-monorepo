@@ -1,6 +1,6 @@
 import {
     useGetCompanyAgePolicy,
-    useGetCompanyHostingRules,
+    useSearchReservationOption,
 } from '@booksuite/sdk'
 import {
     Box,
@@ -10,9 +10,9 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
-import { differenceInDays, eachDayOfInterval, getDay } from 'date-fns'
-import { FieldArray, getIn, useFormikContext } from 'formik'
+import { getIn, useFormikContext } from 'formik'
 import { Minus, Plus } from 'lucide-react'
+import moment from 'moment'
 import { useEffect, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -23,7 +23,6 @@ import { NumberInput } from '@/components/atoms/NumberInput'
 import {
     ReservationFormData,
     useCompanyHousingUnitTypes,
-    useCompanyReservationOptions,
     useCompanyServices,
 } from '../utils/config'
 import { CHANNEL_OPTIONS } from '../utils/constants'
@@ -43,12 +42,21 @@ export const NewReservationForm: React.FC = () => {
 
     const { data: housingUnitTypes } = useCompanyHousingUnitTypes(companyId)
 
-    const { data: hostingRules } = useGetCompanyHostingRules({ companyId })
-
-    const { data: reservationOptions } = useCompanyReservationOptions(
-        companyId,
-        values.startDate,
-        values.endDate,
+    const { data: reservationOptions } = useSearchReservationOption(
+        {
+            companyId,
+        },
+        {
+            pagination: { page: 1, itemsPerPage: 100 },
+            filter: {
+                published: true,
+            },
+        },
+        {
+            query: {
+                enabled: !!companyId,
+            },
+        },
     )
 
     const { data: services } = useCompanyServices(
@@ -64,86 +72,6 @@ export const NewReservationForm: React.FC = () => {
         type.housingUnits.some((unit) => unit.id === values.housingUnitId),
     )
 
-    const calculateNights = (startDate: string, endDate: string) => {
-        const days = eachDayOfInterval({
-            start: new Date(startDate),
-            end: new Date(endDate),
-        })
-
-        const weekendDays = days.filter((d) =>
-            hostingRules?.availableWeekend.includes(getDay(d)),
-        )
-
-        return {
-            weekdays: days.length - weekendDays.length,
-            weekendDays: weekendDays.length,
-            totalDays: weekendDays.length + (days.length - weekendDays.length),
-        }
-    }
-    const calculateSubtotal = () => {
-        if (!selectedHousingUnitType || !values.startDate || !values.endDate)
-            return 0
-
-        const nights = calculateNights(values.startDate, values.endDate)
-        const weekendPrice =
-            (selectedHousingUnitType.weekendPrice ?? 0) * nights.weekendDays
-        const weekDaysPrice =
-            (selectedHousingUnitType.weekdaysPrice ?? 0) * nights.weekdays
-        return weekendPrice + weekDaysPrice
-    }
-
-    const calculateHousingUnitTypeTotal = () => {
-        if (
-            !selectedHousingUnitType ||
-            !values.startDate ||
-            !values.endDate ||
-            !Array.isArray(values.reservationOptions)
-        ) {
-            return 0
-        }
-
-        const totalChildrens = values.ageGroups
-            ? values.ageGroups.reduce((sum, c) => sum + Number(c.quantity), 0)
-            : 0
-
-        const optionsTotal = values.reservationOptions.reduce(
-            (total, optionId) => {
-                const option = reservationOptions?.items?.find(
-                    (opt) => opt.id === optionId,
-                )
-                if (!option) return total
-
-                const optionAdultPrice = values.adults
-                    ? values.adults * option.additionalAdultPrice
-                    : 0
-                const optionChildrenPrice =
-                    totalChildrens * option.additionalChildrenPrice
-
-                console.log(option.additionalAdultPrice)
-                console.log(option.additionalChildrenPrice)
-                console.log(optionChildrenPrice)
-                console.log(optionAdultPrice)
-
-                switch (option.billingType) {
-                    case 'PER_GUEST_DAILY':
-                        return total + optionAdultPrice + optionChildrenPrice
-                    case 'PER_GUEST':
-                        return total + optionAdultPrice + optionChildrenPrice
-                    case 'DAILY':
-                        return total + optionAdultPrice
-                    case 'PER_RESERVATION':
-                    case 'PER_HOUSING_UNIT':
-                        return total + optionAdultPrice
-                    default:
-                        return total
-                }
-            },
-            0,
-        )
-
-        return optionsTotal
-    }
-
     const openHousingUnitSelector = () => {
         setIsHousingUnitModalOpen(true)
     }
@@ -154,9 +82,8 @@ export const NewReservationForm: React.FC = () => {
 
     const handleUpdateServices = (serviceId: string, quantity: number) => {
         const updatedServices = [...(values.services || [])]
-        const existingServiceIndex = updatedServices.findIndex(
-            (s) => s.serviceId === serviceId,
-        )
+        const existingServiceIndex =
+            services?.items.findIndex((s) => s.id === serviceId) || 0
 
         if (quantity === 0 && existingServiceIndex !== -1) {
             updatedServices.splice(existingServiceIndex, 1)
@@ -164,11 +91,19 @@ export const NewReservationForm: React.FC = () => {
             existingServiceIndex !== -1 &&
             updatedServices[existingServiceIndex]
         ) {
-            updatedServices[existingServiceIndex].qtd = quantity
+            updatedServices[existingServiceIndex].quantity = quantity
+            updatedServices[existingServiceIndex].totalPrice = services?.items[
+                existingServiceIndex
+            ]?.price
+                ? services?.items[existingServiceIndex]?.price * quantity
+                : 0
         } else if (quantity > 0) {
-            updatedServices.push({ serviceId, qtd: quantity, totalPrice: 0 })
+            updatedServices.push({
+                serviceId,
+                quantity: quantity,
+                totalPrice: 0,
+            })
         }
-
         setFieldValue('services', updatedServices)
     }
 
@@ -342,147 +277,160 @@ export const NewReservationForm: React.FC = () => {
                     </Button>
                 </Grid>
 
-                {selectedHousingUnit && selectedHousingUnitType && (
-                    <Box>
-                        <Box sx={{ display: 'flex', gap: 3, mb: 4 }}>
-                            {selectedHousingUnitType.medias?.[0]?.media
-                                ?.url && (
-                                <Box
-                                    component="img"
-                                    src={
-                                        selectedHousingUnitType.medias[0].media
-                                            .url
-                                    }
-                                    alt={selectedHousingUnit?.name}
-                                    sx={{
-                                        width: 150,
-                                        height: 150,
-                                        borderRadius: 1,
-                                        objectFit: 'cover',
-                                    }}
-                                />
-                            )}
-                            <Box sx={{ flex: 1 }}>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'flex-start',
-                                        mb: 2,
-                                    }}
-                                >
-                                    <Box>
-                                        <Box display={'flex'} gap={1}>
+                {selectedHousingUnit &&
+                    selectedHousingUnitType &&
+                    !isHousingUnitModalOpen && (
+                        <Box>
+                            <Box sx={{ display: 'flex', gap: 3, mb: 4 }}>
+                                {selectedHousingUnitType.medias?.[0]?.media
+                                    ?.url && (
+                                    <Box
+                                        component="img"
+                                        src={
+                                            selectedHousingUnitType.medias[0]
+                                                .media.url
+                                        }
+                                        alt={selectedHousingUnit?.name}
+                                        sx={{
+                                            width: 150,
+                                            height: 150,
+                                            borderRadius: 1,
+                                            objectFit: 'cover',
+                                        }}
+                                    />
+                                )}
+                                <Box sx={{ flex: 1 }}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'flex-start',
+                                            mb: 2,
+                                        }}
+                                    >
+                                        <Box>
+                                            <Box display={'flex'} gap={1}>
+                                                <Typography
+                                                    variant="h6"
+                                                    sx={{
+                                                        fontSize: '1.25rem',
+                                                        fontWeight: 600,
+                                                        mb: 1,
+                                                    }}
+                                                >
+                                                    {
+                                                        selectedHousingUnitType.name
+                                                    }
+                                                </Typography>
+                                                <Typography
+                                                    variant="h6"
+                                                    sx={{
+                                                        fontSize: '1.25rem',
+                                                        fontWeight: 600,
+                                                        mb: 1,
+                                                    }}
+                                                >
+                                                    {selectedHousingUnit.name}
+                                                </Typography>
+                                            </Box>
                                             <Typography
-                                                variant="h6"
+                                                variant="body1"
                                                 sx={{
-                                                    fontSize: '1.25rem',
-                                                    fontWeight: 600,
-                                                    mb: 1,
+                                                    color: '#6B7280',
                                                 }}
                                             >
-                                                {selectedHousingUnitType.name}
-                                            </Typography>
-                                            <Typography
-                                                variant="h6"
-                                                sx={{
-                                                    fontSize: '1.25rem',
-                                                    fontWeight: 600,
-                                                    mb: 1,
-                                                }}
-                                            >
-                                                {selectedHousingUnit.name}
+                                                {`${moment(values.endDate).diff(
+                                                    moment(values.startDate),
+                                                    'days',
+                                                )} Noites`}
                                             </Typography>
                                         </Box>
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                        }}
+                                    >
                                         <Typography
-                                            variant="body1"
+                                            variant="subtitle1"
                                             sx={{
                                                 color: '#6B7280',
                                             }}
                                         >
-                                            {values.startDate &&
-                                                values.endDate &&
-                                                `${calculateNights(values.startDate, values.endDate).totalDays} noites`}
+                                            Total das diárias
+                                        </Typography>
+                                        <Typography
+                                            sx={{
+                                                fontSize: '1.2rem',
+                                                fontWeight: 500,
+                                            }}
+                                        >
+                                            {formatCurrency(values.finalPrice)}
                                         </Typography>
                                     </Box>
                                 </Box>
-                                <Box
+                            </Box>
+
+                            {reservationOptions?.items.length &&
+                            reservationOptions.items.length > 0
+                                ? reservationOptions?.totalItems && (
+                                      <ReservationOptionsSelector
+                                          startDate={values.startDate}
+                                          endDate={values.endDate}
+                                          nights={moment(values.endDate).diff(
+                                              moment(values.startDate),
+                                              'days',
+                                          )}
+                                          housingUnitTypeId={
+                                              selectedHousingUnitType?.id
+                                          }
+                                          reservationOptions={
+                                              reservationOptions.items
+                                          }
+                                          adults={values.adults}
+                                          childrens={values.ageGroups}
+                                      />
+                                  )
+                                : undefined}
+
+                            <Box
+                                sx={{
+                                    borderTop: '1px solid',
+                                    borderColor: '#E5E7EB',
+                                    mt: 3,
+                                    pt: 3,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Typography
+                                    variant="subtitle1"
                                     sx={{
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'center',
+                                        fontSize: '1rem',
+                                        fontWeight: 500,
                                     }}
                                 >
-                                    <Typography
-                                        variant="subtitle1"
-                                        sx={{
-                                            color: '#6B7280',
-                                        }}
-                                    >
-                                        Total das diárias
-                                    </Typography>
-                                    <Typography
-                                        sx={{
-                                            fontSize: '1rem',
-                                            fontWeight: 600,
-                                        }}
-                                    >
-                                        {formatCurrency(
-                                            values.finalReservationPrice,
-                                        )}
-                                    </Typography>
-                                </Box>
+                                    Sub total:
+                                </Typography>
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontSize: '1.25rem',
+                                        fontWeight: 500,
+                                    }}
+                                >
+                                    {formatCurrency(
+                                        values.finalPrice +
+                                            values.summary.reservationOption
+                                                .price,
+                                    )}
+                                </Typography>
                             </Box>
                         </Box>
-
-                        {reservationOptions?.totalItems && (
-                            <ReservationOptionsSelector
-                                startDate={values.startDate}
-                                endDate={values.endDate}
-                                nights={
-                                    calculateNights(
-                                        values.startDate,
-                                        values.endDate,
-                                    ).totalDays
-                                }
-                                housingUnitTypeId={selectedHousingUnitType?.id}
-                            />
-                        )}
-
-                        <Box
-                            sx={{
-                                borderTop: '1px solid',
-                                borderColor: '#E5E7EB',
-                                mt: 3,
-                                pt: 3,
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography
-                                variant="subtitle1"
-                                sx={{
-                                    fontSize: '1.125rem',
-                                    fontWeight: 500,
-                                }}
-                            >
-                                Sub total:
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                sx={{
-                                    fontSize: '1.25rem',
-                                    fontWeight: 600,
-                                }}
-                            >
-                                {formatCurrency(
-                                    calculateHousingUnitTypeTotal(),
-                                )}
-                            </Typography>
-                        </Box>
-                    </Box>
-                )}
+                    )}
             </FormSection>
 
             <FormSection
@@ -519,230 +467,251 @@ export const NewReservationForm: React.FC = () => {
                         Adicionar
                     </Button>
                 </Grid>
-                <Box>
-                    {values.services?.map((service) => {
-                        const serviceDetails = services?.items.find(
-                            (s) => s.id === service.serviceId,
-                        )
-                        if (!serviceDetails) return null
+                {!isServicesModalOpen && (
+                    <Box>
+                        {values.services?.map((service) => {
+                            const serviceDetails = services?.items.find(
+                                (s) => s.id === service.serviceId,
+                            )
+                            if (!serviceDetails) return null
 
-                        const priceLabel =
-                            serviceDetails.billingType === 'PER_GUEST'
-                                ? 'por pessoa'
-                                : serviceDetails.billingType === 'DAILY'
-                                  ? 'por dia'
-                                  : 'un'
+                            const priceLabel =
+                                serviceDetails.billingType === 'PER_GUEST'
+                                    ? 'por pessoa'
+                                    : serviceDetails.billingType === 'DAILY'
+                                      ? 'por dia'
+                                      : 'un'
 
-                        const total = serviceDetails.price * service.qtd
+                            const total =
+                                serviceDetails.price * service.quantity
 
-                        return (
-                            <Box
-                                key={service.serviceId}
-                                sx={{
-                                    border: '1px solid',
-                                    borderColor: 'grey.200',
-                                    borderRadius: 1,
-                                    p: 3,
-                                    mb: 2,
-                                    bgcolor: '#FFFFFF',
-                                }}
-                            >
-                                <Box sx={{ display: 'flex', gap: 3 }}>
-                                    {serviceDetails.medias?.[0]?.media?.url && (
-                                        <Box
-                                            component="img"
-                                            src={
-                                                serviceDetails.medias[0].media
-                                                    .url
-                                            }
-                                            alt={serviceDetails.name}
-                                            sx={{
-                                                width: 90,
-                                                height: 90,
-                                                borderRadius: 1,
-                                                objectFit: 'cover',
-                                            }}
-                                        />
-                                    )}
-                                    <Box sx={{ flex: 1 }}>
-                                        <Box
-                                            sx={{
-                                                display: 'flex',
-                                                justifyContent: 'space-between',
-                                                mb: 1,
-                                            }}
-                                        >
-                                            <Box>
-                                                <Typography
-                                                    variant="h6"
+                            return (
+                                <Box
+                                    key={service.serviceId}
+                                    sx={{
+                                        border: '1px solid',
+                                        borderColor: 'grey.200',
+                                        borderRadius: 1,
+                                        p: 3,
+                                        mb: 2,
+                                        bgcolor: '#FFFFFF',
+                                    }}
+                                >
+                                    <Box sx={{ display: 'flex', gap: 3 }}>
+                                        {serviceDetails.medias?.[0]?.media
+                                            ?.url && (
+                                            <Box
+                                                component="img"
+                                                src={
+                                                    serviceDetails.medias[0]
+                                                        .media.url
+                                                }
+                                                alt={serviceDetails.name}
+                                                sx={{
+                                                    width: 90,
+                                                    height: 90,
+                                                    borderRadius: 1,
+                                                    objectFit: 'cover',
+                                                }}
+                                            />
+                                        )}
+                                        <Box sx={{ flex: 1 }}>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    justifyContent:
+                                                        'space-between',
+                                                    mb: 1,
+                                                }}
+                                            >
+                                                <Box>
+                                                    <Typography
+                                                        variant="h6"
+                                                        sx={{
+                                                            fontSize:
+                                                                '1.125rem',
+                                                            fontWeight: 500,
+                                                            color: '#1F2937',
+                                                            mb: 1,
+                                                        }}
+                                                    >
+                                                        {serviceDetails.name}
+                                                    </Typography>
+                                                    <Typography
+                                                        variant="body2"
+                                                        sx={{
+                                                            color: '#6B7280',
+                                                        }}
+                                                    >
+                                                        {formatCurrency(
+                                                            serviceDetails.price,
+                                                        )}{' '}
+                                                        {priceLabel}
+                                                    </Typography>
+                                                </Box>
+                                                <Box
                                                     sx={{
-                                                        fontSize: '1.125rem',
-                                                        fontWeight: 500,
-                                                        color: '#1F2937',
-                                                        mb: 1,
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        gap: 2,
                                                     }}
                                                 >
-                                                    {serviceDetails.name}
-                                                </Typography>
-                                                <Typography
-                                                    variant="body2"
-                                                    sx={{ color: '#6B7280' }}
-                                                >
-                                                    {formatCurrency(
-                                                        serviceDetails.price,
-                                                    )}{' '}
-                                                    {priceLabel}
-                                                </Typography>
+                                                    <Button
+                                                        onClick={() =>
+                                                            handleUpdateServices(
+                                                                service.serviceId,
+                                                                service.quantity -
+                                                                    1,
+                                                            )
+                                                        }
+                                                        sx={{
+                                                            minWidth: '22px',
+                                                            width: '22px',
+                                                            height: '22px',
+                                                            p: 0,
+                                                            border: '2px solid',
+                                                            borderColor:
+                                                                'blue.900',
+                                                            borderRadius: '50%',
+                                                            color: 'blue.900',
+                                                            bgcolor: 'white',
+                                                        }}
+                                                    >
+                                                        <Minus size={20} />
+                                                    </Button>
+
+                                                    <Typography
+                                                        sx={{
+                                                            fontSize:
+                                                                '1.125rem',
+                                                            fontWeight: 600,
+                                                            width: '32px',
+                                                            textAlign: 'center',
+                                                        }}
+                                                    >
+                                                        {service.quantity}
+                                                    </Typography>
+                                                    <Button
+                                                        onClick={() =>
+                                                            handleUpdateServices(
+                                                                service.serviceId,
+                                                                service.quantity +
+                                                                    1,
+                                                            )
+                                                        }
+                                                        sx={{
+                                                            minWidth: '22px',
+                                                            width: '22px',
+                                                            height: '22px',
+                                                            p: 0,
+                                                            border: '2px solid',
+                                                            borderColor:
+                                                                'blue.900',
+                                                            borderRadius: '50%',
+                                                            color: 'blue.900',
+                                                            bgcolor: 'white',
+                                                        }}
+                                                    >
+                                                        <Plus size={20} />
+                                                    </Button>
+                                                </Box>
                                             </Box>
                                             <Box
                                                 sx={{
                                                     display: 'flex',
-                                                    alignItems: 'center',
-                                                    gap: 2,
+                                                    justifyContent: 'flex-end',
                                                 }}
                                             >
-                                                <Button
-                                                    onClick={() =>
-                                                        handleUpdateServices(
-                                                            service.serviceId,
-                                                            service.qtd - 1,
-                                                        )
-                                                    }
-                                                    sx={{
-                                                        minWidth: '32px',
-                                                        width: '32px',
-                                                        height: '32px',
-                                                        p: 0,
-                                                        border: '2px solid',
-                                                        borderColor: 'blue.900',
-                                                        borderRadius: '50%',
-                                                        color: 'blue.900',
-                                                        bgcolor: 'white',
-                                                    }}
-                                                >
-                                                    <Minus size={20} />
-                                                </Button>
-
                                                 <Typography
                                                     sx={{
-                                                        fontSize: '1.125rem',
-                                                        fontWeight: 600,
-                                                        width: '32px',
-                                                        textAlign: 'center',
+                                                        fontSize: '1rem',
+                                                        fontWeight: 500,
+                                                        color: '#6B7280',
                                                     }}
                                                 >
-                                                    {service.qtd}
+                                                    Total:{' '}
+                                                    {formatCurrency(total)}
                                                 </Typography>
-                                                <Button
-                                                    onClick={() =>
-                                                        handleUpdateServices(
-                                                            service.serviceId,
-                                                            service.qtd + 1,
-                                                        )
-                                                    }
-                                                    sx={{
-                                                        minWidth: '32px',
-                                                        width: '32px',
-                                                        height: '32px',
-                                                        p: 0,
-                                                        border: '2px solid',
-                                                        borderColor: 'blue.900',
-                                                        borderRadius: '50%',
-                                                        color: 'blue.900',
-                                                        bgcolor: 'white',
-                                                    }}
-                                                >
-                                                    <Plus size={20} />
-                                                </Button>
                                             </Box>
-                                        </Box>
-                                        <Box
-                                            sx={{
-                                                display: 'flex',
-                                                justifyContent: 'flex-end',
-                                            }}
-                                        >
-                                            <Typography
-                                                sx={{
-                                                    fontSize: '1rem',
-                                                    fontWeight: 500,
-                                                    color: '#6B7280',
-                                                }}
-                                            >
-                                                Total: {formatCurrency(total)}
-                                            </Typography>
                                         </Box>
                                     </Box>
                                 </Box>
+                            )
+                        })}
+                        {(!values.services || values.services.length === 0) && (
+                            <Box
+                                sx={{
+                                    borderRadius: 1,
+                                    p: 3,
+                                    bgcolor: '#F9FAFB',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    minHeight: 70,
+                                }}
+                            >
+                                <Typography color="text.disabled">
+                                    Nenhum item adicionado
+                                </Typography>
                             </Box>
-                        )
-                    })}
-                    {(!values.services || values.services.length === 0) && (
-                        <Box
-                            sx={{
-                                borderRadius: 1,
-                                p: 3,
-                                bgcolor: '#F9FAFB',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                minHeight: 70,
-                            }}
-                        >
-                            <Typography color="text.disabled">
-                                Nenhum item adicionado
-                            </Typography>
-                        </Box>
-                    )}
-                    {values.services && values.services.length > 0 && (
-                        <Box
-                            sx={{
-                                borderTop: '1px solid',
-                                borderColor: '#E5E7EB',
-                                mt: 3,
-                                pt: 3,
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography
-                                variant="subtitle1"
+                        )}
+                        {values.services && values.services.length > 0 && (
+                            <Box
                                 sx={{
-                                    fontSize: '1.125rem',
-                                    fontWeight: 500,
+                                    borderTop: '1px solid',
+                                    borderColor: '#E5E7EB',
+                                    mt: 3,
+                                    pt: 3,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 }}
                             >
-                                Sub total:
-                            </Typography>
-                            <Typography
-                                variant="h6"
-                                sx={{
-                                    fontSize: '1.25rem',
-                                    fontWeight: 600,
-                                }}
-                            >
-                                {formatCurrency(
-                                    values.services.reduce((total, service) => {
-                                        const serviceDetails =
-                                            services?.items.find(
-                                                (s) =>
-                                                    s.id === service.serviceId,
-                                            )
-                                        return (
-                                            total +
-                                            (serviceDetails?.price || 0) *
-                                                service.qtd
-                                        )
-                                    }, 0),
-                                )}
-                            </Typography>
-                        </Box>
-                    )}
-                </Box>
+                                <Typography
+                                    variant="subtitle1"
+                                    sx={{
+                                        fontSize: '1rem',
+                                        fontWeight: 500,
+                                    }}
+                                >
+                                    Sub total:
+                                </Typography>
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontSize: '1.25rem',
+                                        fontWeight: 500,
+                                    }}
+                                >
+                                    {formatCurrency(
+                                        values.services.reduce(
+                                            (total, service) => {
+                                                const serviceDetails =
+                                                    services?.items.find(
+                                                        (s) =>
+                                                            s.id ===
+                                                            service.serviceId,
+                                                    )
+                                                return (
+                                                    total +
+                                                    (serviceDetails?.price ||
+                                                        0) *
+                                                        service.quantity
+                                                )
+                                            },
+                                            0,
+                                        ),
+                                    )}
+                                </Typography>
+                            </Box>
+                        )}
+                    </Box>
+                )}
             </FormSection>
+            
+            {/* TODO - USUARIOS E ROLES */}
 
-            <FormSection title="Detalhes adicionais">
+            {/* <FormSection title="Detalhes adicionais">
                 <TextField
                     select
                     label="Canal de Venda"
@@ -781,14 +750,16 @@ export const NewReservationForm: React.FC = () => {
                     fullWidth
                     {...getFieldProps('notes')}
                 />
-            </FormSection>
+            </FormSection> */}
 
             <HousingUnitModal
                 open={isHousingUnitModalOpen}
                 onClose={() => setIsHousingUnitModalOpen(false)}
-                onSelect={(housingUnitId) =>
+                onSelect={(housingUnitId, finalPrice) => {
                     setFieldValue('housingUnitId', housingUnitId)
-                }
+                    setFieldValue('finalPrice', finalPrice)
+                    setFieldValue('summary.dailyTotal', finalPrice)
+                }}
                 selectedHousingUnitId={values.housingUnitId}
                 adults={values.adults ? values.adults : 0}
                 childrens={
@@ -808,6 +779,7 @@ export const NewReservationForm: React.FC = () => {
                 onClose={() => setIsServicesModalOpen(false)}
                 onUpdateServices={handleUpdateServices}
                 selectedServices={values.services || []}
+                services={services}
             />
         </FormContainer>
     )

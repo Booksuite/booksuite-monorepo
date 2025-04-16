@@ -238,7 +238,7 @@ export const RoomsForm: React.FC = () => {
                     label="Máximo de Crianças"
                     error={!!errors.maxChildren}
                     helperText={errors.maxChildren}
-                    min={1}
+                    min={0}
                     {...getFieldProps('maxChildren')}
                     onChange={handleChange('maxChildren')}
                 />

@@ -1,4 +1,4 @@
-import { useSearchServices } from '@booksuite/sdk'
+import { ReservationServiceInput, ServicePaginated } from '@booksuite/sdk'
 import SearchIcon from '@mui/icons-material/Search'
 import {
     Box,
@@ -11,16 +11,17 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
+import { current } from 'immer'
 import { useState } from 'react'
 
-import { useCurrentCompanyId } from '@/common/contexts/user'
 import { formatCurrency } from '@/common/utils/currency'
 
 interface ServicesModalProps {
     open: boolean
     onClose: () => void
     onUpdateServices: (serviceId: string, quantity: number) => void
-    selectedServices: { serviceId: string; qtd: number }[]
+    selectedServices: ReservationServiceInput[]
+    services: ServicePaginated | undefined
 }
 
 export const ServicesModal: React.FC<ServicesModalProps> = ({
@@ -28,23 +29,9 @@ export const ServicesModal: React.FC<ServicesModalProps> = ({
     onClose,
     onUpdateServices,
     selectedServices,
+    services,
 }) => {
     const [searchQuery, setSearchQuery] = useState('')
-    const companyId = useCurrentCompanyId()
-
-    const { data: services } = useSearchServices(
-        { companyId },
-        {
-            pagination: { page: 1, itemsPerPage: 100 },
-            filter: { published: true },
-        },
-        undefined,
-        {
-            query: {
-                enabled: !!companyId && open,
-            },
-        },
-    )
 
     const filteredServices = services?.items.filter((service) =>
         service.name.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -54,8 +41,8 @@ export const ServicesModal: React.FC<ServicesModalProps> = ({
         const currentService = selectedServices.find(
             (s) => s.serviceId === serviceId,
         )
-        const currentQty = currentService?.qtd || 0
-        const newQty = Math.max(0, currentQty + change)
+        const currentQty = currentService?.quantity || 0
+        const newQty = currentQty + change
         onUpdateServices(serviceId, newQty)
     }
 
@@ -119,7 +106,7 @@ export const ServicesModal: React.FC<ServicesModalProps> = ({
                         const currentQty =
                             selectedServices.find(
                                 (s) => s.serviceId === service.id,
-                            )?.qtd || 0
+                            )?.quantity || 0
                         const priceLabel =
                             service.billingType === 'PER_GUEST'
                                 ? 'por pessoa'

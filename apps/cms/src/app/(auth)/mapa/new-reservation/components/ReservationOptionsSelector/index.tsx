@@ -1,39 +1,75 @@
+import { ReservationAgeGroupInput, ReservationOptionFull } from '@booksuite/sdk'
 import { Box, Typography } from '@mui/material'
 import { useFormikContext } from 'formik'
 
-import { useCurrentCompanyId } from '@/common/contexts/user'
 import { formatCurrency } from '@/common/utils/currency'
-import {
-    ReservationFormData,
-    useCompanyReservationOptions,
-} from '../../utils/config'
+import { ReservationFormData } from '../../utils/config'
 
 type ReservationOptionsSelectorProps = {
     startDate: string
     endDate: string
     nights: number
     housingUnitTypeId?: string
+    reservationOptions: ReservationOptionFull[]
+    adults: number
+    childrens: ReservationAgeGroupInput[]
 }
 
 export const ReservationOptionsSelector: React.FC<
     ReservationOptionsSelectorProps
-> = ({ startDate, endDate, housingUnitTypeId }) => {
+> = ({ housingUnitTypeId, reservationOptions, nights, adults, childrens }) => {
     const { values, setFieldValue } = useFormikContext<ReservationFormData>()
-    const companyId = useCurrentCompanyId()
 
-    const { data: reservationOptions } = useCompanyReservationOptions(
-        companyId,
-        startDate,
-        endDate,
-    )
+    function calculateAddiotionalPrice(option: ReservationOptionFull): number {
+        let additionalPrice = 0
 
-    const handleOptionChange = (optionId: string) => {
-        setFieldValue('reservationOptions', [optionId])
+        switch (option.billingType) {
+            case 'DAILY':
+                additionalPrice += option.additionalAdultPrice * nights
+                break
+            case 'PER_GUEST_DAILY':
+                additionalPrice += option.additionalAdultPrice * adults * nights
+                childrens.map((ageGroup, index) => {
+                    if (ageGroup.quantity < 1) return
+
+                    const findedAgeGroup = option.ageGroupPrices[index] || null
+
+                    if (findedAgeGroup) {
+                        additionalPrice +=
+                            findedAgeGroup.price * ageGroup.quantity
+                    }
+                })
+                break
+            case 'PER_GUEST':
+                additionalPrice += option.additionalAdultPrice * adults
+                childrens.map((ageGroup, index) => {
+                    const findedAgeGroup = option.ageGroupPrices[index] || null
+
+                    if (findedAgeGroup) {
+                        additionalPrice +=
+                            findedAgeGroup.price * ageGroup.quantity
+                    }
+                })
+                break
+            case 'PER_RESERVATION':
+                break
+            case 'PER_HOUSING_UNIT':
+                break
+        }
+
+        return additionalPrice
     }
 
-    if (!reservationOptions?.items?.length) return null
+    const handleOptionChange = (option: ReservationOptionFull) => {
+        setFieldValue('reservationOption', [{ reservationOptionId: option.id }])
+        const newPrice = calculateAddiotionalPrice(option)
 
-    const availableOptions = reservationOptions.items.filter((option) => {
+        setFieldValue('summary.reservationOption.price', newPrice)
+    }
+
+    if (!reservationOptions?.length) return null
+
+    const availableOptions = reservationOptions.filter((option) => {
         if (!housingUnitTypeId) return true
         return option.availableHousingUnitTypes.some(
             (type) => type.housingUnitTypeId === housingUnitTypeId,
@@ -97,15 +133,17 @@ export const ReservationOptionsSelector: React.FC<
                         }}
                     >
                         {options.map((option) => {
-                            const isSelected =
-                                values.reservationOptions.includes(option.id)
-
+                            const isSelected = values.reservationOption.find(
+                                (reservationOption) =>
+                                    reservationOption.reservationOptionId ===
+                                    option.id,
+                            )
+                                ? true
+                                : false
                             return (
                                 <Box
                                     key={option.id}
-                                    onClick={() =>
-                                        handleOptionChange(option.id)
-                                    }
+                                    onClick={() => handleOptionChange(option)}
                                     sx={{
                                         border: '1px solid',
                                         borderColor: isSelected
