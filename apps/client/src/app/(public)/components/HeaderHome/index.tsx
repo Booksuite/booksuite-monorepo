@@ -19,9 +19,8 @@ export default function HeaderHome() {
                 <div className="absolute inset-0 bg-black/30 z-10" />
                 <Image
                     src={
-                        typeof company?.bannerImage === 'string'
-                            ? company.bannerImage
-                            : '/placeholder.svg?height=1080&width=1920'
+                        company?.bannerImage?.url ||
+                        '/placeholder.svg?height=1080&width=1920'
                     }
                     alt="Banner"
                     fill
@@ -31,10 +30,10 @@ export default function HeaderHome() {
 
                 <div className="relative z-20 container mx-auto px-4 h-full flex flex-col justify-center items-center text-center">
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 max-w-4xl">
-                        Privacidade, luxo e conforto em meio à natureza
+                        {company?.bannerTitle}
                     </h1>
                     <p className="text-xl md:text-2xl text-white mb-12">
-                        Hospede-se e viva esta experiência!
+                        {company?.bannerDescription}
                     </p>
 
                     <div className="w-full max-w-4xl bg-white rounded-lg p-6 mt-8 flex justify-between">
