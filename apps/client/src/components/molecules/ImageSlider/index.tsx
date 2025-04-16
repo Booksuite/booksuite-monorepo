@@ -49,13 +49,19 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
             className={`relative ${aspectRatioClasses[aspectRatio]} w-full rounded-2xl overflow-hidden group`}
         >
             <div className="absolute inset-0">
-                <Image
-                    src={images[activeSlide] || '/placeholder.svg'}
-                    alt={`Slide ${activeSlide + 1}`}
-                    fill
-                    className="object-cover"
-                    priority
-                />
+                {images.map((image, index) => (
+                    <Image
+                        key={index}
+                        src={image}
+                        alt={`Slide ${index + 1}`}
+                        fill
+                        className={`
+                object-cover transition-opacity duration-1000 ease-in-out
+                ${index === activeSlide ? 'opacity-100' : 'opacity-0'}
+            `}
+                        priority={index === activeSlide}
+                    />
+                ))}
             </div>
 
             <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-transparent" />

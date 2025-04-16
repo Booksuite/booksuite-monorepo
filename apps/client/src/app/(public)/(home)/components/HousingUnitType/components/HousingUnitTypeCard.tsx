@@ -1,7 +1,9 @@
 'use client'
 
+import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
 import type { HousingUnitTypeFacility } from '@booksuite/sdk'
+import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
 
 interface HousingUnitTypeCardProps {
@@ -22,7 +24,7 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
     onDetails,
 }) => {
     return (
-        <div className="bg-white rounded-2xl overflow-hidden shadow-lg">
+        <div className="bg-white rounded-2xl overflow-hidden border border-1">
             <div className="aspect-[4/3] w-full">
                 <ImageSlider
                     images={images}
@@ -58,18 +60,20 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
                 </div>
 
                 <div className="flex gap-4">
-                    <button
+                    <Button
                         onClick={onReserve}
                         className="flex-1 bg-amber-800 text-white py-3 rounded-lg font-medium hover:bg-amber-900 transition-colors"
                     >
                         Reservar
-                    </button>
-                    <button
+                    </Button>
+                    <Button
                         onClick={onDetails}
-                        className="flex-1  text-amber-800 py-3 rounded-lg font-medium hover:bg-grey-100 transition-colors"
+                        variant={'outline'}
+                        className="flex-1 text-amber-800 gap-2 hover:text-amber-900 border-none py-3 rounded-lg font-medium hover:bg-grey-100 transition-colors "
                     >
                         Ver detalhes
-                    </button>
+                        <ArrowRight />
+                    </Button>
                 </div>
             </div>
         </div>
