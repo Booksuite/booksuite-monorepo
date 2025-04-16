@@ -1,5 +1,6 @@
 import {
     ReservationAgeGroupInput,
+    ReservationCreateInput,
     ReservationFull,
     ReservationResponseFullDTOSaleChannel,
     ReservationResponseFullDTOStatus,
@@ -83,21 +84,24 @@ export type ReservationServiceFormItem = {
     totalPrice: number
 }
 
-export type ReservationFormData = {
-    status: ReservationResponseFullDTOStatus
-    saleChannel: ReservationResponseFullDTOSaleChannel
-    startDate: string
-    endDate: string
-    totalDays: number | null
-    finalReservationPrice: number
-    adults: number | null
-    ageGroups: ReservationAgeGroupInput[]
-    notes: string
-    housingUnitId: string
-    services: ReservationServiceFormItem[]
-    guestUser: User | null
-    sellerUser: User | null
-    reservationOptions: string[]
+export type ReservationFormData = ReservationCreateInput & {
+    summary: {
+        reservationOption: {
+            price: number
+            adults: number
+            nights: number
+            children: number
+        }
+
+        dailyTotal: number
+        additionalTotal: number
+        discounts: number
+        refound: number
+        addition: number
+        tax: number
+        finalPrice: number
+        totalReceived: number
+    }
 }
 
 export const transformReservationFormDataForSubmit = (
@@ -129,21 +133,37 @@ export const createReservationFormInitialValues = (
     saleChannel: data?.saleChannel || 'RECEPTION',
     startDate: data?.startDate || '',
     endDate: data?.endDate || '',
-    totalDays: data?.totalDays ?? null,
-    adults: data?.adults ?? null,
+    totalDays: data?.totalDays ?? 0,
+    adults: data?.adults ?? 0,
     ageGroups: data?.ageGroups || [],
-    finalReservationPrice: data?.finalReservationPrice || 0,
+    finalPrice: data?.finalPrice || 0,
     notes: data?.notes || '',
     housingUnitId: data?.housingUnit?.id || '',
     services:
         data?.services?.map((s) => ({
-            serviceId: s.service.id,
-            qtd: s.quantity,
-            totalPrice: s.totalPrice,
+            serviceId: s.id,
+            quantity: s.quantity || 0,
+            totalPrice: s.totalPrice || 0,
         })) || [],
-    guestUser: data?.guestUser || null,
-    sellerUser: data?.sellerUser || null,
-    reservationOptions: [],
+    userId: '',
+    sellerUserId: '',
+    reservationOption: [],
+    summary: {
+        reservationOption: {
+            adults: 0,
+            children: 0,
+            nights: 0,
+            price: 0,
+        },
+        addition: 0,
+        additionalTotal: 0,
+        dailyTotal: 0,
+        discounts: 0,
+        finalPrice: 0,
+        refound: 0,
+        tax: 0,
+        totalReceived: 0,
+    },
 })
 
 export const reservationFormSchema = yup.object({
@@ -156,18 +176,7 @@ export const reservationFormSchema = yup.object({
     children: yup.array(),
     notes: yup.string().optional(),
     housingUnitId: yup.string().required('Unidade habitacional é obrigatória'),
-    services: yup
-        .array()
-        .of(
-            yup.object().shape({
-                serviceId: yup.string().required('Serviço é obrigatório'),
-                qtd: yup.number().min(1, 'Quantidade deve ser pelo menos 1'),
-                totalPrice: yup
-                    .number()
-                    .min(0, 'Preço total deve ser maior ou igual a 0'),
-            }),
-        )
-        .min(0),
+    services: yup.array().min(0),
     guestUser: yup.object().nullable(),
     sellerUser: yup
         .object()

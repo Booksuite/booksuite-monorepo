@@ -1,7 +1,5 @@
 export const RESERVATION_OPTIONS = [
-    { label: 'Orçamento', value: 'BUDGET' },
     { label: 'Reservado', value: 'CONFIRMED' },
-    { label: 'Pré-Reserva', value: 'WAITING_LIST' },
 ]
 
 export const CHANNEL_OPTIONS = [

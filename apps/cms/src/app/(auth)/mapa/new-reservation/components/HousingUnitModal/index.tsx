@@ -1,10 +1,4 @@
-import {
-    AvailabilityAndPricing,
-    HousingUnitType,
-    useGetCalendar,
-    useGetCalendarFromHousingUnitTypeId,
-} from '@booksuite/sdk'
-import { useSearchServices } from '@booksuite/sdk/src/gen/hooks/ServiceHooks/useSearchServices'
+import { useGetCalendar } from '@booksuite/sdk'
 import SearchIcon from '@mui/icons-material/Search'
 import {
     Box,
@@ -18,18 +12,17 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
-import { useFormikContext } from 'formik'
 import moment from 'moment'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { formatCurrency } from '@/common/utils/currency'
-import { ReservationFormData, useCompanyHousingUnitTypes } from '../../utils/config'
+import { useCompanyHousingUnitTypes } from '../../utils/config'
 
 interface HousingUnitModalProps {
     open: boolean
     onClose: () => void
-    onSelect: (housingUnitId: string) => void
+    onSelect: (housingUnitId: string, finalPrice?: number) => void
     adults: number
     childrens: number
     selectedHousingUnitId?: string
@@ -42,37 +35,34 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
     open,
     onClose,
     onSelect,
-    adults = 0,
-    childrens = 0,
+    adults,
+    childrens,
     selectedHousingUnitId,
-    numberOfNights = 1,
     startDate,
     endDate,
 }) => {
     const [searchQuery, setSearchQuery] = useState('')
     const companyId = useCurrentCompanyId()
 
-    const { setFieldValue, values } = useFormikContext<ReservationFormData>()
-
-    function transformAvailAndPricing(
-        availAndPricing: AvailabilityAndPricing,
-        housingUnitType: HousingUnitType,
-    ) {
-        return {
-            ...availAndPricing,
-            housingUnitType: housingUnitType,
-        }
-    }
-
-    const { data: availAndPricing, isLoadingCalendar } = useGetCalendar(
+    const {
+        data: availAndPricing,
+        isLoading: isLoadingCalendar,
+        error: calendarError,
+    } = useGetCalendar(
         {
             companyId,
         },
         {
             currentDate: moment().startOf('day').toISOString(),
-            dateRange: {
+            viewWindow: {
                 start: moment(startDate).toISOString(),
                 end: moment(endDate).toISOString(),
+            },
+            search: {
+                dateRange: {
+                    start: moment(startDate).toISOString(),
+                    end: moment(endDate).toISOString(),
+                },
             },
         },
     )
@@ -85,20 +75,20 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
 
     const pricing = availAndPricing?.filter((avail) =>
         Object.entries(avail.calendar).every(
-            (day) => day[1].availability.available === true,
+            (day) => day[1].availability.available === false,
         ),
     )
-    const housingUnitTypesAvailAndPricing = pricing?.map((availAndPrice) => ({
-        ...availAndPrice,
-        housingUnitType: allhousingUnitTypes?.items.find(
-            (type) => type.id === availAndPrice.id,
-        ),
-    }))
 
-    const handleSelect = (unitId: string) => {
-        onSelect(unitId)
-        onClose()
-    }
+    if (pricing?.length && pricing.length > 0) return
+
+    const housingUnitTypesAvailAndPricing = availAndPricing?.map(
+        (availAndPrice) => ({
+            ...availAndPrice,
+            housingUnitType: allhousingUnitTypes?.items.find(
+                (type) => type.id === availAndPrice.id,
+            ),
+        }),
+    )
 
     const calculateSubtotal = () => {
         if (!selectedHousingUnitId || !housingUnitTypesAvailAndPricing) return 0
@@ -107,11 +97,17 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
             type.housingUnits.find((unit) => unit.id === selectedHousingUnitId),
         )
 
-        const price = Object.entries(selectedType?.calendar ?? {}).reduce(
-            (sum, [, calendarDay]) => sum + calendarDay.finalPrice,
+        let price = Object.entries(selectedType?.calendar ?? {}).reduce(
+            (sum, [, calendarDay]) => sum + calendarDay.basePrice,
             0,
         )
-        setFieldValue('finalReservationPrice', price)
+
+        if (
+            selectedType?.housingUnitType?.chargeExtraAdultHigherThan &&
+            adults > selectedType?.housingUnitType?.chargeExtraAdultHigherThan
+        )
+            price += selectedType?.housingUnitType?.extraAdultPrice || 0
+
         return price
     }
 
@@ -170,7 +166,7 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                 />
             </DialogTitle>
             <DialogContent>
-                {isLoadingHousingUnitType ? (
+                {isLoadingHousingUnitType && isLoadingCalendar ? (
                     <Box
                         sx={{
                             display: 'flex',
@@ -181,7 +177,7 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                     >
                         <CircularProgress />
                     </Box>
-                ) : error ? (
+                ) : error || calendarError ? (
                     <Box sx={{ p: 2, textAlign: 'center' }}>
                         <Typography color="error">
                             Erro ao carregar acomodações. Por favor, tente
@@ -199,16 +195,15 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                         <Box>
                             {housingUnitTypesAvailAndPricing.map((type) => {
                                 const isDisabled =
-                                    adults > type.housingUnitType?.maxAdults ||
                                     childrens >
                                         type.housingUnitType?.maxChildren ||
                                     adults + childrens >
-                                        type.housingUnitType?.maxChildren
+                                        type.housingUnitType?.maxGuests
 
                                 return type.housingUnits.map((unit) => (
                                     <Box
                                         key={unit.id}
-                                        onClick={() => handleSelect(unit.id)}
+                                        onClick={() => onSelect(unit.id)}
                                         sx={() => {
                                             return {
                                                 border: '1px solid',
@@ -382,10 +377,13 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                     Cancelar
                 </Button>
                 <Button
-                    onClick={() =>
-                        selectedHousingUnitId &&
-                        handleSelect(selectedHousingUnitId)
-                    }
+                    onClick={() => {
+                        onSelect(
+                            selectedHousingUnitId || '',
+                            calculateSubtotal(),
+                        )
+                        onClose()
+                    }}
                     variant="contained"
                     size="large"
                     disabled={!selectedHousingUnitId}
