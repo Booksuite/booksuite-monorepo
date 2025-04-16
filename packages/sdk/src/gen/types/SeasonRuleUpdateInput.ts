@@ -1,5 +1,5 @@
+import type { HousingUnitTypePricingChangeInput } from './HousingUnitTypePricingChangeInput.ts'
 import type { PriceVariationType } from './PriceVariationType.ts'
-import type { SeasonRuleHousingUnitTypePriceInput } from './SeasonRuleHousingUnitTypePriceInput.ts'
 
 export type SeasonRuleUpdateInput = {
   /**
@@ -34,5 +34,5 @@ export type SeasonRuleUpdateInput = {
   /**
    * @type array | undefined
    */
-  housingUnitTypesPrices?: SeasonRuleHousingUnitTypePriceInput[]
+  housingUnitTypesPrices?: HousingUnitTypePricingChangeInput[]
 }

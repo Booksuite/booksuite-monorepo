@@ -1,11 +1,7 @@
 import type { HousingUnitTypePricingChangeInput } from './HousingUnitTypePricingChangeInput.ts'
 import type { PriceVariationType } from './PriceVariationType.ts'
 
-export type SeasonRuleFull = {
-  /**
-   * @type string | undefined
-   */
-  id?: string
+export type SeasonRuleCreateInput = {
   /**
    * @type string
    */
@@ -15,11 +11,11 @@ export type SeasonRuleFull = {
    */
   published: boolean
   /**
-   * @type string, date-time
+   * @type string
    */
   startDate: string
   /**
-   * @type string, date-time
+   * @type string
    */
   endDate: string
   /**

@@ -17,7 +17,7 @@ export function useUpdateCompany<TContext>(
     mutation?: UseMutationOptions<
       UpdateCompanyMutationResponse,
       ResponseErrorConfig<Error>,
-      { id: UpdateCompanyPathParams['id']; data?: UpdateCompanyMutationRequest },
+      { id: UpdateCompanyPathParams['id']; data: UpdateCompanyMutationRequest },
       TContext
     >
     client?: Partial<RequestConfig<UpdateCompanyMutationRequest>> & { client?: typeof client }
@@ -29,7 +29,7 @@ export function useUpdateCompany<TContext>(
   return useMutation<
     UpdateCompanyMutationResponse,
     ResponseErrorConfig<Error>,
-    { id: UpdateCompanyPathParams['id']; data?: UpdateCompanyMutationRequest },
+    { id: UpdateCompanyPathParams['id']; data: UpdateCompanyMutationRequest },
     TContext
   >({
     mutationFn: async ({ id, data }) => {
