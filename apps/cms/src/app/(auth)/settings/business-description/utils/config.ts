@@ -1,4 +1,4 @@
-import { Banner, CompanyFull, Media } from '@booksuite/sdk'
+import { CompanyFull, Media } from '@booksuite/sdk'
 import * as yup from 'yup'
 
 export interface BannerMedia {

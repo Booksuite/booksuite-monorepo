@@ -1,6 +1,8 @@
 import { MoreVert } from '@mui/icons-material'
 import { Box, IconButton } from '@mui/material'
 
+import { Image } from '@/components/atoms/Image'
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const GalleryItem: React.FC<any> = ({ index, src, alt }) => {
     return (
@@ -15,7 +17,7 @@ export const GalleryItem: React.FC<any> = ({ index, src, alt }) => {
                 },
             }}
         >
-            <img src={src} alt={alt} />
+            <Image src={src} alt={alt} />
 
             <Box
                 sx={{

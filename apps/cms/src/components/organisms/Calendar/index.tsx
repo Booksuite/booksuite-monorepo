@@ -162,8 +162,11 @@ export const Calendar: React.FC<CalendarProps> = ({
                             )
 
                             return (
-                                <Tooltip title={`${occupancyPct}% de ocupação`}>
-                                    <HeaderCell key={index} gap={0.5}>
+                                <Tooltip
+                                    key={index}
+                                    title={`${occupancyPct}% de ocupação`}
+                                >
+                                    <HeaderCell gap={0.5}>
                                         <Typography
                                             variant="caption"
                                             fontSize={12}

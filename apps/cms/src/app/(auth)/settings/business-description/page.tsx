@@ -1,10 +1,6 @@
 'use client'
 
-import {
-    useGetCompanyById,
-    useUpdateCompany,
-    useUploadMedia,
-} from '@booksuite/sdk'
+import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -44,7 +40,9 @@ export default function BusinessDescription() {
                 id: companyId,
                 data: {
                     ...omit(formData, ['medias', 'bannerImage']),
-                    bannerImageId: formData.medias[0] ? formData.medias[0].mediaId : '',
+                    bannerImageId: formData.medias[0]
+                        ? formData.medias[0].mediaId
+                        : '',
                 },
             })
 

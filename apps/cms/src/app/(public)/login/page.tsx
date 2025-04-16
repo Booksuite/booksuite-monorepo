@@ -1,8 +1,6 @@
 import { Link, Stack } from '@mui/material'
 import NextLink from 'next/link'
 
-import { FormSection } from '@/components/atoms/FormSection'
-
 import DashboardLoginForm from './components/DashboardLoginForm'
 
 export default async function Login() {

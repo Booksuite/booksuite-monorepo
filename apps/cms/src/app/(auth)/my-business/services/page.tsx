@@ -26,6 +26,7 @@ import { useCurrentCompanyId } from '@/common/contexts/user'
 import { useSearchParamsOrder } from '@/common/hooks/useOrder'
 import { useSearchParamsPagination } from '@/common/hooks/usePagination'
 import { formatCurrency } from '@/common/utils/currency'
+import { Image } from '@/components/atoms/Image'
 import { LinkButton } from '@/components/atoms/LinkButton'
 import { PaginationControls } from '@/components/molecules/PaginationControl'
 import { TableRowActionItem } from '@/components/molecules/TableRowActionItem'
@@ -45,7 +46,7 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<ServiceFull>[] = [
         header: '',
         size: 85,
         Cell: ({ row }) => (
-            <img
+            <Image
                 src={row.original.medias[0]?.media.url}
                 alt={row.original.name}
                 style={{
