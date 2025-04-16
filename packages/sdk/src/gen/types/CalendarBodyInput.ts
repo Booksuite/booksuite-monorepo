@@ -1,3 +1,4 @@
+import type { AvailAndPricingSearchInput } from './AvailAndPricingSearchInput.ts'
 import type { DateRangeInput } from './DateRangeInput.ts'
 
 export type CalendarBodyInput = {
@@ -7,7 +8,11 @@ export type CalendarBodyInput = {
    */
   currentDate: string
   /**
+   * @description Search payload for the calendar
+   */
+  search: AvailAndPricingSearchInput
+  /**
    * @description Date range for the calendar
    */
-  dateRange: DateRangeInput
+  viewWindow: DateRangeInput
 }

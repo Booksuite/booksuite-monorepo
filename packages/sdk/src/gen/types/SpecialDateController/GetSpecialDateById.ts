@@ -5,6 +5,10 @@ export type GetSpecialDateByIdPathParams = {
    * @type string
    */
   id: string
+  /**
+   * @type string
+   */
+  companyId: string
 }
 
 export type GetSpecialDateById200 = SpecialDateFull | null

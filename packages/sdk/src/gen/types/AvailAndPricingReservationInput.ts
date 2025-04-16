@@ -38,6 +38,11 @@ export type AvailAndPricingReservationInput = {
    */
   totalDays: number | null
   /**
+   * @description Reservation FinalPrice
+   * @type number
+   */
+  finalPrice: number | null
+  /**
    * @description The adults of the reservation
    * @type number
    */

@@ -47,6 +47,10 @@ export type ReservationCreateInput = {
   /**
    * @type number
    */
+  finalPrice: number
+  /**
+   * @type number
+   */
   adults: number
   /**
    * @type array

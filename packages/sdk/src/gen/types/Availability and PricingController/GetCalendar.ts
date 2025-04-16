@@ -1,9 +1,8 @@
 import type { AvailabilityAndPricing } from '../AvailabilityAndPricing.ts'
 import type { CalendarBodyInput } from '../CalendarBodyInput.ts'
 
-export type GetCalendarQueryParams = {
+export type GetCalendarPathParams = {
   /**
-   * @description Company ID
    * @type string
    */
   companyId: string
@@ -21,6 +20,6 @@ export type GetCalendarMutationResponse = GetCalendar200
 export type GetCalendarMutation = {
   Response: GetCalendar200
   Request: GetCalendarMutationRequest
-  QueryParams: GetCalendarQueryParams
+  PathParams: GetCalendarPathParams
   Errors: any
 }

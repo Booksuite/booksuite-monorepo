@@ -1,4 +1,4 @@
-export const LogoText = (props: React.SVGProps<SVGAElement>) => (
+export const LogoText = () => (
     <svg
         width="118"
         height="20"

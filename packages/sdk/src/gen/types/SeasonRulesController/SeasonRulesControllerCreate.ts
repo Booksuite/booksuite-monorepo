@@ -1,5 +1,5 @@
 import type { SeasonRule } from '../SeasonRule.ts'
-import type { SeasonRuleInput } from '../SeasonRuleInput.ts'
+import type { SeasonRuleCreateInput } from '../SeasonRuleCreateInput.ts'
 
 export type SeasonRulesControllerCreatePathParams = {
   /**
@@ -10,7 +10,7 @@ export type SeasonRulesControllerCreatePathParams = {
 
 export type SeasonRulesControllerCreate200 = SeasonRule
 
-export type SeasonRulesControllerCreateMutationRequest = SeasonRuleInput
+export type SeasonRulesControllerCreateMutationRequest = SeasonRuleCreateInput
 
 export type SeasonRulesControllerCreateMutationResponse = SeasonRulesControllerCreate200
 

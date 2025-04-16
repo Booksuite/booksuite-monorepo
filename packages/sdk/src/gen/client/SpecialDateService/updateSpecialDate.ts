@@ -7,7 +7,7 @@ import type {
   UpdateSpecialDatePathParams,
 } from '../../types/SpecialDateController/UpdateSpecialDate.ts'
 
-export function getUpdateSpecialDateUrl({ id }: { id: UpdateSpecialDatePathParams['id'] }) {
+export function getUpdateSpecialDateUrl({ id, companyId }: { id: UpdateSpecialDatePathParams['id']; companyId: UpdateSpecialDatePathParams['companyId'] }) {
   return `/company/${companyId}/specialDates/${id}` as const
 }
 
@@ -15,7 +15,7 @@ export function getUpdateSpecialDateUrl({ id }: { id: UpdateSpecialDatePathParam
  * {@link /company/:companyId/specialDates/:id}
  */
 export async function updateSpecialDate(
-  { id }: { id: UpdateSpecialDatePathParams['id'] },
+  { id, companyId }: { id: UpdateSpecialDatePathParams['id']; companyId: UpdateSpecialDatePathParams['companyId'] },
   data?: UpdateSpecialDateMutationRequest,
   config: Partial<RequestConfig<UpdateSpecialDateMutationRequest>> & { client?: typeof client } = {},
 ) {
@@ -23,7 +23,7 @@ export async function updateSpecialDate(
 
   const res = await request<UpdateSpecialDateMutationResponse, ResponseErrorConfig<Error>, UpdateSpecialDateMutationRequest>({
     method: 'PATCH',
-    url: getUpdateSpecialDateUrl({ id }).toString(),
+    url: getUpdateSpecialDateUrl({ id, companyId }).toString(),
     data,
     ...requestConfig,
   })

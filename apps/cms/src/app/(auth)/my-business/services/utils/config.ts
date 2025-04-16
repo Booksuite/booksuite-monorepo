@@ -5,6 +5,7 @@ import {
     ServiceMedia,
     ServiceMediaInput,
 } from '@booksuite/sdk'
+import moment from 'moment'
 import * as yup from 'yup'
 
 export type ServiceFormData = Omit<
@@ -31,6 +32,8 @@ export const transformFormDataForSubmit = (
         coverMediaId: medias[0]?.media.id,
         medias: transformedMedias,
         availableWeekDays: formData.availableWeekDays.map(Number),
+        seasonStart: moment(formData.seasonStart).toISOString(),
+        seasonEnd: moment(formData.seasonEnd).toISOString(),
         availableHousingUnitTypes: formData.availableHousingUnitTypes.map(
             (item) => ({ housingUnitTypeId: item.housingUnitTypeId }),
         ),

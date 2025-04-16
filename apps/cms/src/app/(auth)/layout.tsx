@@ -1,5 +1,6 @@
 import { DashboardLayout } from '@/components/templates/DashboardLayout'
 import { AuthProvider } from '../providers/AuthProvider'
+
 interface AuthLayoutProps {
     children: React.ReactNode
 }

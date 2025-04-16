@@ -1,4 +1,4 @@
-export const LogoIcon = (props: React.SVGProps<SVGAElement>) => (
+export const LogoIcon = () => (
     <svg
         width="36"
         height="28"

@@ -1,6 +1,9 @@
-import { Flex } from '@chakra-ui/react'
+import { Stack } from '@mui/material'
 
-import { InternalMenuRootProps } from './types'
+interface InternalMenuRootProps {
+    children: React.ReactNode
+    className?: string
+}
 
 export function InternalMenuRoot({
     children,
@@ -8,9 +11,9 @@ export function InternalMenuRoot({
 }: InternalMenuRootProps) {
     return (
         <nav className={`InternalMenu ${props.className}`}>
-            <Flex direction="column" gap={2}>
+            <Stack direction="column" spacing={3}>
                 {children}
-            </Flex>
+            </Stack>
         </nav>
     )
 }
