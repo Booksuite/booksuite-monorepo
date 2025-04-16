@@ -1,10 +1,11 @@
 'use client'
 
+import { Add,ArrowDownward } from '@mui/icons-material'
+import { Alert,Box, Button, Grid, Snackbar } from '@mui/material'
 import { useState } from 'react'
-import { Box, Button, Grid, Snackbar, Alert } from '@mui/material'
-import { ArrowDownward, Add } from '@mui/icons-material'
 
 import { Gallery } from '.'
+
 import { GalleryRootProps } from './types'
 
 export function GalleryRoot(props: GalleryRootProps) {

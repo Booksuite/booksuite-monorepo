@@ -1,7 +1,7 @@
+import { Stack, Typography } from '@mui/material'
 import { FiPlay } from 'react-icons/fi'
 
 import { MediaItemProps } from './types'
-import { Stack, Typography } from '@mui/material'
 
 export const MediaVideo: React.FC<MediaItemProps> = ({ item }) => {
     return (

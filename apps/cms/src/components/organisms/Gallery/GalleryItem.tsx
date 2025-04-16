@@ -1,5 +1,5 @@
-import { Box, IconButton } from '@mui/material'
 import { MoreVert } from '@mui/icons-material'
+import { Box, IconButton } from '@mui/material'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const GalleryItem: React.FC<any> = ({ index, src, alt }) => {

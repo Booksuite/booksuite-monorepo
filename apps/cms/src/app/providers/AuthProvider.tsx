@@ -1,12 +1,11 @@
 'use client'
 
 import { useGetCompanyById } from '@booksuite/sdk'
-
+import { CircularProgress } from '@mui/material'
 import { useEffect } from 'react'
 
 import { TEST_COMPANY, useCurrentCompanyStore } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils'
-import { CircularProgress } from '@mui/material'
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const { setCompany, company } = useCurrentCompanyStore()

@@ -1,4 +1,5 @@
 import { Image } from '@/components/atoms/Image'
+
 import { MediaItemProps } from './types'
 
 export const MediaImage: React.FC<MediaItemProps> = ({ item }) => {

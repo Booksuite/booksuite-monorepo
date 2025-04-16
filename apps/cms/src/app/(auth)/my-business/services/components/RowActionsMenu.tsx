@@ -1,13 +1,13 @@
 import { ServiceFull, useUpdateService } from '@booksuite/sdk'
 import {
+    Divider,
     IconButton,
+    ListItemIcon,
     Menu,
     MenuItem,
-    ListItemIcon,
-    Divider,
     styled,
 } from '@mui/material'
-import { Copy, Edit, Eye, EyeOff, Trash, MoreVertical } from 'lucide-react'
+import { Copy, Edit, Eye, EyeOff, MoreVertical,Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 

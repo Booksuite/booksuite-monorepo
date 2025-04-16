@@ -1,6 +1,5 @@
 import { Box, FormControlLabel, Grid, Switch, TextField } from '@mui/material'
 import { useFormikContext } from 'formik'
-import { useSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
 
 import { FormContainer } from '@/components/atoms/FormContainer'
@@ -8,7 +7,6 @@ import { FormSection } from '@/components/atoms/FormSection'
 import { UtilityLinkData } from '../utils/config'
 
 export const UtilityLinksForm = () => {
-    const { enqueueSnackbar } = useSnackbar()
     const [specificPeriod, setSpecificPeriod] = useState(false)
 
     const { getFieldProps, touched, values, errors, setFieldValue } =
@@ -80,7 +78,10 @@ export const UtilityLinksForm = () => {
                     label="Exibir em período especifico"
                 />
 
-                <FormSection title='Período de Exibição' hidden={!specificPeriod}>
+                <FormSection
+                    title="Período de Exibição"
+                    hidden={!specificPeriod}
+                >
                     <Grid size={6}>
                         <TextField
                             label="Inicio de exibição"

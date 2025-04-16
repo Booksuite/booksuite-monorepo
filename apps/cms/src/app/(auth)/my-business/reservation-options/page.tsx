@@ -99,7 +99,6 @@ export default function ReservationOptions() {
                     : undefined,
         },
         { query: searchQuery.length > 0 ? searchQuery : undefined },
-        { query: { enabled: undefined } },
     )
 
     const handleRowClick = (row: ReservationOptionFull) => {

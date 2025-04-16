@@ -38,7 +38,7 @@ const chipItems = [
     { key: 'all', label: 'Todos' },
 ]
 
-export default function UtilityLinks() {
+export default function UtilityLinksPage() {
     const { push } = useRouter()
     const { showDialog } = useConfirmationDialog()
 
@@ -86,6 +86,7 @@ export default function UtilityLinks() {
         { query: { enabled: undefined } },
     )
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleDuplicate = (item: UtilityLinks) => {
         // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
     }
@@ -123,7 +124,6 @@ export default function UtilityLinks() {
             confirmButton: {
                 children: 'Excluir',
                 onClick: () => {
-                    console.log('Excluir', item.id)
                     // TODO: implement actual delete functionality
                 },
             },

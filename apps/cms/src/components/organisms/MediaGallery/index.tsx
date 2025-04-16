@@ -6,7 +6,6 @@ import {
     useUploadMedia,
     useUpsertMedia,
 } from '@booksuite/sdk'
-
 import {
     Box,
     Button,
@@ -19,6 +18,7 @@ import {
 } from '@mui/material'
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { Plus, UploadIcon, X as CloseIcon } from 'lucide-react'
+import { useSnackbar } from 'notistack'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -35,7 +35,6 @@ import {
 import { ITEMS_PER_PAGE } from './constants'
 import { MediaGalleryProps, MediaUrlInfo } from './types'
 import { getGalleryDescription } from './utils'
-import { useSnackbar } from 'notistack'
 
 export const MediaGallery: React.FC<MediaGalleryProps> = ({
     isOpen,
@@ -218,7 +217,7 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                 fileInputRef.current.value = ''
             }
         } catch (error) {
-            enqueueSnackbar('Verifique se o arquivo é uma imagem válida', {
+            enqueueSnackbar(getErrorMessage(error), {
                 variant: 'error',
             })
         }

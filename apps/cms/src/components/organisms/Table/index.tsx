@@ -6,6 +6,7 @@ import {
 } from 'material-react-table'
 
 import { getErrorMessage } from '@/common/utils'
+
 type TableProps<T extends MRT_RowData> = MaterialReactTableProps<T> & {
     onRowClick?: (item: T) => void
     error?: unknown
@@ -22,7 +23,9 @@ export const Table = <T extends MRT_RowData>({
 
     return (
         <>
-            {error && <Alert severity="error">{getErrorMessage(error)}</Alert>}
+            {!!error && (
+                <Alert severity="error">{getErrorMessage(error)}</Alert>
+            )}
             {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
             {/* @ts-expect-error */}
             <MaterialReactTable<T>
