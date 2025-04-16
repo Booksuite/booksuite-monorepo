@@ -14,7 +14,7 @@ export const About: React.FC = () => {
     return (
         <div className="container mx-auto px-4 py-16 flex flex-col gap-20 items-center">
             <div className="flex flex-col items-center">
-                <h1 className="text-4xl font-bold mb-4">{company?.name}</h1>
+                <h1 className="text-3xl font-bold mb-4">{company?.name}</h1>
                 <div className="flex items-center text-amber-800">
                     <MapPin className="h-5 w-5 mr-2" />
                     <span>
