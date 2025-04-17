@@ -32,17 +32,41 @@ jobs:
           cd apps/cms
           yarn build
         env:
-          NODE_ENV: development
+          NODE_ENV: production
 
-      - name: Install SSH Key
-        uses: shimataro/ssh-key-action@v2
+      - name: Transfer artifacts
+        uses: appleboy/scp-action@master
         with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          source: '.yarn,apps/cms/'
+          target: 'cms'
+          strip_components: 2
 
-      - name: Deploy to VPS
-        run: |
-          rsync -avz --delete ./apps/cms/build ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/home/cms
-          ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} 'cd /home/cms && pm2 restart cms'
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+      - name: Install dependencies and restart on VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ~/cms
+            yarn install --production
+
+      # - name: Install SSH Key
+      #   uses: shimataro/ssh-key-action@v2
+      #   with:
+      #     key: ${{ secrets.SSH_PRIVATE_KEY }}
+      #     known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+
+      # - name: Deploy to VPS
+      #   run: |
+      #     echo "Deploying to VPS"
+      #     ls ./apps/cms/src -a
+      #     rsync -avz --delete -e 'sshpass -p "${{ secrets.VPS_PASSWORD }}" ssh -o StrictHostKeyChecking=no' ./apps/cms/src/public ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:./cms
+      #     ssh ${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }} 'cd ~/cms && pm2 restart cms'
+      #   env:
+      #     SSH_AUTH_SOCK: /tmp/ssh_agent.sock

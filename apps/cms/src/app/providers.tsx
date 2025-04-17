@@ -7,7 +7,6 @@ import { SnackbarProvider } from 'notistack'
 import { ConfirmationDialog } from '@/components/templates/ConfirmationDialog'
 
 import { MaterialThemeProvider } from './providers/MaterialThemeProvider'
-import { SidebarProvider } from './providers/sidebarProvider'
 import TanstackQueryProvider from './providers/tanstackQueryProvider'
 
 interface ProvidersProps {
@@ -29,10 +28,8 @@ export function Providers({ children }: ProvidersProps) {
                         autoHideDuration={3000}
                         style={{ zIndex: 13000 }}
                     >
-                        <SidebarProvider>
-                            {children}
-                            <ConfirmationDialog />
-                        </SidebarProvider>
+                        {children}
+                        <ConfirmationDialog />
                     </SnackbarProvider>
                 </TanstackQueryProvider>
             </MaterialThemeProvider>

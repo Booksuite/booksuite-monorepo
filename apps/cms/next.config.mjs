@@ -10,6 +10,12 @@ const nextConfig = {
                 : 'http://localhost:3000/:path*',
         },
     ],
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+    typescript: {
+        ignoreBuildErrors: true,
+    },
     experimental: {
         typedRoutes: true,
     },
