@@ -57,10 +57,12 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
             </div>
 
             <div className="p-6">
-                <h2 className="text-2xl font-semibold mb-3">{title}</h2>
+                <h2 className="text-2xl font-semibold text-grey-primary mb-3">
+                    {title}
+                </h2>
                 <div className="relative">
                     <p
-                        className={`text-gray-600 mb-4 ${isExpanded ? '' : 'line-clamp-2'}`}
+                        className={`text-grey-secondary mb-4 ${isExpanded ? '' : 'line-clamp-2'}`}
                     >
                         {description}
                     </p>
@@ -78,7 +80,7 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
                     {facilities.map((facility) => (
                         <div
                             key={facility.id}
-                            className="flex items-center gap-2 text-gray-700"
+                            className="flex items-center gap-2 text-gray-secondary"
                         >
                             {facility.facility.icon && (
                                 <Image

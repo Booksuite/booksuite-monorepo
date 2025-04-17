@@ -37,10 +37,10 @@ export const HousingUnitType: React.FC = () => {
         <>
             <div className="container mx-auto px-4 py-16 flex flex-col gap-20 items-center">
                 <div className="flex flex-col items-center">
-                    <h2 className="text-3xl font-bold mb-4">
+                    <h2 className="text-3xl text-grey-primary font-bold mb-4">
                         Nossas Acomodações
                     </h2>
-                    <div className="flex items-center">
+                    <div className="flex text-grey-secondary items-center">
                         <span>Escolha uma de nossas opções</span>
                     </div>
                 </div>

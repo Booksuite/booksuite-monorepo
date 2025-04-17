@@ -40,10 +40,12 @@ export const HeaderHome: React.FC = () => {
 
                     <div className="w-full max-w-4xl bg-white rounded-lg p-6 mt-8 flex justify-between">
                         <div className="mb-4 text-start items-center">
-                            <h3 className="text-lg font-semibold text-gray-700 mb-2 ">
+                            <h3 className="text-lg font-semibold text-grey-primary mb-2 ">
                                 Busca inteligente:
                             </h3>
-                            <h4>Datas · Experiências · Pacotes · Flexível</h4>
+                            <h4 className="text-grey-secondary">
+                                Datas · Experiências · Pacotes · Flexível
+                            </h4>
                         </div>
 
                         <div className="flex flex-col sm:flex-row gap-4 items-center w-1/2">

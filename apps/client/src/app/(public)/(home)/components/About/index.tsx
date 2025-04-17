@@ -27,8 +27,10 @@ export const About: React.FC = () => {
             <div className="flex w-screen">
                 <div className="w-1/2 space-y-8 flex flex-col items-center px-16">
                     <div className="w-full">
-                        <h2 className="text-2xl font-bold mb-4">Sobre nós</h2>
-                        <p className="text-gray-600 mb-4">
+                        <h2 className="text-2xl text-grey-primary font-bold mb-4">
+                            Sobre nós
+                        </h2>
+                        <p className="text-grey-primary mb-4">
                             {company?.description}
                         </p>
                     </div>
@@ -51,7 +53,7 @@ export const About: React.FC = () => {
                                     <div className="text-sm font-medium">
                                         {facility.facility.name}
                                     </div>
-                                    <div className="text-sm text-gray-600">
+                                    <div className="text-sm text-grey-secondary">
                                         {facility.facility.category
                                             .toLowerCase()
                                             .split('_')
