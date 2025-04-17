@@ -1,15 +1,7 @@
 'use client'
 
-import {
-    Box,
-    Button,
-    Flex,
-    Grid,
-    GridItem,
-    SimpleGrid,
-    useToast,
-} from '@chakra-ui/react'
-import { ArrowDownWideNarrow, CirclePlus } from 'lucide-react'
+import { Add,ArrowDownward } from '@mui/icons-material'
+import { Alert,Box, Button, Grid, Snackbar } from '@mui/material'
 import { useState } from 'react'
 
 import { Gallery } from '.'
@@ -18,19 +10,25 @@ import { GalleryRootProps } from './types'
 
 export function GalleryRoot(props: GalleryRootProps) {
     const [items, setItems] = useState(props.items ?? [])
-    const toast = useToast()
+    const [snackbar, setSnackbar] = useState<{
+        open: boolean
+        message: string
+        severity: 'error' | 'success'
+    }>({
+        open: false,
+        message: '',
+        severity: 'error',
+    })
 
     function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
         const file = event.target.files?.[0]
         if (file) {
             const maxSizeInBytes = 5 * 1024 * 1024
             if (file.size > maxSizeInBytes) {
-                toast({
-                    title: 'Erro',
-                    description: 'O tamanho da imagem não pode exceder 5 MB.',
-                    status: 'error',
-                    duration: 5000,
-                    isClosable: true,
+                setSnackbar({
+                    open: true,
+                    message: 'O tamanho da imagem não pode exceder 5 MB.',
+                    severity: 'error',
                 })
                 return
             }
@@ -44,57 +42,83 @@ export function GalleryRoot(props: GalleryRootProps) {
         }
     }
 
+    const handleCloseSnackbar = () => {
+        setSnackbar((prev) => ({ ...prev, open: false }))
+    }
+
     return (
-        <Box w="full">
+        <Box sx={{ width: '100%' }}>
             {(!items || items.length === 0) && (
-                <Flex
+                <Box
                     onClick={() =>
                         document.getElementById('fileInput')?.click()
                     }
+                    sx={{ cursor: 'pointer' }}
                 />
             )}
 
             {items && items.length > 0 && (
                 <>
-                    <Grid
-                        templateColumns="repeat(auto-fill, minmax(100px, 1fr))"
-                        gap={3}
-                    >
+                    <Grid container spacing={3} sx={{ mb: 3 }}>
                         {items.map((item: string, index) => (
-                            <GridItem key={index} w="100%">
+                            <Grid
+                                key={index}
+                                size={{ xs: 12, sm: 6, md: 4, lg: 3 }}
+                            >
                                 <Gallery.Item
                                     index={index}
                                     src={item}
                                     selected={index === 1}
                                 />
-                            </GridItem>
+                            </Grid>
                         ))}
                     </Grid>
 
-                    <SimpleGrid columns={2} gap={2} mt={5}>
-                        <Button
-                            as="label"
-                            variant="outline"
-                            leftIcon={<CirclePlus />}
-                            cursor={'pointer'}
-                        >
-                            Adicionar Foto
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleFileChange}
-                                style={{ display: 'none' }}
-                            />
-                        </Button>
-                        <Button
-                            variant="outline"
-                            leftIcon={<ArrowDownWideNarrow />}
-                        >
-                            Ordenar
-                        </Button>
-                    </SimpleGrid>
+                    <Grid container spacing={2}>
+                        <Grid size={6}>
+                            <Button
+                                component="label"
+                                variant="outlined"
+                                startIcon={<Add />}
+                                fullWidth
+                                sx={{ cursor: 'pointer' }}
+                            >
+                                Adicionar Foto
+                                <input
+                                    type="file"
+                                    id="fileInput"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    style={{ display: 'none' }}
+                                />
+                            </Button>
+                        </Grid>
+                        <Grid size={6}>
+                            <Button
+                                variant="outlined"
+                                startIcon={<ArrowDownward />}
+                                fullWidth
+                            >
+                                Ordenar
+                            </Button>
+                        </Grid>
+                    </Grid>
                 </>
             )}
+
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={5000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+                <Alert
+                    onClose={handleCloseSnackbar}
+                    severity={snackbar.severity}
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }

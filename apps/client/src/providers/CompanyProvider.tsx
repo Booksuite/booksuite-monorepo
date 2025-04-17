@@ -1,6 +1,7 @@
 'use client'
 
 import { useGetCompanyById } from '@booksuite/sdk'
+
 import { useEffect } from 'react'
 
 import { TEST_COMPANY, useCurrentCompanyStore } from '@/common/contexts/company'
@@ -31,7 +32,7 @@ export const CompanyProvider = ({
     }, [data, setCompany])
 
     if (!error && (isLoading || isFetching || !company)) {
-        return <h1>Carregando...</h1>
+        return 'Carregando...'
     }
 
     if (error) {

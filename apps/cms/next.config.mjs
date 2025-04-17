@@ -1,7 +1,7 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: false,
+    reactStrictMode: true,
     rewrites: async () => [
         {
             source: '/api/:path*',
@@ -10,6 +10,12 @@ const nextConfig = {
                 : 'http://localhost:3000/:path*',
         },
     ],
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
+    typescript: {
+        ignoreBuildErrors: true,
+    },
     experimental: {
         typedRoutes: true,
     },

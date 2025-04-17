@@ -101,6 +101,7 @@ export default function Rooms() {
         push(`/my-business/rooms/${row.id}`)
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleDuplicate = (item: HousingUnitTypeFull) => {
         // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
     }
@@ -136,7 +137,6 @@ export default function Rooms() {
             confirmButton: {
                 children: 'Excluir',
                 onClick: () => {
-                    console.log('Excluir', item.id)
                     // TODO: implement actual delete functionality
                 },
             },

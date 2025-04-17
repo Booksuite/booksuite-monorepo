@@ -8,7 +8,6 @@ import {
     IconButton,
     InputAdornment,
     MenuItem,
-    Select,
     Stack,
     Switch,
     TextField,
@@ -364,12 +363,14 @@ export const AgePolicyForm = () => {
                                                                     'DAILY_PERCENTAGE_PER_CHILDREN'
                                                                 ) {
                                                                     newValue =
-                                                                        Math.max(
-                                                                            0,
-                                                                            Math.min(
-                                                                                100,
-                                                                                Number(
-                                                                                    newValue,
+                                                                        String(
+                                                                            Math.max(
+                                                                                0,
+                                                                                Math.min(
+                                                                                    100,
+                                                                                    Number(
+                                                                                        newValue,
+                                                                                    ),
                                                                                 ),
                                                                             ),
                                                                         )
@@ -380,9 +381,12 @@ export const AgePolicyForm = () => {
                                                                             '',
                                                                         )
                                                                     newValue =
-                                                                        Number(
-                                                                            raw,
-                                                                        ) / 100
+                                                                        String(
+                                                                            Number(
+                                                                                raw,
+                                                                            ) /
+                                                                                100,
+                                                                        )
                                                                 }
 
                                                                 const updated =

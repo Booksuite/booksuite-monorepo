@@ -28,13 +28,8 @@ export default function ForgotMyPassword() {
             </FormSection>
 
             <FormSection>
-                <Button
-                    type="submit"
-                    variant="contained"
-                    disabled={isLoading}
-                    sx={{ mb: 3, mt: 4 }}
-                >
-                    {isLoading ? 'Enviando...' : 'Enviar'}
+                <Button type="submit" variant="contained" sx={{ mb: 3, mt: 4 }}>
+                    Enviar
                 </Button>
             </FormSection>
 

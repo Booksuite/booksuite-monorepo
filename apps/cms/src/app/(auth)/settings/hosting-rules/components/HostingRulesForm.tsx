@@ -16,7 +16,7 @@ import {
 import dayjs from 'dayjs'
 import { useFormikContext } from 'formik'
 import { Info, PlusCircle, Trash } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'

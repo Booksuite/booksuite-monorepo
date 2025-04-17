@@ -99,7 +99,6 @@ export default function ReservationOptions() {
                     : undefined,
         },
         { query: searchQuery.length > 0 ? searchQuery : undefined },
-        { query: { enabled: undefined } },
     )
 
     const handleRowClick = (row: ReservationOptionFull) => {
@@ -128,6 +127,7 @@ export default function ReservationOptions() {
         })
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const handleDuplicate = (item: ReservationOptionFull) => {
         // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
     }
@@ -139,7 +139,6 @@ export default function ReservationOptions() {
             confirmButton: {
                 children: 'Excluir',
                 onClick: () => {
-                    console.log('Excluir', item.id)
                     // TODO: implement actual delete functionality
                 },
             },
