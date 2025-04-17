@@ -1,4 +1,4 @@
-import { Stack, Box } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { ChevronRight } from 'lucide-react'
 import type { Route } from 'next'
 import NextLink, { LinkProps } from 'next/link'

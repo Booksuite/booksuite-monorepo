@@ -65,7 +65,6 @@ export const SpecialDateForm: React.FC = () => {
         useFormikContext<SpecialDateFormData>()
     const companyId = useCurrentCompanyId()
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
-    console.log(values.startDate)
 
     const { data: housingUnitTypesData } = useSearchHousingUnitTypes(
         { companyId },
@@ -177,7 +176,12 @@ export const SpecialDateForm: React.FC = () => {
                 setFieldValue('housingUnitTypePrices', updatedPrices)
             }
         }
-    }, [values.price, values.priceVariationType, values.housingUnitTypePrices])
+    }, [
+        values.price,
+        values.priceVariationType,
+        values.housingUnitTypePrices,
+        setFieldValue,
+    ])
 
     return (
         <FormContainer>

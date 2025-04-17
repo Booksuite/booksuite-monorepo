@@ -1,3 +1,4 @@
+import { Media } from '@booksuite/sdk'
 import {
     closestCenter,
     DndContext,
@@ -6,17 +7,10 @@ import {
     useSensors,
 } from '@dnd-kit/core'
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
-import {
-    Box,
-    Button,
-    Grid,
-    TextField,
-    Typography,
-    useTheme,
-} from '@mui/material'
+import { Box, Button, TextField, Typography, useTheme } from '@mui/material'
 import { useFormikContext } from 'formik'
 import { Info } from 'lucide-react'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 
 import { SortableBannerMediaItem } from '@/app/(auth)/marketing/banner/components/SortableBannerMediaItem'
 import { FormContainer } from '@/components/atoms/FormContainer'
@@ -34,22 +28,6 @@ export const BusinessDescriptionForm = () => {
         values,
         setFieldValue,
     } = useFormikContext<BusinessDescriptionFormData>()
-
-    const [banner, setbanner] = useState<string | null>(null)
-    const bannerInputRef = useRef<HTMLInputElement>(null)
-
-    const handlebannerChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
-        if (file) {
-            const imageUrl = URL.createObjectURL(file)
-            setbanner(imageUrl)
-            setFieldValue('bannerFile', file)
-        }
-    }
-
-    const openbannerSelector = () => {
-        bannerInputRef.current?.click()
-    }
 
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
@@ -82,10 +60,6 @@ export const BusinessDescriptionForm = () => {
             },
         }),
     )
-
-    useEffect(() => {
-        setbanner(values.bannerImage?.url || '')
-    }, [])
 
     return (
         <FormContainer>
@@ -152,7 +126,9 @@ export const BusinessDescriptionForm = () => {
                     <MediaGallery
                         isOpen={isMediaGalleryOpen}
                         onClose={() => setIsMediaGalleryOpen(false)}
-                        selectedItems={values.medias.map((item) => item.mediaId)}
+                        selectedItems={values.medias.map(
+                            (item) => item.mediaId,
+                        )}
                         initialItems={values.medias.map((item) => item.media)}
                         onItemsChange={handleMediaChange}
                         maxItems={2}

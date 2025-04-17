@@ -14,18 +14,13 @@ import {
     Grid,
     IconButton,
     MenuItem,
-    Select,
     Switch,
     TextField,
 } from '@mui/material'
 import { FieldArray, useFormikContext } from 'formik'
 import { CirclePlus, Trash } from 'lucide-react'
-import React, { useEffect } from 'react'
 
-import {
-    BILLING_TYPE_MAPPING,
-    BILLING_TYPE_RESERVATION_OPTION_MAPPING,
-} from '@/common/constants/billingType'
+import { BILLING_TYPE_RESERVATION_OPTION_MAPPING } from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
@@ -34,14 +29,8 @@ import { VALID_NIGHTS } from '../../services/utils/constants'
 import { ReservationOptionData } from '../utils/config'
 
 export const ReservationOptionForm: React.FC = () => {
-    const {
-        getFieldProps,
-        errors,
-        values,
-        touched,
-        setFieldValue,
-        handleChange,
-    } = useFormikContext<ReservationOptionData>()
+    const { getFieldProps, errors, values, touched, setFieldValue } =
+        useFormikContext<ReservationOptionData>()
 
     const companyId = useCurrentCompanyId()
     const { data: housingUnitTypes, isLoading: isLoadingHousingUnitTypes } =
@@ -54,7 +43,7 @@ export const ReservationOptionForm: React.FC = () => {
             },
         )
 
-    const { data: agePolicy, isLoading } = useGetCompanyAgePolicy({
+    const { data: agePolicy } = useGetCompanyAgePolicy({
         companyId: companyId,
     })
 
@@ -151,11 +140,6 @@ export const ReservationOptionForm: React.FC = () => {
                     />
                 </Box>
                 {agePolicy?.ageGroups?.map((a, index) => {
-                    const error =
-                        typeof errors.ageGroupPrices?.[index] === 'object'
-                            ? errors.ageGroupPrices[index]
-                            : undefined
-
                     return (
                         <FormSection key={index}>
                             <Box>
@@ -189,12 +173,6 @@ export const ReservationOptionForm: React.FC = () => {
                     {({ push, remove }) => (
                         <Box>
                             {values.includedItems.map((a, index) => {
-                                const error =
-                                    typeof errors.includedItems?.[index] ===
-                                    'object'
-                                        ? errors.includedItems[index]
-                                        : undefined
-
                                 return (
                                     <FormSection key={index}>
                                         <Box key={index} display={'flex'}>

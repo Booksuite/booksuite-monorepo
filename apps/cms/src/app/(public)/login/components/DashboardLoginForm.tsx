@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, FormControl, FormLabel, Input, TextField } from '@mui/material'
+import { Button, TextField } from '@mui/material'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import { useState } from 'react'
@@ -11,15 +11,13 @@ import type { LoginForm } from '../utils/types'
 
 export default function DashboardLoginForm() {
     const [form, setForm] = useState<LoginForm>({ email: '', password: '' })
-    const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)
 
     const router = useRouter()
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
-
-        setIsLoading(true)
 
         const result = await signIn('credentials', {
             email: form.email,
@@ -27,9 +25,8 @@ export default function DashboardLoginForm() {
             redirect: false,
         })
 
-        if (result.error) {
+        if (result?.error) {
             setError(true)
-            setIsLoading(false)
             return
         }
 

@@ -6,7 +6,6 @@ import {
     useUploadMedia,
     useUpsertMedia,
 } from '@booksuite/sdk'
-import { useToast } from '@chakra-ui/react'
 import {
     Box,
     Button,
@@ -19,6 +18,7 @@ import {
 } from '@mui/material'
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query'
 import { Plus, UploadIcon, X as CloseIcon } from 'lucide-react'
+import { useSnackbar } from 'notistack'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -52,7 +52,7 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
     const queryClient = useQueryClient()
     const companyId = useCurrentCompanyId()
 
-    const toast = useToast()
+    const { enqueueSnackbar } = useSnackbar()
 
     const [selectedItems, setSelectedItems] = useState<string[]>(
         initialItems.map((item) => item.id),
@@ -171,14 +171,12 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
             setSelectedItems(selectedItems.filter((id) => id !== itemId))
         } else {
             if (maxItems && selectedItems.length >= maxItems) {
-                toast({
-                    title: 'Máximo de mídias atingido',
-                    description:
-                        'Você pode selecionar no máximo ' +
-                        maxItems +
-                        ' mídias',
-                    status: 'error',
-                })
+                enqueueSnackbar(
+                    `Você pode selecionar no máximo ${maxItems} mídias`,
+                    {
+                        variant: 'error',
+                    },
+                )
                 return
             }
             setSelectedItems([...selectedItems, itemId])
@@ -219,13 +217,8 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                 fileInputRef.current.value = ''
             }
         } catch (error) {
-            toast({
-                title: 'Erro ao fazer upload',
-                description: getErrorMessage(
-                    error,
-                    'Verifique se o arquivo é uma imagem válida',
-                ),
-                status: 'error',
+            enqueueSnackbar(getErrorMessage(error), {
+                variant: 'error',
             })
         }
     }

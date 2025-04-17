@@ -1,4 +1,4 @@
-import { ModalProps as ChakraModalProps } from '@chakra-ui/react'
+import { DialogProps } from '@mui/material'
 
 export interface TabFilterItem {
     label: string
@@ -6,7 +6,7 @@ export interface TabFilterItem {
 }
 
 export interface SelectBoxModalProps<T extends { name: string; id: string }>
-    extends Omit<ChakraModalProps, 'children'> {
+    extends Omit<DialogProps, 'children' | 'onSelect'> {
     onSelect: (items: T[]) => void
     initialSelectedItems?: T[]
     items: T[]

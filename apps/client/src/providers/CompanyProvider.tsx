@@ -1,7 +1,7 @@
 'use client'
 
 import { useGetCompanyById } from '@booksuite/sdk'
-import { Spinner } from '@chakra-ui/react'
+
 import { useEffect } from 'react'
 
 import { TEST_COMPANY, useCurrentCompanyStore } from '@/common/contexts/company'
@@ -32,7 +32,7 @@ export const CompanyProvider = ({
     }, [data, setCompany])
 
     if (!error && (isLoading || isFetching || !company)) {
-        return <Spinner />
+        return 'Carregando...'
     }
 
     if (error) {

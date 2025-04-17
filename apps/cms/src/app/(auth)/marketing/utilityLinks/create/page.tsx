@@ -1,7 +1,6 @@
 'use client'
 
 import { useUtilityLinksControllerCreate } from '@booksuite/sdk'
-import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
@@ -20,7 +19,6 @@ export default function CreateUtilityLink() {
     const companyId = useCurrentCompanyId()
     const { back } = useRouter()
     const { enqueueSnackbar } = useSnackbar()
-    const queryClient = useQueryClient()
 
     const { mutateAsync: createUtilityLink } = useUtilityLinksControllerCreate()
 

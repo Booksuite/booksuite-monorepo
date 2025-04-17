@@ -1,7 +1,7 @@
 import {
+    HousingUnitTypePricingChangeInput,
     PriceVariationType,
     SpecialDateFull,
-    SpecialDateHousingUnitType,
     SpecialDateMedia,
 } from '@booksuite/sdk'
 import moment from 'moment'
@@ -21,7 +21,7 @@ export type SpecialDateFormData = Omit<
     | 'generalDescription'
 > & {
     medias: SpecialDateMedia[]
-    housingUnitTypePrices: SpecialDateHousingUnitType[]
+    housingUnitTypePrices: HousingUnitTypePricingChangeInput[]
     services: string[]
     availableWeekDays: string[]
     description?: string
@@ -39,8 +39,8 @@ export const transformSpecialDateFormDataForSubmit = (
         generalDescription,
     } = formData
 
-    const startDate = new Date(formData.startDate + 'T00:00:00.000Z')
-    const endDate = new Date(formData.endDate + 'T23:59:59.999Z')
+    const startDate = moment.utc(formData.startDate).startOf('day')
+    const endDate = moment.utc(formData.endDate).endOf('day')
 
     const transformedData = {
         name: formData.name,
@@ -58,11 +58,11 @@ export const transformSpecialDateFormDataForSubmit = (
             order: typeof media.order === 'number' ? media.order : undefined,
         })),
         housingUnitTypePrices: housingUnitTypePrices.map((unit) => ({
-            housingUnitTypeId: unit.housingUnitType.id,
+            ...unit,
             baseWeekPrice: Number(unit.baseWeekPrice),
-            newWeekPrice: Number(unit.newWeekPrice),
-            weekendBasePrice: Number(unit.weekendBasePrice),
-            weekendNewPrice: Number(unit.weekendNewPrice),
+            finalWeekPrice: Number(unit.finalWeekPrice),
+            baseWeekendPrice: Number(unit.baseWeekendPrice),
+            finalWeekendPrice: Number(unit.finalWeekendPrice),
         })),
         includedServices: services.map((serviceId) => ({
             serviceId,
