@@ -2,7 +2,7 @@
 
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react'
 import Image from 'next/image'
-import { useEffect,useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { SlideIndicator } from '@/components/atoms/SlideIndicator'
 
@@ -11,6 +11,12 @@ interface ImageSliderProps {
     aspectRatio?: 'square' | 'video' | 'wide'
     showPlayButton?: boolean
     autoPlayInterval?: number
+    roundedCorners?: {
+        topLeft?: boolean
+        topRight?: boolean
+        bottomLeft?: boolean
+        bottomRight?: boolean
+    }
 }
 
 export const ImageSlider: React.FC<ImageSliderProps> = ({
@@ -18,6 +24,12 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
     aspectRatio = 'video',
     showPlayButton = true,
     autoPlayInterval = 5000,
+    roundedCorners = {
+        topLeft: true,
+        topRight: true,
+        bottomLeft: true,
+        bottomRight: true,
+    },
 }) => {
     const [activeSlide, setActiveSlide] = useState(0)
 
@@ -45,9 +57,18 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
         setActiveSlide((prev) => (prev === images.length - 1 ? 0 : prev + 1))
     }
 
+    const getRoundedClasses = () => {
+        const corners = []
+        if (roundedCorners.topLeft) corners.push('rounded-tl-2xl')
+        if (roundedCorners.topRight) corners.push('rounded-tr-2xl')
+        if (roundedCorners.bottomLeft) corners.push('rounded-bl-2xl')
+        if (roundedCorners.bottomRight) corners.push('rounded-br-2xl')
+        return corners.join(' ')
+    }
+
     return (
         <div
-            className={`relative ${aspectRatioClasses[aspectRatio]} w-full rounded-2xl overflow-hidden group`}
+            className={`relative ${aspectRatioClasses[aspectRatio]} w-full ${getRoundedClasses()} overflow-hidden group`}
         >
             <div className="absolute inset-0">
                 {images.map((image, index) => (
