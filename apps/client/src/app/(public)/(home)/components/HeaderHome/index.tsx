@@ -40,7 +40,7 @@ export const HeaderHome: React.FC = () => {
 
                     <div className="w-full max-w-4xl bg-white rounded-lg p-6 mt-8 flex justify-between">
                         <div className="mb-4 text-start items-center">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-2 ">
+                            <h3 className="text-lg font-semibold text-gray-700 mb-2 ">
                                 Busca inteligente:
                             </h3>
                             <h4>Datas · Experiências · Pacotes · Flexível</h4>
@@ -49,14 +49,14 @@ export const HeaderHome: React.FC = () => {
                         <div className="flex flex-col sm:flex-row gap-4 items-center w-1/2">
                             <Button
                                 variant="default"
-                                className="flex-1 bg-amber-800 hover:bg-amber-900 text-white py-6"
+                                className="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-6"
                             >
                                 <Search className="mr-2 h-5 w-5" />
                                 Pesquisar
                             </Button>
                             <Button
                                 variant="outline"
-                                className="flex-1 border-amber-800 text-amber-800 hover:bg-amber-50 py-6"
+                                className="flex-1 border-primary-700 text-primary-700 hover:bg-primary-100 py-6"
                             >
                                 Reservar
                             </Button>

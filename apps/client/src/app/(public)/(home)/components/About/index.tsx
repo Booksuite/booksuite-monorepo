@@ -16,7 +16,7 @@ export const About: React.FC = () => {
         <div className="container mx-auto px-4 py-16 flex flex-col gap-20 items-center">
             <div className="flex flex-col items-center">
                 <h1 className="text-3xl font-bold mb-4">{company?.name}</h1>
-                <div className="flex items-center text-amber-800">
+                <div className="flex items-center text-primary-700">
                     <MapPin className="h-5 w-5 mr-2" />
                     <span>
                         {company?.city}, {company?.state} - {company?.country}
@@ -41,7 +41,7 @@ export const About: React.FC = () => {
                             ?.map((facility, index) => (
                                 <div
                                     key={index}
-                                    className="text-center flex flex-col items-center justify-start h-full"
+                                    className="text-center flex flex-col items-center justify-center"
                                 >
                                     <div className="text-3xl mb-2 flex items-center justify-center">
                                         {facility.facility.icon || (
@@ -70,7 +70,7 @@ export const About: React.FC = () => {
                     <div className="self-start">
                         <Button
                             variant="outline"
-                            className="border-amber-800 text-amber-800 hover:bg-amber-50"
+                            className="border-primary-700 text-primary-700 hover:bg-primary-100"
                         >
                             Sobre nós
                         </Button>

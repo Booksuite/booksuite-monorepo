@@ -1,4 +1,6 @@
-export const colors = {
+import { lighten, darken } from 'color2k'
+
+export const baseColors = {
     blueGrey: {
         100: '#F0F4F8',
         200: '#D9E2EC',
@@ -56,4 +58,39 @@ export const colors = {
     },
 } as const
 
-export type ColorPalette = typeof colors
+type ColorScale = {
+    100: string
+    200: string
+    300: string
+    400: string
+    500: string
+    600: string
+    700: string
+    800: string
+}
+
+export type ColorPalette = typeof baseColors & {
+    primary: string
+    primaryScale: ColorScale
+}
+
+export const getColors = (
+    companyPrimaryColor: string = '#000000',
+): ColorPalette => ({
+    ...baseColors,
+    primary: companyPrimaryColor,
+    primaryScale: generateColorVariations(companyPrimaryColor),
+})
+
+const generateColorVariations = (baseColor: string) => {
+    return {
+        100: lighten(baseColor, 0.4),
+        200: lighten(baseColor, 0.3),
+        300: lighten(baseColor, 0.2),
+        400: lighten(baseColor, 0.1),
+        500: baseColor,
+        600: darken(baseColor, 0.1),
+        700: darken(baseColor, 0.2),
+        800: darken(baseColor, 0.3),
+    }
+}

@@ -67,7 +67,7 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
                     {description.length > 100 && (
                         <button
                             onClick={() => setIsExpanded(!isExpanded)}
-                            className="text-amber-800 hover:text-amber-900 text-sm font-medium"
+                            className="text-primary-600 hover:text-primary-700 text-sm font-medium"
                         >
                             {isExpanded ? 'Ler menos' : 'Ler mais'}
                         </button>
@@ -99,14 +99,14 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
                 <div className="flex gap-4">
                     <Button
                         onClick={onReserve}
-                        className="flex-1 bg-amber-800 text-white py-3 rounded-lg font-medium hover:bg-amber-900 transition-colors"
+                        className="flex-1 bg-primary-600 text-white py-3 rounded-lg font-medium hover:bg-primary-700 transition-colors"
                     >
                         Reservar
                     </Button>
                     <Button
                         onClick={onDetails}
                         variant={'outline'}
-                        className="flex-1 text-amber-800 gap-2 hover:text-amber-900 border-none py-3 rounded-lg font-medium hover:bg-grey-100 transition-colors "
+                        className="flex-1 text-primary-600 gap-2 hover:text-primary-700 border-none py-3 rounded-lg font-medium hover:bg-grey-100 transition-colors "
                     >
                         Ver detalhes
                         <ArrowRight />
