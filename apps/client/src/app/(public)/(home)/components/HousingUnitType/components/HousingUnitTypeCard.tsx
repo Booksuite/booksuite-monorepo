@@ -1,8 +1,9 @@
 'use client'
 
 import type { HousingUnitTypeFacility } from '@booksuite/sdk'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Images, Users } from 'lucide-react'
 import Image from 'next/image'
+import { useState } from 'react'
 
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
@@ -12,8 +13,10 @@ interface HousingUnitTypeCardProps {
     description: string
     images: string[]
     facilities: HousingUnitTypeFacility[]
+    maxGuests: number
     onReserve?: () => void
     onDetails?: () => void
+    onViewAllPhotos?: () => void
 }
 
 export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
@@ -21,24 +24,57 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
     description,
     images,
     facilities,
+    maxGuests,
     onReserve,
     onDetails,
+    onViewAllPhotos,
 }) => {
+    const [isExpanded, setIsExpanded] = useState(false)
+
     return (
         <div className="bg-white rounded-2xl overflow-hidden border border-1">
-            <div className="aspect-[4/3] w-full">
+            <div className="aspect-[4/3] w-full relative">
                 <ImageSlider
                     images={images}
                     aspectRatio="wide"
                     showPlayButton={false}
+                    roundedCorners={{
+                        bottomRight: false,
+                        bottomLeft: false,
+                    }}
                 />
+                <div className="absolute top-4 left-4 border border-white/80 text-white/80 bg-transparent backdrop-blur-sm px-3 py-1.5 rounded-md flex items-center gap-2">
+                    <Users className="w-4 h-4" />
+                    <span className="text-sm font-medium">{maxGuests}</span>
+                </div>
+                <button
+                    onClick={onViewAllPhotos}
+                    className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm px-3 py-1.5 rounded-md flex items-center gap-2 hover:bg-white/90 transition-colors"
+                >
+                    <Images className="w-4 h-4" />
+                    <span className="text-sm">Fotos</span>
+                </button>
             </div>
 
             <div className="p-6">
                 <h2 className="text-2xl font-semibold mb-3">{title}</h2>
-                <p className="text-gray-600 mb-4 line-clamp-2">{description}</p>
+                <div className="relative">
+                    <p
+                        className={`text-gray-600 mb-4 ${isExpanded ? '' : 'line-clamp-2'}`}
+                    >
+                        {description}
+                    </p>
+                    {description.length > 100 && (
+                        <button
+                            onClick={() => setIsExpanded(!isExpanded)}
+                            className="text-amber-800 hover:text-amber-900 text-sm font-medium"
+                        >
+                            {isExpanded ? 'Ler menos' : 'Ler mais'}
+                        </button>
+                    )}
+                </div>
 
-                <div className="flex flex-wrap gap-4 mb-6">
+                <div className="flex flex-wrap gap-4 mt-6 mb-6">
                     {facilities.map((facility) => (
                         <div
                             key={facility.id}

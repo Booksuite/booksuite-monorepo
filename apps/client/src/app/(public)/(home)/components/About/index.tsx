@@ -41,7 +41,7 @@ export const About: React.FC = () => {
                             ?.map((facility, index) => (
                                 <div
                                     key={index}
-                                    className="text-center flex flex-col items-center justify-center"
+                                    className="text-center flex flex-col items-center justify-start h-full"
                                 >
                                     <div className="text-3xl mb-2 flex items-center justify-center">
                                         {facility.facility.icon || (
