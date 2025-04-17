@@ -1,8 +1,9 @@
 'use client'
 
 import { Gift, MapPin } from 'lucide-react'
-import { Button } from '@/components/atoms/Button'
+
 import { useCurrentCompanyStore } from '@/common/contexts/company'
+import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
 
 export const About: React.FC = () => {

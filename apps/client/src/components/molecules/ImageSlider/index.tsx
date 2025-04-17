@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
 import { ChevronLeft, ChevronRight, Play } from 'lucide-react'
+import Image from 'next/image'
+import { useEffect,useState } from 'react'
+
 import { SlideIndicator } from '@/components/atoms/SlideIndicator'
 
 interface ImageSliderProps {

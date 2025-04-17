@@ -1,8 +1,10 @@
-import { useCurrentCompanyStore } from '@/common/contexts/company'
-import React from 'react'
-import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
-import { useSearchHousingUnitTypes } from '@booksuite/sdk'
 import type { HousingUnitTypeFull } from '@booksuite/sdk'
+import { useSearchHousingUnitTypes } from '@booksuite/sdk'
+import React from 'react'
+
+import { useCurrentCompanyStore } from '@/common/contexts/company'
+
+import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
 
 export const HousingUnitType: React.FC = () => {
     const { company } = useCurrentCompanyStore()

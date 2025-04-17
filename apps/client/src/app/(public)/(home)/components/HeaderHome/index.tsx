@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from 'react'
-import Image from 'next/image'
 import { Search } from 'lucide-react'
+import Image from 'next/image'
+import { useState } from 'react'
+
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Button } from '@/components/atoms/Button'
-import { Navbar } from '@/components/templates/Navbar'
 import { SlideIndicator } from '@/components/atoms/SlideIndicator'
+import { Navbar } from '@/components/templates/Navbar'
 
 export const HeaderHome: React.FC = () => {
     const { company } = useCurrentCompanyStore()

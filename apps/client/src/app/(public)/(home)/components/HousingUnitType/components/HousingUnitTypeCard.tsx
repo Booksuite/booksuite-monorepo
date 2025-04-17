@@ -1,10 +1,11 @@
 'use client'
 
-import { Button } from '@/components/atoms/Button'
-import { ImageSlider } from '@/components/molecules/ImageSlider'
 import type { HousingUnitTypeFacility } from '@booksuite/sdk'
 import { ArrowRight } from 'lucide-react'
 import Image from 'next/image'
+
+import { Button } from '@/components/atoms/Button'
+import { ImageSlider } from '@/components/molecules/ImageSlider'
 
 interface HousingUnitTypeCardProps {
     title: string

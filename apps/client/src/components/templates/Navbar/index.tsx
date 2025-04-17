@@ -1,10 +1,11 @@
 'use client'
 
-import Link from 'next/link'
 import { ShoppingCart, User } from 'lucide-react'
-import { useCurrentCompanyStore } from '@/common/contexts/company'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/atoms/Avatar'
 import { Route } from 'next'
+import Link from 'next/link'
+
+import { useCurrentCompanyStore } from '@/common/contexts/company'
+import { Avatar, AvatarFallback,AvatarImage } from '@/components/atoms/Avatar'
 
 const navigationLinks = [
     { name: 'Início', href: '/' as Route },

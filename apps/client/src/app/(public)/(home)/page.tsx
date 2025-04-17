@@ -1,7 +1,7 @@
 'use client'
 
-import { HeaderHome } from './components/HeaderHome'
 import { About } from './components/About'
+import { HeaderHome } from './components/HeaderHome'
 import { HousingUnitType } from './components/HousingUnitType'
 
 export default function Home() {

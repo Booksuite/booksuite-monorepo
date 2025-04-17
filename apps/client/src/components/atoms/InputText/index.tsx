@@ -1,10 +1,12 @@
 'use client'
 
+import { useState } from 'react'
+
+import { cn } from '@/common/lib/utils'
+import { colors } from '@/common/theme'
+
 import { Input } from './input'
 import { Label } from './label'
-import { cn } from '@/common/lib/utils'
-import { useState } from 'react'
-import { colors } from '@/common/theme'
 
 interface InputTextProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string
