@@ -1,4 +1,10 @@
-import './globals.css'
+import { Inter } from 'next/font/google'
+
+export const inter = Inter({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-inter',
+})
 
 import pluralize from 'pluralize'
 
@@ -15,6 +21,12 @@ interface RootLayoutProps {
     children: React.ReactNode
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
-    return <Providers>{children}</Providers>
+export default async function RootLayout({ children }: RootLayoutProps) {
+    return (
+        <html lang="pt" className={inter.className}>
+            <body>
+                <Providers>{children}</Providers>
+            </body>
+        </html>
+    )
 }
