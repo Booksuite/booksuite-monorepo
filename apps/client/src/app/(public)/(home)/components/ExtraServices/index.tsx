@@ -3,6 +3,7 @@ import { ServiceFull, useSearchServices } from '@booksuite/sdk'
 import { useState } from 'react'
 import { ExtraServicesCard } from './components/ExtraServicesCard'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
+import { Container } from '@/components/organisms/Container'
 
 export const ExtraServices: React.FC = () => {
     const { company } = useCurrentCompanyStore()
@@ -32,9 +33,9 @@ export const ExtraServices: React.FC = () => {
 
     return (
         <>
-            <div className="container mx-auto px-4 py-16 flex flex-col gap-20 items-center">
+            <Container>
                 <div className="flex flex-col items-center text-center">
-                    <h2 className="text-[32px] font-bold text-grey-primary mb-3">
+                    <h2 className="text-3xl font-bold text-grey-primary mb-3">
                         Serviços Extras
                     </h2>
                     <div className="text-grey-secondary text-lg">
@@ -42,7 +43,7 @@ export const ExtraServices: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {service?.items?.map((services: ServiceFull) => (
                         <ExtraServicesCard
                             key={services.id}
@@ -71,7 +72,7 @@ export const ExtraServices: React.FC = () => {
                         />
                     ))}
                 </div>
-            </div>
+            </Container>
 
             <ImageGallery
                 title={selectedService?.title ?? ''}

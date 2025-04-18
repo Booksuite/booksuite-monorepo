@@ -1,10 +1,11 @@
 import { Button } from '@/components/atoms/Button'
 import { InputText } from '@/components/atoms/InputText'
+import { Container } from '@/components/organisms/Container'
 
 export const ReceiveOurPromotions: React.FC = () => {
     return (
-        <>
-            <div className="container justify-between mx-auto px-4 py-16 flex flex-col md:flex-row gap-20 items-center ">
+        <Container>
+            <div className="justify-between flex flex-col md:flex-row gap-20 items-center w-full">
                 <div className="flex flex-col gap-4 w-full md:w-1/2 ">
                     <h1 className="text-3xl font-bold text-grey-primary mb-4">
                         Receba nossas promoções
@@ -22,6 +23,6 @@ export const ReceiveOurPromotions: React.FC = () => {
                     </Button>
                 </div>
             </div>
-        </>
+        </Container>
     )
 }

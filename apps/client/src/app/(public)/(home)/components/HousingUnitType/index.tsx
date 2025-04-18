@@ -4,8 +4,8 @@ import React, { useState } from 'react'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
-
 import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
+import { Container } from '@/components/organisms/Container'
 
 export const HousingUnitType: React.FC = () => {
     const { company } = useCurrentCompanyStore()
@@ -35,7 +35,7 @@ export const HousingUnitType: React.FC = () => {
 
     return (
         <>
-            <div className="container mx-auto px-4 py-16 flex flex-col gap-20 items-center">
+            <Container>
                 <div className="flex flex-col items-center">
                     <h2 className="text-3xl text-grey-primary font-bold mb-4">
                         Nossas Acomodações
@@ -72,7 +72,7 @@ export const HousingUnitType: React.FC = () => {
                         ),
                     )}
                 </div>
-            </div>
+            </Container>
 
             <ImageGallery
                 title={selectedUnit?.title ?? ''}

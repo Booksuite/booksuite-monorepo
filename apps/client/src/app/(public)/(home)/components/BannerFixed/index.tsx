@@ -3,6 +3,7 @@ import { Button } from '@/components/atoms/Button'
 import { Search } from 'lucide-react'
 import Image from 'next/image'
 import { useGetBannerById, useSearchBanners } from '@booksuite/sdk'
+import { Container } from '@/components/organisms/Container'
 
 export const BannerFixed = () => {
     const { company } = useCurrentCompanyStore()
@@ -36,8 +37,8 @@ export const BannerFixed = () => {
     })
 
     return (
-        <div className="container mx-auto px-0 py-16 gap-20 items-center">
-            <div className="relative aspect-[18/6] mx-4 mt-4 rounded-3xl overflow-hidden">
+        <Container>
+            <div className="relative w-full mx-20 mt-4 rounded-3xl overflow-hidden">
                 <div className="absolute inset-0 bg-black/30 z-10" />
                 <Image
                     src={
@@ -52,7 +53,7 @@ export const BannerFixed = () => {
                 />
 
                 <div className="relative z-20 container mx-auto h-full flex flex-col justify-center items-center text-center px-4 py-8 md:py-12">
-                    <h1 className="text-2xl md:text-4xl lg:text-4xl font-bold text-white mb-3 md:mb-4 max-w-4xl">
+                    <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3 md:mb-4 max-w-4xl">
                         {banner?.title || 'Reserve online'}
                     </h1>
                     <p className="text-base md:text-xl lg:text-xl text-white mb-6 md:mb-8">
@@ -90,6 +91,6 @@ export const BannerFixed = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </Container>
     )
 }

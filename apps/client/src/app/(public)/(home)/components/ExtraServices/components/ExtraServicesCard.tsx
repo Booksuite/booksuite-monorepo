@@ -108,11 +108,11 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
                             Por unidade
                         </span>
                     </div>
-                    <div className="flex items-center gap-4 mt-10 ">
+                    <div className="flex items-center gap-3 mt-10 ">
                         {quantity === 0 ? (
                             <Button
                                 onClick={() => handleQuantityChange(1)}
-                                className="w-26 gap-2 h-12 bg-primary-500 text-sm hover:bg-primary-600 text-white px-6 py-3 rounded-lg transition-colors"
+                                className="w-26 gap-1 h-12 bg-primary-500 text-sm hover:bg-primary-600 text-white px-6 py-3 rounded-lg transition-colors"
                             >
                                 <Plus className="w-4 h-4" />
                                 Adicionar
