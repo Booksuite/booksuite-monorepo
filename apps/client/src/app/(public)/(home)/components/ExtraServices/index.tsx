@@ -34,10 +34,10 @@ export const ExtraServices: React.FC = () => {
         <>
             <div className="container mx-auto px-4 py-16 flex flex-col gap-20 items-center">
                 <div className="flex flex-col items-center text-center">
-                    <h2 className="text-[32px] font-bold text-gray-800 mb-3">
+                    <h2 className="text-[32px] font-bold text-grey-primary mb-3">
                         Serviços Extras
                     </h2>
-                    <div className="text-gray-600 text-lg">
+                    <div className="text-grey-secondary text-lg">
                         <span>Complete sua estadia com itens adicionais</span>
                     </div>
                 </div>

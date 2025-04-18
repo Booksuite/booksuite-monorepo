@@ -3,7 +3,6 @@
 import { useState } from 'react'
 
 import { cn } from '@/common/lib/utils'
-import { colors } from '@/common/theme'
 
 import { Input } from './input'
 import { Label } from './label'
@@ -35,38 +34,31 @@ export function InputText({
     return (
         <div className="relative">
             <div
-                style={{
-                    borderColor: error
-                        ? colors.systemColors.red
-                        : success
-                          ? colors.systemColors.green
-                          : focused
-                            ? colors.systemColors.blue
-                            : colors.coolGrey[200],
-                    backgroundColor: disabled ? colors.coolGrey[100] : 'white',
-                }}
                 className={cn(
                     'relative rounded-[10px] border transition-colors',
+                    error && 'border-systemColors-red',
+                    success && 'border-systemColors-green',
+                    focused && !error && !success && 'border-primary-500',
+                    !focused && !error && !success && 'border-grey-200',
+                    disabled ? 'bg-systemColors-blueLight' : 'bg-white',
                 )}
             >
                 {label && (
                     <Label
                         htmlFor={props.id}
-                        style={{
-                            color: error
-                                ? colors.systemColors.red
-                                : success
-                                  ? colors.systemColors.green
-                                  : disabled
-                                    ? colors.coolGrey[500]
-                                    : colors.grey.primary,
-                        }}
                         className={cn(
                             'absolute left-4 pointer-events-none transition-all duration-200',
                             isFloating
                                 ? 'transform -translate-y-1 top-2 text-xs'
                                 : 'top-[14px] text-base',
                             'font-normal',
+                            error && 'text-systemColors-red',
+                            success && 'text-systemColors-green',
+                            disabled && 'text-grey-secondary',
+                            !error &&
+                                !success &&
+                                !disabled &&
+                                'text-grey-secondary',
                         )}
                     >
                         {label}
@@ -77,18 +69,17 @@ export function InputText({
                     value={value}
                     defaultValue={defaultValue}
                     disabled={disabled}
-                    style={{
-                        backgroundColor: disabled
-                            ? colors.coolGrey[100]
-                            : 'transparent',
-                        color: disabled ? colors.coolGrey[500] : 'inherit',
-                    }}
                     className={cn(
                         'border-0',
                         isFloating && 'pt-5',
-                        error && 'focus:ring-red-500',
-                        success && 'focus:ring-green-500',
-                        focused && !error && !success && 'focus:ring-blue-500',
+                        error && 'focus:ring-systemColors-red',
+                        success && 'focus:ring-systemColors-green',
+                        focused &&
+                            !error &&
+                            !success &&
+                            'focus:ring-primary-500',
+                        disabled && 'bg-grey-100 text-grey-secondary',
+                        !disabled && 'bg-transparent',
                         className,
                     )}
                     onFocus={(e) => {
@@ -106,12 +97,7 @@ export function InputText({
                 />
             </div>
             {error && (
-                <p
-                    style={{ color: colors.systemColors.red }}
-                    className="mt-1 text-sm"
-                >
-                    {error}
-                </p>
+                <p className="mt-1 text-sm text-systemColors-red">{error}</p>
             )}
         </div>
     )

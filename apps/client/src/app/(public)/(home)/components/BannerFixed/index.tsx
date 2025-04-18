@@ -36,7 +36,7 @@ export const BannerFixed = () => {
     })
 
     return (
-        <div className="container mx-auto px-4 py-16 gap-20 items-center">
+        <div className="container mx-auto px-0 py-16 gap-20 items-center">
             <div className="relative aspect-[18/6] mx-4 mt-4 rounded-3xl overflow-hidden">
                 <div className="absolute inset-0 bg-black/30 z-10" />
                 <Image
@@ -63,10 +63,10 @@ export const BannerFixed = () => {
                     <div className="w-full max-w-4xl bg-white rounded-xl shadow-lg p-4 md:p-6">
                         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                             <div className="text-start w-full md:w-auto">
-                                <h3 className="text-base md:text-lg font-semibold text-gray-800 mb-1">
+                                <h3 className="text-base md:text-lg font-semibold text-grey-primary mb-1">
                                     Busca inteligente:
                                 </h3>
-                                <h4 className="text-sm md:text-base text-gray-600">
+                                <h4 className="text-sm md:text-base text-grey-secondary">
                                     Datas · Experiências · Pacotes · Flexível
                                 </h4>
                             </div>
