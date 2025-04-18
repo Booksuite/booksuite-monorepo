@@ -15,8 +15,6 @@ export const HeaderHome: React.FC = () => {
 
     return (
         <div className="relative min-h-screen flex flex-col">
-            <Navbar />
-
             <div className="relative w-full h-screen">
                 <div className="absolute inset-0 bg-black/30 z-10" />
                 <Image
