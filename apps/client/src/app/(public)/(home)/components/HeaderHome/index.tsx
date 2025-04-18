@@ -51,14 +51,14 @@ export const HeaderHome: React.FC = () => {
                         <div className="flex flex-col sm:flex-row gap-4 items-center w-1/2">
                             <Button
                                 variant="default"
-                                className="flex-1 bg-primary-600 hover:bg-primary-700 text-white py-6"
+                                className="flex-1 bg-primary-500 hover:bg-primary-700 text-white py-6"
                             >
                                 <Search className="mr-2 h-5 w-5" />
                                 Pesquisar
                             </Button>
                             <Button
                                 variant="outline"
-                                className="flex-1 border-primary-700 text-primary-700 hover:bg-primary-100 py-6"
+                                className="flex-1 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white py-6"
                             >
                                 Reservar
                             </Button>

@@ -16,7 +16,7 @@ export const About: React.FC = () => {
         <div className="container mx-auto px-4 py-16 flex flex-col gap-20 items-center">
             <div className="flex flex-col items-center">
                 <h1 className="text-3xl font-bold mb-4">{company?.name}</h1>
-                <div className="flex items-center text-primary-700">
+                <div className="flex items-center text-primary-500">
                     <MapPin className="h-5 w-5 mr-2" />
                     <span>
                         {company?.city}, {company?.state} - {company?.country}
@@ -35,7 +35,7 @@ export const About: React.FC = () => {
                         </p>
                     </div>
 
-                    <div className="grid grid-cols-5 gap-4 w-full">
+                    <div className="grid grid-cols-5 gap-4 w-full items-start">
                         {company?.facilities
                             ?.filter((facility) => facility.order !== null)
                             ?.sort((a, b) => (a.order || 0) - (b.order || 0))
@@ -45,12 +45,12 @@ export const About: React.FC = () => {
                                     key={index}
                                     className="text-center flex flex-col items-center justify-center"
                                 >
-                                    <div className="text-3xl mb-2 flex items-center justify-center">
+                                    <div className="text-3xl mb-2 flex items-center justify-center text-grey-primary">
                                         {facility.facility.icon || (
                                             <Gift className="w-8 h-8" />
                                         )}
                                     </div>
-                                    <div className="text-sm font-medium">
+                                    <div className="text-sm font-medium text-grey-primary">
                                         {facility.facility.name}
                                     </div>
                                     <div className="text-sm text-grey-secondary">
@@ -72,7 +72,7 @@ export const About: React.FC = () => {
                     <div className="self-start">
                         <Button
                             variant="outline"
-                            className="border-primary-700 text-primary-700 hover:bg-primary-100"
+                            className="border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white"
                         >
                             Sobre nós
                         </Button>

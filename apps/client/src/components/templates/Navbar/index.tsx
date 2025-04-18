@@ -28,7 +28,7 @@ export function Navbar() {
             <div className="container mx-auto px-4 py-4">
                 <div className="flex items-center justify-between">
                     <Link href="/" className="flex items-center">
-                        <Avatar className="w-16 h-16 border-2 border-primary-700 bg-primary-100">
+                        <Avatar className="w-16 h-16 border-2 border-primary-500 bg-primary-100">
                             <AvatarImage
                                 src={
                                     company?.logo ??
@@ -36,7 +36,7 @@ export function Navbar() {
                                 }
                                 alt="Logo da empresa"
                             />
-                            <AvatarFallback className="bg-primary-100 text-primary-700 font-semibold">
+                            <AvatarFallback className="bg-primary-100 text-primary-500 font-semibold">
                                 {company?.name?.[0] ?? 'C'}
                             </AvatarFallback>
                         </Avatar>
@@ -48,7 +48,7 @@ export function Navbar() {
                                 <li key={index}>
                                     <Link
                                         href={link.href}
-                                        className="text-white font-medium hover:text-primary-200 transition-colors px-4"
+                                        className="text-white font-medium hover:text-primary-300 transition-colors px-4"
                                     >
                                         {link.name}
                                     </Link>
@@ -62,7 +62,7 @@ export function Navbar() {
                             <button className="p-3">
                                 <ShoppingCart className="h-5 w-5 text-black" />
                             </button>
-                            <button className="bg-primary-700 rounded-full p-3 border-2 border-white">
+                            <button className="bg-primary-500 rounded-full p-3 border-2 border-white">
                                 <User className="h-5 w-5 text-white" />
                             </button>
                         </div>
