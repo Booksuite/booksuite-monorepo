@@ -1,0 +1,84 @@
+import { useCurrentCompanyStore } from '@/common/contexts/company'
+import { ServiceFull, useSearchServices } from '@booksuite/sdk'
+import { useState } from 'react'
+import { ExtraServicesCard } from './components/ExtraServicesCard'
+import { ImageGallery } from '@/components/organisms/ImageGallery'
+
+export const ExtraServices: React.FC = () => {
+    const { company } = useCurrentCompanyStore()
+    const [selectedService, setSelectedService] = useState<{
+        title: string
+        images: string[]
+    } | null>(null)
+
+    const { data: service } = useSearchServices(
+        { companyId: company?.id ?? '' },
+        {
+            filter: {
+                published: true,
+            },
+            pagination: {
+                page: 1,
+                itemsPerPage: 10,
+            },
+        },
+        undefined,
+        {
+            query: {
+                enabled: !!company?.id,
+            },
+        },
+    )
+
+    return (
+        <>
+            <div className="container mx-auto px-4 py-16 flex flex-col gap-20 items-center">
+                <div className="flex flex-col items-center text-center">
+                    <h2 className="text-[32px] font-bold text-gray-800 mb-3">
+                        Serviços Extras
+                    </h2>
+                    <div className="text-gray-600 text-lg">
+                        <span>Complete sua estadia com itens adicionais</span>
+                    </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    {service?.items?.map((services: ServiceFull) => (
+                        <ExtraServicesCard
+                            key={services.id}
+                            title={services.name ?? ''}
+                            description={services.description ?? ''}
+                            images={
+                                services.medias?.map(
+                                    (media) => media.media.url,
+                                ) ?? ['/placeholder.svg']
+                            }
+                            price={services.price ?? 0}
+                            originalPrice={services.price * 1.15}
+                            onQuantityChange={(quantity) => {
+                                console.log(
+                                    `Quantity changed to ${quantity} for service ${services.id}`,
+                                )
+                            }}
+                            onViewAllPhotos={() => {
+                                setSelectedService({
+                                    title: services.name ?? '',
+                                    images: services.medias?.map(
+                                        (media) => media.media.url,
+                                    ) ?? ['/placeholder.svg'],
+                                })
+                            }}
+                        />
+                    ))}
+                </div>
+            </div>
+
+            <ImageGallery
+                title={selectedService?.title ?? ''}
+                images={selectedService?.images ?? []}
+                isOpen={!!selectedService}
+                onClose={() => setSelectedService(null)}
+            />
+        </>
+    )
+}
