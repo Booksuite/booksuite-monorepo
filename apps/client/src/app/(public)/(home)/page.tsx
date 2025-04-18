@@ -1,6 +1,7 @@
 'use client'
 
 import { About } from './components/About'
+import { BannerFixed } from './components/BannerFixed'
 import { ExtraServices } from './components/ExtraServices'
 import { HeaderHome } from './components/HeaderHome'
 import { HousingUnitType } from './components/HousingUnitType'
@@ -12,6 +13,7 @@ export default function Home() {
             <About />
             <HousingUnitType />
             <ExtraServices />
+            <BannerFixed />
         </div>
     )
 }
