@@ -43,7 +43,7 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
             : 0
 
     return (
-        <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
             <div className="aspect-[4/3] w-full relative">
                 <ImageSlider
                     images={images}
