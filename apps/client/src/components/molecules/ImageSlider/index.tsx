@@ -32,6 +32,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
     },
 }) => {
     const [activeSlide, setActiveSlide] = useState(0)
+    const [key, setKey] = useState(0)
 
     useEffect(() => {
         const timer = setInterval(() => {
@@ -41,7 +42,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
         }, autoPlayInterval)
 
         return () => clearInterval(timer)
-    }, [images.length, autoPlayInterval])
+    }, [images.length, autoPlayInterval, key])
 
     const aspectRatioClasses = {
         square: 'aspect-square',
@@ -51,10 +52,12 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({
 
     const handlePrevSlide = () => {
         setActiveSlide((prev) => (prev === 0 ? images.length - 1 : prev - 1))
+        setKey((prev) => prev + 1)
     }
 
     const handleNextSlide = () => {
         setActiveSlide((prev) => (prev === images.length - 1 ? 0 : prev + 1))
+        setKey((prev) => prev + 1)
     }
 
     const getRoundedClasses = () => {
