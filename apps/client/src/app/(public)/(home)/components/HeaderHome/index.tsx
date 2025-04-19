@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { SlideIndicator } from '@/components/atoms/SlideIndicator'
 import { SmartBannerSearch } from '@/components/molecules/SmartBannerSearch'
+import { Navbar } from '@/components/templates/Navbar'
 
 export const HeaderHome: React.FC = () => {
     const { company } = useCurrentCompanyStore()
@@ -13,6 +14,11 @@ export const HeaderHome: React.FC = () => {
 
     return (
         <div className="relative min-h-screen flex flex-col">
+            <Navbar
+                textColor="text-white"
+                textHoverColor="hover:text-white"
+                selectedColorIsWhite
+            />
             <div className="relative w-full h-screen">
                 <div className="absolute inset-0 bg-black/30 z-10" />
                 <Image
