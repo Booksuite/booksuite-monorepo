@@ -2,7 +2,7 @@ import { Button } from '@/components/atoms/Button'
 import { Container } from '@/components/organisms/Container'
 import { Search } from 'lucide-react'
 
-export const FooterHome: React.FC = () => {
+export const OthersHome: React.FC = () => {
     return (
         <div className="bg-grey-100">
             <Container>
