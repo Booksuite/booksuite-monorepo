@@ -166,6 +166,7 @@ __metadata:
     autoprefixer: "npm:^10.x"
     class-variance-authority: "npm:^0.7.0"
     clsx: "npm:^2.1.0"
+    color2k: "npm:^2.0.3"
     eslint: "npm:^9.24.0"
     eslint-config-next: "npm:^15.3.0"
     lucide-react: "npm:^0.359.0"
@@ -3751,6 +3752,13 @@ __metadata:
   version: 1.1.4
   resolution: "color-name@npm:1.1.4"
   checksum: 10c0/a1a3f914156960902f46f7f56bc62effc6c94e84b2cae157a526b1c1f74b677a47ec602bf68a61abfa2b42d15b7c5651c6dbe72a43af720bc588dff885b10f95
+  languageName: node
+  linkType: hard
+
+"color2k@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "color2k@npm:2.0.3"
+  checksum: 10c0/e7c13d212c9d1abb1690e378bbc0a6fb1751e4b02e9a73ba3b2ade9d54da673834597d342791d577d1ce400ec486c7f92c5098f9fa85cd113bcfde57420a2bb9
   languageName: node
   linkType: hard
 

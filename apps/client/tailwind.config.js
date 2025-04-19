@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-import { colors } from './src/common/theme'
+import { baseColors } from './src/common/theme/colors'
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -19,16 +19,23 @@ export default {
     },
     extend: {
       colors: {
-        ...colors,
+        ...baseColors,
+        primary: {
+          DEFAULT: 'var(--primary-color)',
+          100: 'var(--primary-100)',
+          200: 'var(--primary-200)',
+          300: 'var(--primary-300)',
+          400: 'var(--primary-400)',
+          500: 'var(--primary-500)',
+          600: 'var(--primary-600)',
+          700: 'var(--primary-700)',
+          800: 'var(--primary-800)',
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",

@@ -1,11 +1,13 @@
 'use client'
 
-import * as React from 'react'
-import { Label } from './label'
-import { cn } from '@/common/lib/utils'
-import { useState } from 'react'
-import { colors } from '@/common/theme'
 import { ChevronDown } from 'lucide-react'
+import * as React from 'react'
+import { useState } from 'react'
+
+import { cn } from '@/common/lib/utils'
+import { colors } from '@/common/theme'
+
+import { Label } from './label'
 import {
     Select,
     SelectContent,
