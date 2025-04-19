@@ -6,10 +6,18 @@ import Link from 'next/link'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/atoms/Avatar'
+import { cn } from '@/common/lib/utils'
+import { usePathname } from 'next/navigation'
+
+interface NavbarProps {
+    textColor?: string
+    textHoverColor?: string
+    selectedColorIsWhite?: boolean
+}
 
 const navigationLinks = [
     { name: 'Início', href: '/' as Route },
-    { name: 'Acomodações', href: '/' as Route },
+    { name: 'Acomodações', href: '/housing-unit' as Route },
     { name: 'Experiências', href: '/' as Route },
     { name: 'Pacotes', href: '/' as Route },
     { name: 'Promoções', href: '/' as Route },
@@ -20,11 +28,15 @@ const navigationLinks = [
     { name: 'Contato', href: '/' as Route },
 ]
 
-export function Navbar() {
+export function Navbar({
+    textColor = 'text-primary-500',
+    textHoverColor = 'hover:text-primary-700',
+    selectedColorIsWhite = false,
+}: NavbarProps) {
     const { company } = useCurrentCompanyStore()
-
+    const pathname = usePathname()
     return (
-        <header className="w-full z-50 absolute top-0 left-0 right-0 bg-gradient-to-b from-black/50 to-transparent">
+        <header className="w-full z-50 absolute top-0 left-0 right-0 ">
             <div className="container mx-auto px-4 py-4">
                 <div className="flex items-center justify-between">
                     <Link href="/" className="flex items-center">
@@ -44,21 +56,39 @@ export function Navbar() {
 
                     <nav className="hidden lg:flex flex-1 justify-center">
                         <ul className="flex items-center">
-                            {navigationLinks.map((link, index) => (
-                                <li key={index}>
-                                    <Link
-                                        href={link.href}
-                                        className="text-white font-medium hover:text-primary-300 transition-colors px-4"
-                                    >
-                                        {link.name}
-                                    </Link>
-                                </li>
-                            ))}
+                            {navigationLinks.map((link, index) => {
+                                const isActive = pathname === link.href
+                                return (
+                                    <li key={index}>
+                                        <Link
+                                            href={link.href}
+                                            className={cn(
+                                                textColor,
+                                                textHoverColor,
+                                                'font-medium transition-all duration-200 px-4',
+                                                {
+                                                    'font-bold': isActive,
+                                                    'hover:font-bold':
+                                                        !isActive,
+                                                    'text-white':
+                                                        isActive &&
+                                                        selectedColorIsWhite,
+                                                    'text-primary-700':
+                                                        isActive &&
+                                                        !selectedColorIsWhite,
+                                                },
+                                            )}
+                                        >
+                                            {link.name}
+                                        </Link>
+                                    </li>
+                                )
+                            })}
                         </ul>
                     </nav>
 
                     <div className="flex items-center">
-                        <div className="bg-white rounded-full flex items-center overflow-hidden shadow-sm">
+                        <div className="bg-white rounded-full flex items-center overflow-hidden ">
                             <button className="p-3">
                                 <ShoppingCart className="h-5 w-5 text-black" />
                             </button>
