@@ -358,7 +358,6 @@ export const SeasonRulesForm: React.FC = () => {
                                                             )
 
                                                         if (e.target.checked) {
-                                                            console.log(housing)
                                                             setFieldValue(
                                                                 'housingUnitTypePrices',
                                                                 [
@@ -369,9 +368,12 @@ export const SeasonRulesForm: React.FC = () => {
                                                                         baseWeekPrice:
                                                                             housing.weekdaysPrice ||
                                                                             0,
-                                                                        finalWeekPrice: 0,
-                                                                        finalWeekendPrice: 0,
-                                                                        baseWeekendPrice: housing.weekendPrice,
+                                                                        finalWeekPrice:
+                                                                            housing.weekdaysPrice,
+                                                                        finalWeekendPrice:
+                                                                            housing.weekendPrice,
+                                                                        baseWeekendPrice:
+                                                                            housing.weekendPrice,
                                                                     },
                                                                 ],
                                                             )
