@@ -1,4 +1,4 @@
-import { lighten, darken } from 'color2k'
+import { darken,lighten } from 'color2k'
 
 export const baseColors = {
     blueGrey: {

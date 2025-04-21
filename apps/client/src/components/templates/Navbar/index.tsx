@@ -3,11 +3,11 @@
 import { ShoppingCart, User } from 'lucide-react'
 import { Route } from 'next'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/atoms/Avatar'
 import { cn } from '@/common/lib/utils'
-import { usePathname } from 'next/navigation'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/atoms/Avatar'
 
 interface NavbarProps {
     textColor?: string
@@ -29,8 +29,8 @@ const navigationLinks = [
 ]
 
 export function Navbar({
-    textColor = 'text-primary-500',
-    textHoverColor = 'hover:text-primary-700',
+    textColor = 'text-grey-primary',
+    textHoverColor = 'hover:text-grey-primary',
     selectedColorIsWhite = false,
 }: NavbarProps) {
     const { company } = useCurrentCompanyStore()
@@ -73,7 +73,7 @@ export function Navbar({
                                                     'text-white':
                                                         isActive &&
                                                         selectedColorIsWhite,
-                                                    'text-primary-700':
+                                                    'text-grey-primary':
                                                         isActive &&
                                                         !selectedColorIsWhite,
                                                 },

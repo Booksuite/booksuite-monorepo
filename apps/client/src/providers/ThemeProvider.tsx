@@ -1,7 +1,8 @@
+import { darken,lighten } from 'color2k'
 import React, { createContext, useContext, useEffect } from 'react'
-import { ColorPalette, getColors } from '@/common/theme/colors'
+
 import { useCurrentCompanyStore } from '@/common/contexts/company'
-import { lighten, darken } from 'color2k'
+import { ColorPalette, getColors } from '@/common/theme/colors'
 
 interface ThemeContextType {
     colors: ColorPalette

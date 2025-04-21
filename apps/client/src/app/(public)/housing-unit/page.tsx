@@ -1,16 +1,16 @@
 'use client'
 
-import { Sparkles } from 'lucide-react'
+import { HousingUnitTypeFull, useSearchHousingUnitTypes } from '@booksuite/sdk'
+import { useState } from 'react'
 
+import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { SmartBannerSearch } from '@/components/molecules/SmartBannerSearch'
 import { Container } from '@/components/organisms/Container'
-import { Others } from '@/components/organisms/Others'
-import { HousingUnitTypeFull, useSearchHousingUnitTypes } from '@booksuite/sdk'
-import { useCurrentCompanyStore } from '@/common/contexts/company'
-import { useState } from 'react'
-import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
+import { Others } from '@/components/organisms/Others'
 import { SectionSmartBannerSearch } from '@/components/organisms/SectionSmartBannerSearch'
+
+import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
 
 export default function HousingUnit() {
     const { company } = useCurrentCompanyStore()

@@ -1,6 +1,7 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
+
 import { Navbar } from '@/components/templates/Navbar'
 
 export const NavbarWrapper: React.FC = () => {

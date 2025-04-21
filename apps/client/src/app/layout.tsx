@@ -2,9 +2,9 @@ import './globals.css'
 
 import { Inter } from 'next/font/google'
 
-import { Providers } from '@/providers/Providers'
 import { Footer } from '@/components/templates/Footer'
 import { NavbarWrapper } from '@/components/templates/NavbarWrapper'
+import { Providers } from '@/providers/Providers'
 
 const inter = Inter({ subsets: ['latin'], display: 'swap' })
 
@@ -21,9 +21,11 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <NavbarWrapper />
-                <Providers>{children}</Providers>
-                <Footer />
+                <Providers>
+                    <NavbarWrapper />
+                    <div>{children}</div>
+                    <Footer />
+                </Providers>
             </body>
         </html>
     )

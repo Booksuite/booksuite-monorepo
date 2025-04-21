@@ -5,6 +5,7 @@ import { type ReactNode, useState } from 'react'
 
 import { CompanyProvider } from './CompanyProvider'
 import { ThemeProvider } from './ThemeProvider'
+
 interface ProvidersProps {
     children: ReactNode
 }

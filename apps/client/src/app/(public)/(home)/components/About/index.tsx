@@ -6,6 +6,7 @@ import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
 import { Container } from '@/components/organisms/Container'
+
 export const About: React.FC = () => {
     const { company } = useCurrentCompanyStore()
 

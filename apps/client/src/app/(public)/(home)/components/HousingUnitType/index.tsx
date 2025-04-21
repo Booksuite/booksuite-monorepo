@@ -3,9 +3,10 @@ import { useSearchHousingUnitTypes } from '@booksuite/sdk'
 import React, { useState } from 'react'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
-import { ImageGallery } from '@/components/organisms/ImageGallery'
-import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
 import { Container } from '@/components/organisms/Container'
+import { ImageGallery } from '@/components/organisms/ImageGallery'
+
+import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
 
 export const HousingUnitType: React.FC = () => {
     const { company } = useCurrentCompanyStore()

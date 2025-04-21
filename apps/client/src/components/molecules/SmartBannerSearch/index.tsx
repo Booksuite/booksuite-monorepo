@@ -1,4 +1,5 @@
 import { Search } from 'lucide-react'
+
 import { Button } from '@/components/atoms/Button'
 
 export interface SearchBannerProps {

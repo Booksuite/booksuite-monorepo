@@ -1,10 +1,12 @@
 'use client'
 
-import { useCurrentCompanyStore } from '@/common/contexts/company'
-import { Logo } from '@/components/atoms/Logo'
-import Link from 'next/link'
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react'
 import { Route } from 'next'
+import Image from 'next/image'
+import Link from 'next/link'
+
+import { useCurrentCompanyStore } from '@/common/contexts/company'
+import { Logo } from '@/components/atoms/Logo'
 
 type NavigationItem = {
     label: string
@@ -47,9 +49,11 @@ export const Footer: React.FC = () => {
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div className="space-y-4">
                         {company.logo && (
-                            <img
+                            <Image
                                 src={company.logo}
                                 alt={company.name}
+                                height={64}
+                                width={200}
                                 className="h-16 w-auto"
                             />
                         )}

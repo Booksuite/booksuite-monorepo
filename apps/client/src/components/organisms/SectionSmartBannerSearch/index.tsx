@@ -1,5 +1,4 @@
-import { Search, Sparkles } from 'lucide-react'
-import { Button } from '@/components/atoms/Button'
+import { Sparkles } from 'lucide-react'
 
 export interface SectionSmartBannerSearchProps {
     children: React.ReactNode

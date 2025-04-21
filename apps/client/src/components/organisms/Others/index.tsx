@@ -1,5 +1,5 @@
-import { Container } from '@/components/organisms/Container'
 import { SmartBannerSearch } from '@/components/molecules/SmartBannerSearch'
+import { Container } from '@/components/organisms/Container'
 
 interface OthersProps {
     showContent?: boolean

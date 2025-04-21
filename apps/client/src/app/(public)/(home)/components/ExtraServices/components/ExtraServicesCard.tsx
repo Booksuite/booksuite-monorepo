@@ -1,12 +1,11 @@
 'use client'
 
-import { ArrowRight, Flame, Images, Minus, Plus } from 'lucide-react'
-import Image from 'next/image'
+import { Flame, Images, Minus, Plus } from 'lucide-react'
 import { useState } from 'react'
 
+import { formatCurrency } from '@/common/utils/formatCurrency'
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
-import { formatCurrency } from '@/common/utils/formatCurrency'
 
 interface ExtraServicesCardProps {
     title: string

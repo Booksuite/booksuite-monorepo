@@ -1,9 +1,11 @@
-import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { ServiceFull, useSearchServices } from '@booksuite/sdk'
 import { useState } from 'react'
-import { ExtraServicesCard } from './components/ExtraServicesCard'
-import { ImageGallery } from '@/components/organisms/ImageGallery'
+
+import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Container } from '@/components/organisms/Container'
+import { ImageGallery } from '@/components/organisms/ImageGallery'
+
+import { ExtraServicesCard } from './components/ExtraServicesCard'
 
 export const ExtraServices: React.FC = () => {
     const { company } = useCurrentCompanyStore()
@@ -56,11 +58,7 @@ export const ExtraServices: React.FC = () => {
                             }
                             price={services.price ?? 0}
                             originalPrice={services.price * 1.15}
-                            onQuantityChange={(quantity) => {
-                                console.log(
-                                    `Quantity changed to ${quantity} for service ${services.id}`,
-                                )
-                            }}
+                            onQuantityChange={() => {}}
                             onViewAllPhotos={() => {
                                 setSelectedService({
                                     title: services.name ?? '',

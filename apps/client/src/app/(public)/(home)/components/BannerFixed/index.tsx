@@ -1,9 +1,9 @@
-import { useCurrentCompanyStore } from '@/common/contexts/company'
-import { Button } from '@/components/atoms/Button'
-import Image from 'next/image'
 import { useGetBannerById, useSearchBanners } from '@booksuite/sdk'
-import { Container } from '@/components/organisms/Container'
+import Image from 'next/image'
+
+import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { SmartBannerSearch } from '@/components/molecules/SmartBannerSearch'
+import { Container } from '@/components/organisms/Container'
 
 export const BannerFixed = () => {
     const { company } = useCurrentCompanyStore()
