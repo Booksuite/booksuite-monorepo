@@ -1,7 +1,6 @@
 'use client'
 
 import { useGetCompanyById } from '@booksuite/sdk'
-
 import { useEffect } from 'react'
 
 import { TEST_COMPANY, useCurrentCompanyStore } from '@/common/contexts/company'

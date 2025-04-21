@@ -1,8 +1,10 @@
 'use client'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { useState, type ReactNode } from 'react'
+import { type ReactNode, useState } from 'react'
+
 import { CompanyProvider } from './CompanyProvider'
+import { ThemeProvider } from './ThemeProvider'
 
 interface ProvidersProps {
     children: ReactNode
@@ -13,7 +15,9 @@ export function Providers({ children }: ProvidersProps) {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <CompanyProvider>{children}</CompanyProvider>
+            <CompanyProvider>
+                <ThemeProvider>{children}</ThemeProvider>
+            </CompanyProvider>
         </QueryClientProvider>
     )
 }

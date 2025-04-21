@@ -17,6 +17,7 @@
         "@tanstack/react-query": "^5.59.13",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.0",
+        "color2k": "^2.0.3",
         "lucide-react": "^0.359.0",
         "next": "14.2.4",
         "react": "^18.2.0",
@@ -31,8 +32,8 @@
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "autoprefixer": "^10.x",
-        "eslint": "^9.24.0",
-        "eslint-config-next": "^15.3.0",
+        "eslint": "^8",
+        "eslint-config-next": "14.2.6",
         "postcss": "^8.x",
         "tailwindcss": "^3.x",
         "typescript": "^5"
