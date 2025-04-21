@@ -1,6 +1,7 @@
 'use client'
 
 import { HousingUnitTypeFull, useSearchHousingUnitTypes } from '@booksuite/sdk'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
@@ -14,6 +15,8 @@ import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
 
 export default function HousingUnit() {
     const { company } = useCurrentCompanyStore()
+    const router = useRouter()
+
     const [selectedUnit, setSelectedUnit] = useState<{
         title: string
         images: string[]
@@ -62,8 +65,16 @@ export default function HousingUnit() {
                                     }
                                     facilities={unitType.facilities ?? []}
                                     maxGuests={unitType.maxGuests ?? 1}
-                                    onReserve={() => unitType.id}
-                                    onDetails={() => unitType.id}
+                                    onReserve={() =>
+                                        router.push(
+                                            `/housing-unit/${unitType.id}`,
+                                        )
+                                    }
+                                    onDetails={() =>
+                                        router.push(
+                                            `/housing-unit/${unitType.id}`,
+                                        )
+                                    }
                                     onViewAllPhotos={() => {
                                         setSelectedUnit({
                                             title: unitType.name ?? '',

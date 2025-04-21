@@ -5,7 +5,6 @@ import * as React from 'react'
 import { useState } from 'react'
 
 import { cn } from '@/common/lib/utils'
-import { colors } from '@/common/theme'
 
 import { Label } from './label'
 import {
@@ -57,37 +56,31 @@ export function InputSelect({
     return (
         <div className="relative w-full">
             <div
-                style={{
-                    borderColor: error
-                        ? colors.systemColors.red
-                        : success
-                          ? colors.systemColors.green
-                          : focused
-                            ? colors.systemColors.blue
-                            : colors.coolGrey[200],
-                    backgroundColor: disabled ? colors.coolGrey[100] : 'white',
-                }}
                 className={cn(
                     'relative rounded-[10px] border transition-colors min-h-[52px] overflow-hidden',
+                    error && 'border-systemColors-red',
+                    success && 'border-systemColors-green',
+                    focused && !error && !success && 'border-primary-500',
+                    !focused && !error && !success && 'border-grey-200',
+                    disabled ? 'bg-systemColors-blueLight' : 'bg-white',
                     className,
                 )}
             >
                 {label && (
                     <Label
-                        style={{
-                            color: error
-                                ? colors.systemColors.red
-                                : success
-                                  ? colors.systemColors.green
-                                  : disabled
-                                    ? colors.coolGrey[500]
-                                    : colors.grey.primary,
-                        }}
                         className={cn(
                             'absolute left-4 pointer-events-none transition-all duration-200 z-10',
                             isFloating
                                 ? 'transform -translate-y-1 top-2 text-xs'
                                 : 'top-[14px] text-base',
+                            'font-normal',
+                            error && 'text-systemColors-red',
+                            success && 'text-systemColors-green',
+                            disabled && 'text-grey-secondary',
+                            !error &&
+                                !success &&
+                                !disabled &&
+                                'text-grey-secondary',
                         )}
                     >
                         {label}
@@ -172,12 +165,7 @@ export function InputSelect({
                 </Select>
             </div>
             {error && (
-                <p
-                    style={{ color: colors.systemColors.red }}
-                    className="mt-1 text-sm"
-                >
-                    {error}
-                </p>
+                <p className="mt-1 text-sm text-systemColors-red">{error}</p>
             )}
         </div>
     )
