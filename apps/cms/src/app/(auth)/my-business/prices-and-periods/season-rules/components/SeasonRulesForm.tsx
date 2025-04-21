@@ -144,7 +144,7 @@ export const SeasonRulesForm: React.FC = () => {
                             label="Início da Temporada"
                             type="date"
                             fullWidth
-                            value={values.startDate || ''}
+                            value={values.startDate.split('T').at(0) || ''}
                             onChange={(e) =>
                                 setFieldValue('startDate', e.target.value)
                             }
@@ -161,7 +161,7 @@ export const SeasonRulesForm: React.FC = () => {
                             label="Fim da Temporada"
                             type="date"
                             fullWidth
-                            value={values.endDate || ''}
+                            value={values.endDate.split('T').at(0) || ''}
                             onChange={(e) =>
                                 setFieldValue('endDate', e.target.value)
                             }
@@ -305,7 +305,6 @@ export const SeasonRulesForm: React.FC = () => {
                                                             )
 
                                                         if (e.target.checked) {
-                                                            console.log(housing)
                                                             setFieldValue(
                                                                 'housingUnitTypePrices',
                                                                 [
@@ -316,9 +315,12 @@ export const SeasonRulesForm: React.FC = () => {
                                                                         baseWeekPrice:
                                                                             housing.weekdaysPrice ||
                                                                             0,
-                                                                        finalWeekPrice: 0,
-                                                                        finalWeekendPrice: 0,
-                                                                        baseWeekendPrice: housing.weekendPrice,
+                                                                        finalWeekPrice:
+                                                                            housing.weekdaysPrice,
+                                                                        finalWeekendPrice:
+                                                                            housing.weekendPrice,
+                                                                        baseWeekendPrice:
+                                                                            housing.weekendPrice,
                                                                     },
                                                                 ],
                                                             )
