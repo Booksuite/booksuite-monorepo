@@ -7,8 +7,9 @@ import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/company'
-import { SearchAvailability } from '@/components/molecules/SearchAvailability'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
+
+import { SearchAvailability } from './SearchAvailability'
 
 export function HousingUnitDetails() {
     const { id } = useParams()

@@ -1,6 +1,13 @@
 'use client'
 
 import { ShoppingCart, User } from 'lucide-react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+import { useCurrentCompanyStore } from '@/common/contexts/company'
+import { cn } from '@/common/lib/utils'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/atoms/Avatar'
+
 import { NAVIGATION_LINKS } from './constants'
 
 interface NavbarProps {
