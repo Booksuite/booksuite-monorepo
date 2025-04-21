@@ -1,6 +1,7 @@
 'use client'
 
 import { useGetHousingUnitTypeById } from '@booksuite/sdk'
+import { Share2 } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
@@ -84,12 +85,28 @@ export function HousingUnitDetails() {
                 </div>
             </div>
 
-            <SearchAvailability
-                name={housingUnit.name}
-                description={housingUnit.description ?? ''}
-                maxGuests={housingUnit.maxGuests ?? undefined}
-                onSearch={() => {}}
-            />
+            <div className="flex items-start gap-2">
+                <div className="flex flex-col gap-2 w-full max-w-[70%]">
+                    <div className="flex items-center gap-3 justify-between">
+                        <h1 className="text-2xl font-bold mb-2">
+                            {housingUnit.name}
+                        </h1>
+                        <div
+                            className="flex items-center mr-4 cursor-pointer border border-2 border-grey-600 rounded-full p-2"
+                            onClick={() => {}}
+                        >
+                            <Share2 className="w-6 h-6 text-grey-600" />
+                        </div>
+                    </div>
+                    <p className="text-grey-600 max-w-[90%]">
+                        {housingUnit.description}
+                    </p>
+                </div>
+
+                <SearchAvailability
+                    maxGuests={housingUnit.maxGuests ?? undefined}
+                />
+            </div>
 
             <ImageGallery
                 title={selectedImages?.title ?? ''}
