@@ -16,6 +16,7 @@ import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
 export default function HousingUnit() {
     const { company } = useCurrentCompanyStore()
     const router = useRouter()
+
     const [selectedUnit, setSelectedUnit] = useState<{
         title: string
         images: string[]

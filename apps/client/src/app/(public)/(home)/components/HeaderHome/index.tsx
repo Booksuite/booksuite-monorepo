@@ -3,11 +3,22 @@
 import { useGetBannerById, useSearchBanners } from '@booksuite/sdk'
 import Image from 'next/image'
 
+import { useEffect } from 'react'
+
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { SmartBannerSearch } from '@/components/molecules/SmartBannerSearch'
-import { Navbar } from '@/components/templates/Navbar'
+import { usePageLayoutStore } from '@/components/templates/PageLayout/store'
 
 export const HeaderHome: React.FC = () => {
+    const { setDarkMode } = usePageLayoutStore()
+
+    useEffect(() => {
+        setDarkMode(true)
+        return () => {
+            setDarkMode(false)
+        }
+    }, [setDarkMode])
+
     const { company } = useCurrentCompanyStore()
 
     const { data: banners } = useSearchBanners(
@@ -39,12 +50,7 @@ export const HeaderHome: React.FC = () => {
     })
 
     return (
-        <div className="relative min-h-screen flex flex-col">
-            <Navbar
-                textColor="text-white"
-                textHoverColor="hover:text-white"
-                selectedColorIsWhite
-            />
+        <div className="relative -mt-24 -z-10 min-h-screen flex flex-col">
             <div className="relative w-full h-screen">
                 <div className="absolute inset-0 bg-grey-primary/50 z-10" />
                 <Image
