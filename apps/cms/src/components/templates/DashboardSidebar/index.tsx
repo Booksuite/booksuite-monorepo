@@ -29,7 +29,7 @@ import type { LinkItem } from './components/NavMenu/types'
 import type { DashboardSidebarProps } from './types'
 
 const StyledBox = styled(Box)(({ theme }) => ({
-    background: theme.palette.primary.dark,
+    background: theme.palette.blue[900],
     color: 'white',
     transition: 'width 0.3s',
     overflow: 'hidden',
@@ -130,7 +130,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                 <Typography
                     variant="body2"
                     sx={{
-                        color: 'white',
+                        color: '#B8B8CF',
                         fontWeight: 500,
                         px: 1,
                     }}
@@ -139,7 +139,9 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                 </Typography>
             )}
 
-            <Stack sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+            <Stack
+                sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}
+            >
                 <Box>
                     <NavMenu links={mainLinks} isCollapsed={isCollapsed} />
                 </Box>
@@ -229,7 +231,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = ({
                     <Typography
                         variant="body2"
                         sx={{
-                            color: 'white',
+                            color: '#B8B8CF',
                             fontWeight: 500,
                             px: 1,
                             mt: 3,

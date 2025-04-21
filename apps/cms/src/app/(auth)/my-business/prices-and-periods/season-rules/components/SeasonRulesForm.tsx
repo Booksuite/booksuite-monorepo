@@ -19,8 +19,7 @@ import {
     Typography,
 } from '@mui/material'
 import { useFormikContext } from 'formik'
-import { useCallback, useEffect } from 'react'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { formatCurrency } from '@/common/utils/currency'
