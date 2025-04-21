@@ -1,6 +1,6 @@
 'use client'
 
-import { useCreateOffer, useSearchHousingUnitTypes } from '@booksuite/sdk'
+import { useCreateOffer } from '@booksuite/sdk'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
@@ -20,18 +20,9 @@ export default function CreateOffer() {
     const { back } = useRouter()
     const companyId = useCurrentCompanyId()
     const { mutateAsync: createOffer } = useCreateOffer()
-    const { data: housingUnitTypes } = useSearchHousingUnitTypes(
-        { companyId },
-        {
-            pagination: { itemsPerPage: 1000, page: 1 },
-        },
-    )
 
     const handleSubmit = async (formData: OfferFormData) => {
-        const apiData = transformOfferFormDataForSubmit({
-            ...formData,
-            companyId,
-        })
+        const apiData = transformOfferFormDataForSubmit(formData)
 
         try {
             await createOffer({ companyId, data: apiData })
@@ -71,9 +62,7 @@ export default function CreateOffer() {
                 onSubmit={handleSubmit}
             >
                 <FormikController onCancel={() => back()}>
-                    <OffersAndCouponsForm
-                        availableHousingUnitTypes={housingUnitTypes?.items}
-                    />
+                    <OffersAndCouponsForm />
                 </FormikController>
             </Formik>
         </>

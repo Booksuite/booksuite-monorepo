@@ -122,7 +122,7 @@ export default function SeasonRules() {
     const { push } = useRouter()
     const { showDialog } = useConfirmationDialog()
 
-    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+    const [selectedFilters, setSelectedFilters] = useState<string[]>(['published'])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
 

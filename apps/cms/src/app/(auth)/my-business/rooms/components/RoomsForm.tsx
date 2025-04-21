@@ -91,16 +91,6 @@ export const RoomsForm: React.FC = () => {
         }
     }
 
-    const handleSetFeatured = (index: number, isFeatured: boolean) => {
-        const currentCoverIndex = values.medias.findIndex(
-            (media) => media.isFeatured,
-        )
-        if (currentCoverIndex >= 0)
-            setFieldValue(`medias.${currentCoverIndex}.isFeatured`, false)
-
-        setFieldValue(`medias.${index}.isFeatured`, isFeatured)
-    }
-
     return (
         <FormContainer>
             <FormSection>
@@ -161,9 +151,7 @@ export const RoomsForm: React.FC = () => {
                                         values.housingUnits.length
                                     ) {
                                         push({
-                                            name: (
-                                                values.housingUnits.length + 1
-                                            ).toString(),
+                                            name: `${values.name} ${values.housingUnits.length + 1}`.toString(),
                                         })
                                     } else if (
                                         newValueNumber <
@@ -197,7 +185,11 @@ export const RoomsForm: React.FC = () => {
                                             }) => {
                                                 setFieldValue(
                                                     `housingUnits.${index}.name`,
-                                                    value,
+                                                    value.startsWith(
+                                                        values.name,
+                                                    )
+                                                        ? value
+                                                        : `${values.name} ${value}`,
                                                 )
                                             }}
                                         />
@@ -309,13 +301,11 @@ export const RoomsForm: React.FC = () => {
                         strategy={rectSortingStrategy}
                     >
                         <Grid container columns={[2, 4, 8]} spacing={2} mt={4}>
-                            {values.medias.map((item, index) => (
+                            {values.medias.map((item) => (
                                 <Grid size={1} key={item.media.id}>
                                     <SortableMediaItem
                                         key={item.media.id}
                                         mediaItem={item}
-                                        index={index}
-                                        handleSetFeatured={handleSetFeatured}
                                     />
                                 </Grid>
                             ))}

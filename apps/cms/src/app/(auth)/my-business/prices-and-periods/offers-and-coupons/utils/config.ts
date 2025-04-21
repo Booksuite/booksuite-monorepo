@@ -1,32 +1,11 @@
 import {
     CreateOfferDto,
-    Offer,
+    OfferFull,
     OfferResponseDTOPriceAdjustmentType,
 } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type OfferFormData = Omit<
-    Offer,
-    'id' | 'createdAt' | 'updatedAt' | 'validStartDate' | 'validEndDate'
-> & {
-    validStartDate: string | null
-    validEndDate: string | null
-    availableHousingUnitTypes: Array<{
-        housingUnitType: {
-            id: string
-            name: string
-            weekdaysPrice: number | null
-            weekendPrice: number | null
-        }
-        baseWeekPrice: number
-        newWeekPrice: number
-        weekendBasePrice: number
-        weekendNewPrice: number
-        id: string
-        seasonRuleId: string
-    }>
-    validServices: string[]
-}
+export type OfferFormData = CreateOfferDto
 
 export const transformOfferFormDataForSubmit = (
     formData: OfferFormData,
@@ -34,14 +13,9 @@ export const transformOfferFormDataForSubmit = (
     const {
         validStartDate,
         validEndDate,
-        description,
-        minDays,
-        maxDays,
-        minAdvanceDays,
-        maxAdvanceDays,
-        couponCode,
-        availableHousingUnitTypes,
-        validServices,
+        purchaseEndDate,
+        purchaseStartDate,
+        name,
         ...rest
     } = formData
 
@@ -51,45 +25,37 @@ export const transformOfferFormDataForSubmit = (
     const validEndDateISO = validEndDate
         ? new Date(validEndDate).toISOString()
         : undefined
-    const purchaseStartDateISO = new Date(
-        formData.purchaseStartDate,
-    ).toISOString()
-    const purchaseEndDateISO = new Date(formData.purchaseEndDate).toISOString()
+    const purchaseStartDateISO = new Date(purchaseStartDate || '').toISOString()
+    const purchaseEndDateISO = new Date(purchaseEndDate || '').toISOString()
 
     return {
         ...rest,
-        description: description || undefined,
+        name: name,
+        purchaseEndDate: purchaseEndDateISO,
+        purchaseStartDate: purchaseStartDateISO,
         validStartDate: validStartDateISO,
         validEndDate: validEndDateISO,
-        purchaseStartDate: purchaseStartDateISO,
-        purchaseEndDate: purchaseEndDateISO,
-        minDays: minDays || undefined,
-        maxDays: maxDays || undefined,
-        minAdvanceDays: minAdvanceDays || undefined,
-        maxAdvanceDays: maxAdvanceDays || undefined,
-        couponCode: couponCode || undefined,
-        validServices,
-        validPaymentMethods: [],
-        availableHousingUnitTypes: availableHousingUnitTypes.map(
-            (h) => h.housingUnitType.id,
-        ),
     }
 }
 
 export const createOfferFormInitialValues = (
-    data?: Partial<Offer>,
+    data?: OfferFull,
 ): OfferFormData => ({
     name: data?.name || '',
     description: data?.description || '',
     published: data?.published ?? false,
-    purchaseStartDate: data?.purchaseStartDate || '',
-    purchaseEndDate: data?.purchaseEndDate || '',
-    validStartDate: data?.validStartDate ? String(data.validStartDate) : null,
-    validEndDate: data?.validEndDate ? String(data.validEndDate) : null,
-    minDays: data?.minDays ?? null,
-    maxDays: data?.maxDays ?? null,
-    minAdvanceDays: data?.minAdvanceDays ?? null,
-    maxAdvanceDays: data?.maxAdvanceDays ?? null,
+    purchaseStartDate: data?.purchaseStartDate.split('T').at(0) || '',
+    purchaseEndDate: data?.purchaseEndDate.split('T').at(0) || '',
+    validStartDate: data?.validStartDate
+        ? String(data.validStartDate).split('T').at(0)
+        : '',
+    validEndDate: data?.validEndDate
+        ? String(data.validEndDate).split('T').at(0)
+        : '',
+    minDays: data?.minDays ?? 0,
+    maxDays: data?.maxDays ?? 0,
+    minAdvanceDays: data?.minAdvanceDays ?? 0,
+    maxAdvanceDays: data?.maxAdvanceDays ?? 0,
     validForAbandoned: data?.validForAbandoned ?? false,
     validForPackages: data?.validForPackages ?? false,
     availableWeekDays: data?.availableWeekDays || [],
@@ -99,9 +65,13 @@ export const createOfferFormInitialValues = (
     showDiscountTag: data?.showDiscountTag ?? false,
     isExclusive: data?.isExclusive ?? false,
     couponCode: data?.couponCode || '',
-    companyId: data?.companyId || '',
-    availableHousingUnitTypes: [],
-    validServices: [],
+    availableHousingUnitTypes:
+        data?.availableHousingUnitTypes.map(
+            (type) => type.housingUnitType.id,
+        ) || [],
+    validServices:
+        data?.validServices.map((service) => service.service.id) || [],
+    validPaymentMethods: [],
 })
 
 export const offerFormSchema = yup.object({

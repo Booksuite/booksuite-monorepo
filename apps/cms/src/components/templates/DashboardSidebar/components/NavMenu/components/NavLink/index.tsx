@@ -12,10 +12,11 @@ const NavButton = styled(Box, {
     alignItems: 'center',
     gap: theme.spacing(1.5),
     width: '100%',
-    backgroundColor: isActive ? theme.palette.primary.main : 'transparent',
-    color: 'white',
+    backgroundColor: isActive ? theme.palette.blue[500] : 'transparent',
+    color: isActive ? 'white' : '#B8B8CF',
+    fontWeight: 500,
     borderRadius: theme.shape.borderRadius,
-    padding: theme.spacing(1.5),
+    padding: theme.spacing(3),
     transition: 'all 0.2s',
     '&:hover': {
         backgroundColor: isActive
