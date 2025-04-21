@@ -26,7 +26,6 @@ export const transformFormDataForSubmit = (
             baseWeekendPrice: item.baseWeekendPrice,
             finalWeekendPrice: item.finalWeekendPrice,
         }))
-
     return {
         ...rest,
         startDate: new Date(formData.startDate).toISOString(),
