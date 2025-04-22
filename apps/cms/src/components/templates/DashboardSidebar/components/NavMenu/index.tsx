@@ -8,7 +8,7 @@ export const NavMenu: React.FC<NavMenuProps> = ({ links, isCollapsed }) => {
     const pathname = usePathname()
 
     return (
-        <Stack component="nav" spacing={3}>
+        <Stack component="nav" spacing={1}>
             {links.map((link) => (
                 <NavLink
                     key={link.href}

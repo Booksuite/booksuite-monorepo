@@ -35,7 +35,7 @@ export const createFormInitialValues = (
     data?: HousingUnitTypeFull,
 ): RoomsFormData => ({
     name: data?.name || '',
-    published: false,
+    published: data?.published || false,
     slug: data?.slug || '',
     shortDescription: data?.shortDescription || '',
     description: data?.description || '',

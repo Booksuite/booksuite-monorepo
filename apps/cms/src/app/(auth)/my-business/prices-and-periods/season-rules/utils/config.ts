@@ -1,38 +1,36 @@
 import {
+    HousingUnitTypePricingChangeInput,
+    SeasonRuleCreateInput,
     SeasonRuleFull,
-    SeasonRuleHousingUnitType,
-    SeasonRuleHousingUnitTypePriceInput,
-    SeasonRuleInput,
 } from '@booksuite/sdk'
 import * as yup from 'yup'
 
 export type SeasonRuleFormData = Omit<
-    SeasonRuleInput,
-    'housingUnitTypePrices' | 'availableWeekend'
+    SeasonRuleCreateInput,
+    'housingUnitTypePrices' | 'availableWeekDays'
 > & {
-    housingUnitTypePrices: SeasonRuleHousingUnitType[]
-    availableWeekend: string[]
+    housingUnitTypePrices: HousingUnitTypePricingChangeInput[]
+    availableWeekDays: string[]
 }
 
 export const transformFormDataForSubmit = (
     formData: SeasonRuleFormData,
-): SeasonRuleInput => {
-    const { housingUnitTypePrices, availableWeekend, ...rest } = formData
+): SeasonRuleCreateInput => {
+    const { housingUnitTypePrices, availableWeekDays, ...rest } = formData
 
-    const transformedHousingUnitPrices: SeasonRuleHousingUnitTypePriceInput[] =
+    const transformedHousingUnitPrices: HousingUnitTypePricingChangeInput[] =
         housingUnitTypePrices.map((item) => ({
-            housingUnitTypeId: item.housingUnitType.id,
+            housingUnitTypeId: item.housingUnitTypeId,
             baseWeekPrice: item.baseWeekPrice,
-            newWeekPrice: item.newWeekPrice,
-            weekendBasePrice: item.weekendBasePrice,
-            weekendNewPrice: item.weekendNewPrice,
+            finalWeekPrice: item.finalWeekPrice,
+            baseWeekendPrice: item.baseWeekendPrice,
+            finalWeekendPrice: item.finalWeekendPrice,
         }))
-
     return {
         ...rest,
         startDate: new Date(formData.startDate).toISOString(),
         endDate: new Date(formData.endDate).toISOString(),
-        availableWeekend: availableWeekend.map(Number),
+        availableWeekDays: availableWeekDays.map(Number),
         housingUnitTypePrices: transformedHousingUnitPrices,
     }
 }
@@ -45,7 +43,7 @@ export const createFormInitialValues = (
     startDate: data?.startDate || '',
     endDate: data?.endDate || '',
     minDaily: data?.minDaily || 1,
-    availableWeekend: data?.availableWeekend?.map(String) || [],
+    availableWeekDays: data?.availableWeekDays?.map(String) || [],
     priceVariationType: data?.priceVariationType || 'ABSOLUTE_INCREASE',
     price: data?.price || 0,
     housingUnitTypePrices: data?.housingUnitTypePrices || [],
@@ -60,7 +58,7 @@ export const seasonRuleFormSchema = yup.object({
         .number()
         .min(1, 'Mínimo de diárias deve ser pelo menos 1')
         .required('Mínimo de diárias é obrigatório'),
-    availableWeekend: yup
+    availableWeekDays: yup
         .array()
         .of(yup.string().oneOf(['0', '1', '2', '3', '4', '5', '6']))
         .required('Dias da semana disponíveis são obrigatórios'),

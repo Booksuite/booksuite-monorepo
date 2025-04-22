@@ -1,10 +1,7 @@
 'use client'
 
-import {
-    useSearchHousingUnitTypes,
-    useSearchOffers,
-    useUpdateOffer,
-} from '@booksuite/sdk'
+import { useGetOfferById, useUpdateOffer } from '@booksuite/sdk'
+import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
@@ -27,31 +24,22 @@ type Props = {
     }
 }
 
-export default function UpdateOffer({ params: { id } }: Props) {
+export default function UpdateOffer({ params }: Props) {
     const { back } = useRouter()
     const companyId = useCurrentCompanyId()
+    const queryClient = useQueryClient()
     const { mutateAsync: updateOffer } = useUpdateOffer()
-    const { data: housingUnitTypes } = useSearchHousingUnitTypes(
-        { companyId },
-        {
-            pagination: { itemsPerPage: 1000, page: 1 },
-        },
-    )
 
-    const { data: offers } = useSearchOffers(
-        { companyId },
-        {
-            pagination: { itemsPerPage: 1000, page: 1 },
-        },
-    )
-
-    const offer = offers?.items?.find((item) => item.id === id)
+    const { data: offer, queryKey } = useGetOfferById({
+        id: params.id,
+        companyId,
+    })
 
     const handleSubmit = async (formData: OfferFormData) => {
         const apiData = transformOfferFormDataForSubmit(formData)
 
         try {
-            await updateOffer({ id, companyId, data: apiData })
+            await updateOffer({ id: params.id, companyId, data: apiData })
 
             enqueueSnackbar('Oferta atualizada com sucesso', {
                 variant: 'success',
@@ -60,6 +48,12 @@ export default function UpdateOffer({ params: { id } }: Props) {
                     horizontal: 'right',
                 },
                 autoHideDuration: 3000,
+            })
+
+            await queryClient.invalidateQueries({ queryKey: queryKey })
+            await queryClient.invalidateQueries({
+                queryKey: ['searchOffers'],
+                refetchType: 'all',
             })
 
             back()
@@ -114,16 +108,13 @@ export default function UpdateOffer({ params: { id } }: Props) {
             <Formik<OfferFormData>
                 initialValues={createOfferFormInitialValues({
                     ...offer,
-                    availableHousingUnitTypes: housingUnitTypes?.items,
                 })}
                 validationSchema={offerFormSchema}
                 onSubmit={handleSubmit}
                 enableReinitialize
             >
                 <FormikController onCancel={() => back()}>
-                    <OffersAndCouponsForm
-                        availableHousingUnitTypes={housingUnitTypes?.items}
-                    />
+                    <OffersAndCouponsForm />
                 </FormikController>
             </Formik>
         </>

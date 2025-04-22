@@ -44,7 +44,7 @@ export default function Rooms() {
     const { showDialog } = useConfirmationDialog()
     const { mutate: updateHousingUnitType } = useUpdateHousingUnitType()
 
-    const [selectedFilters, setSelectedFilters] = useState<string[]>(['DAILY'])
+    const [selectedFilters, setSelectedFilters] = useState<string[]>(['DAILY', 'published'])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
 
