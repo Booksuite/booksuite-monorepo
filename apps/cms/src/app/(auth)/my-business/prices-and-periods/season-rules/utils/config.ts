@@ -7,9 +7,8 @@ import * as yup from 'yup'
 
 export type SeasonRuleFormData = Omit<
     SeasonRuleCreateInput,
-    'housingUnitTypePrices' | 'availableWeekDays'
+    'availableWeekDays'
 > & {
-    housingUnitTypePrices: HousingUnitTypePricingChangeInput[]
     availableWeekDays: string[]
 }
 

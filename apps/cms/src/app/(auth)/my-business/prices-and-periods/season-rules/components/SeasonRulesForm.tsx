@@ -305,23 +305,28 @@ export const SeasonRulesForm: React.FC = () => {
                                                             )
 
                                                         if (e.target.checked) {
+                                                            const updated: HousingUnitTypePricingChangeInput =
+                                                                {
+                                                                    housingUnitTypeId:
+                                                                        housing.id,
+                                                                    baseWeekPrice:
+                                                                        housing.weekdaysPrice ||
+                                                                        0,
+                                                                    finalWeekPrice:
+                                                                        housing.weekdaysPrice ||
+                                                                        0,
+                                                                    finalWeekendPrice:
+                                                                        housing.weekendPrice ||
+                                                                        0,
+                                                                    baseWeekendPrice:
+                                                                        housing.weekendPrice ||
+                                                                        0,
+                                                                }
                                                             setFieldValue(
                                                                 'housingUnitTypePrices',
                                                                 [
                                                                     ...values.housingUnitTypePrices,
-                                                                    {
-                                                                        housingUnitTypeId:
-                                                                            housing.id,
-                                                                        baseWeekPrice:
-                                                                            housing.weekdaysPrice ||
-                                                                            0,
-                                                                        finalWeekPrice:
-                                                                            housing.weekdaysPrice,
-                                                                        finalWeekendPrice:
-                                                                            housing.weekendPrice,
-                                                                        baseWeekendPrice:
-                                                                            housing.weekendPrice,
-                                                                    },
+                                                                    updated,
                                                                 ],
                                                             )
                                                         } else {

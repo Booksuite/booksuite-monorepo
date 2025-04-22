@@ -1,4 +1,4 @@
-import { HousingUnitTypeFull, useSearchServices } from '@booksuite/sdk'
+import { useSearchHousingUnitTypes, useSearchServices } from '@booksuite/sdk'
 import {
     Checkbox,
     FormControl,
@@ -19,19 +19,9 @@ import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { OfferFormData } from '../utils/config'
-import {
-    PAY_METHODS,
-    PRICE_VARIATION_TYPE,
-    VALID_NIGHTS,
-} from '../utils/constants'
+import { PRICE_VARIATION_TYPE, VALID_NIGHTS } from '../utils/constants'
 
-interface OffersAndCouponsFormProps {
-    availableHousingUnitTypes?: HousingUnitTypeFull[]
-}
-
-export const OffersAndCouponsForm = ({
-    availableHousingUnitTypes,
-}: OffersAndCouponsFormProps) => {
+export const OffersAndCouponsForm = () => {
     const { values, errors, touched, getFieldProps, setFieldValue } =
         useFormikContext<OfferFormData>()
     const companyId = useCurrentCompanyId()
@@ -43,6 +33,15 @@ export const OffersAndCouponsForm = ({
     )
 
     const serviceItems = services?.items || []
+
+    const { data: housingUnitTypes } = useSearchHousingUnitTypes(
+        {
+            companyId: companyId,
+        },
+        {
+            pagination: { itemsPerPage: 1000, page: 1 },
+        },
+    )
 
     return (
         <FormContainer>
@@ -354,47 +353,20 @@ export const OffersAndCouponsForm = ({
                                 control={
                                     <Checkbox
                                         checked={
+                                            housingUnitTypes?.items.length ===
                                             values.availableHousingUnitTypes
-                                                .length ===
-                                            availableHousingUnitTypes?.length
-                                        }
-                                        indeterminate={
-                                            availableHousingUnitTypes !==
-                                                undefined &&
-                                            values.availableHousingUnitTypes
-                                                .length > 0 &&
-                                            values.availableHousingUnitTypes
-                                                .length <
-                                                availableHousingUnitTypes.length
+                                                ?.length
                                         }
                                         onChange={(e) => {
                                             if (e.target.checked) {
-                                                const allSelected =
-                                                    availableHousingUnitTypes?.map(
-                                                        (housing) => ({
-                                                            housingUnitType: {
-                                                                id: housing.id,
-                                                                name: housing.name,
-                                                                weekdaysPrice:
-                                                                    housing.weekdaysPrice,
-                                                                weekendPrice:
-                                                                    housing.weekendPrice,
-                                                            },
-                                                            baseWeekPrice:
-                                                                housing.weekdaysPrice ||
-                                                                0,
-                                                            newWeekPrice: 0,
-                                                            weekendBasePrice:
-                                                                housing.weekendPrice ||
-                                                                0,
-                                                            weekendNewPrice: 0,
-                                                            id: '',
-                                                            seasonRuleId: '',
-                                                        }),
-                                                    ) || []
+                                                const getAll =
+                                                    housingUnitTypes?.items.map(
+                                                        (type) => type.id,
+                                                    )
+
                                                 setFieldValue(
                                                     'availableHousingUnitTypes',
-                                                    allSelected,
+                                                    getAll,
                                                 )
                                             } else {
                                                 setFieldValue(
@@ -409,70 +381,52 @@ export const OffersAndCouponsForm = ({
                             />
                         </Grid>
 
-                        {availableHousingUnitTypes?.map((housing) => {
-                            const exists =
-                                values.availableHousingUnitTypes.some(
-                                    (h) => h.housingUnitType.id === housing.id,
-                                )
+                        {housingUnitTypes?.items
+                            ? housingUnitTypes?.items.map((housing) => {
+                                  const exists =
+                                      values.availableHousingUnitTypes?.some(
+                                          (h) => h === housing.id,
+                                      )
 
-                            return (
-                                <Grid size={3} key={housing.id}>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                checked={exists}
-                                                onChange={(e) => {
-                                                    const updated = [
-                                                        ...values.availableHousingUnitTypes,
-                                                    ]
-
-                                                    if (e.target.checked) {
-                                                        updated.push({
-                                                            housingUnitType: {
-                                                                id: housing.id,
-                                                                name: housing.name,
-                                                                weekdaysPrice:
-                                                                    housing.weekdaysPrice,
-                                                                weekendPrice:
-                                                                    housing.weekendPrice,
-                                                            },
-                                                            baseWeekPrice:
-                                                                housing.weekdaysPrice ||
-                                                                0,
-                                                            newWeekPrice: 0,
-                                                            weekendBasePrice:
-                                                                housing.weekendPrice ||
-                                                                0,
-                                                            weekendNewPrice: 0,
-                                                            id: '',
-                                                            seasonRuleId: '',
-                                                        })
-                                                        setFieldValue(
-                                                            'availableHousingUnitTypes',
-                                                            updated,
-                                                        )
-                                                    } else {
-                                                        const filtered =
-                                                            updated.filter(
-                                                                (h) =>
-                                                                    h
-                                                                        .housingUnitType
-                                                                        .id !==
-                                                                    housing.id,
-                                                            )
-                                                        setFieldValue(
-                                                            'availableHousingUnitTypes',
-                                                            filtered,
-                                                        )
-                                                    }
-                                                }}
-                                            />
-                                        }
-                                        label={housing.name}
-                                    />
-                                </Grid>
-                            )
-                        })}
+                                  return (
+                                      <Grid size={3} key={housing.id}>
+                                          <FormControlLabel
+                                              control={
+                                                  <Checkbox
+                                                      checked={exists}
+                                                      onChange={() => {
+                                                          if (!exists) {
+                                                              const updatedHousingUnitTypes =
+                                                                  [
+                                                                      ...(values.availableHousingUnitTypes ||
+                                                                          []),
+                                                                      housing.id,
+                                                                  ]
+                                                              setFieldValue(
+                                                                  'availableHousingUnitTypes',
+                                                                  updatedHousingUnitTypes,
+                                                              )
+                                                          } else {
+                                                              const updatedHousingUnitTypes =
+                                                                  values.availableHousingUnitTypes?.filter(
+                                                                      (type) =>
+                                                                          type !==
+                                                                          housing.id,
+                                                                  )
+                                                              setFieldValue(
+                                                                  'availableHousingUnitTypes',
+                                                                  updatedHousingUnitTypes,
+                                                              )
+                                                          }
+                                                      }}
+                                                  />
+                                              }
+                                              label={housing.name}
+                                          />
+                                      </Grid>
+                                  )
+                              })
+                            : undefined}
                     </Grid>
                 </FormControl>
             </FormSection>
@@ -485,14 +439,11 @@ export const OffersAndCouponsForm = ({
                                 control={
                                     <Checkbox
                                         checked={
-                                            values.validServices.length ===
-                                            serviceItems.length
-                                        }
-                                        indeterminate={
-                                            serviceItems.length > 0 &&
-                                            values.validServices.length > 0 &&
-                                            values.validServices.length <
-                                                serviceItems.length
+                                            values.validServices
+                                                ? values.validServices
+                                                      .length ===
+                                                  serviceItems.length
+                                                : false
                                         }
                                         onChange={(e) => {
                                             if (e.target.checked) {
@@ -515,10 +466,11 @@ export const OffersAndCouponsForm = ({
                             />
                         </Grid>
 
-                        {serviceItems.map((service) => {
-                            const exists = values.validServices.includes(
-                                service.id,
-                            )
+                        {serviceItems?.map((service) => {
+                            const exists =
+                                values.validServices?.some(
+                                    (s) => s === service.id,
+                                ) || false
 
                             return (
                                 <Grid size={3} key={service.id}>
@@ -526,23 +478,28 @@ export const OffersAndCouponsForm = ({
                                         control={
                                             <Checkbox
                                                 checked={exists}
-                                                onChange={(e) => {
-                                                    if (e.target.checked) {
+                                                onChange={() => {
+                                                    if (!exists) {
+                                                        const updatedValidServices =
+                                                            [
+                                                                ...(values.validServices ||
+                                                                    []),
+                                                                service.id,
+                                                            ]
                                                         setFieldValue(
                                                             'validServices',
-                                                            [
-                                                                ...values.validServices,
-                                                                service.id,
-                                                            ],
+                                                            updatedValidServices,
                                                         )
                                                     } else {
-                                                        setFieldValue(
-                                                            'validServices',
-                                                            values.validServices.filter(
+                                                        const updatedValidServices =
+                                                            values.validServices?.filter(
                                                                 (id) =>
                                                                     id !==
                                                                     service.id,
-                                                            ),
+                                                            )
+                                                        setFieldValue(
+                                                            'validServices',
+                                                            updatedValidServices,
                                                         )
                                                     }
                                                 }}
@@ -557,7 +514,8 @@ export const OffersAndCouponsForm = ({
                 </FormControl>
             </FormSection>
 
-            <FormSection title="Formas de pagamento">
+            {/* TODO - FORMAS DE PAGAMENTO */}
+            {/* <FormSection title="Formas de pagamento">
                 <FormControl>
                     <FormGroup>
                         <Grid container>
@@ -572,7 +530,7 @@ export const OffersAndCouponsForm = ({
                         </Grid>
                     </FormGroup>
                 </FormControl>
-            </FormSection>
+            </FormSection> */}
 
             <FormSection title="Noites válidas">
                 <FormControl>
