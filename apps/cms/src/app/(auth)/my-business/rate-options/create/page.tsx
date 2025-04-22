@@ -1,9 +1,6 @@
 'use client'
 
-import {
-    ReservationOptionInput,
-    useReservationOptionsControllerCreate,
-} from '@booksuite/sdk'
+import { useCreateRateOption } from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -12,22 +9,21 @@ import { enqueueSnackbar } from 'notistack'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { ReservationOptionForm } from '../components/ReservationOptionsForm'
+import { RateOptionForm } from '../components/RateOptionForm'
 import {
     createReservationOptionFormInitialValues,
-    ReservationOptionData,
+    RateOptionData,
     reservationOptionFormSchema,
 } from '../utils/config'
 
-export default function CreateReservationOption() {
+export default function CreateRateOption() {
     const { push } = useRouter()
     const companyId = useCurrentCompanyId()
     const queryClient = useQueryClient()
 
-    const { mutateAsync: createReservationOption } =
-        useReservationOptionsControllerCreate()
+    const { mutateAsync: createReservationOption } = useCreateRateOption()
 
-    async function handleSubmit(formData: ReservationOptionInput) {
+    async function handleSubmit(formData: RateOptionData) {
         try {
             await createReservationOption({
                 companyId,
@@ -42,7 +38,7 @@ export default function CreateReservationOption() {
                 refetchType: 'all',
             })
 
-            push('/my-business/reservation-options')
+            push('/my-business/rate-options')
 
             enqueueSnackbar('Tarifa criada com sucesso', {
                 variant: 'success',
@@ -71,13 +67,13 @@ export default function CreateReservationOption() {
                 backLButtonLabel="Opções de Tarifa"
             />
 
-            <Formik<ReservationOptionData>
+            <Formik<RateOptionData>
                 initialValues={createReservationOptionFormInitialValues()}
                 validationSchema={reservationOptionFormSchema}
                 onSubmit={handleSubmit}
             >
                 <FormikController onCancel={() => push('/my-business/rooms')}>
-                    <ReservationOptionForm />
+                    <RateOptionForm />
                 </FormikController>
             </Formik>
         </div>

@@ -1,16 +1,15 @@
-import { ReservationOptionFull, ReservationOptionInput } from '@booksuite/sdk'
+import { RateOptionFull, RateOptionInput } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type ReservationOptionData = Omit<
-    ReservationOptionInput,
-    'availableWeekend'
-> & {
+export type RateOptionData = Omit<RateOptionInput, 'availableWeekend'> & {
     availableWeekend: string[]
+    id: string
 }
 
 export const createReservationOptionFormInitialValues = (
-    data?: ReservationOptionFull | null,
-): ReservationOptionData => ({
+    data?: RateOptionFull | null,
+): RateOptionData => ({
+    id: data?.id || '',
     name: data?.name || '',
     published: data?.published || false,
     additionalAdultPrice: data?.additionalAdultPrice || 0,
