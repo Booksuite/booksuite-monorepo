@@ -1,0 +1,209 @@
+import {
+    addMonths,
+    eachDayOfInterval,
+    endOfMonth,
+    format,
+    isSameMonth,
+    startOfMonth,
+    subMonths,
+} from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { useState } from 'react'
+
+import { InputSelect } from '@/components/atoms/InputSelect'
+
+interface Price {
+    value: number
+    available: number
+    isUnavailable?: boolean
+    isSpecialPrice?: boolean
+    minDays?: number
+}
+
+interface AvailabilityCalendarProps {
+    prices: Record<string, Price>
+    propertyName: string
+    onDateSelect?: (date: Date) => void
+    minDays: number
+}
+
+export function AvailabilityCalendar({
+    prices,
+    propertyName,
+    onDateSelect,
+    minDays,
+}: AvailabilityCalendarProps) {
+    const [currentDate, setCurrentDate] = useState(new Date())
+    const [nextMonthDate, setNextMonthDate] = useState(addMonths(new Date(), 1))
+    const [selectedPropertyName, setSelectedPropertyName] =
+        useState(propertyName)
+
+    const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
+
+    const handlePreviousMonth = () => {
+        setCurrentDate((prev) => subMonths(prev, 1))
+        setNextMonthDate((prev) => subMonths(prev, 1))
+    }
+
+    const handleNextMonth = () => {
+        setCurrentDate((prev) => addMonths(prev, 1))
+        setNextMonthDate((prev) => addMonths(prev, 1))
+    }
+
+    const getDaysInMonth = (date: Date) => {
+        const start = startOfMonth(date)
+        const end = endOfMonth(date)
+        return eachDayOfInterval({ start, end })
+    }
+
+    const renderCalendarDays = (date: Date) => {
+        const days = getDaysInMonth(date)
+        const firstDayOfMonth = startOfMonth(date)
+        const emptyDays = firstDayOfMonth.getDay()
+
+        return (
+            <div className="grid grid-cols-7 gap-2 justify-items-center">
+                {[...Array(emptyDays)].map((_, index) => (
+                    <div
+                        key={`empty-${index}`}
+                        className="h-[60px] w-[120px]"
+                    />
+                ))}
+                {days.map((day) => {
+                    const dateKey = format(day, 'yyyy-MM-dd')
+                    const price = prices[dateKey]
+                    const isCurrentMonth = isSameMonth(day, date)
+
+                    if (!isCurrentMonth) {
+                        return (
+                            <div key={dateKey} className="h-[60px] w-[120px]" />
+                        )
+                    }
+
+                    const isUnavailable = price?.isUnavailable || !price
+
+                    return (
+                        <div
+                            key={dateKey}
+                            className={`h-[60px] w-[120px] p-1.5 rounded-lg ${
+                                isUnavailable
+                                    ? 'opacity-50 cursor-not-allowed'
+                                    : 'cursor-pointer hover:border-systemColors-green'
+                            } `}
+                            onClick={() =>
+                                !isUnavailable && onDateSelect?.(day)
+                            }
+                        >
+                            <div className="flex flex-col gap-0 items-center">
+                                {!isUnavailable && minDays > 1 && (
+                                    <span className="bg-grey-800 text-white text-[12px] px-1 leading-4 rounded">
+                                        {minDays}
+                                    </span>
+                                )}
+                                <span
+                                    className={`text-md mt-0.5 ${
+                                        isUnavailable
+                                            ? 'line-through text-grey-secondary'
+                                            : ''
+                                    }`}
+                                >
+                                    {format(day, 'd')}
+                                </span>
+                            </div>
+                            {price && !isUnavailable && (
+                                <div
+                                    className={`mt-0.5 text-sm text-center ${
+                                        price.isSpecialPrice
+                                            ? 'text-systemColors-green font-medium'
+                                            : 'text-grey-primary'
+                                    }`}
+                                >
+                                    {price.value.toLocaleString('pt-BR')}
+                                </div>
+                            )}
+                        </div>
+                    )
+                })}
+            </div>
+        )
+    }
+
+    return (
+        <div className="w-full max-w-[1800px] mx-auto">
+            <div className="flex justify-between items-center mb-4 px-4">
+                <h2 className="text-xl font-semibold">
+                    Calendário de disponibilidade
+                </h2>
+                <div className="relative w-[175px]">
+                    <InputSelect
+                        value={selectedPropertyName}
+                        options={[
+                            {
+                                value: propertyName,
+                                label: propertyName,
+                            },
+                        ]}
+                        onChange={(value) => setSelectedPropertyName(value)}
+                    />
+                </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-0">
+                <div className="px-4">
+                    <div className="flex justify-between items-center mb-4">
+                        <button
+                            onClick={handlePreviousMonth}
+                            className="p-2 hover:bg-grey-100 rounded-full"
+                        >
+                            <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <h3 className="text-lg font-medium capitalize">
+                            {format(currentDate, 'MMMM yyyy', { locale: ptBR })}
+                        </h3>
+                        <div className="w-9" />
+                    </div>
+                    <div className="grid grid-cols-7 gap-2 mb-2 justify-items-center">
+                        {weekDays.map((day) => (
+                            <div
+                                key={day}
+                                className="text-center text-sm font-medium text-grey-primary w-[120px]"
+                            >
+                                {day}
+                            </div>
+                        ))}
+                    </div>
+                    {renderCalendarDays(currentDate)}
+                </div>
+
+                <div className="px-4">
+                    <div className="flex justify-between items-center mb-4">
+                        <div className="w-9" />
+                        <h3 className="text-lg font-medium capitalize">
+                            {format(nextMonthDate, 'MMMM yyyy', {
+                                locale: ptBR,
+                            })}
+                        </h3>
+                        <button
+                            onClick={handleNextMonth}
+                            className="p-2 hover:bg-grey-100 rounded-full"
+                        >
+                            <ChevronRight className="w-5 h-5" />
+                        </button>
+                    </div>
+                    <div className="grid grid-cols-7 gap-2 mb-2 justify-items-center">
+                        {weekDays.map((day) => (
+                            <div
+                                key={day}
+                                className="text-center text-sm font-medium text-grey-primary w-[120px]"
+                            >
+                                {day}
+                            </div>
+                        ))}
+                    </div>
+                    {renderCalendarDays(nextMonthDate)}
+                </div>
+            </div>
+        </div>
+    )
+}

@@ -81,7 +81,8 @@ export function InputCalendar({
                             disabled && 'bg-grey-100 text-grey-secondary',
                             !disabled && 'bg-transparent',
                             '[&::-webkit-calendar-picker-indicator]:hidden',
-                            '[&::-webkit-datetime-edit-fields-wrapper]:opacity-0',
+                            !inputValue &&
+                                '[&::-webkit-datetime-edit-fields-wrapper]:opacity-0',
                             '[&::-webkit-datetime-edit-fields-wrapper]:focus:opacity-100',
                             '[&::-webkit-datetime-edit-fields-wrapper]:not(:placeholder-shown):opacity-100',
                             '[&::-webkit-datetime-edit-fields-wrapper]:focus:text-grey-primary',
@@ -92,8 +93,10 @@ export function InputCalendar({
                             '[&::-webkit-datetime-edit-text]:text-grey-primary',
                             '[&::-webkit-datetime-edit-text]:ml-0',
                             '[&::-webkit-datetime-edit]:ml-0',
-                            '[&::-webkit-datetime-edit]:focus:text-grey-primary',
-                            '[&::-webkit-datetime-edit]:not(:placeholder-shown):text-grey-primary',
+                            !inputValue &&
+                                '[&::-webkit-datetime-edit]:opacity-0',
+                            '[&::-webkit-datetime-edit]:focus:opacity-100',
+                            '[&::-webkit-datetime-edit]:not(:placeholder-shown):opacity-100',
                             className,
                         )}
                         disabled={disabled}

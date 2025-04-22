@@ -10,7 +10,7 @@ interface SearchAvailabilityProps {
 
 export function SearchAvailability({ maxGuests }: SearchAvailabilityProps) {
     return (
-        <div className="lg:col-span-1 max-w-[35%] w-full">
+        <div className="sticky top-10 lg:col-span-1 max-w-[35%] w-full">
             <div className="sticky top-4 bg-white rounded-xl shadow-lg p-6 border border-grey-100">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col gap-2">

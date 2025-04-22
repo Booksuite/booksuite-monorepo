@@ -2,7 +2,6 @@
 
 import { useGetBannerById, useSearchBanners } from '@booksuite/sdk'
 import Image from 'next/image'
-
 import { useEffect } from 'react'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'

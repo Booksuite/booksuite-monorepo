@@ -1,5 +1,6 @@
 import type { HousingUnitTypeFull } from '@booksuite/sdk'
 import { useSearchHousingUnitTypes } from '@booksuite/sdk'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
@@ -9,6 +10,8 @@ import { ImageGallery } from '@/components/organisms/ImageGallery'
 import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
 
 export const HousingUnitType: React.FC = () => {
+    const router = useRouter()
+
     const { company } = useCurrentCompanyStore()
     const [selectedUnit, setSelectedUnit] = useState<{
         title: string
@@ -60,7 +63,11 @@ export const HousingUnitType: React.FC = () => {
                                 facilities={unitType.facilities ?? []}
                                 maxGuests={unitType.maxGuests ?? 1}
                                 onReserve={() => unitType.id}
-                                onDetails={() => unitType.id}
+                                onDetails={() =>
+                                    router.push(
+                                        `/housing-unit/details/${unitType.id}`,
+                                    )
+                                }
                                 onViewAllPhotos={() => {
                                     setSelectedUnit({
                                         title: unitType.name ?? '',
