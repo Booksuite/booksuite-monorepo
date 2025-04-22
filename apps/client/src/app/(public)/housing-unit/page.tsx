@@ -65,14 +65,10 @@ export default function HousingUnit() {
                                     }
                                     facilities={unitType.facilities ?? []}
                                     maxGuests={unitType.maxGuests ?? 1}
-                                    onReserve={() =>
-                                        router.push(
-                                            `/housing-unit/${unitType.id}`,
-                                        )
-                                    }
+                                    onReserve={() => {}}
                                     onDetails={() =>
                                         router.push(
-                                            `/housing-unit/${unitType.id}`,
+                                            `/housing-unit/details/${unitType.id}`,
                                         )
                                     }
                                     onViewAllPhotos={() => {

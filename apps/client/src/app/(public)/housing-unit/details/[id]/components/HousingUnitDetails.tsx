@@ -10,7 +10,7 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
-import { AvailabilityCalendar } from '@/app/(public)/housing-unit/[id]/components/AvailabilityCalendar'
+import { AvailabilityCalendar } from '@/app/(public)/housing-unit/details/[id]/components/AvailabilityCalendar'
 import { useCurrentCompanyId } from '@/common/contexts/company'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 
