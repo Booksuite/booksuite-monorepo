@@ -10,11 +10,11 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
+import { AvailabilityCalendar } from '@/app/(public)/housing-unit/[id]/components/AvailabilityCalendar'
 import { useCurrentCompanyId } from '@/common/contexts/company'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 
 import { SearchAvailability } from './SearchAvailability'
-import { AvailabilityCalendar } from '@/app/(public)/housing-unit/[id]/components/AvailabilityCalendar'
 import { useCalendarPrices } from './useCalendarPrices'
 
 export function HousingUnitDetails() {
