@@ -6,16 +6,18 @@ import { ReceiveOurPromotions } from '@/components/organisms/ReceiveOurPromotion
 import { ExtraServices } from '@/components/templates/ExtraServices'
 
 import { HousingUnitDetails } from './components/HousingUnitDetails'
+import { OthersHousingUnit } from './components/OthersHousingUnit'
 
 export default function HousingUnitPage() {
     return (
         <>
             <Container>
                 <HousingUnitDetails />
-                <ExtraServices />
                 <ReceiveOurPromotions />
             </Container>
 
+            <OthersHousingUnit />
+            <ExtraServices />
             <Others />
         </>
     )
