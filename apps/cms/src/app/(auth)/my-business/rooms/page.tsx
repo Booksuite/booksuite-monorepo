@@ -7,6 +7,7 @@ import {
     useUpdateHousingUnitType,
 } from '@booksuite/sdk'
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
+import { Box } from '@mui/system'
 import {
     Check,
     CheckCheck,
@@ -33,7 +34,6 @@ import { Table } from '@/components/organisms/Table'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
 
 import { COLUMNS_DEFINITION } from './constants'
-import { Box } from '@mui/system'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
