@@ -32,7 +32,7 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
     const [isExpanded, setIsExpanded] = useState(false)
 
     return (
-        <div className="bg-white flex flex-row rounded-xl overflow-hidden border border-1 hover:shadow-md transition-shadow max-w-4xl">
+        <div className="bg-white flex flex-row rounded-xl overflow-hidden border border-1 hover:shadow-md transition-shadow w-[900px]">
             <div className="w-[50%] relative">
                 <ImageSlider
                     images={images}
