@@ -3,6 +3,7 @@
 import {
     useGetCompanyHostingRules,
     useGetHousingUnitTypeById,
+    useSearchSeasonRules,
 } from '@booksuite/sdk'
 import { ChevronRight, Gift, Share2 } from 'lucide-react'
 import Image from 'next/image'
@@ -13,6 +14,8 @@ import { useCurrentCompanyId } from '@/common/contexts/company'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 
 import { SearchAvailability } from './SearchAvailability'
+import { AvailabilityCalendar } from '@/app/(public)/housing-unit/[id]/components/AvailabilityCalendar'
+import { useCalendarPrices } from './useCalendarPrices'
 
 export function HousingUnitDetails() {
     const { id } = useParams()
@@ -30,6 +33,21 @@ export function HousingUnitDetails() {
     const { data: companyHostingRules } = useGetCompanyHostingRules({
         companyId: companyId,
     })
+
+    const { data: seasonRules } = useSearchSeasonRules(
+        { companyId },
+        {
+            pagination: {
+                page: 1,
+                itemsPerPage: 100,
+            },
+        },
+    )
+
+    const { generateCalendarPrices } = useCalendarPrices(
+        housingUnit,
+        seasonRules,
+    )
 
     if (!housingUnit) {
         return <div>Carregando...</div>
@@ -231,6 +249,14 @@ export function HousingUnitDetails() {
                     </div>
 
                     <div className="w-[90%] h-[2px] mt-7 mb-7 bg-grey-200" />
+
+                    <div className="w-[90%]">
+                        <AvailabilityCalendar
+                            prices={generateCalendarPrices()}
+                            propertyName={housingUnit.name}
+                            minDays={companyHostingRules?.minDaily || 1}
+                        />
+                    </div>
                 </div>
 
                 <SearchAvailability
