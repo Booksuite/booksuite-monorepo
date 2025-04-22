@@ -31,8 +31,8 @@ export const extractErrorMessages = (
 export interface FormikControllerProps {
     onSubmit?: () => void
     onCancel?: () => void
-    loadingText?: string
     submitText?: string
+    publishedAndSubmitText?: string
     cancelText?: string
 }
 
@@ -43,8 +43,8 @@ export const FormikController: React.FC<
     onSubmit,
     onCancel,
     submitText = 'Salvar',
+    publishedAndSubmitText = 'Publicar e Salvar',
     cancelText = 'Cancelar',
-    loadingText = 'Carregando',
 }) => {
     const { isSubmitting, errors } = useFormikContext()
     const errorMessages = extractErrorMessages(errors)
@@ -52,6 +52,11 @@ export const FormikController: React.FC<
         errorMessages.length > 2
             ? `${errorMessages.length} problemas encontrados`
             : errorMessages.join(', ')
+
+    const { values } = useFormikContext<unknown>()
+
+    const hasPublishedField =
+        typeof values === 'object' && values !== null && 'published' in values
 
     return (
         <Form>
@@ -114,21 +119,37 @@ export const FormikController: React.FC<
                                     {cancelText}
                                 </Button>
                             )}
-                            <Button
-                                type={onSubmit ? 'button' : 'submit'}
-                                color="secondary"
-                                onClick={onSubmit}
-                                loading={isSubmitting}
-                                loadingIndicator={
-                                    <>
-                                        <CircularProgress />
-                                        {loadingText}
-                                    </>
-                                }
-                                size="medium"
-                            >
-                                {submitText}
-                            </Button>
+                            {!isSubmitting ? (
+                                <>
+                                    <Button
+                                        type={onSubmit ? 'button' : 'submit'}
+                                        color="secondary"
+                                        onClick={onSubmit}
+                                        size="medium"
+                                    >
+                                        {submitText}
+                                    </Button>
+
+                                    {hasPublishedField && !values.published && (
+                                        <Button
+                                            type={
+                                                onSubmit ? 'button' : 'submit'
+                                            }
+                                            color="primary"
+                                            onClick={() =>
+                                                (values.published = true)
+                                            }
+                                            size="medium"
+                                        >
+                                            {publishedAndSubmitText}
+                                        </Button>
+                                    )}
+                                </>
+                            ) : (
+                                <>
+                                    <CircularProgress />
+                                </>
+                            )}
                         </Stack>
                     </Stack>
                 </Stack>

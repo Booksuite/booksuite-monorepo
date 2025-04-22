@@ -50,8 +50,6 @@ export default function Address() {
                 },
                 autoHideDuration: 3000,
             })
-
-            back()
         } catch {
             enqueueSnackbar(`Erro ao modificar endereço`, {
                 variant: 'error',

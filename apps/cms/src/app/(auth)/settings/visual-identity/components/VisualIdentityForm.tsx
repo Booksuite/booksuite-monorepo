@@ -1,16 +1,29 @@
 'use client'
 
+import { Media } from '@booksuite/sdk'
+import {
+    closestCenter,
+    DndContext,
+    PointerSensor,
+    useSensor,
+    useSensors,
+} from '@dnd-kit/core'
+import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
 import { Box, Button, Grid, TextField, Typography } from '@mui/material'
 import { useFormikContext } from 'formik'
 import { ChangeEvent, useEffect, useRef, useState } from 'react'
 
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
+import { MediaGallery } from '@/components/organisms/MediaGallery'
+import { SortableMediaItems } from '@/components/templates/SortableMediaItem'
 import { visualIdentityFormData } from '../utils/config'
 
 export default function VisualIdentityForm() {
     const { values, setFieldValue } = useFormikContext<visualIdentityFormData>()
 
+    const [selectingLogoOrIcon, setSelectingLogoOrIcon] =
+        useState<boolean>(false)
     const [logo, setLogo] = useState<string | null>(null)
     const [favicon, setFavicon] = useState<string | null>(null)
     const [mainColor, setMainColor] = useState(
@@ -38,18 +51,36 @@ export default function VisualIdentityForm() {
         }
     }
 
-    const openLogoSelector = () => {
-        logoInputRef.current?.click()
-    }
-
-    const openFaviconSelector = () => {
-        faviconInputRef.current?.click()
-    }
-
     useEffect(() => {
         setLogo(values.logo)
         setFavicon(values.favIcon)
     }, [values.favIcon, values.logo])
+
+    const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
+
+    const handleMediaChange = (selectedMedia: Media[]) => {
+        const [media] = selectedMedia
+
+        if (!media) return
+
+        if (selectingLogoOrIcon) {
+            setFieldValue('logo', media.url)
+            setLogo(media.url)
+        } else {
+            setFieldValue('favIcon', media.url)
+            setFavicon(media.url)
+        }
+
+        setIsMediaGalleryOpen(false)
+    }
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 8,
+            },
+        }),
+    )
 
     return (
         <FormContainer>
@@ -76,13 +107,42 @@ export default function VisualIdentityForm() {
                         </Typography>
                     </Box>
                     <Button
-                        onClick={openLogoSelector}
+                        onClick={() => {
+                            setSelectingLogoOrIcon(true)
+                            setIsMediaGalleryOpen(true)
+                        }}
                         variant="contained"
                         color="primary"
                     >
                         Adicionar
                     </Button>
                 </Grid>
+
+                <DndContext
+                    sensors={sensors}
+                    collisionDetection={closestCenter}
+                >
+                    <SortableContext
+                        items={values.medias.map((item) => item.id)}
+                        strategy={rectSortingStrategy}
+                    >
+                        {values.medias.map((item) => (
+                            <Box key={item.id} mt={5} mb={5}>
+                                <SortableMediaItems mediaItem={item} />
+                            </Box>
+                        ))}
+                    </SortableContext>
+                </DndContext>
+
+                <MediaGallery
+                    isOpen={isMediaGalleryOpen}
+                    onClose={() => setIsMediaGalleryOpen(false)}
+                    selectedItems={values.medias.map((item) => item.id)}
+                    initialItems={values.medias.map((item) => item)}
+                    onItemsChange={handleMediaChange}
+                    maxItems={2}
+                    minItems={1}
+                />
 
                 <Box
                     sx={{
@@ -146,7 +206,10 @@ export default function VisualIdentityForm() {
                         </Typography>
                     </Box>
                     <Button
-                        onClick={openFaviconSelector}
+                        onClick={() => {
+                            setSelectingLogoOrIcon(false)
+                            setIsMediaGalleryOpen(true)
+                        }}
                         variant="contained"
                         color="primary"
                     >
@@ -205,10 +268,7 @@ export default function VisualIdentityForm() {
                                     ? e.target.value
                                     : `#${e.target.value}`
 
-                                setFieldValue(
-                                    'settings.theme.color',
-                                    formatted,
-                                )
+                                setFieldValue('settings.theme.color', formatted)
                                 setMainColor(formatted)
                             }}
                         />

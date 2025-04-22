@@ -55,7 +55,6 @@ export default function ContactsSocialMediaPage() {
                 },
             )
 
-            back()
         } catch {
             enqueueSnackbar(
                 `Erro ao modificar os contatos e/ou redes sociais`,

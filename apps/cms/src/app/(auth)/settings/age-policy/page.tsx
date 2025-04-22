@@ -61,7 +61,6 @@ export default function AgePolicy() {
                 },
                 autoHideDuration: 3000,
             })
-            back()
         } catch {
             enqueueSnackbar(`Erro ao modificar políticas`, {
                 variant: 'error',

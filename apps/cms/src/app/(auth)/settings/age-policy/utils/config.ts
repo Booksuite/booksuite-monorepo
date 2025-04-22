@@ -1,7 +1,9 @@
 import { AgePolicyFull, AgePolicyInput } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type AgePolicyFormData = AgePolicyInput
+export type AgePolicyFormData = AgePolicyInput & {
+    id: string
+}
 
 export const createAgePolicyInitialValues = (
     data?: Partial<AgePolicyFull>,

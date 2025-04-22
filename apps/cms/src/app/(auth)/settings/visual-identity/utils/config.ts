@@ -2,6 +2,7 @@ import {
     CompanyFull,
     CompanySettingsInput,
     CompanyUpdateInput,
+    Media,
 } from '@booksuite/sdk'
 import * as yup from 'yup'
 
@@ -12,8 +13,7 @@ export type visualIdentityFormData = Pick<
     favIcon: string
     logo: string
     settings: CompanySettingsInput
-    favIconFile?: File
-    logoFile?: File
+    medias: Media[]
 }
 
 export const createvisualIdentityInitialValues = (
@@ -22,8 +22,7 @@ export const createvisualIdentityInitialValues = (
     favIcon: data?.favIcon || '',
     logo: data?.logo || '',
     settings: data?.settings || {},
-    favIconFile: undefined,
-    logoFile: undefined,
+    medias: [],
 })
 
 export const visualIdentityFormSchema = yup.object({

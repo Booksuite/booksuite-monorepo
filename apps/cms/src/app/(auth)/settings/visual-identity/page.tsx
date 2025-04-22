@@ -1,10 +1,6 @@
 'use client'
 
-import {
-    useGetCompanyById,
-    useUpdateCompany,
-    useUploadMedia,
-} from '@booksuite/sdk'
+import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -35,32 +31,13 @@ export default function VisualIdentity() {
 
     const queryClient = useQueryClient()
 
-    const { mutateAsync: uploadMedia } = useUploadMedia()
     const { mutateAsync: updateCompanyVisualData } = useUpdateCompany()
 
     async function handleSubmit(formData: visualIdentityFormData) {
         try {
-            const logoIcon = formData.logoFile
-                ? await uploadMedia({
-                      companyId,
-                      data: { file: formData.logoFile },
-                  })
-                : undefined
-
-            const favIcon = formData.favIconFile
-                ? await uploadMedia({
-                      companyId,
-                      data: { file: formData.favIconFile },
-                  })
-                : undefined
-
             await updateCompanyVisualData({
                 id: companyId,
-                data: {
-                    ...omit(formData, ['favIconFile', 'logoFile']),
-                    logo: logoIcon?.url ? logoIcon.url : formData.logo,
-                    favIcon: favIcon?.url ? favIcon.url : formData.favIcon,
-                },
+                data: omit(formData, ['medias']),
             })
 
             queryClient.invalidateQueries({ queryKey })
@@ -73,8 +50,6 @@ export default function VisualIdentity() {
                 },
                 autoHideDuration: 3000,
             })
-
-            back()
         } catch {
             enqueueSnackbar(`Erro ao modificar identidade visual`, {
                 variant: 'error',
