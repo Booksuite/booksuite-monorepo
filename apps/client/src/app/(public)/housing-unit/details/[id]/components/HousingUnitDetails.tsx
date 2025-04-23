@@ -273,6 +273,7 @@ export function HousingUnitDetails() {
 
                 <SearchAvailability
                     maxGuests={housingUnit.maxGuests ?? undefined}
+                    housingUnitId={housingUnit.id}
                 />
             </div>
 
