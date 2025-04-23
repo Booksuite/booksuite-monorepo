@@ -131,63 +131,75 @@ export function HousingUnitDetails() {
                     <div className="w-[90%] h-[2px] mt-7 mb-7 bg-grey-200" />
 
                     <div className="flex flex-col gap-8">
-                        <div className="flex flex-col gap-4">
-                            <h2 className="text-xl font-medium">
-                                Principais Comodidades
-                            </h2>
-                            <div className="grid grid-cols-5 gap-4">
-                                {housingUnit.facilities
-                                    ?.filter((facility) => facility.isFeatured)
-                                    .map((facility) => (
-                                        <div
-                                            key={facility.id}
-                                            className="flex flex-col items-center gap-2 text-center border border-grey-200 rounded-lg p-2"
-                                        >
-                                            <div className="w-12 h-12 flex items-center justify-center">
-                                                {facility.facility.icon ? (
-                                                    <Image
-                                                        src={
-                                                            facility.facility
-                                                                .icon
-                                                        }
-                                                        alt={
-                                                            facility.facility
-                                                                .name
-                                                        }
-                                                        className="w-8 h-8"
-                                                    />
-                                                ) : (
-                                                    <Gift className="w-8 h-8" />
-                                                )}
-                                            </div>
-                                            <span className="text-sm text-grey-primary">
-                                                {facility.facility.name}
-                                            </span>
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
+                        {housingUnit.facilities.length > 0 && (
+                            <>
+                                <div className="flex flex-col gap-4">
+                                    <h2 className="text-xl font-medium">
+                                        Principais Comodidades
+                                    </h2>
+                                    <div className="grid grid-cols-5 gap-4">
+                                        {housingUnit.facilities
+                                            ?.filter(
+                                                (facility) =>
+                                                    facility.isFeatured,
+                                            )
+                                            .map((facility) => (
+                                                <div
+                                                    key={facility.id}
+                                                    className="flex flex-col items-center gap-2 text-center border border-grey-200 rounded-lg p-2"
+                                                >
+                                                    <div className="w-12 h-12 flex items-center justify-center">
+                                                        {facility.facility
+                                                            .icon ? (
+                                                            <Image
+                                                                src={
+                                                                    facility
+                                                                        .facility
+                                                                        .icon
+                                                                }
+                                                                alt={
+                                                                    facility
+                                                                        .facility
+                                                                        .name
+                                                                }
+                                                                className="w-8 h-8"
+                                                            />
+                                                        ) : (
+                                                            <Gift className="w-8 h-8" />
+                                                        )}
+                                                    </div>
+                                                    <span className="text-sm text-grey-primary">
+                                                        {facility.facility.name}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-4">
+                                    <h2 className="text-xl font-medium">
+                                        Outras Comodidades
+                                    </h2>
+                                    <div className="grid grid-cols-5">
+                                        {housingUnit.facilities
+                                            ?.filter(
+                                                (facility) =>
+                                                    !facility.isFeatured,
+                                            )
+                                            .map((facility) => (
+                                                <div
+                                                    key={facility.id}
+                                                    className="text-grey-secondary"
+                                                >
+                                                    {facility.facility.name}
+                                                </div>
+                                            ))}
+                                    </div>
+                                </div>
 
-                        <div className="flex flex-col gap-4">
-                            <h2 className="text-xl font-medium">
-                                Outras Comodidades
-                            </h2>
-                            <div className="grid grid-cols-5">
-                                {housingUnit.facilities
-                                    ?.filter((facility) => !facility.isFeatured)
-                                    .map((facility) => (
-                                        <div
-                                            key={facility.id}
-                                            className="text-grey-secondary"
-                                        >
-                                            {facility.facility.name}
-                                        </div>
-                                    ))}
-                            </div>
-                        </div>
+                                <div className="w-[90%] h-[2px] mt-7 mb-7 bg-grey-200" />
+                            </>
+                        )}
                     </div>
-
-                    <div className="w-[90%] h-[2px] mt-7 mb-7 bg-grey-200" />
 
                     <div className="flex flex-col gap-4">
                         <h2 className="text-xl font-medium">

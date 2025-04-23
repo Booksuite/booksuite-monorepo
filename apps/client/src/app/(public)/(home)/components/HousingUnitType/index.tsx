@@ -62,7 +62,11 @@ export const HousingUnitType: React.FC = () => {
                                 }
                                 facilities={unitType.facilities ?? []}
                                 maxGuests={unitType.maxGuests ?? 1}
-                                onReserve={() => unitType.id}
+                                onReserve={() =>
+                                    router.push(
+                                        `/housing-unit/booking/${unitType.id}`,
+                                    )
+                                }
                                 onDetails={() =>
                                     router.push(
                                         `/housing-unit/details/${unitType.id}`,
