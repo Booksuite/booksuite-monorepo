@@ -1,0 +1,1 @@
+{"type":"object","properties":{"ageGroupId":{"type":"string","example":"123e4567-e89b-12d3-a456-426614174000"},"price":{"type":"number","example":30}},"required":["ageGroupId","price"],"x-readme-ref-name":"RateOptionAgeGroupDTO"}

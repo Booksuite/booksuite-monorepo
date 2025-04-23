@@ -1,13 +1,17 @@
-import type { Offer } from '../Offer.ts'
+import type { OfferFull } from '../OfferFull.ts'
 
 export type GetOfferByIdPathParams = {
   /**
    * @type string
    */
   id: string
+  /**
+   * @type string
+   */
+  companyId: string
 }
 
-export type GetOfferById200 = Offer | null
+export type GetOfferById200 = OfferFull | null
 
 export type GetOfferByIdQueryResponse = GetOfferById200
 

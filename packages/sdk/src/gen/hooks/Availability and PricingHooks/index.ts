@@ -1,4 +1,8 @@
-export type { GetCalendarMutationKey } from './useGetCalendar.ts'
-export type { GetCalendarFromHousingUnitTypeIdMutationKey } from './useGetCalendarFromHousingUnitTypeId.ts'
-export { getCalendarMutationKey, useGetCalendar } from './useGetCalendar.ts'
-export { getCalendarFromHousingUnitTypeIdMutationKey, useGetCalendarFromHousingUnitTypeId } from './useGetCalendarFromHousingUnitTypeId.ts'
+export type { GetCalendarQueryKey } from './useGetCalendar.ts'
+export type { GetCalendarFromHousingUnitTypeIdQueryKey } from './useGetCalendarFromHousingUnitTypeId.ts'
+export { getCalendarQueryKey, getCalendarQueryOptions, useGetCalendar } from './useGetCalendar.ts'
+export {
+  getCalendarFromHousingUnitTypeIdQueryKey,
+  getCalendarFromHousingUnitTypeIdQueryOptions,
+  useGetCalendarFromHousingUnitTypeId,
+} from './useGetCalendarFromHousingUnitTypeId.ts'

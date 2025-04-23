@@ -47,17 +47,14 @@ export { getGetOfferByIdUrl, getOfferById } from './OfferService/getOfferById.ts
 export { offerService } from './OfferService/offerService.ts'
 export { getSearchOffersUrl, searchOffers } from './OfferService/searchOffers.ts'
 export { getUpdateOfferUrl, updateOffer } from './OfferService/updateOffer.ts'
+export { getCreateRateOptionUrl, createRateOption } from './RateOptionService/createRateOption.ts'
+export { getGetRateOptionByIdUrl, getRateOptionById } from './RateOptionService/getRateOptionById.ts'
+export { rateOptionService } from './RateOptionService/rateOptionService.ts'
+export { getSearchRateOptionUrl, searchRateOption } from './RateOptionService/searchRateOption.ts'
+export { getUpdateRateOptionUrl, updateRateOption } from './RateOptionService/updateRateOption.ts'
 export { getGetCompanyReservationConfigUrl, getCompanyReservationConfig } from './ReservationConfigService/getCompanyReservationConfig.ts'
 export { reservationConfigService } from './ReservationConfigService/reservationConfigService.ts'
 export { getUpsertCompanyReservationConfigUrl, upsertCompanyReservationConfig } from './ReservationConfigService/upsertCompanyReservationConfig.ts'
-export { getReservationOptionsControllerCreateUrl, reservationOptionsControllerCreate } from './ReservationOptionsService/reservationOptionsControllerCreate.ts'
-export {
-  getReservationOptionsControllerGetByIdUrl,
-  reservationOptionsControllerGetById,
-} from './ReservationOptionsService/reservationOptionsControllerGetById.ts'
-export { getReservationOptionsControllerUpdateUrl, reservationOptionsControllerUpdate } from './ReservationOptionsService/reservationOptionsControllerUpdate.ts'
-export { reservationOptionsService } from './ReservationOptionsService/reservationOptionsService.ts'
-export { getSearchReservationOptionUrl, searchReservationOption } from './ReservationOptionsService/searchReservationOption.ts'
 export { getCreateReservationUrl, createReservation } from './ReservationService/createReservation.ts'
 export { getDeleteReservationUrl, deleteReservation } from './ReservationService/deleteReservation.ts'
 export { getGetReservationByIdUrl, getReservationById } from './ReservationService/getReservationById.ts'

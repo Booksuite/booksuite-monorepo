@@ -110,7 +110,7 @@ export type CompanyUpdateInput = {
   /**
    * @type string
    */
-  privacyPolicyDescriptio?: string | null
+  privacyPolicyDescription?: string | null
   /**
    * @type string
    */

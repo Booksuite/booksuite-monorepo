@@ -1,98 +1,95 @@
 import type { HousingUnit } from './HousingUnit.ts'
-import type { ReservationSaleChannel } from './ReservationSaleChannel.ts'
-import type { ReservationStatus } from './ReservationStatus.ts'
+import type { User } from './User.ts'
+
+export type AvailAndPricingReservationDTOStatus =
+  | 'WAITING_PAYMENT'
+  | 'CONFIRMED'
+  | 'CHECKED_IN'
+  | 'CHECKED_OUT'
+  | 'ABANDONED'
+  | 'CANCELLED'
+  | 'PAYMENT_FAILED'
+  | 'OVERBOOKED'
+  | 'WAITING_LIST'
+
+export type AvailAndPricingReservationDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAPP' | 'INSTAGRAM' | 'TIKTOK' | 'EMAIL' | 'BOOKSUITE' | 'OTHER'
 
 export type AvailAndPricingReservationInput = {
   /**
-   * @description The ID of the reservation
    * @type string
    */
   id: string
   /**
-   * @description The status of the reservation
-   */
-  status: ReservationStatus
-  /**
-   * @description The notes of the reservation
    * @type string
    */
-  notes: string
+  status: AvailAndPricingReservationDTOStatus
   /**
-   * @description The reservation code
    * @type string
    */
-  reservationCode: string
+  saleChannel: AvailAndPricingReservationDTOSaleChannel
   /**
-   * @description The start date of the reservation
    * @type string, date
    */
   startDate: string
   /**
-   * @description The end date of the reservation
    * @type string, date
    */
   endDate: string
   /**
-   * @description The total days of the reservation
    * @type number
    */
   totalDays: number | null
   /**
-   * @description Reservation FinalPrice
    * @type number
    */
-  finalPrice: number | null
+  finalPrice: number
   /**
-   * @description The adults of the reservation
    * @type number
    */
   adults: number
   /**
-   * @description The sale channel of the reservation
-   */
-  saleChannel: ReservationSaleChannel
-  /**
-   * @description The seller user ID of the reservation
    * @type string
    */
-  sellerUserId: string | null
+  notes: string
   /**
-   * @description The guest user ID of the reservation
-   * @type string
-   */
-  guestUserId: string | null
-  /**
-   * @description The company ID of the reservation
-   * @type string
-   */
-  companyId: string
-  /**
-   * @description The housing unit ID of the reservation
-   * @type string
-   */
-  housingUnitId: string | null
-  /**
-   * @description The created at date of the reservation
    * @type string, date-time
    */
   createdAt: string
   /**
-   * @description The updated at date of the reservation
    * @type string, date-time
    */
   updatedAt: string
   /**
-   * @description The deleted at date of the reservation
+   * @type string
+   */
+  reservationCode: string
+  /**
+   * @type string
+   */
+  sellerUserId: string | null
+  /**
+   * @type string
+   */
+  guestUserId: string
+  /**
+   * @type string
+   */
+  companyId: string
+  /**
+   * @type string
+   */
+  housingUnitId: string | null
+  /**
+   * @type string
+   */
+  rateOptionId: string | null
+  /**
    * @type string, date-time
    */
   deletedAt: string | null
-  /**
-   * @description The user ID of the reservation
-   * @type string
-   */
-  userId: string | null
-  /**
-   * @description The housing unit of the reservation
-   */
   housingUnit: HousingUnit | null
+  /**
+   * @type object
+   */
+  guestUser: User
 }

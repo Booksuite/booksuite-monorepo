@@ -34,5 +34,5 @@ export type SeasonRuleUpdateInput = {
   /**
    * @type array | undefined
    */
-  housingUnitTypesPrices?: HousingUnitTypePricingChangeInput[]
+  housingUnitTypePrices?: HousingUnitTypePricingChangeInput[]
 }

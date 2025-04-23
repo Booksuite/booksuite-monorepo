@@ -1,0 +1,1 @@
+export type RateOptionOrderBy = 'name' | 'billingType' | 'additionalAdultPrice' | 'additionalChildrenPrice'

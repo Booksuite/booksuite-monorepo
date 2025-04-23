@@ -75,12 +75,12 @@ export type AvailAndPricingOffersInput = {
    * @description Valid start date
    * @type string, date-time
    */
-  validStartDate: string
+  validStartDate: string | null
   /**
    * @description Valid end date
    * @type string, date-time
    */
-  validEndDate: string
+  validEndDate: string | null
   /**
    * @description Price adjustment type
    */
@@ -100,16 +100,6 @@ export type AvailAndPricingOffersInput = {
    * @type boolean
    */
   validForPackages: boolean
-  /**
-   * @description Housing unit type prices
-   * @type array
-   */
-  housingUnitTypePrices: {
-    /**
-     * @type string | undefined
-     */
-    housingUnitTypeId?: string
-  }[]
   /**
    * @description Offer description
    * @type string

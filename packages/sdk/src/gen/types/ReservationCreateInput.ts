@@ -1,5 +1,4 @@
 import type { ReservationAgeGroupInput } from './ReservationAgeGroupInput.ts'
-import type { ReservationReservationOptionInput } from './ReservationReservationOptionInput.ts'
 import type { ReservationServiceInput } from './ReservationServiceInput.ts'
 
 export type ReservationCreateDTOStatus =
@@ -23,7 +22,7 @@ export type ReservationCreateInput = {
   /**
    * @type string
    */
-  userId: string
+  guestUserId: string
   /**
    * @type string
    */
@@ -33,11 +32,11 @@ export type ReservationCreateInput = {
    */
   saleChannel?: ReservationCreateDTOSaleChannel
   /**
-   * @type string, date-time
+   * @type string
    */
   startDate: string
   /**
-   * @type string, date-time
+   * @type string
    */
   endDate: string
   /**
@@ -69,7 +68,7 @@ export type ReservationCreateInput = {
    */
   services: ReservationServiceInput[]
   /**
-   * @type array
+   * @type string | undefined
    */
-  reservationOption: ReservationReservationOptionInput[]
+  rateOptionId?: string
 }
