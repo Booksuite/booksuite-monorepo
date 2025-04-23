@@ -6,7 +6,6 @@ import {
     Box,
     Button,
     Grid,
-    MenuItem,
     TextField,
     Typography,
 } from '@mui/material'
@@ -25,7 +24,6 @@ import {
     useCompanyHousingUnitTypes,
     useCompanyServices,
 } from '../utils/config'
-import { CHANNEL_OPTIONS } from '../utils/constants'
 
 import { HousingUnitModal } from './HousingUnitModal'
 import { ReservationOptionsSelector } from './ReservationOptionsSelector'
