@@ -1,6 +1,7 @@
 import { useSearchReservationOption } from '@booksuite/sdk'
 import { CalendarX, Share2 } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
+import { Route } from 'next'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
@@ -12,6 +13,8 @@ import {
     MealPlanSelector,
 } from '@/components/molecules/MealPlanSelector'
 import { PriceDisplay } from '@/components/molecules/PriceDisplay'
+
+import { AddedToCartModal } from './AddedToCartModal'
 
 interface HousingUnitBookingFormProps {
     title: string
@@ -31,10 +34,12 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
     maxGuests,
     prices,
 }) => {
+    const router = useRouter()
     const searchParams = useSearchParams()
     const { company } = useCurrentCompanyStore()
     const [selectedMealPlans, setSelectedMealPlans] = useState<MealPlan[]>([])
     const [error, setError] = useState<string | null>(null)
+    const [isModalOpen, setIsModalOpen] = useState(false)
 
     const [checkIn, setCheckIn] = useState<Date | undefined>(undefined)
     const [checkOut, setCheckOut] = useState<Date | undefined>(undefined)
@@ -142,6 +147,23 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
             0,
         )
 
+    const handleAddToCart = () => {
+        // TODO: Implement actual cart functionality
+        setIsModalOpen(true)
+    }
+
+    const handleAddMore = () => {
+        setIsModalOpen(false)
+        setCheckIn(undefined)
+        setCheckOut(undefined)
+        setGuests('1')
+        setSelectedMealPlans([])
+    }
+
+    const handleAdvance = () => {
+        router.push('/cart' as Route)
+    }
+
     return (
         <div className="w-full max-w-xl px-4">
             <div className="w-full flex items-center flex-row justify-between text-grey-primary">
@@ -230,7 +252,7 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
                         />
                         <Button
                             className="w-full bg-primary-500 text-white hover:bg-primary-600 h-12 disabled:opacity-50 disabled:cursor-not-allowed"
-                            onClick={() => {}}
+                            onClick={handleAddToCart}
                             disabled={!checkIn || !checkOut || !!error}
                         >
                             Adicionar ao carrinho
@@ -238,6 +260,12 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
                     </div>
                 </div>
             </div>
+
+            <AddedToCartModal
+                isOpen={isModalOpen}
+                onAddMore={handleAddMore}
+                onAdvance={handleAdvance}
+            />
         </div>
     )
 }

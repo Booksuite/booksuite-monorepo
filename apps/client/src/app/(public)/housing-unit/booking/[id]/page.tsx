@@ -80,13 +80,17 @@ export default function BookingPage() {
                             />
                         </div>
                         <div className="flex-1">
-                            <HousingUnitBookingForm
-                                title={housingUnit?.name ?? ''}
-                                housingUnitTypeId={housingUnit?.id ?? ''}
-                                basePrice={basePrice}
-                                maxGuests={housingUnit?.maxGuests ?? undefined}
-                                prices={generateCalendarPrices()}
-                            />
+                            <div className="sticky top-10">
+                                <HousingUnitBookingForm
+                                    title={housingUnit?.name ?? ''}
+                                    housingUnitTypeId={housingUnit?.id ?? ''}
+                                    basePrice={basePrice}
+                                    maxGuests={
+                                        housingUnit?.maxGuests ?? undefined
+                                    }
+                                    prices={generateCalendarPrices()}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
