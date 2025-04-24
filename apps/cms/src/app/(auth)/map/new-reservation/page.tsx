@@ -5,6 +5,7 @@ import { MenuItem, Stack, TextField } from '@mui/material'
 import { Formik } from 'formik'
 import moment from 'moment'
 import { useRouter } from 'next/navigation'
+import { enqueueSnackbar } from 'notistack'
 import { omit } from 'radash'
 import { useState } from 'react'
 
@@ -12,9 +13,7 @@ import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
-import { BudgetForm } from './components/BudgetForm'
 import { NewReservationForm } from './components/NewReservationForm'
-import { PreReservationForm } from './components/PreReservationForm'
 import ReservationSummary from './components/ReservationSummary'
 import {
     createReservationFormInitialValues,
@@ -29,40 +28,39 @@ export default function NewReservation() {
     const { mutateAsync: createReservation } = useCreateReservation()
     const companyId = useCurrentCompanyId()
 
-    const renderFormByType = () => {
-        switch (selectedType) {
-            case 'BUDGET':
-                return <BudgetForm />
-            case 'CONFIRMED':
-                return <NewReservationForm />
-            case 'WAITING_LIST':
-                return <PreReservationForm />
-            default:
-                return null
-        }
-    }
-
     const handleSubmit = async (formData: ReservationFormData) => {
         try {
             await createReservation({
                 companyId,
                 data: {
-                    ...omit(formData, ['summary', 'sellerUserId', 'userId']),
+                    ...omit(formData, ['summary', 'sellerUserId']),
                     startDate: moment(formData.startDate).toISOString(),
                     endDate: moment(formData.endDate).toISOString(),
-                    reservationOption: [
-                        {
-                            reservationOptionId:
-                                formData.reservationOption[0]
-                                    ?.reservationOptionId || '',
-                        },
-                    ],
                     finalPrice:
                         formData.summary.dailyTotal +
-                        formData.summary.additionalTotal,
+                        formData.summary.additionalTotal +
+                        formData.summary.rateOption.price,
                 },
             })
-        } catch {}
+
+            enqueueSnackbar('Reserva criada com sucesso', {
+                variant: 'success',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
+            })
+        } catch {
+            enqueueSnackbar('Erro ao criar reserva', {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
+            })
+        }
     }
 
     return (
@@ -70,7 +68,7 @@ export default function NewReservation() {
             <PageHeader
                 title="Nova Reserva"
                 backLButtonLabel="Mapa"
-                backButtonHref="/mapa"
+                backButtonHref="/map"
             />
 
             <Formik<ReservationFormData>
@@ -83,7 +81,7 @@ export default function NewReservation() {
                         <Stack width="100%">
                             <TextField
                                 select
-                                label="Tipo de Variação do Preço"
+                                label="Status de Reserva"
                                 value={selectedType}
                                 onChange={(e) =>
                                     setSelectedType(e.target.value)
@@ -96,7 +94,7 @@ export default function NewReservation() {
                                 ))}
                             </TextField>
 
-                            {renderFormByType()}
+                            <NewReservationForm />
                         </Stack>
 
                         <ReservationSummary />

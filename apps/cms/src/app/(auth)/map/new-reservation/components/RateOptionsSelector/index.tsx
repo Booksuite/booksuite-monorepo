@@ -1,26 +1,30 @@
-import { ReservationAgeGroupInput, ReservationOptionFull } from '@booksuite/sdk'
+import { RateOptionFull, ReservationAgeGroupInput } from '@booksuite/sdk'
 import { Box, Typography } from '@mui/material'
 import { useFormikContext } from 'formik'
 
 import { formatCurrency } from '@/common/utils/currency'
 import { ReservationFormData } from '../../utils/config'
 
-type ReservationOptionsSelectorProps = {
+type RateOptionsSelectorProps = {
     startDate: string
     endDate: string
     nights: number
     housingUnitTypeId?: string
-    reservationOptions: ReservationOptionFull[]
+    reservationOptions: RateOptionFull[]
     adults: number
     childrens: ReservationAgeGroupInput[]
 }
 
-export const ReservationOptionsSelector: React.FC<
-    ReservationOptionsSelectorProps
-> = ({ housingUnitTypeId, reservationOptions, nights, adults, childrens }) => {
+export const RateOptionsSelector: React.FC<RateOptionsSelectorProps> = ({
+    housingUnitTypeId,
+    reservationOptions,
+    nights,
+    adults,
+    childrens,
+}) => {
     const { values, setFieldValue } = useFormikContext<ReservationFormData>()
 
-    function calculateAddiotionalPrice(option: ReservationOptionFull): number {
+    function calculateAddiotionalPrice(option: RateOptionFull): number {
         let additionalPrice = 0
 
         switch (option.billingType) {
@@ -36,7 +40,7 @@ export const ReservationOptionsSelector: React.FC<
 
                     if (findedAgeGroup) {
                         additionalPrice +=
-                            findedAgeGroup.price * ageGroup.quantity
+                            findedAgeGroup.price * ageGroup.quantity * nights
                     }
                 })
                 break
@@ -60,11 +64,11 @@ export const ReservationOptionsSelector: React.FC<
         return additionalPrice
     }
 
-    const handleOptionChange = (option: ReservationOptionFull) => {
-        setFieldValue('reservationOption', [{ reservationOptionId: option.id }])
+    const handleOptionChange = (option: RateOptionFull) => {
+        setFieldValue('rateOptionId', option.id)
         const newPrice = calculateAddiotionalPrice(option)
 
-        setFieldValue('summary.reservationOption.price', newPrice)
+        setFieldValue('summary.rateOption.price', newPrice)
     }
 
     if (!reservationOptions?.length) return null
@@ -133,10 +137,8 @@ export const ReservationOptionsSelector: React.FC<
                         }}
                     >
                         {options.map((option) => {
-                            const isSelected = values.reservationOption.find(
-                                (reservationOption) =>
-                                    reservationOption.reservationOptionId ===
-                                    option.id,
+                            const isSelected = values.rateOptionId?.includes(
+                                option.id,
                             )
                                 ? true
                                 : false

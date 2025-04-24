@@ -13,6 +13,7 @@ import {
     Typography,
 } from '@mui/material'
 import moment from 'moment'
+import { enqueueSnackbar } from 'notistack'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -79,7 +80,20 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
         ),
     )
 
-    if (pricing?.length && pricing.length > 0) return
+    if (pricing?.length && pricing.length > 0) {
+        enqueueSnackbar(
+            'Disponibilidade de reserva não encontrada para a data especificada',
+            {
+                variant: 'info',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                autoHideDuration: 3000,
+            },
+        )
+        return
+    }
 
     const housingUnitTypesAvailAndPricing = availAndPricing?.map(
         (availAndPrice) => ({

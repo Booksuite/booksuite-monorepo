@@ -1,5 +1,9 @@
 export const RESERVATION_OPTIONS = [
     { label: 'Reservado', value: 'CONFIRMED' },
+    { label: 'Pré-Reservado', value: 'WAITING_PAYMENT' },
+    { label: 'Check-in', value: 'CHECKED_IN' },
+    { label: 'Check-out', value: 'CHECKED_OUT' },
+    { label: 'Cancelado', value: 'CANCELLED' },
 ]
 
 export const CHANNEL_OPTIONS = [

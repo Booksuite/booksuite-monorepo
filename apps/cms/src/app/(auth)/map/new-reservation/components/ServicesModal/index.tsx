@@ -11,7 +11,6 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
-import { current } from 'immer'
 import { useState } from 'react'
 
 import { formatCurrency } from '@/common/utils/currency'
@@ -37,14 +36,7 @@ export const ServicesModal: React.FC<ServicesModalProps> = ({
         service.name.toLowerCase().includes(searchQuery.toLowerCase()),
     )
 
-    const handleQuantityChange = (serviceId: string, change: number) => {
-        const currentService = selectedServices.find(
-            (s) => s.serviceId === serviceId,
-        )
-        const currentQty = currentService?.quantity || 0
-        const newQty = currentQty + change
-        onUpdateServices(serviceId, newQty)
-    }
+    
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
@@ -162,7 +154,7 @@ export const ServicesModal: React.FC<ServicesModalProps> = ({
                                 >
                                     <IconButton
                                         onClick={() =>
-                                            handleQuantityChange(service.id, -1)
+                                            onUpdateServices(service.id, currentQty - 1)
                                         }
                                         disabled={currentQty === 0}
                                         sx={{
@@ -194,7 +186,7 @@ export const ServicesModal: React.FC<ServicesModalProps> = ({
                                     </Typography>
                                     <IconButton
                                         onClick={() =>
-                                            handleQuantityChange(service.id, 1)
+                                            onUpdateServices(service.id, currentQty + 1)
                                         }
                                         sx={{
                                             border: '2px solid',

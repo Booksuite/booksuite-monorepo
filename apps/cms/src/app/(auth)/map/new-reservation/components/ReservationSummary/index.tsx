@@ -14,27 +14,16 @@ import React from 'react'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { themeOptions } from '@/common/theme'
 import { formatCurrency } from '@/common/utils/currency'
-import {
-    ReservationFormData,
-    useCompanyHousingUnitTypes,
-    useCompanyReservationOptions,
-    useCompanyServices,
-} from '../../utils/config'
+import { ReservationFormData, useCompanyServices } from '../../utils/config'
 
 const ReservationSummary = () => {
     const { values } = useFormikContext<ReservationFormData>()
     const companyId = useCurrentCompanyId()
 
-    const { data: housingUnitTypes } = useCompanyHousingUnitTypes(companyId)
-    const { data: reservationOptions } = useCompanyReservationOptions(
-        companyId,
-        values.startDate,
-        values.endDate,
-    )
     const { data: services } = useCompanyServices(companyId, false)
 
     const dailyTotal =
-        values.summary.dailyTotal + values.summary.reservationOption.price
+        values.summary.dailyTotal + values.summary.rateOption.price
     const additionsTotal = values.services.reduce((total, service) => {
         const serviceDetails = services?.items.find(
             (s) => s.id === service.serviceId,
