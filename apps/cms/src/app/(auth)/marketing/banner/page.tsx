@@ -53,7 +53,9 @@ export default function Banners() {
 
     const { mutateAsync: updateBanner } = useUpdateBanner()
 
-    const [selectedFilters, setSelectedFilters] = useState<string[]>(['all'])
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([
+        'published ',
+    ])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
 

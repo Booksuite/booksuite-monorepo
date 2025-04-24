@@ -7,6 +7,7 @@ import {
     useUpdateService,
 } from '@booksuite/sdk'
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
+import { Box } from '@mui/system'
 import {
     Check,
     CheckCheck,
@@ -92,7 +93,9 @@ export default function Services() {
     const { showDialog } = useConfirmationDialog()
     const { mutate: updateService } = useUpdateService()
 
-    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([
+        'published',
+    ])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
 
@@ -217,34 +220,39 @@ export default function Services() {
                         onChange={setSelectedFilters}
                     />
 
-                    <TextField
-                        variant="outlined"
-                        size="small"
-                        placeholder="Pesquisar"
-                        value={searchInputValue}
-                        onChange={(e) => setSearchInputValue(e.target.value)}
-                        slotProps={{
-                            input: {
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <IconButton
-                                            size="small"
-                                            onClick={() => {
-                                                setSearchInputValue('')
-                                                setSearchQuery('')
-                                            }}
-                                        >
-                                            {searchQuery.length > 0 ? (
-                                                <X size={16} />
-                                            ) : (
-                                                <Search size={16} />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            },
-                        }}
-                    />
+                    <Box sx={{ width: '300px' }}>
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            size="small"
+                            placeholder="Pesquisar"
+                            value={searchInputValue}
+                            onChange={(e) =>
+                                setSearchInputValue(e.target.value)
+                            }
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <IconButton
+                                                size="small"
+                                                onClick={() => {
+                                                    setSearchInputValue('')
+                                                    setSearchQuery('')
+                                                }}
+                                            >
+                                                {searchQuery.length > 0 ? (
+                                                    <X size={16} />
+                                                ) : (
+                                                    <Search size={16} />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                },
+                            }}
+                        />
+                    </Box>
                 </Stack>
 
                 <Table

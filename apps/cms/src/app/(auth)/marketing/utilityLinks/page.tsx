@@ -35,7 +35,6 @@ import { COLUMNS_DEFINITION } from './utils/constants'
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
     { key: 'unpublished', label: 'Não publicadas' },
-    { key: 'all', label: 'Todos' },
 ]
 
 export default function UtilityLinksPage() {
@@ -45,7 +44,9 @@ export default function UtilityLinksPage() {
     const { mutateAsync: updateUtilityLinks } =
         useUtilityLinksControllerUpdate()
 
-    const [selectedFilters, setSelectedFilters] = useState<string[]>(['all'])
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([
+        'published',
+    ])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
 

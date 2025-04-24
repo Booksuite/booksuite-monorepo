@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Chip } from '@mui/material'
+import { Box, Chip, useTheme } from '@mui/material'
 
 import { ChipFilterProps } from './types'
 
@@ -10,6 +10,8 @@ export const ChipFilter: React.FC<ChipFilterProps> = ({
     value = [],
     onChange,
 }) => {
+    const theme = useTheme()
+
     const toggleSelection = (key: string) => {
         if (multiple) {
             onChange(
@@ -36,7 +38,8 @@ export const ChipFilter: React.FC<ChipFilterProps> = ({
                             backgroundColor: isSelected
                                 ? '#E6F6FF'
                                 : 'transparent',
-                            color: '#002159',
+                            color: theme.palette.blue[900],
+                            borderColor: theme.palette.grey[300],
                         }}
                         onClick={() => toggleSelection(item.key)}
                     />
