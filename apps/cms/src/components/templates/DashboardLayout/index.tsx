@@ -17,6 +17,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
     return (
         <Box
+            bgcolor={bgcolor}
             sx={{
                 display: 'flex',
                 height: '100vh',
@@ -50,7 +51,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         overflow: 'auto',
                     }}
                 >
-                    <Container maxWidth="lg">{children}</Container>
+                    <Container
+                        disableGutters
+                        maxWidth={fullWidth ? false : 'lg'}
+                        fixed={!fullWidth}
+                    >
+                        {children}
+                    </Container>
                 </Box>
             </Box>
         </Box>
