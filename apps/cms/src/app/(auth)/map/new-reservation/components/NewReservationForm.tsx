@@ -1,14 +1,5 @@
-import {
-    useGetCompanyAgePolicy,
-    useSearchReservationOption,
-} from '@booksuite/sdk'
-import {
-    Box,
-    Button,
-    Grid,
-    TextField,
-    Typography,
-} from '@mui/material'
+import { useGetCompanyAgePolicy, useSearchRateOption } from '@booksuite/sdk'
+import { Box, Button, Grid, TextField, Typography } from '@mui/material'
 import { getIn, useFormikContext } from 'formik'
 import { Minus, Plus } from 'lucide-react'
 import moment from 'moment'
@@ -26,11 +17,11 @@ import {
 } from '../utils/config'
 
 import { HousingUnitModal } from './HousingUnitModal'
-import { ReservationOptionsSelector } from './ReservationOptionsSelector'
+import { RateOptionsSelector } from './RateOptionsSelector'
 import { ServicesModal } from './ServicesModal'
 
 export const NewReservationForm: React.FC = () => {
-    const { setFieldValue, touched, errors, getFieldProps, values } =
+    const { setFieldValue, errors, values, getFieldProps, touched } =
         useFormikContext<ReservationFormData>()
     const [isHousingUnitModalOpen, setIsHousingUnitModalOpen] = useState(false)
     const [isServicesModalOpen, setIsServicesModalOpen] = useState(false)
@@ -40,7 +31,7 @@ export const NewReservationForm: React.FC = () => {
 
     const { data: housingUnitTypes } = useCompanyHousingUnitTypes(companyId)
 
-    const { data: reservationOptions } = useSearchReservationOption(
+    const { data: reservationOptions } = useSearchRateOption(
         {
             companyId,
         },
@@ -48,11 +39,6 @@ export const NewReservationForm: React.FC = () => {
             pagination: { page: 1, itemsPerPage: 100 },
             filter: {
                 published: true,
-            },
-        },
-        {
-            query: {
-                enabled: !!companyId,
             },
         },
     )
@@ -83,9 +69,7 @@ export const NewReservationForm: React.FC = () => {
         const existingServiceIndex =
             services?.items.findIndex((s) => s.id === serviceId) || 0
 
-        if (quantity === 0 && existingServiceIndex !== -1) {
-            updatedServices.splice(existingServiceIndex, 1)
-        } else if (
+        if (
             existingServiceIndex !== -1 &&
             updatedServices[existingServiceIndex]
         ) {
@@ -103,6 +87,15 @@ export const NewReservationForm: React.FC = () => {
             })
         }
         setFieldValue('services', updatedServices)
+
+        const additionsTotal = values.services.reduce((total, service) => {
+            const serviceDetails = services?.items.find(
+                (s) => s.id === service.serviceId,
+            )
+            return total + (serviceDetails?.price || 0) * service.quantity
+        }, 0)
+
+        setFieldValue('summary.additionalTotal', additionsTotal)
     }
 
     useEffect(() => {
@@ -114,7 +107,7 @@ export const NewReservationForm: React.FC = () => {
                 ageGroupId: policyAgeGroup.id,
             })),
         )
-    }, [agePolicy, setFieldValue, values])
+    }, [agePolicy, services?.items, setFieldValue, values])
 
     return (
         <FormContainer>
@@ -227,7 +220,7 @@ export const NewReservationForm: React.FC = () => {
                         onChange={(e) => {
                             setFieldValue(
                                 `ageGroups.${index}.quantity`,
-                                e.target.value,
+                                Number(e.target.value),
                             )
                         }}
                     />
@@ -374,7 +367,7 @@ export const NewReservationForm: React.FC = () => {
                             {reservationOptions?.items.length &&
                             reservationOptions.items.length > 0
                                 ? reservationOptions?.totalItems && (
-                                      <ReservationOptionsSelector
+                                      <RateOptionsSelector
                                           startDate={values.startDate}
                                           endDate={values.endDate}
                                           nights={moment(values.endDate).diff(
@@ -422,8 +415,7 @@ export const NewReservationForm: React.FC = () => {
                                 >
                                     {formatCurrency(
                                         values.finalPrice +
-                                            values.summary.reservationOption
-                                                .price,
+                                            values.summary.rateOption.price,
                                     )}
                                 </Typography>
                             </Box>
@@ -706,7 +698,7 @@ export const NewReservationForm: React.FC = () => {
                     </Box>
                 )}
             </FormSection>
-            
+
             {/* TODO - USUARIOS E ROLES */}
 
             {/* <FormSection title="Detalhes adicionais">

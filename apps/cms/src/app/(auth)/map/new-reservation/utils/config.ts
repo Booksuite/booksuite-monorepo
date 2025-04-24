@@ -1,18 +1,14 @@
 import {
-    ReservationAgeGroupInput,
     ReservationCreateInput,
     ReservationFull,
-    ReservationResponseFullDTOSaleChannel,
-    ReservationResponseFullDTOStatus,
-    User,
     useSearchHousingUnitTypes,
-    useSearchReservationOption,
+    useSearchRateOption,
     useSearchServices,
 } from '@booksuite/sdk'
 import * as yup from 'yup'
 
 export const useCompanyHousingUnitTypes = (
-    companyId: string | undefined,
+    companyId: string,
     open?: boolean,
 ) => {
     return useSearchHousingUnitTypes(
@@ -30,25 +26,18 @@ export const useCompanyHousingUnitTypes = (
     )
 }
 
-export const useCompanyReservationOptions = (
-    companyId: string | undefined,
+export const useCompanyRateOption = (
+    companyId: string,
     startDate: string,
     endDate: string,
 ) => {
-    return useSearchReservationOption(
+    return useSearchRateOption(
         { companyId },
         {
             pagination: { page: 1, itemsPerPage: 100 },
             filter: {
                 published: true,
             },
-            fields: [
-                'id',
-                'name',
-                'billingType',
-                'additionalAdultPrice',
-                'availableHousingUnitTypes',
-            ],
         },
         undefined,
         {
@@ -59,10 +48,7 @@ export const useCompanyReservationOptions = (
     )
 }
 
-export const useCompanyServices = (
-    companyId: string | undefined,
-    open: boolean,
-) => {
+export const useCompanyServices = (companyId: string, open: boolean) => {
     return useSearchServices(
         { companyId },
         {
@@ -86,7 +72,7 @@ export type ReservationServiceFormItem = {
 
 export type ReservationFormData = ReservationCreateInput & {
     summary: {
-        reservationOption: {
+        rateOption: {
             price: number
             adults: number
             nights: number
@@ -104,27 +90,27 @@ export type ReservationFormData = ReservationCreateInput & {
     }
 }
 
-export const transformReservationFormDataForSubmit = (
-    formData: ReservationFormData,
-): Omit<ReservationFormData, 'housingUnitId'> & {
-    housingUnitId: string
-    services: {
-        serviceId: string
-        qtd: number
-        totalPrice: number
-    }[]
-} => {
-    const { services, ...rest } = formData
+// export const transformReservationFormDataForSubmit = (
+//     formData: ReservationFormData,
+// ): Omit<ReservationFormData, 'housingUnitId'> & {
+//     housingUnitId: string
+//     services: {
+//         serviceId: string
+//         qtd: number
+//         totalPrice: number
+//     }[]
+// } => {
+//     const { services, ...rest } = formData
 
-    return {
-        ...rest,
-        services: services.map((service) => ({
-            serviceId: service.serviceId,
-            qtd: service.qtd,
-            totalPrice: service.totalPrice,
-        })),
-    }
-}
+//     return {
+//         ...rest,
+//         services: services.map((service) => ({
+//             serviceId: service.serviceId,
+//             qtd: service.quantity,
+//             totalPrice: service.totalPrice,
+//         })),
+//     }
+// }
 
 export const createReservationFormInitialValues = (
     data?: ReservationFull,
@@ -145,11 +131,11 @@ export const createReservationFormInitialValues = (
             quantity: s.quantity || 0,
             totalPrice: s.totalPrice || 0,
         })) || [],
-    userId: '',
-    sellerUserId: '',
-    reservationOption: [],
+    guestUser: {email: '', firstName: '', password: '', lastName: '', metaData: {}, phone: ''},
+    sellerUserId: 'b79d6ce7-8766-478c-a752-9770d200256d',
+    rateOptionId: '',
     summary: {
-        reservationOption: {
+        rateOption: {
             adults: 0,
             children: 0,
             nights: 0,
