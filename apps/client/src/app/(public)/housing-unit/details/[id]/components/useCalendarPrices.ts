@@ -1,4 +1,8 @@
-import type { HousingUnitTypeFull, SeasonRulePaginated } from '@booksuite/sdk'
+import type {
+    HostingRulesInput,
+    HousingUnitTypeFull,
+    SeasonRulePaginated,
+} from '@booksuite/sdk'
 import { addDays, endOfMonth, format, startOfMonth } from 'date-fns'
 
 interface CalendarPrice {
@@ -10,6 +14,7 @@ interface CalendarPrice {
 export function useCalendarPrices(
     housingUnit: HousingUnitTypeFull | undefined,
     seasonRules: SeasonRulePaginated | undefined,
+    hostingRules: HostingRulesInput | undefined,
 ) {
     const generateCalendarPrices = () => {
         if (!housingUnit?.weekendPrice) return {}
@@ -21,10 +26,11 @@ export function useCalendarPrices(
         const prices: Record<string, CalendarPrice> = {}
         let currentDate = startDate
 
+        const weekendDays = hostingRules?.availableWeekend ?? [6, 0]
+
         while (currentDate <= endDate) {
             const dateKey = format(currentDate, 'yyyy-MM-dd')
-            const isWeekend =
-                currentDate.getDay() === 0 || currentDate.getDay() === 6
+            const isWeekend = weekendDays.includes(currentDate.getDay())
 
             const seasonRule = seasonRules?.items.find((sr) => {
                 const startDate = new Date(sr.startDate)

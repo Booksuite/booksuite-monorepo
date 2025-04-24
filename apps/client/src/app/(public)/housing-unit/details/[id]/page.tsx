@@ -8,7 +8,7 @@ import { ExtraServices } from '@/components/templates/ExtraServices'
 import { HousingUnitDetails } from './components/HousingUnitDetails'
 import { OthersHousingUnit } from './components/OthersHousingUnit'
 
-export default function HousingUnitPage() {
+export default function HousingUnitDetailsPage() {
     return (
         <>
             <Container>

@@ -20,19 +20,23 @@ interface HousingUnitBookingFormProps {
     title: string
     housingUnitTypeId: string
     basePrice?: number
+    weekendPrice?: number
     maxGuests?: number
     prices: Record<
         string,
         { value: number; available: number; isUnavailable?: boolean }
     >
+    weekendDays: number[]
 }
 
 export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
     title,
     housingUnitTypeId,
     basePrice = 0,
+    weekendPrice = basePrice,
     maxGuests,
     prices,
+    weekendDays,
 }) => {
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -99,13 +103,30 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
         }
     }, [checkIn, checkOut, checkAvailability])
 
-    const totalDays =
-        checkIn && checkOut
-            ? Math.ceil(
-                  (checkOut.getTime() - checkIn.getTime()) /
-                      (1000 * 60 * 60 * 24),
-              )
-            : 1
+    const calculateTotalDays = useCallback(() => {
+        if (!checkIn || !checkOut) return { weekdays: 0, weekendDays: 0 }
+
+        const days: Date[] = []
+        const currentDate = new Date(checkIn)
+
+        while (currentDate <= checkOut) {
+            days.push(new Date(currentDate))
+            currentDate.setDate(currentDate.getDate() + 1)
+        }
+
+        return days.reduce(
+            (acc, date) => {
+                const dayOfWeek = date.getDay()
+                if (weekendDays.includes(dayOfWeek)) {
+                    return { ...acc, weekendDays: acc.weekendDays + 1 }
+                }
+                return { ...acc, weekdays: acc.weekdays + 1 }
+            },
+            { weekdays: 0, weekendDays: 0 },
+        )
+    }, [checkIn, checkOut, weekendDays])
+
+    const { weekdays, weekendDays: totalWeekendDays } = calculateTotalDays()
 
     const { data: reservationOptions } = useSearchReservationOption(
         { companyId: company?.id ?? '' },
@@ -141,9 +162,11 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
             })) ?? []
 
     const totalPrice =
-        basePrice * totalDays +
+        basePrice * weekdays +
+        weekendPrice * totalWeekendDays +
         selectedMealPlans.reduce(
-            (acc, plan) => acc + plan.pricePerDay * totalDays,
+            (acc, plan) =>
+                acc + plan.pricePerDay * (weekdays + totalWeekendDays),
             0,
         )
 

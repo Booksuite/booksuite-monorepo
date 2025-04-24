@@ -47,6 +47,7 @@ export function HousingUnitDetails() {
     const { generateCalendarPrices } = useCalendarPrices(
         housingUnit,
         seasonRules,
+        companyHostingRules ?? undefined,
     )
 
     if (!housingUnit) {

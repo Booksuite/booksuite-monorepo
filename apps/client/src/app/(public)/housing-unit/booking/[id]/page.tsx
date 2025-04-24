@@ -1,6 +1,10 @@
 'use client'
 
-import { useGetHousingUnitTypeById, useSearchSeasonRules } from '@booksuite/sdk'
+import {
+    useGetCompanyHostingRules,
+    useGetHousingUnitTypeById,
+    useSearchSeasonRules,
+} from '@booksuite/sdk'
 import { useParams, useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -30,6 +34,15 @@ export default function BookingPage() {
         },
     )
 
+    const { data: hostingRules } = useGetCompanyHostingRules(
+        { companyId: company?.id ?? '' },
+        {
+            query: {
+                enabled: !!company?.id,
+            },
+        },
+    )
+
     const { data: seasonRules } = useSearchSeasonRules(
         { companyId: company?.id ?? '' },
         {
@@ -40,14 +53,18 @@ export default function BookingPage() {
         },
     )
 
-    const { generateCalendarPrices } = useCalendarPrices(
+    const prices = useCalendarPrices(
         housingUnit,
         seasonRules,
-    )
+        hostingRules ?? undefined,
+    ).generateCalendarPrices()
 
     const [isViewingAllPhotos, setIsViewingAllPhotos] = useState(false)
 
     const basePrice = housingUnit?.weekdaysPrice ?? 0
+    const weekendPrice = housingUnit?.weekendPrice ?? basePrice
+
+    const weekendDays = hostingRules?.availableWeekend ?? [6, 0]
 
     return (
         <>
@@ -85,10 +102,12 @@ export default function BookingPage() {
                                     title={housingUnit?.name ?? ''}
                                     housingUnitTypeId={housingUnit?.id ?? ''}
                                     basePrice={basePrice}
+                                    weekendPrice={weekendPrice}
                                     maxGuests={
                                         housingUnit?.maxGuests ?? undefined
                                     }
-                                    prices={generateCalendarPrices()}
+                                    prices={prices}
+                                    weekendDays={weekendDays}
                                 />
                             </div>
                         </div>
