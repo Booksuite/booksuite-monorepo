@@ -75,7 +75,7 @@ export default function RateOptions() {
 
     const companyId = useCurrentCompanyId()
     const {
-        data: reservationOptions,
+        data: rateOptions,
         isLoading,
         error,
     } = useSearchRateOption(
@@ -218,7 +218,7 @@ export default function RateOptions() {
 
                 <Table
                     columns={COLUMNS_DEFINITION}
-                    data={reservationOptions?.items ?? []}
+                    data={rateOptions?.items ?? []}
                     error={error}
                     enableRowActions
                     renderRowActionMenuItems={({ row, closeMenu }) => [
@@ -296,7 +296,7 @@ export default function RateOptions() {
                         page={page}
                         itemsPerPage={itemsPerPage}
                         onItemsPerPageChange={setItemsPerPage}
-                        count={reservationOptions?.totalPages ?? 0}
+                        count={rateOptions?.totalPages ?? 0}
                         onChange={(_, value) => setPage(value)}
                     />
                 </Stack>

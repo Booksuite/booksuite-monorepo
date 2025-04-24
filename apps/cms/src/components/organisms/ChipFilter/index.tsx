@@ -38,7 +38,7 @@ export const ChipFilter: React.FC<ChipFilterProps> = ({
                             backgroundColor: isSelected
                                 ? '#E6F6FF'
                                 : 'transparent',
-                            color: '#002159',
+                            color: theme.palette.blue[900],
                             borderColor: theme.palette.grey[300],
                         }}
                         onClick={() => toggleSelection(item.key)}

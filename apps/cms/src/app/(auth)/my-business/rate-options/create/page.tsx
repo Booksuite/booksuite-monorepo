@@ -11,9 +11,10 @@ import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { RateOptionForm } from '../components/RateOptionForm'
 import {
-    createReservationOptionFormInitialValues,
+    createRateOptionFormInitialValues,
     RateOptionData,
-    reservationOptionFormSchema,
+    rateOptionFormSchema,
+    transformRateOptionUpdateToInput,
 } from '../utils/config'
 
 export default function CreateRateOption() {
@@ -21,20 +22,19 @@ export default function CreateRateOption() {
     const companyId = useCurrentCompanyId()
     const queryClient = useQueryClient()
 
-    const { mutateAsync: createReservationOption } = useCreateRateOption()
+    const { mutateAsync: createRateOption } = useCreateRateOption()
 
     async function handleSubmit(formData: RateOptionData) {
+        const apiData = transformRateOptionUpdateToInput(formData)
+
         try {
-            await createReservationOption({
+            await createRateOption({
                 companyId,
-                data: {
-                    ...formData,
-                    availableWeekend: formData.availableWeekend.map(Number),
-                },
+                data: apiData,
             })
 
             await queryClient.invalidateQueries({
-                queryKey: ['searchReservationOption'],
+                queryKey: ['searchRateOption'],
                 refetchType: 'all',
             })
 
@@ -68,8 +68,8 @@ export default function CreateRateOption() {
             />
 
             <Formik<RateOptionData>
-                initialValues={createReservationOptionFormInitialValues()}
-                validationSchema={reservationOptionFormSchema}
+                initialValues={createRateOptionFormInitialValues()}
+                validationSchema={rateOptionFormSchema}
                 onSubmit={handleSubmit}
             >
                 <FormikController onCancel={() => push('/my-business/rooms')}>

@@ -1,15 +1,33 @@
-import { RateOptionFull, RateOptionInput } from '@booksuite/sdk'
+import {
+    RateOptionFull,
+    RateOptionInput,
+    RateOptionUpdateInput,
+} from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type RateOptionData = Omit<RateOptionInput, 'availableWeekend'> & {
-    availableWeekend: string[]
-    id: string
+export const transformRateOptionUpdateToInput = (
+    data: RateOptionData,
+): RateOptionInput => {
+    return {
+        name: data.name ?? '',
+        published: data.published ?? false,
+        billingType: data.billingType ?? 'DAILY',
+        additionalAdultPrice: data.additionalAdultPrice ?? 0,
+        additionalChildrenPrice: data.additionalChildrenPrice ?? 0,
+        availableWeekend: data.availableWeekend.map(Number) ?? [],
+        availableHousingUnitTypes: data.availableHousingUnitTypes ?? [],
+        ageGroupPrices: data.ageGroupPrices ?? [],
+        includedItems: data.includedItems ?? [],
+    }
 }
 
-export const createReservationOptionFormInitialValues = (
+export type RateOptionData = Omit<RateOptionUpdateInput, 'availableWeekend'> & {
+    availableWeekend: string[]
+}
+
+export const createRateOptionFormInitialValues = (
     data?: RateOptionFull | null,
 ): RateOptionData => ({
-    id: data?.id || '',
     name: data?.name || '',
     published: data?.published || false,
     additionalAdultPrice: data?.additionalAdultPrice || 0,
@@ -25,7 +43,7 @@ export const createReservationOptionFormInitialValues = (
     includedItems: data?.includedItems || [],
 })
 
-export const reservationOptionFormSchema = yup.object({
+export const rateOptionFormSchema = yup.object({
     name: yup.string().required('Nome é obrigatório'),
     published: yup.boolean().required('Status é obrigatório'),
     additionalAdultPrice: yup

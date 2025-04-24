@@ -11,18 +11,18 @@ import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { RateOptionForm } from '../components/RateOptionForm'
 import {
-    createReservationOptionFormInitialValues,
+    createRateOptionFormInitialValues,
     RateOptionData,
-    reservationOptionFormSchema,
+    rateOptionFormSchema,
 } from '../utils/config'
 
-interface UpdateReservationOptionProps {
+interface UpdateRateOptionProps {
     params: { id: string }
 }
 
 export default function UpdateRateOption({
     params,
-}: UpdateReservationOptionProps) {
+}: UpdateRateOptionProps) {
     const { push } = useRouter()
     const companyId = useCurrentCompanyId()
     const queryClient = useQueryClient()
@@ -51,7 +51,7 @@ export default function UpdateRateOption({
 
             await queryClient.invalidateQueries({ queryKey: queryKey })
             await queryClient.invalidateQueries({
-                queryKey: ['searchReservationOption'],
+                queryKey: ['searchRateOption'],
                 refetchType: 'all',
             })
 
@@ -92,10 +92,10 @@ export default function UpdateRateOption({
 
             {!isLoading && (
                 <Formik<RateOptionData>
-                    initialValues={createReservationOptionFormInitialValues(
+                    initialValues={createRateOptionFormInitialValues(
                         RateOptionData,
                     )}
-                    validationSchema={reservationOptionFormSchema}
+                    validationSchema={rateOptionFormSchema}
                     onSubmit={handleSubmit}
                 >
                     <FormikController
