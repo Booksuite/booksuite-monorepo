@@ -1,6 +1,11 @@
 'use client'
 
+import '@/common/utils/dayjs'
+import '@/common/utils/pluralize'
+
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { Session } from 'next-auth'
 import { SnackbarProvider } from 'notistack'
 
@@ -19,18 +24,24 @@ export function Providers({ children }: ProvidersProps) {
         <AppRouterCacheProvider>
             <MaterialThemeProvider>
                 <TanstackQueryProvider>
-                    <SnackbarProvider
-                        maxSnack={3}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        autoHideDuration={3000}
-                        style={{ zIndex: 13000 }}
+                    <LocalizationProvider
+                        dateAdapter={AdapterDayjs}
+                        adapterLocale="pt-BR"
+                        dateFormats={{ weekdayShort: 'ddd' }}
                     >
-                        {children}
-                        <ConfirmationDialog />
-                    </SnackbarProvider>
+                        <SnackbarProvider
+                            maxSnack={3}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'right',
+                            }}
+                            autoHideDuration={3000}
+                            style={{ zIndex: 13000 }}
+                        >
+                            {children}
+                            <ConfirmationDialog />
+                        </SnackbarProvider>
+                    </LocalizationProvider>
                 </TanstackQueryProvider>
             </MaterialThemeProvider>
         </AppRouterCacheProvider>

@@ -2,14 +2,21 @@
 
 import 'moment/locale/pt-br'
 
-import { HousingUnitTypeFull, ReservationFull } from '@booksuite/sdk'
-import { Box, Paper, Stack, styled, Tooltip, Typography } from '@mui/material'
-import moment from 'moment'
+import {
+    AvailabilityAndPricing,
+    AvailAndPricingReservationInput,
+    Reservation,
+} from '@booksuite/sdk'
+import { Box, Paper, Stack, Tooltip, Typography } from '@mui/material'
+import dayjs, { Dayjs } from 'dayjs'
+import { CalendarIcon } from 'lucide-react'
 import { useMemo } from 'react'
 
 import { formatCurrency } from '@/common/utils/currency'
 
-import { CELL_WIDTH, HEADER_CELL_HEIGHT } from './constants'
+import { CalendarSkeleton } from './CalendarSkeleton'
+import { CalendarCell, HeaderCell, RoomCell } from './components/table'
+import { HEADER_CELL_HEIGHT, ROOMS_COLUMN_WIDTH } from './constants'
 import { ReservationItem } from './ReservationItem'
 import {
     getCellBgColor,
@@ -18,70 +25,37 @@ import {
     getTotalOccupancyPercentage,
 } from './utils'
 
-type Reservation = ReservationFull & { id: string }
-
 interface CalendarProps {
-    startDate: Date | string | moment.Moment
-    endDate: Date | string | moment.Moment
-    housingTypes: HousingUnitTypeFull[]
-    reservations: Reservation[]
+    startDate: Date | string | Dayjs
+    endDate: Date | string | Dayjs
+    availabilityAndPricing?: AvailabilityAndPricing[]
+    weekendDays?: number[]
+    reservations?: Reservation[]
+    isLoading?: boolean
 }
 
-const Cell = styled(Box)(({ theme }) => ({
-    padding: theme.spacing(1),
-    display: 'flex',
-    color: theme.palette.blueGrey[700],
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    borderRight: `1px solid`,
-    borderBottom: `1px solid`,
-    borderColor: theme.palette.blueGrey[100],
-    height: '46px',
-}))
-
-const RoomCell = styled(Cell)(({ theme }) => ({
-    padding: theme.spacing(3),
-    alignItems: 'flex-start',
-    minWidth: '200px',
-    width: 'auto',
-}))
-
-const HeaderCell = styled(Cell)(({ theme }) => ({
-    backgroundColor: theme.palette.blueGrey[700],
-    color: theme.palette.primary.contrastText,
-    minWidth: CELL_WIDTH,
-    maxWidth: CELL_WIDTH,
-    height: HEADER_CELL_HEIGHT,
-    fontWeight: 'bold',
-}))
-
-const CalendarCell = styled(Cell)(() => ({
-    overflow: 'hidden',
-    minWidth: CELL_WIDTH,
-    maxWidth: CELL_WIDTH,
-    '&:last-child': {
-        borderRight: 'none',
-    },
-}))
-
 type ReservationsByUnitByDay = {
-    [unitId: string]: Reservation[]
+    [unitId: string]: AvailAndPricingReservationInput[]
 }
 
 export const Calendar: React.FC<CalendarProps> = ({
     startDate,
     endDate,
-    housingTypes,
+    availabilityAndPricing = [],
+    weekendDays = [0, 6],
     reservations = [],
+    isLoading = false,
 }) => {
-    const days = getDaysArray(startDate, endDate)
+    const days = useMemo(
+        () => getDaysArray(startDate, endDate),
+        [startDate, endDate],
+    )
 
     const reservationsByUnitByDay = useMemo(
         () =>
             reservations.reduce<ReservationsByUnitByDay>((acc, reservation) => {
-                const unit = reservation.housingUnit.id
+                const unit = reservation.housingUnitId
+                if (!unit) return acc
 
                 if (!acc[unit]) acc[unit] = []
 
@@ -90,69 +64,93 @@ export const Calendar: React.FC<CalendarProps> = ({
             }, {}),
         [reservations],
     )
+
     const totalUnits = useMemo(
         () =>
-            housingTypes.reduce(
+            availabilityAndPricing.reduce(
                 (acc, type) => acc + type.housingUnits.length,
                 0,
             ),
-        [housingTypes],
+        [availabilityAndPricing],
     )
 
-    const startOfCalendar = moment(startDate).startOf('day')
+    const startOfCalendar = dayjs.utc(startDate).startOf('day')
+
+    const formattedRange = `${startOfCalendar.format('DD/MM/YYYY')} até ${dayjs(endDate).format('DD/MM/YYYY')}`
+
+    if (isLoading) return <CalendarSkeleton numberOfDays={days.length} />
 
     return (
         <Paper
             sx={{
-                borderRadius: 2,
+                borderRadius: 1,
                 boxShadow: '0 0 4px 0 rgba(0, 0, 0, 0.3)',
                 overflow: 'hidden',
             }}
             elevation={0}
         >
             <Stack direction="row">
-                <Box>
+                <Stack width={ROOMS_COLUMN_WIDTH}>
                     <RoomCell
                         sx={{
+                            flexDirection: 'row',
                             bgcolor: 'blueGrey.700',
                             color: 'white',
+                            alignItems: 'center',
+                            justifyContent: 'flex-start',
+                            gap: 2,
                             height: HEADER_CELL_HEIGHT,
                         }}
                     >
-                        <Typography variant="subtitle1" fontWeight="bold">
-                            Unidades
+                        <CalendarIcon size={16} />
+                        <Typography
+                            variant="subtitle1"
+                            fontWeight="600"
+                            fontSize={14}
+                        >
+                            {formattedRange}
                         </Typography>
                     </RoomCell>
-                    {housingTypes.map((housingType, typeIndex) => (
-                        <Box key={typeIndex}>
+                    {availabilityAndPricing.map((housingType, typeIndex) => (
+                        <Box key={typeIndex} sx={{ width: '100%' }}>
                             <RoomCell>
                                 <Typography
                                     variant="h6"
                                     color="blueGrey.800"
                                     fontWeight="bold"
                                     fontSize="16px"
+                                    sx={{
+                                        textOverflow: 'ellipsis',
+                                        overflow: 'hidden',
+                                        whiteSpace: 'nowrap',
+                                        maxWidth: '100%',
+                                    }}
                                 >
                                     {housingType.name}
                                 </Typography>
                             </RoomCell>
 
-                            {housingType.housingUnits.map((unit, unitIndex) => (
-                                <Stack key={unitIndex} direction="row">
-                                    <RoomCell>
-                                        <Typography
-                                            variant="body2"
-                                            color="blueGrey.600"
-                                            fontSize="14px"
-                                        >
-                                            {unit.name}
-                                        </Typography>
-                                    </RoomCell>
-                                </Stack>
+                            {housingType.housingUnits.map((unit) => (
+                                <RoomCell key={unit.id}>
+                                    <Typography
+                                        variant="body2"
+                                        color="blueGrey.600"
+                                        fontSize="14px"
+                                        sx={{
+                                            textOverflow: 'ellipsis',
+                                            overflow: 'hidden',
+                                            whiteSpace: 'nowrap',
+                                            maxWidth: '100%',
+                                        }}
+                                    >
+                                        {unit.name}
+                                    </Typography>
+                                </RoomCell>
                             ))}
                         </Box>
                     ))}
-                </Box>
-                <Box sx={{ overflowX: 'auto' }}>
+                </Stack>
+                <Box sx={{ overflowX: 'auto', flex: 1 }}>
                     <Stack direction="row">
                         {days.map((day, index) => {
                             const occupancyPct = getTotalOccupancyPercentage(
@@ -172,7 +170,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                                             fontSize={12}
                                             lineHeight="12px"
                                         >
-                                            {day.format('ddd')}
+                                            {day.format('ddd').toUpperCase()}
                                         </Typography>
                                         <Typography
                                             variant="body2"
@@ -200,14 +198,21 @@ export const Calendar: React.FC<CalendarProps> = ({
                         })}
                     </Stack>
 
-                    {housingTypes.map((housingType, typeIndex) => (
+                    {availabilityAndPricing.map((housingType, typeIndex) => (
                         <Box key={typeIndex}>
                             <Stack direction="row">
                                 {days.map((day, dayIndex) => (
                                     <CalendarCell
                                         key={dayIndex}
                                         gap={0.5}
-                                        bgcolor={getCellBgColor(day)}
+                                        bgcolor={getCellBgColor({
+                                            calendarDay:
+                                                housingType.calendar[
+                                                    day.format('YYYY-MM-DD')
+                                                ]!,
+                                            currentDay: day,
+                                            weekendDays,
+                                        })}
                                     >
                                         <Box
                                             sx={{
@@ -227,7 +232,11 @@ export const Calendar: React.FC<CalendarProps> = ({
                                             fontSize="10px"
                                         >
                                             {formatCurrency(
-                                                getDayPrice(day, housingType),
+                                                getDayPrice(
+                                                    day,
+                                                    housingType,
+                                                    weekendDays,
+                                                ),
                                             )}
                                         </Typography>
                                     </CalendarCell>
@@ -253,7 +262,14 @@ export const Calendar: React.FC<CalendarProps> = ({
                                     {days.map((day, dayIndex) => (
                                         <CalendarCell
                                             key={dayIndex}
-                                            bgcolor={getCellBgColor(day)}
+                                            bgcolor={getCellBgColor({
+                                                calendarDay:
+                                                    housingType.calendar[
+                                                        day.format('YYYY-MM-DD')
+                                                    ]!,
+                                                currentDay: day,
+                                                weekendDays,
+                                            })}
                                         ></CalendarCell>
                                     ))}
                                 </Stack>

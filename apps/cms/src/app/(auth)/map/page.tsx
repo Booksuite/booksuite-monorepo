@@ -1,459 +1,154 @@
-import { HousingUnitTypeFull, ReservationFull } from '@booksuite/sdk'
-import { Box } from '@mui/material'
-import moment from 'moment'
+'use client'
 
+import { ReservationStatus } from '@booksuite/sdk'
+import { useGetCalendar } from '@booksuite/sdk/src/gen/hooks/Availability and PricingHooks/useGetCalendar'
+import { useSearchReservations } from '@booksuite/sdk/src/gen/hooks/ReservationHooks/useSearchReservations'
+import { RefreshRounded } from '@mui/icons-material'
+import { Box, Button, IconButton, Stack, Tooltip } from '@mui/material'
+import dayjs from 'dayjs'
+import { ChevronDown } from 'lucide-react'
+import { useEffect, useState } from 'react'
+
+import { useCurrentCompanyId } from '@/common/contexts/user'
+import {
+    DatePickerRange,
+    DateRangePicker,
+} from '@/components/molecules/DateRangePicker'
 import { Calendar } from '@/components/organisms/Calendar'
+import {
+    RESERVATION_LABEL_MAP,
+    RESERVATION_STATUS_COLORS,
+} from '@/components/organisms/Calendar/constants'
 import { PageHeader } from '@/components/organisms/PageHeader'
-
-type Reservation = ReservationFull & { id: string }
+import { useDashboardLayoutStore } from '@/components/templates/DashboardLayout/stores'
 
 const MapPage: React.FC = () => {
-    // Sample data for the calendar
-    const startDate = moment('2024-04-01')
-    const endDate = moment('2024-04-30')
+    const companyId = useCurrentCompanyId()
 
-    const housingTypes: HousingUnitTypeFull[] = [
-        {
-            id: '1',
-            name: 'Chalé Imperial',
-            slug: 'chale-imperial',
-            shortDescription: 'Chalés de luxo com vista para o mar',
-            description: 'Chalés de luxo com vista para o mar',
-            published: true,
-            order: 1,
-            minGuests: 1,
-            maxGuests: 6,
-            maxAdults: 4,
-            maxChildren: 2,
-            weekdaysPrice: 1890,
-            weekendPrice: 2290,
-            extraAdultPrice: 200,
-            chargeExtraAdultHigherThan: 2,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            housingUnits: [
-                {
-                    id: '1',
-                    order: 1,
-                    updatedAt: new Date().toISOString(),
-                    name: 'Chalé Imperial 01',
-                    housingUnitTypeId: '1',
-                    createdAt: new Date().toISOString(),
-                },
-            ],
-            facilities: [],
-            medias: [],
-        },
-        {
-            id: '2',
-            name: 'Chalé Diamante',
-            slug: 'chale-diamante',
-            shortDescription: 'Chalés com vista para a montanha',
-            description: 'Chalés com vista para a montanha',
-            published: true,
-            order: 2,
-            minGuests: 1,
-            maxGuests: 4,
-            maxAdults: 3,
-            maxChildren: 1,
-            weekdaysPrice: 1290,
-            weekendPrice: 1590,
-            extraAdultPrice: 150,
-            chargeExtraAdultHigherThan: 2,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            housingUnits: [
-                {
-                    id: '2',
-                    order: 1,
-                    updatedAt: new Date().toISOString(),
-                    name: 'Chalé Diamante 01',
-                    housingUnitTypeId: '2',
-                    createdAt: new Date().toISOString(),
-                },
-            ],
-            facilities: [],
-            medias: [],
-        },
-        {
-            id: '3',
-            name: 'Chalé Encantos',
-            slug: 'chale-encantos',
-            shortDescription: 'Chalés aconchegantes para família',
-            description: 'Chalés aconchegantes para família',
-            published: true,
-            order: 3,
-            minGuests: 1,
-            maxGuests: 4,
-            maxAdults: 3,
-            maxChildren: 1,
-            weekdaysPrice: 990,
-            weekendPrice: 1290,
-            extraAdultPrice: 100,
-            chargeExtraAdultHigherThan: 2,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            housingUnits: [
-                {
-                    id: '3',
-                    order: 1,
-                    updatedAt: new Date().toISOString(),
-                    name: 'Chalé Encantos 01',
-                    housingUnitTypeId: '3',
-                    createdAt: new Date().toISOString(),
-                },
-                {
-                    id: '4',
-                    order: 2,
-                    updatedAt: new Date().toISOString(),
-                    name: 'Chalé Encantos 02',
-                    housingUnitTypeId: '3',
-                    createdAt: new Date().toISOString(),
-                },
-            ],
-            facilities: [],
-            medias: [],
-        },
-    ]
+    const { setFullWidth, setBgcolor } = useDashboardLayoutStore()
+    const [range, setRange] = useState<DatePickerRange>({
+        start: dayjs(),
+        end: dayjs().add(1, 'month'),
+    })
 
-    const reservations: Reservation[] = [
+    useEffect(() => {
+        setFullWidth(true)
+        setBgcolor('blueGrey.50')
+        return () => {
+            setFullWidth(false)
+            setBgcolor('background.default')
+        }
+    }, [setFullWidth, setBgcolor])
+
+    const formattedStartDate = range.start?.format('YYYY-MM-DD') ?? ''
+    const formattedEndDate = range.end?.format('YYYY-MM-DD') ?? ''
+
+    const {
+        data: availabilityAndPricing,
+        isLoading: isLoadingAvailabilityAndPricing,
+        refetch: refetchAvailabilityAndPricing,
+    } = useGetCalendar(
+        { companyId },
         {
-            id: '1',
-            startDate: moment('2024-03-29').toISOString(),
-            endDate: moment('2024-04-05').toISOString(),
-            housingUnit: {
-                id: '1',
-                order: 1,
-                updatedAt: new Date().toISOString(),
-                name: 'Chalé Imperial 01',
-                housingUnitTypeId: '1',
-                createdAt: new Date().toISOString(),
+            currentDate: dayjs.utc().format('YYYY-MM-DD'),
+            viewWindow: {
+                start: formattedStartDate,
+                end: formattedEndDate,
             },
-            services: [],
-            guestUser: {
-                firstName: 'João',
-                lastName: 'Silva',
-                password: '123456',
-                email: 'joao.silva@example.com',
-                phone: '+55 (11) 99999-9999',
-            },
-            sellerUser: null,
-            adults: 2,
-            ageGroups: [],
-            finalPrice: 1290,
-            reservationOption: [],
-            status: 'CONFIRMED',
-            saleChannel: 'BOOKSUITE',
-            totalDays: 4,
-            notes: 'Aniversário de casamento',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
         },
+        { query: { refetchOnMount: true, refetchInterval: 10000 } },
+    )
+
+    const {
+        data: reservations,
+        isLoading: isLoadingReservations,
+        refetch: refetchReservations,
+    } = useSearchReservations(
+        { companyId },
         {
-            id: '2',
-            startDate: moment('2024-04-03').toISOString(),
-            endDate: moment('2024-04-07').toISOString(),
-            housingUnit: {
-                id: '2',
-                order: 1,
-                updatedAt: new Date().toISOString(),
-                name: 'Chalé Diamante 01',
-                housingUnitTypeId: '2',
-                createdAt: new Date().toISOString(),
+            filter: {
+                dateRange: {
+                    start: formattedStartDate,
+                    end: formattedEndDate,
+                },
+                status: ['CHECKED_IN', 'CHECKED_OUT', 'CONFIRMED'],
             },
-            services: [],
-            guestUser: {
-                firstName: 'Maria',
-                lastName: 'Santos',
-                password: '123456',
-                email: 'maria.santos@example.com',
-                phone: '+55 (11) 88888-8888',
-            },
-            sellerUser: null,
-            adults: 2,
-            ageGroups: [],
-            finalPrice: 1290,
-            reservationOption: [],
-            status: 'CHECKED_IN',
-            saleChannel: 'BOOKSUITE',
-            totalDays: 4,
-            notes: 'Lua de mel',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
+            pagination: { page: 1, itemsPerPage: 1000 },
         },
+        undefined,
         {
-            id: '3',
-            startDate: moment('2024-04-06').toISOString(),
-            endDate: moment('2024-04-10').toISOString(),
-            housingUnit: {
-                id: '3',
-                order: 1,
-                updatedAt: new Date().toISOString(),
-                name: 'Chalé Encantos 01',
-                housingUnitTypeId: '3',
-                createdAt: new Date().toISOString(),
+            query: {
+                refetchOnMount: true,
+                refetchInterval: 10000,
+                select: (data) => data.items,
             },
-            services: [],
-            guestUser: {
-                firstName: 'Pedro',
-                lastName: 'Oliveira',
-                password: '123456',
-                email: 'pedro.oliveira@example.com',
-                phone: '+55 (11) 77777-7777',
-            },
-            sellerUser: null,
-            adults: 3,
-            ageGroups: [],
-            finalPrice: 1290,
-            reservationOption: [],
-            status: 'WAITING_PAYMENT',
-            saleChannel: 'BOOKSUITE',
-            totalDays: 4,
-            notes: 'Férias em família',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
         },
-        {
-            id: '4',
-            startDate: moment('2024-04-08').toISOString(),
-            endDate: moment('2024-04-12').toISOString(),
-            housingUnit: {
-                id: '4',
-                order: 1,
-                updatedAt: new Date().toISOString(),
-                name: 'Chalé Encantos 02',
-                housingUnitTypeId: '3',
-                createdAt: new Date().toISOString(),
-            },
-            services: [],
-            guestUser: {
-                firstName: 'Ana',
-                lastName: 'Ferreira',
-                password: '123456',
-                email: 'ana.ferreira@example.com',
-                phone: '+55 (11) 66666-6666',
-            },
-            sellerUser: null,
-            adults: 2,
-            ageGroups: [],
-            finalPrice: 1290,
-            reservationOption: [],
-            status: 'CHECKED_OUT',
-            saleChannel: 'BOOKSUITE',
-            totalDays: 4,
-            notes: 'Feriado prolongado',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        },
-        {
-            id: '5',
-            startDate: moment('2024-04-05').toISOString(),
-            endDate: moment('2024-04-07').toISOString(),
-            housingUnit: {
-                id: '1',
-                order: 1,
-                updatedAt: new Date().toISOString(),
-                name: 'Chalé Imperial 01',
-                housingUnitTypeId: '1',
-                createdAt: new Date().toISOString(),
-            },
-            services: [],
-            guestUser: {
-                firstName: 'Carlos',
-                lastName: 'Mendes',
-                password: '123456',
-                email: 'carlos.mendes@example.com',
-                phone: '+55 (11) 55555-5555',
-            },
-            sellerUser: null,
-            adults: 4,
-            ageGroups: [],
-            finalPrice: 1290,
-            reservationOption: [],
-            status: 'CANCELLED',
-            saleChannel: 'BOOKSUITE',
-            totalDays: 3,
-            notes: 'Reunião familiar',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        },
-        {
-            id: '6',
-            startDate: moment('2024-04-15').toISOString(),
-            endDate: moment('2024-04-20').toISOString(),
-            housingUnit: {
-                id: '2',
-                order: 1,
-                updatedAt: new Date().toISOString(),
-                name: 'Chalé Diamante 01',
-                housingUnitTypeId: '2',
-                createdAt: new Date().toISOString(),
-            },
-            services: [],
-            guestUser: {
-                firstName: 'Lucia',
-                lastName: 'Costa',
-                password: '123456',
-                email: 'lucia.costa@example.com',
-                phone: '+55 (11) 44444-4444',
-            },
-            sellerUser: null,
-            adults: 2,
-            ageGroups: [],
-            finalPrice: 1290,
-            reservationOption: [],
-            status: 'PAYMENT_FAILED',
-            saleChannel: 'BOOKSUITE',
-            totalDays: 5,
-            notes: 'Férias de outono',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        },
-        {
-            id: '7',
-            startDate: moment('2024-04-18').toISOString(),
-            endDate: moment('2024-04-22').toISOString(),
-            housingUnit: {
-                id: '3',
-                order: 1,
-                updatedAt: new Date().toISOString(),
-                name: 'Chalé Encantos 01',
-                housingUnitTypeId: '3',
-                createdAt: new Date().toISOString(),
-            },
-            services: [],
-            guestUser: {
-                firstName: 'Roberto',
-                lastName: 'Almeida',
-                password: '123456',
-                email: 'roberto.almeida@example.com',
-                phone: '+55 (11) 33333-3333',
-            },
-            sellerUser: null,
-            adults: 2,
-            ageGroups: [],
-            finalPrice: 1290,
-            reservationOption: [],
-            status: 'WAITING_LIST',
-            saleChannel: 'BOOKSUITE',
-            totalDays: 4,
-            notes: 'Final de semana prolongado',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        },
-        {
-            id: '8',
-            startDate: moment('2024-04-20').toISOString(),
-            endDate: moment('2024-04-25').toISOString(),
-            housingUnit: {
-                id: '4',
-                order: 1,
-                updatedAt: new Date().toISOString(),
-                name: 'Chalé Encantos 02',
-                housingUnitTypeId: '3',
-                createdAt: new Date().toISOString(),
-            },
-            services: [],
-            guestUser: {
-                firstName: 'Patricia',
-                lastName: 'Lima',
-                password: '123456',
-                email: 'patricia.lima@example.com',
-                phone: '+55 (11) 22222-2222',
-            },
-            sellerUser: null,
-            adults: 3,
-            ageGroups: [],
-            finalPrice: 1290,
-            reservationOption: [],
-            status: 'CONFIRMED',
-            saleChannel: 'BOOKSUITE',
-            totalDays: 5,
-            notes: 'Aniversário',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        },
-        {
-            id: '9',
-            startDate: moment('2024-04-23').toISOString(),
-            endDate: moment('2024-04-27').toISOString(),
-            housingUnit: {
-                id: '1',
-                order: 1,
-                updatedAt: new Date().toISOString(),
-                name: 'Chalé Imperial 01',
-                housingUnitTypeId: '1',
-                createdAt: new Date().toISOString(),
-            },
-            services: [],
-            guestUser: {
-                firstName: 'Fernando',
-                lastName: 'Souza',
-                password: '123456',
-                email: 'fernando.souza@example.com',
-                phone: '+55 (11) 11111-1111',
-            },
-            sellerUser: null,
-            adults: 2,
-            ageGroups: [],
-            finalPrice: 1290,
-            reservationOption: [],
-            status: 'CHECKED_IN',
-            saleChannel: 'BOOKSUITE',
-            totalDays: 4,
-            notes: 'Férias escolares',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        },
-        {
-            id: '10',
-            startDate: moment('2024-04-26').toISOString(),
-            endDate: moment('2024-04-30').toISOString(),
-            housingUnit: {
-                id: '2',
-                order: 1,
-                updatedAt: new Date().toISOString(),
-                name: 'Chalé Diamante 01',
-                housingUnitTypeId: '2',
-                createdAt: new Date().toISOString(),
-            },
-            services: [],
-            guestUser: {
-                firstName: 'Beatriz',
-                lastName: 'Santos',
-                password: '123456',
-                email: 'beatriz.santos@example.com',
-                phone: '+55 (11) 00000-0000',
-            },
-            sellerUser: null,
-            adults: 2,
-            ageGroups: [],
-            finalPrice: 1290,
-            reservationOption: [],
-            status: 'OVERBOOKED',
-            saleChannel: 'BOOKSUITE',
-            totalDays: 4,
-            notes: 'Descanso de fim de mês',
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-        },
-    ]
+    )
+
+    const handleRefresh = () => {
+        refetchAvailabilityAndPricing()
+        refetchReservations()
+    }
+
+    const weekendDays = Object.values(
+        availabilityAndPricing?.at(0)?.calendar ?? {},
+    )?.[0]?.hostingRules.availableWeekend ?? [0, 6]
 
     return (
-        <Box sx={{ p: 3 }}>
-            <PageHeader
-                backButtonHref="/"
-                backLButtonLabel="Início"
-                title="Mapa"
-            />
-            <Box sx={{ mt: 3 }}>
+        <Box>
+            <Stack direction="row" spacing={2} alignItems="center" mb={3}>
+                <Stack direction="row" spacing={2} alignItems="center">
+                    <PageHeader.Title>Mapa de reservas</PageHeader.Title>
+                    <IconButton color="primary" onClick={handleRefresh}>
+                        <RefreshRounded />
+                    </IconButton>
+                </Stack>
+                <Stack
+                    flex={1}
+                    direction="row"
+                    spacing={2}
+                    justifyContent="center"
+                >
+                    <DateRangePicker range={range} onChange={setRange} />
+                </Stack>
+                <Button endIcon={<ChevronDown />}>Adicionar</Button>
+            </Stack>
+
+            <Box>
                 <Calendar
-                    startDate={startDate}
-                    endDate={endDate}
-                    housingTypes={housingTypes}
+                    isLoading={
+                        isLoadingAvailabilityAndPricing || isLoadingReservations
+                    }
+                    startDate={formattedStartDate}
+                    endDate={formattedEndDate}
+                    availabilityAndPricing={availabilityAndPricing}
                     reservations={reservations}
+                    weekendDays={weekendDays}
                 />
             </Box>
+
+            <Stack direction="row" spacing={1.5} mt={2}>
+                {Object.entries(RESERVATION_STATUS_COLORS).map(
+                    ([key, color]) => (
+                        <Tooltip
+                            key={key}
+                            title={
+                                RESERVATION_LABEL_MAP[key as ReservationStatus]
+                            }
+                        >
+                            <Box
+                                key={key}
+                                sx={{
+                                    width: 12,
+                                    height: 12,
+                                    borderRadius: 6,
+                                    bgcolor: color,
+                                }}
+                            />
+                        </Tooltip>
+                    ),
+                )}
+            </Stack>
         </Box>
     )
 }
