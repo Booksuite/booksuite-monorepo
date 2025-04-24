@@ -15,6 +15,7 @@ import {
 import { PriceDisplay } from '@/components/molecules/PriceDisplay'
 
 import { AddedToCartModal } from './AddedToCartModal'
+import { ReservationInfoModal } from './ReservationInfoModal'
 
 interface HousingUnitBookingFormProps {
     title: string
@@ -44,6 +45,7 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
     const [selectedMealPlans, setSelectedMealPlans] = useState<MealPlan[]>([])
     const [error, setError] = useState<string | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false)
 
     const [checkIn, setCheckIn] = useState<Date | undefined>(undefined)
     const [checkOut, setCheckOut] = useState<Date | undefined>(undefined)
@@ -187,6 +189,38 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
         router.push('/cart' as Route)
     }
 
+    const getDailyPrices = useCallback(() => {
+        if (!checkIn || !checkOut) return []
+
+        const prices: Array<{ date: Date; price: number }> = []
+        const currentDate = new Date(checkIn)
+
+        while (currentDate <= checkOut) {
+            const isWeekend = weekendDays.includes(currentDate.getDay())
+            const baseValue = isWeekend ? weekendPrice : basePrice
+            const mealPlansValue = selectedMealPlans.reduce(
+                (acc, plan) => acc + plan.pricePerDay,
+                0,
+            )
+
+            prices.push({
+                date: new Date(currentDate),
+                price: baseValue + mealPlansValue,
+            })
+
+            currentDate.setDate(currentDate.getDate() + 1)
+        }
+
+        return prices
+    }, [
+        checkIn,
+        checkOut,
+        weekendDays,
+        weekendPrice,
+        basePrice,
+        selectedMealPlans,
+    ])
+
     return (
         <div className="w-full max-w-xl px-4">
             <div className="w-full flex items-center flex-row justify-between text-grey-primary">
@@ -271,7 +305,7 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
                     <div className="flex flex-col gap-4">
                         <PriceDisplay
                             totalPrice={totalPrice}
-                            onHelpClick={() => {}}
+                            onHelpClick={() => setIsInfoModalOpen(true)}
                         />
                         <Button
                             className="w-full bg-primary-500 text-white hover:bg-primary-600 h-12 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -288,6 +322,20 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
                 isOpen={isModalOpen}
                 onAddMore={handleAddMore}
                 onAdvance={handleAdvance}
+            />
+
+            <ReservationInfoModal
+                isOpen={isInfoModalOpen}
+                onClose={() => setIsInfoModalOpen(false)}
+                title={title}
+                checkIn={checkIn}
+                checkOut={checkOut}
+                totalDays={weekdays + totalWeekendDays}
+                adults={Number(guests)}
+                children={0} // TODO: Add children support when available
+                mealPlans={selectedMealPlans.map((plan) => plan.title)}
+                dailyPrices={getDailyPrices()}
+                totalPrice={totalPrice}
             />
         </div>
     )
