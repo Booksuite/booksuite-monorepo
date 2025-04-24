@@ -3,6 +3,7 @@
 import {
     useGetCompanyHostingRules,
     useGetHousingUnitTypeById,
+    useSearchHousingUnitTypes,
     useSearchSeasonRules,
 } from '@booksuite/sdk'
 import { ChevronRight, Gift, Share2 } from 'lucide-react'
@@ -15,7 +16,7 @@ import { useCurrentCompanyId } from '@/common/contexts/company'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 
 import { SearchAvailability } from './SearchAvailability'
-import { useCalendarPrices } from './useCalendarPrices'
+import { useCalendarPrices } from '@/common/hooks/useCalendarPrices'
 
 export function HousingUnitDetails() {
     const { id } = useParams()
@@ -29,6 +30,16 @@ export function HousingUnitDetails() {
         id: id as string,
         companyId: companyId,
     })
+
+    const { data: housingUnitTypes } = useSearchHousingUnitTypes(
+        { companyId },
+        {
+            pagination: {
+                page: 1,
+                itemsPerPage: 100,
+            },
+        },
+    )
 
     const { data: companyHostingRules } = useGetCompanyHostingRules({
         companyId: companyId,
@@ -50,7 +61,7 @@ export function HousingUnitDetails() {
         companyHostingRules ?? undefined,
     )
 
-    if (!housingUnit) {
+    if (!housingUnit || !housingUnitTypes) {
         return <div>Carregando...</div>
     }
 
@@ -265,9 +276,14 @@ export function HousingUnitDetails() {
 
                     <div className="w-[90%]">
                         <AvailabilityCalendar
-                            prices={generateCalendarPrices()}
-                            propertyName={housingUnit.name}
-                            minDays={companyHostingRules?.minDaily || 1}
+                            housingUnitTypes={housingUnitTypes.items.map(
+                                (unit) => ({
+                                    id: unit.id,
+                                    name: unit.name || '',
+                                    prices: generateCalendarPrices(unit),
+                                    minDays: companyHostingRules?.minDaily || 1,
+                                }),
+                            )}
                         />
                     </div>
                 </div>

@@ -11,7 +11,7 @@ import { useState } from 'react'
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Container } from '@/components/organisms/Container'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
-import { useCalendarPrices } from '../../details/[id]/components/useCalendarPrices'
+import { useCalendarPrices } from '@/common/hooks/useCalendarPrices'
 
 import { HousingUnitBookingForm } from './components/HousingUnitBookingForm'
 import { HousingUnitTypeInfo } from './components/HousingUnitTypeInfo'
