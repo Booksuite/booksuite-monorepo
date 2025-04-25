@@ -1,16 +1,16 @@
-import {
-    addMonths,
-    eachDayOfInterval,
-    endOfMonth,
-    format,
-    isSameMonth,
-    startOfMonth,
-    subMonths,
-} from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 
+import {
+    addMonths,
+    dayjs,
+    eachDayOfInterval,
+    endOfMonth,
+    formatDate,
+    isSameMonth,
+    startOfMonth,
+    subMonths,
+} from '@/common/utils/dayjs'
 import { InputSelect } from '@/components/atoms/InputSelect'
 
 interface Price {
@@ -53,8 +53,14 @@ export function AvailabilityCalendar({
     const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 
     const handlePreviousMonth = () => {
-        setCurrentDate((prev) => subMonths(prev, 1))
-        setNextMonthDate((prev) => subMonths(prev, 1))
+        const previousMonth = subMonths(currentDate, 1)
+        const now = new Date()
+        const currentMonth = startOfMonth(now)
+
+        if (!dayjs(previousMonth).isBefore(currentMonth, 'month')) {
+            setCurrentDate(previousMonth)
+            setNextMonthDate(subMonths(nextMonthDate, 1))
+        }
     }
 
     const handleNextMonth = () => {
@@ -76,7 +82,7 @@ export function AvailabilityCalendar({
     const renderCalendarDays = (date: Date) => {
         const days = getDaysInMonth(date)
         const firstDayOfMonth = startOfMonth(date)
-        const emptyDays = firstDayOfMonth.getDay()
+        const emptyDays = new Date(firstDayOfMonth).getDay()
 
         return (
             <div className="grid grid-cols-7 gap-2 justify-items-center">
@@ -87,7 +93,7 @@ export function AvailabilityCalendar({
                     />
                 ))}
                 {days.map((day) => {
-                    const dateKey = format(day, 'yyyy-MM-dd')
+                    const dateKey = formatDate(day, 'YYYY-MM-DD')
                     const price = selectedHousingUnitType?.prices[dateKey]
                     const isCurrentMonth = isSameMonth(day, date)
 
@@ -125,7 +131,7 @@ export function AvailabilityCalendar({
                                             : ''
                                     }`}
                                 >
-                                    {format(day, 'd')}
+                                    {formatDate(day, 'D')}
                                 </span>
                             </div>
                             {price && !isUnavailable && (
@@ -145,6 +151,11 @@ export function AvailabilityCalendar({
             </div>
         )
     }
+
+    const canGoPrevious = !dayjs(currentDate).isSame(
+        startOfMonth(new Date()),
+        'month',
+    )
 
     return (
         <div className="w-full max-w-[1800px] mx-auto">
@@ -169,12 +180,17 @@ export function AvailabilityCalendar({
                     <div className="flex justify-between items-center mb-4">
                         <button
                             onClick={handlePreviousMonth}
-                            className="p-2 hover:bg-grey-100 rounded-full"
+                            className={`p-2 rounded-full ${
+                                canGoPrevious
+                                    ? 'hover:bg-grey-100 text-grey-primary'
+                                    : 'opacity-50 cursor-not-allowed text-grey-secondary'
+                            }`}
+                            disabled={!canGoPrevious}
                         >
                             <ChevronLeft className="w-5 h-5" />
                         </button>
                         <h3 className="text-lg font-medium capitalize">
-                            {format(currentDate, 'MMMM yyyy', { locale: ptBR })}
+                            {formatDate(currentDate, 'MMMM YYYY')}
                         </h3>
                         <div className="w-9" />
                     </div>
@@ -195,9 +211,7 @@ export function AvailabilityCalendar({
                     <div className="flex justify-between items-center mb-4">
                         <div className="w-9" />
                         <h3 className="text-lg font-medium capitalize">
-                            {format(nextMonthDate, 'MMMM yyyy', {
-                                locale: ptBR,
-                            })}
+                            {formatDate(nextMonthDate, 'MMMM YYYY')}
                         </h3>
                         <button
                             onClick={handleNextMonth}
