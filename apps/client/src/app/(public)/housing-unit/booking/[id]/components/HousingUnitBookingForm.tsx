@@ -332,7 +332,7 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
                 checkOut={checkOut}
                 totalDays={weekdays + totalWeekendDays}
                 adults={Number(guests)}
-                children={0} // TODO: Add children support when available
+                childrenCount={0}
                 mealPlans={selectedMealPlans.map((plan) => plan.title)}
                 dailyPrices={getDailyPrices()}
                 totalPrice={totalPrice}
