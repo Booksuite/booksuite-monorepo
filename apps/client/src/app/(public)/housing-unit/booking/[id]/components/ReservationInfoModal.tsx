@@ -1,11 +1,11 @@
 import {
+    type PenaltyRange,
     useGetCompanyCancellationPolicy,
     useGetCompanyHostingRules,
-    type PenaltyRange,
 } from '@booksuite/sdk'
-import { ChevronRight, X } from 'lucide-react'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { ChevronRight, X } from 'lucide-react'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 

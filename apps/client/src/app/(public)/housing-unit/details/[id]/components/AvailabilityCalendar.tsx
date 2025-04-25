@@ -12,7 +12,6 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 
 import { InputSelect } from '@/components/atoms/InputSelect'
-import { useParams } from 'next/navigation'
 
 interface Price {
     value: number
