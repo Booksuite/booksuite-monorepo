@@ -13,6 +13,8 @@ interface ExtraServicesCardProps {
     images: string[]
     price: number
     originalPrice?: number
+    hasOffer?: boolean
+    discount?: number
     onQuantityChange?: (quantity: number) => void
     onViewAllPhotos?: () => void
 }
@@ -23,6 +25,8 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
     images,
     price,
     originalPrice,
+    hasOffer,
+    discount,
     onQuantityChange,
     onViewAllPhotos,
 }) => {
@@ -36,11 +40,6 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
         }
     }
 
-    const discount =
-        originalPrice && originalPrice > price
-            ? Math.round(((originalPrice - price) / originalPrice) * 100)
-            : 0
-
     return (
         <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
             <div className="aspect-[4/3] w-full relative">
@@ -53,9 +52,11 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
                         bottomLeft: false,
                     }}
                 />
-                <div className="absolute top-4 left-4 border border-white/80 text-white/80 bg-white/80 backdrop-blur-sm px-1.5 py-1.5 rounded-md flex items-center">
-                    <Flame className="w-5 h-5 text-systemColors-orange" />
-                </div>
+                {hasOffer && (
+                    <div className="absolute top-4 left-4 border border-white/80 text-white/80 bg-white/80 backdrop-blur-sm px-1.5 py-1.5 rounded-md flex items-center">
+                        <Flame className="w-5 h-5 text-systemColors-orange" />
+                    </div>
+                )}
                 <button
                     onClick={onViewAllPhotos}
                     className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm px-2 py-2 rounded-md flex items-center hover:bg-white/90 transition-colors"
@@ -93,9 +94,9 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
                                         {formatCurrency(originalPrice)}
                                     </span>
                                 )}
-                                {discount > 0 && (
+                                {discount && discount > 0 && (
                                     <span className="bg-systemColors-orange text-white px-1.5 py-1 rounded-full text-sm font-medium">
-                                        -{discount}%
+                                        -{Math.round(discount)}%
                                     </span>
                                 )}
                             </div>
