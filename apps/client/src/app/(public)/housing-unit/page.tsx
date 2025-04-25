@@ -65,7 +65,11 @@ export default function HousingUnit() {
                                     }
                                     facilities={unitType.facilities ?? []}
                                     maxGuests={unitType.maxGuests ?? 1}
-                                    onReserve={() => {}}
+                                    onReserve={() =>
+                                        router.push(
+                                            `/housing-unit/booking/${unitType.id}`,
+                                        )
+                                    }
                                     onDetails={() =>
                                         router.push(
                                             `/housing-unit/details/${unitType.id}`,

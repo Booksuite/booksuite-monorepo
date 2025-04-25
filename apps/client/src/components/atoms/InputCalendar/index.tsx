@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { cn } from '@/common/lib/utils'
 import { Input } from '@/components/atoms/InputText/input'
@@ -15,6 +15,7 @@ interface InputCalendarProps {
     success?: boolean
     disabled?: boolean
     className?: string
+    minDate?: Date
 }
 
 export function InputCalendar({
@@ -25,11 +26,16 @@ export function InputCalendar({
     success,
     disabled,
     className,
+    minDate,
 }: InputCalendarProps) {
     const [focused, setFocused] = useState(false)
     const [inputValue, setInputValue] = useState(
         value?.toISOString().split('T')[0] ?? '',
     )
+
+    useEffect(() => {
+        setInputValue(value?.toISOString().split('T')[0] ?? '')
+    }, [value])
 
     const isFloating = focused || inputValue.length > 0
 
@@ -100,6 +106,7 @@ export function InputCalendar({
                             className,
                         )}
                         disabled={disabled}
+                        min={minDate?.toISOString().split('T')[0]}
                         onFocus={() => setFocused(true)}
                         onBlur={() => setFocused(false)}
                         onChange={(e) => {

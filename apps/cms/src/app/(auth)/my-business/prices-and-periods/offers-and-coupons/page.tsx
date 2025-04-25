@@ -13,6 +13,7 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
+import { Box } from '@mui/system'
 import {
     Check,
     CheckCheck,
@@ -122,7 +123,9 @@ export default function OffersAndCoupons() {
     const { push } = useRouter()
     const { showDialog } = useConfirmationDialog()
 
-    const [selectedFilters, setSelectedFilters] = useState<string[]>(['published'])
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([
+        'published',
+    ])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
 
@@ -190,6 +193,7 @@ export default function OffersAndCoupons() {
                 children: 'Confirmar',
                 onClick: () => {
                     updateOffer({
+                        companyId,
                         id: item.id!,
                         data: {
                             published: !item.published,
@@ -250,34 +254,39 @@ export default function OffersAndCoupons() {
                         onChange={setSelectedFilters}
                     />
 
-                    <TextField
-                        variant="outlined"
-                        size="small"
-                        placeholder="Pesquisar"
-                        value={searchInputValue}
-                        onChange={(e) => setSearchInputValue(e.target.value)}
-                        slotProps={{
-                            input: {
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <IconButton
-                                            size="small"
-                                            onClick={() => {
-                                                setSearchInputValue('')
-                                                setSearchQuery('')
-                                            }}
-                                        >
-                                            {searchQuery.length > 0 ? (
-                                                <X size={16} />
-                                            ) : (
-                                                <Search size={16} />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            },
-                        }}
-                    />
+                    <Box sx={{ width: '300px' }}>
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            size="small"
+                            placeholder="Pesquisar"
+                            value={searchInputValue}
+                            onChange={(e) =>
+                                setSearchInputValue(e.target.value)
+                            }
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <IconButton
+                                                size="small"
+                                                onClick={() => {
+                                                    setSearchInputValue('')
+                                                    setSearchQuery('')
+                                                }}
+                                            >
+                                                {searchQuery.length > 0 ? (
+                                                    <X size={16} />
+                                                ) : (
+                                                    <Search size={16} />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                },
+                            }}
+                        />
+                    </Box>
                 </Stack>
 
                 <Table

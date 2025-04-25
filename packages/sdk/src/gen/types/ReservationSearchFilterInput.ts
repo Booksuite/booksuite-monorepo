@@ -1,23 +1,9 @@
 import type { DateRangeInput } from './DateRangeInput.ts'
-
-export type ReservationSearchFilterDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAPP' | 'INSTAGRAM' | 'TIKTOK' | 'EMAIL' | 'BOOKSUITE' | 'OTHER'
-
-export type ReservationSearchFilterDTOStatus =
-  | 'WAITING_PAYMENT'
-  | 'CONFIRMED'
-  | 'CHECKED_IN'
-  | 'CHECKED_OUT'
-  | 'ABANDONED'
-  | 'CANCELLED'
-  | 'PAYMENT_FAILED'
-  | 'OVERBOOKED'
-  | 'WAITING_LIST'
+import type { ReservationSaleChannel } from './ReservationSaleChannel.ts'
+import type { ReservationStatus } from './ReservationStatus.ts'
 
 export type ReservationSearchFilterInput = {
-  /**
-   * @type string | undefined
-   */
-  saleChannel?: ReservationSearchFilterDTOSaleChannel
+  saleChannel?: ReservationSaleChannel
   /**
    * @type string | undefined
    */
@@ -25,21 +11,17 @@ export type ReservationSearchFilterInput = {
   /**
    * @type string | undefined
    */
-  userId?: string
+  guestUserId?: string
   /**
    * @type object | undefined
    */
-  startDate?: DateRangeInput
-  /**
-   * @type object | undefined
-   */
-  endDate?: DateRangeInput
+  dateRange?: DateRangeInput
   /**
    * @type object | undefined
    */
   createdDate?: DateRangeInput
   /**
-   * @type string | undefined
+   * @type array | undefined
    */
-  status?: ReservationSearchFilterDTOStatus
+  status?: ReservationStatus[]
 }

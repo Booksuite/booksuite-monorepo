@@ -1,9 +1,6 @@
 'use client'
 
-import {
-    ReservationOptionInput,
-    useReservationOptionsControllerCreate,
-} from '@booksuite/sdk'
+import { useCreateRateOption } from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -12,37 +9,36 @@ import { enqueueSnackbar } from 'notistack'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { ReservationOptionForm } from '../components/ReservationOptionsForm'
+import { RateOptionForm } from '../components/RateOptionForm'
 import {
-    createReservationOptionFormInitialValues,
-    ReservationOptionData,
-    reservationOptionFormSchema,
+    createRateOptionFormInitialValues,
+    RateOptionData,
+    rateOptionFormSchema,
+    transformRateOptionUpdateToInput,
 } from '../utils/config'
 
-export default function CreateReservationOption() {
+export default function CreateRateOption() {
     const { push } = useRouter()
     const companyId = useCurrentCompanyId()
     const queryClient = useQueryClient()
 
-    const { mutateAsync: createReservationOption } =
-        useReservationOptionsControllerCreate()
+    const { mutateAsync: createRateOption } = useCreateRateOption()
 
-    async function handleSubmit(formData: ReservationOptionInput) {
+    async function handleSubmit(formData: RateOptionData) {
+        const apiData = transformRateOptionUpdateToInput(formData)
+
         try {
-            await createReservationOption({
+            await createRateOption({
                 companyId,
-                data: {
-                    ...formData,
-                    availableWeekend: formData.availableWeekend.map(Number),
-                },
+                data: apiData,
             })
 
             await queryClient.invalidateQueries({
-                queryKey: ['searchReservationOption'],
+                queryKey: ['searchRateOption'],
                 refetchType: 'all',
             })
 
-            push('/my-business/reservation-options')
+            push('/my-business/rate-options')
 
             enqueueSnackbar('Tarifa criada com sucesso', {
                 variant: 'success',
@@ -71,13 +67,13 @@ export default function CreateReservationOption() {
                 backLButtonLabel="Opções de Tarifa"
             />
 
-            <Formik<ReservationOptionData>
-                initialValues={createReservationOptionFormInitialValues()}
-                validationSchema={reservationOptionFormSchema}
+            <Formik<RateOptionData>
+                initialValues={createRateOptionFormInitialValues()}
+                validationSchema={rateOptionFormSchema}
                 onSubmit={handleSubmit}
             >
                 <FormikController onCancel={() => push('/my-business/rooms')}>
-                    <ReservationOptionForm />
+                    <RateOptionForm />
                 </FormikController>
             </Formik>
         </div>

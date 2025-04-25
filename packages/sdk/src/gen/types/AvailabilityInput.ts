@@ -10,14 +10,14 @@ export type AvailabilityInput = {
   /**
    * @description Unavailability source
    */
-  unavailabilitySource: UnavailableSource
+  unavailabilitySource: UnavailableSource | null
   /**
    * @description Unavailability reason
    */
-  unavailableReason: UnavailabilityReason
+  unavailableReason: UnavailabilityReason | null
   /**
    * @description Unavailability reason message
-   * @type string
+   * @type object
    */
-  unavailableReasonMessage: string
+  unavailableReasonMessage: object | null
 }

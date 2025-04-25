@@ -1,10 +1,6 @@
 'use client'
 
-import {
-    ReservationOptionInput,
-    useReservationOptionsControllerGetById,
-    useReservationOptionsControllerUpdate,
-} from '@booksuite/sdk'
+import { useGetRateOptionById, useUpdateRateOption } from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -13,39 +9,38 @@ import { enqueueSnackbar } from 'notistack'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
-import { ReservationOptionForm } from '../components/ReservationOptionsForm'
+import { RateOptionForm } from '../components/RateOptionForm'
 import {
-    createReservationOptionFormInitialValues,
-    ReservationOptionData,
-    reservationOptionFormSchema,
+    createRateOptionFormInitialValues,
+    RateOptionData,
+    rateOptionFormSchema,
 } from '../utils/config'
 
-interface UpdateReservationOptionProps {
+interface UpdateRateOptionProps {
     params: { id: string }
 }
 
-export default function UpdateReservationOption({
+export default function UpdateRateOption({
     params,
-}: UpdateReservationOptionProps) {
+}: UpdateRateOptionProps) {
     const { push } = useRouter()
     const companyId = useCurrentCompanyId()
     const queryClient = useQueryClient()
 
-    const { mutateAsync: createReservationOption } =
-        useReservationOptionsControllerUpdate()
+    const { mutateAsync: updateRateOption } = useUpdateRateOption()
 
     const {
-        data: ReservationOptionsData,
+        data: RateOptionData,
         isLoading,
         queryKey,
-    } = useReservationOptionsControllerGetById({
+    } = useGetRateOptionById({
         companyId,
         id: params.id,
     })
 
-    async function handleSubmit(formData: ReservationOptionInput) {
+    async function handleSubmit(formData: RateOptionData) {
         try {
-            await createReservationOption({
+            await updateRateOption({
                 companyId,
                 id: params.id,
                 data: {
@@ -56,7 +51,7 @@ export default function UpdateReservationOption({
 
             await queryClient.invalidateQueries({ queryKey: queryKey })
             await queryClient.invalidateQueries({
-                queryKey: ['searchReservationOption'],
+                queryKey: ['searchRateOption'],
                 refetchType: 'all',
             })
 
@@ -65,7 +60,7 @@ export default function UpdateReservationOption({
                 refetchType: 'all',
             })
 
-            push('/my-business/reservation-options')
+            push('/my-business/rate-options')
 
             enqueueSnackbar('Tarifa modificada com sucesso', {
                 variant: 'success',
@@ -92,23 +87,21 @@ export default function UpdateReservationOption({
             <PageHeader
                 title="Modificar Opção de Tarfia"
                 backLButtonLabel="Opções de Tarifa"
-                backButtonHref="/my-business/reservation-options"
+                backButtonHref="/my-business/rate-options"
             />
 
             {!isLoading && (
-                <Formik<ReservationOptionData>
-                    initialValues={createReservationOptionFormInitialValues(
-                        ReservationOptionsData,
+                <Formik<RateOptionData>
+                    initialValues={createRateOptionFormInitialValues(
+                        RateOptionData,
                     )}
-                    validationSchema={reservationOptionFormSchema}
+                    validationSchema={rateOptionFormSchema}
                     onSubmit={handleSubmit}
                 >
                     <FormikController
-                        onCancel={() =>
-                            push('/my-business/reservation-options')
-                        }
+                        onCancel={() => push('/my-business/rate-options')}
                     >
-                        <ReservationOptionForm />
+                        <RateOptionForm />
                     </FormikController>
                 </Formik>
             )}

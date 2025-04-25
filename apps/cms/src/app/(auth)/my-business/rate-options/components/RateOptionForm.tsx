@@ -26,11 +26,11 @@ import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { TextFieldCurrency } from '@/components/atoms/TextFieldCurrency'
 import { VALID_NIGHTS } from '../../services/utils/constants'
-import { ReservationOptionData } from '../utils/config'
+import { RateOptionData } from '../utils/config'
 
-export const ReservationOptionForm: React.FC = () => {
+export const RateOptionForm: React.FC = () => {
     const { getFieldProps, errors, values, touched, setFieldValue } =
-        useFormikContext<ReservationOptionData>()
+        useFormikContext<RateOptionData>()
 
     const companyId = useCurrentCompanyId()
     const { data: housingUnitTypes, isLoading: isLoadingHousingUnitTypes } =

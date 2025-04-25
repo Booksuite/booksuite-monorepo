@@ -74,4 +74,9 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
         accessorFn: (row) =>
             `${row.housingUnits.length} ${pluralize('unidade', row.housingUnits.length)}`,
     },
+    {
+        id: 'published',
+        header: 'Status',
+    accessorFn: (row) => (row.published ? 'Publicado' : 'Não publicado'),
+    },
 ]
