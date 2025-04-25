@@ -3,14 +3,15 @@ import type {
     HousingUnitTypeFull,
     SeasonRulePaginated,
 } from '@booksuite/sdk'
+
 import {
     addDays,
     differenceInDays,
-    format,
+    formatDate,
     isAfter,
     isBefore,
     startOfDay,
-} from 'date-fns'
+} from '@/common/utils/dayjs'
 
 export function useCalendarPrices(
     housingUnitType: HousingUnitTypeFull | undefined,
@@ -62,8 +63,8 @@ export function useCalendarPrices(
 
         for (let i = 0; i <= daysToShow; i++) {
             const currentDate = addDays(startDate, i)
-            const dateKey = format(currentDate, 'yyyy-MM-dd')
-            const dayOfWeek = currentDate.getDay()
+            const dateKey = formatDate(currentDate, 'YYYY-MM-DD')
+            const dayOfWeek = new Date(currentDate).getDay()
 
             if (
                 companyHostingRules.reservationWindowStart &&
@@ -103,7 +104,10 @@ export function useCalendarPrices(
             const basePrice = isWeekendDay
                 ? unitToUse.weekendPrice || 0
                 : unitToUse.weekdaysPrice || unitToUse.weekendPrice || 0
-            const finalPrice = seasonRule ? seasonRule.price : basePrice
+
+            const finalPrice = seasonRule
+                ? basePrice * (1 + seasonRule.price / 100)
+                : basePrice
 
             prices[dateKey] = {
                 value: finalPrice,

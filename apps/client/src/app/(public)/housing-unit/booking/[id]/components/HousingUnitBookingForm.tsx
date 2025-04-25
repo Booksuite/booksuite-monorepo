@@ -1,4 +1,4 @@
-import { useSearchReservationOption } from '@booksuite/sdk'
+import { useSearchRateOption } from '@booksuite/sdk'
 import { CalendarX, Share2 } from 'lucide-react'
 import { Route } from 'next'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -130,7 +130,7 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
 
     const { weekdays, weekendDays: totalWeekendDays } = calculateTotalDays()
 
-    const { data: reservationOptions } = useSearchReservationOption(
+    const { data: reservationOptions } = useSearchRateOption(
         { companyId: company?.id ?? '' },
         {
             filter: {
@@ -332,7 +332,7 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
                 checkOut={checkOut}
                 totalDays={weekdays + totalWeekendDays}
                 adults={Number(guests)}
-                children={0} // TODO: Add children support when available
+                childrenCount={0}
                 mealPlans={selectedMealPlans.map((plan) => plan.title)}
                 dailyPrices={getDailyPrices()}
                 totalPrice={totalPrice}

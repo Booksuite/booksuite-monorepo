@@ -13,10 +13,10 @@ import { useState } from 'react'
 
 import { AvailabilityCalendar } from '@/app/(public)/housing-unit/details/[id]/components/AvailabilityCalendar'
 import { useCurrentCompanyId } from '@/common/contexts/company'
+import { useCalendarPrices } from '@/common/hooks/useCalendarPrices'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 
 import { SearchAvailability } from './SearchAvailability'
-import { useCalendarPrices } from '@/common/hooks/useCalendarPrices'
 
 export function HousingUnitDetails() {
     const { id } = useParams()

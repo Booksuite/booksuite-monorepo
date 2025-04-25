@@ -1,13 +1,12 @@
 import {
+    type PenaltyRange,
     useGetCompanyCancellationPolicy,
     useGetCompanyHostingRules,
-    type PenaltyRange,
 } from '@booksuite/sdk'
 import { ChevronRight, X } from 'lucide-react'
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
+import { formatDate } from '@/common/utils/dayjs'
 
 interface ReservationInfoModalProps {
     isOpen: boolean
@@ -17,7 +16,7 @@ interface ReservationInfoModalProps {
     checkOut?: Date
     totalDays: number
     adults: number
-    children: number
+    childrenCount: number
     mealPlans: string[]
     dailyPrices: Array<{
         date: Date
@@ -34,7 +33,7 @@ export const ReservationInfoModal: React.FC<ReservationInfoModalProps> = ({
     checkOut,
     totalDays,
     adults,
-    children,
+    childrenCount,
     mealPlans,
     dailyPrices,
     totalPrice,
@@ -87,20 +86,20 @@ export const ReservationInfoModal: React.FC<ReservationInfoModalProps> = ({
                         <li>
                             • Chegada:{' '}
                             {checkIn &&
-                                format(checkIn, "dd/MM/yyyy' - após '", {
-                                    locale: ptBR,
-                                }) + formatTime(hostingRules?.checkIn ?? 0)}
+                                formatDate(checkIn, 'DD/MM/YYYY[- após ]') +
+                                    formatTime(hostingRules?.checkIn ?? 0)}
                         </li>
                         <li>
                             • Saída:{' '}
                             {checkOut &&
-                                format(checkOut, "dd/MM/yyyy' - até '", {
-                                    locale: ptBR,
-                                }) + formatTime(hostingRules?.checkOut ?? 0)}
+                                formatDate(checkOut, 'DD/MM/YYYY[- até ]') +
+                                    formatTime(hostingRules?.checkOut ?? 0)}
                         </li>
                         <li>• Total de diárias: {totalDays}</li>
                         <li>• Adultos: {adults}</li>
-                        {children > 0 && <li>• Crianças: {children}</li>}
+                        {childrenCount > 0 && (
+                            <li>• Crianças: {childrenCount}</li>
+                        )}
                         {mealPlans.length > 0 && (
                             <li>• Opcionais: {mealPlans.join(', ')}</li>
                         )}
@@ -117,10 +116,7 @@ export const ReservationInfoModal: React.FC<ReservationInfoModalProps> = ({
                                     className="flex gap-2"
                                 >
                                     <span>
-                                        •{' '}
-                                        {format(date, 'dd/MM/yyyy', {
-                                            locale: ptBR,
-                                        })}
+                                        • {formatDate(date, 'DD/MM/YYYY')}
                                     </span>
                                     <span>
                                         R${' '}
