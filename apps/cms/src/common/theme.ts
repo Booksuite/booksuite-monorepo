@@ -60,6 +60,11 @@ declare module '@mui/material/styles' {
 export const themeOptions: ThemeOptions = {
     palette: {
         mode: 'light',
+        text: {
+            primary: blueGrey[900],
+            disabled: blueGrey[200],
+            secondary: blueGrey[500],
+        },
         primary: {
             main: blue[600],
             light: blue[400],

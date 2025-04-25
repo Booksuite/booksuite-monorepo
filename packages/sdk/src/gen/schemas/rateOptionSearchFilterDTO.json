@@ -1,0 +1,1 @@
+{"type":"object","properties":{"published":{"type":"boolean","example":true},"billingType":{"type":"array","example":["DAILY"],"items":{"type":"string","enum":["PER_GUEST_DAILY","PER_GUEST","DAILY","PER_RESERVATION","PER_HOUSING_UNIT"],"x-readme-ref-name":"BillingType"}}},"x-readme-ref-name":"RateOptionSearchFilterDTO"}

@@ -1,3 +1,6 @@
+import type { HousingUnit } from './HousingUnit.ts'
+import type { User } from './User.ts'
+
 export type ReservationResponseDTOStatus =
   | 'WAITING_PAYMENT'
   | 'CONFIRMED'
@@ -25,11 +28,11 @@ export type Reservation = {
    */
   saleChannel: ReservationResponseDTOSaleChannel
   /**
-   * @type string, date-time
+   * @type string, date
    */
   startDate: string
   /**
-   * @type string, date-time
+   * @type string, date
    */
   endDate: string
   /**
@@ -43,7 +46,7 @@ export type Reservation = {
   /**
    * @type number
    */
-  adults: number | null
+  adults: number
   /**
    * @type string
    */
@@ -56,4 +59,37 @@ export type Reservation = {
    * @type string, date-time
    */
   updatedAt: string
+  /**
+   * @type string
+   */
+  reservationCode: string
+  /**
+   * @type string
+   */
+  sellerUserId: string | null
+  /**
+   * @type string
+   */
+  guestUserId: string
+  /**
+   * @type string
+   */
+  companyId: string
+  /**
+   * @type string
+   */
+  housingUnitId: string | null
+  /**
+   * @type string
+   */
+  rateOptionId: string | null
+  /**
+   * @type string, date-time
+   */
+  deletedAt: string | null
+  housingUnit: HousingUnit | null
+  /**
+   * @type object
+   */
+  guestUser: User
 }

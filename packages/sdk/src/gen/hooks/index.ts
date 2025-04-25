@@ -1,7 +1,7 @@
 export type { GetCompanyAgePolicyQueryKey } from './AgePolicyHooks/useGetCompanyAgePolicy.ts'
 export type { UpsertCompanyAgePolicyMutationKey } from './AgePolicyHooks/useUpsertCompanyAgePolicy.ts'
-export type { GetCalendarMutationKey } from './Availability and PricingHooks/useGetCalendar.ts'
-export type { GetCalendarFromHousingUnitTypeIdMutationKey } from './Availability and PricingHooks/useGetCalendarFromHousingUnitTypeId.ts'
+export type { GetCalendarQueryKey } from './Availability and PricingHooks/useGetCalendar.ts'
+export type { GetCalendarFromHousingUnitTypeIdQueryKey } from './Availability and PricingHooks/useGetCalendarFromHousingUnitTypeId.ts'
 export type { CreateBannerMutationKey } from './BannerHooks/useCreateBanner.ts'
 export type { DeleteBannerMutationKey } from './BannerHooks/useDeleteBanner.ts'
 export type { GetBannerByIdQueryKey } from './BannerHooks/useGetBannerById.ts'
@@ -37,6 +37,10 @@ export type { DeleteOfferMutationKey } from './OfferHooks/useDeleteOffer.ts'
 export type { GetOfferByIdQueryKey } from './OfferHooks/useGetOfferById.ts'
 export type { SearchOffersQueryKey } from './OfferHooks/useSearchOffers.ts'
 export type { UpdateOfferMutationKey } from './OfferHooks/useUpdateOffer.ts'
+export type { CreateRateOptionMutationKey } from './RateOptionHooks/useCreateRateOption.ts'
+export type { GetRateOptionByIdQueryKey } from './RateOptionHooks/useGetRateOptionById.ts'
+export type { SearchRateOptionQueryKey } from './RateOptionHooks/useSearchRateOption.ts'
+export type { UpdateRateOptionMutationKey } from './RateOptionHooks/useUpdateRateOption.ts'
 export type { GetCompanyReservationConfigQueryKey } from './ReservationConfigHooks/useGetCompanyReservationConfig.ts'
 export type { UpsertCompanyReservationConfigMutationKey } from './ReservationConfigHooks/useUpsertCompanyReservationConfig.ts'
 export type { CreateReservationMutationKey } from './ReservationHooks/useCreateReservation.ts'
@@ -44,10 +48,6 @@ export type { DeleteReservationMutationKey } from './ReservationHooks/useDeleteR
 export type { GetReservationByIdQueryKey } from './ReservationHooks/useGetReservationById.ts'
 export type { ReservationControllerUpdateMutationKey } from './ReservationHooks/useReservationControllerUpdate.ts'
 export type { SearchReservationsQueryKey } from './ReservationHooks/useSearchReservations.ts'
-export type { ReservationOptionsControllerCreateMutationKey } from './ReservationOptionsHooks/useReservationOptionsControllerCreate.ts'
-export type { ReservationOptionsControllerGetByIdQueryKey } from './ReservationOptionsHooks/useReservationOptionsControllerGetById.ts'
-export type { ReservationOptionsControllerUpdateMutationKey } from './ReservationOptionsHooks/useReservationOptionsControllerUpdate.ts'
-export type { SearchReservationOptionQueryKey } from './ReservationOptionsHooks/useSearchReservationOption.ts'
 export type { SearchSeasonRulesQueryKey } from './SeasonRulesHooks/useSearchSeasonRules.ts'
 export type { SeasonRulesControllerCreateMutationKey } from './SeasonRulesHooks/useSeasonRulesControllerCreate.ts'
 export type { SeasonRulesControllerGetByIdQueryKey } from './SeasonRulesHooks/useSeasonRulesControllerGetById.ts'
@@ -67,9 +67,10 @@ export type { UtilityLinksControllerCreateMutationKey } from './UtilityLinksHook
 export type { UtilityLinksControllerUpdateMutationKey } from './UtilityLinksHooks/useUtilityLinksControllerUpdate.ts'
 export { getCompanyAgePolicyQueryKey, getCompanyAgePolicyQueryOptions, useGetCompanyAgePolicy } from './AgePolicyHooks/useGetCompanyAgePolicy.ts'
 export { upsertCompanyAgePolicyMutationKey, useUpsertCompanyAgePolicy } from './AgePolicyHooks/useUpsertCompanyAgePolicy.ts'
-export { getCalendarMutationKey, useGetCalendar } from './Availability and PricingHooks/useGetCalendar.ts'
+export { getCalendarQueryKey, getCalendarQueryOptions, useGetCalendar } from './Availability and PricingHooks/useGetCalendar.ts'
 export {
-  getCalendarFromHousingUnitTypeIdMutationKey,
+  getCalendarFromHousingUnitTypeIdQueryKey,
+  getCalendarFromHousingUnitTypeIdQueryOptions,
   useGetCalendarFromHousingUnitTypeId,
 } from './Availability and PricingHooks/useGetCalendarFromHousingUnitTypeId.ts'
 export { createBannerMutationKey, useCreateBanner } from './BannerHooks/useCreateBanner.ts'
@@ -119,6 +120,10 @@ export { deleteOfferMutationKey, useDeleteOffer } from './OfferHooks/useDeleteOf
 export { getOfferByIdQueryKey, getOfferByIdQueryOptions, useGetOfferById } from './OfferHooks/useGetOfferById.ts'
 export { searchOffersQueryKey, searchOffersQueryOptions, useSearchOffers } from './OfferHooks/useSearchOffers.ts'
 export { updateOfferMutationKey, useUpdateOffer } from './OfferHooks/useUpdateOffer.ts'
+export { createRateOptionMutationKey, useCreateRateOption } from './RateOptionHooks/useCreateRateOption.ts'
+export { getRateOptionByIdQueryKey, getRateOptionByIdQueryOptions, useGetRateOptionById } from './RateOptionHooks/useGetRateOptionById.ts'
+export { searchRateOptionQueryKey, searchRateOptionQueryOptions, useSearchRateOption } from './RateOptionHooks/useSearchRateOption.ts'
+export { updateRateOptionMutationKey, useUpdateRateOption } from './RateOptionHooks/useUpdateRateOption.ts'
 export {
   getCompanyReservationConfigQueryKey,
   getCompanyReservationConfigQueryOptions,
@@ -130,24 +135,6 @@ export { deleteReservationMutationKey, useDeleteReservation } from './Reservatio
 export { getReservationByIdQueryKey, getReservationByIdQueryOptions, useGetReservationById } from './ReservationHooks/useGetReservationById.ts'
 export { reservationControllerUpdateMutationKey, useReservationControllerUpdate } from './ReservationHooks/useReservationControllerUpdate.ts'
 export { searchReservationsQueryKey, searchReservationsQueryOptions, useSearchReservations } from './ReservationHooks/useSearchReservations.ts'
-export {
-  reservationOptionsControllerCreateMutationKey,
-  useReservationOptionsControllerCreate,
-} from './ReservationOptionsHooks/useReservationOptionsControllerCreate.ts'
-export {
-  reservationOptionsControllerGetByIdQueryKey,
-  reservationOptionsControllerGetByIdQueryOptions,
-  useReservationOptionsControllerGetById,
-} from './ReservationOptionsHooks/useReservationOptionsControllerGetById.ts'
-export {
-  reservationOptionsControllerUpdateMutationKey,
-  useReservationOptionsControllerUpdate,
-} from './ReservationOptionsHooks/useReservationOptionsControllerUpdate.ts'
-export {
-  searchReservationOptionQueryKey,
-  searchReservationOptionQueryOptions,
-  useSearchReservationOption,
-} from './ReservationOptionsHooks/useSearchReservationOption.ts'
 export { searchSeasonRulesQueryKey, searchSeasonRulesQueryOptions, useSearchSeasonRules } from './SeasonRulesHooks/useSearchSeasonRules.ts'
 export { seasonRulesControllerCreateMutationKey, useSeasonRulesControllerCreate } from './SeasonRulesHooks/useSeasonRulesControllerCreate.ts'
 export {

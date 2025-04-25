@@ -10,7 +10,7 @@ export type CalendarBodyInput = {
   /**
    * @description Search payload for the calendar
    */
-  search: AvailAndPricingSearchInput
+  search?: AvailAndPricingSearchInput
   /**
    * @description Date range for the calendar
    */

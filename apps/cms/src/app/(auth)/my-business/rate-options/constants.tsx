@@ -1,4 +1,4 @@
-import { BillingType, ReservationOptionFull } from '@booksuite/sdk'
+import { BillingType, RateOptionFull } from '@booksuite/sdk'
 import { Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 
@@ -15,7 +15,7 @@ export const billingTypes: BillingType[] = [
     'PER_HOUSING_UNIT',
 ]
 
-export const COLUMNS_DEFINITION: MRT_ColumnDef<ReservationOptionFull>[] = [
+export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
     {
         id: 'name',
         header: 'Nome',
@@ -42,7 +42,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<ReservationOptionFull>[] = [
                 sx={{
                     fontSize: '1rem',
                     color: '#486581',
-                    fontWeight: '400'
+                    fontWeight: '400',
                 }}
             >
                 {BILLING_TYPE_RESERVATION_OPTION_MAPPING[

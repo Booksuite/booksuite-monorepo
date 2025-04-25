@@ -5,18 +5,22 @@ import type { QueryKey, QueryObserverOptions, UseQueryResult } from '@tanstack/r
 import { getOfferById } from '../../client/OfferService/getOfferById.ts'
 import { queryOptions, useQuery } from '@tanstack/react-query'
 
-export const getOfferByIdQueryKey = ({ id }: { id: GetOfferByIdPathParams['id'] }) => ['getOfferById', { companyId: companyId, id: id }] as const
+export const getOfferByIdQueryKey = ({ id, companyId }: { id: GetOfferByIdPathParams['id']; companyId: GetOfferByIdPathParams['companyId'] }) =>
+  ['getOfferById', { companyId: companyId, id: id }] as const
 
 export type GetOfferByIdQueryKey = ReturnType<typeof getOfferByIdQueryKey>
 
-export function getOfferByIdQueryOptions({ id }: { id: GetOfferByIdPathParams['id'] }, config: Partial<RequestConfig> & { client?: typeof client } = {}) {
-  const queryKey = getOfferByIdQueryKey({ id })
+export function getOfferByIdQueryOptions(
+  { id, companyId }: { id: GetOfferByIdPathParams['id']; companyId: GetOfferByIdPathParams['companyId'] },
+  config: Partial<RequestConfig> & { client?: typeof client } = {},
+) {
+  const queryKey = getOfferByIdQueryKey({ id, companyId })
   return queryOptions<GetOfferByIdQueryResponse, ResponseErrorConfig<Error>, GetOfferByIdQueryResponse, typeof queryKey>({
-    enabled: !!id,
+    enabled: !!(id && companyId),
     queryKey,
     queryFn: async ({ signal }) => {
       config.signal = signal
-      return getOfferById({ id }, config)
+      return getOfferById({ id, companyId }, config)
     },
   })
 }
@@ -25,17 +29,17 @@ export function getOfferByIdQueryOptions({ id }: { id: GetOfferByIdPathParams['i
  * {@link /company/:companyId/offers/:id}
  */
 export function useGetOfferById<TData = GetOfferByIdQueryResponse, TQueryData = GetOfferByIdQueryResponse, TQueryKey extends QueryKey = GetOfferByIdQueryKey>(
-  { id }: { id: GetOfferByIdPathParams['id'] },
+  { id, companyId }: { id: GetOfferByIdPathParams['id']; companyId: GetOfferByIdPathParams['companyId'] },
   options: {
     query?: Partial<QueryObserverOptions<GetOfferByIdQueryResponse, ResponseErrorConfig<Error>, TData, TQueryData, TQueryKey>>
     client?: Partial<RequestConfig> & { client?: typeof client }
   } = {},
 ) {
   const { query: queryOptions, client: config = {} } = options ?? {}
-  const queryKey = queryOptions?.queryKey ?? getOfferByIdQueryKey({ id })
+  const queryKey = queryOptions?.queryKey ?? getOfferByIdQueryKey({ id, companyId })
 
   const query = useQuery({
-    ...(getOfferByIdQueryOptions({ id }, config) as unknown as QueryObserverOptions),
+    ...(getOfferByIdQueryOptions({ id, companyId }, config) as unknown as QueryObserverOptions),
     queryKey,
     ...(queryOptions as unknown as Omit<QueryObserverOptions, 'queryKey'>),
   }) as UseQueryResult<TData, ResponseErrorConfig<Error>> & { queryKey: TQueryKey }

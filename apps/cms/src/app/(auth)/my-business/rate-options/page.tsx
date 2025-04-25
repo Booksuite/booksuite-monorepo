@@ -2,12 +2,13 @@
 
 import {
     BillingType,
-    ReservationOptionFull,
-    ReservationOptionOrderBy,
-    useReservationOptionsControllerUpdate,
-    useSearchReservationOption,
+    RateOptionFull,
+    RateOptionOrderBy,
+    useSearchRateOption,
+    useUpdateRateOption,
 } from '@booksuite/sdk'
 import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
+import { Box } from '@mui/system'
 import {
     Check,
     CheckCheck,
@@ -40,25 +41,26 @@ const chipItems = [
     { key: 'unpublished', label: 'Não publicadas' },
 ]
 
-export default function ReservationOptions() {
+export default function RateOptions() {
     const { push } = useRouter()
     const { showDialog } = useConfirmationDialog()
-    const { mutateAsync: updateReservationOptions } =
-        useReservationOptionsControllerUpdate()
+    const { mutateAsync: updateRateOption } = useUpdateRateOption()
 
-    const [selectedFilters, setSelectedFilters] = useState<string[]>([])
+    const [selectedFilters, setSelectedFilters] = useState<string[]>([
+        'published',
+    ])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
 
     const { orderBy, orderDirection, setOrder } =
-        useSearchParamsOrder<ReservationOptionOrderBy>({
+        useSearchParamsOrder<RateOptionOrderBy>({
             defaultOrder: 'name',
-            currentPath: '/my-business/reservation-options',
+            currentPath: '/my-business/rate-options',
         })
 
     const { page, itemsPerPage, setPage, setItemsPerPage } =
         useSearchParamsPagination({
-            currentPath: '/my-business/reservation-options',
+            currentPath: '/my-business/rate-options',
         })
 
     const debouncedSearch = useRef(
@@ -73,10 +75,10 @@ export default function ReservationOptions() {
 
     const companyId = useCurrentCompanyId()
     const {
-        data: reservationOptions,
+        data: rateOptions,
         isLoading,
         error,
-    } = useSearchReservationOption(
+    } = useSearchRateOption(
         { companyId },
         {
             pagination: { page, itemsPerPage },
@@ -101,11 +103,11 @@ export default function ReservationOptions() {
         { query: searchQuery.length > 0 ? searchQuery : undefined },
     )
 
-    const handleRowClick = (row: ReservationOptionFull) => {
-        push(`/my-business/reservation-options/${row.id}`)
+    const handleRowClick = (row: RateOptionFull) => {
+        push(`/my-business/rate-options/${row.id}`)
     }
 
-    const handleTogglePublished = (item: ReservationOptionFull) => {
+    const handleTogglePublished = (item: RateOptionFull) => {
         showDialog({
             title: 'Confirmar publicação',
             description: `Tem certeza que deseja ${
@@ -114,7 +116,7 @@ export default function ReservationOptions() {
             confirmButton: {
                 children: 'Confirmar',
                 onClick: () => {
-                    updateReservationOptions({
+                    updateRateOption({
                         companyId,
                         id: item.id,
                         data: { published: !item.published },
@@ -128,11 +130,11 @@ export default function ReservationOptions() {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleDuplicate = (item: ReservationOptionFull) => {
+    const handleDuplicate = (item: RateOptionFull) => {
         // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
     }
 
-    const handleDelete = (item: ReservationOptionFull) => {
+    const handleDelete = (item: RateOptionFull) => {
         showDialog({
             title: 'Confirmar exclusão',
             description: `Tem certeza que deseja excluir "${item.name}"? Esta ação não pode ser desfeita.`,
@@ -146,8 +148,8 @@ export default function ReservationOptions() {
         })
     }
 
-    const handleEdit = (item: ReservationOptionFull) => {
-        push(`/my-business/reservation-options/${item.id}`)
+    const handleEdit = (item: RateOptionFull) => {
+        push(`/my-business/rate-options/${item.id}`)
     }
 
     return (
@@ -158,7 +160,7 @@ export default function ReservationOptions() {
                 backButtonHref="/my-business"
                 headerRight={
                     <LinkButton
-                        href="/my-business/reservation-options/create"
+                        href="/my-business/rate-options/create"
                         startIcon={<Plus size={16} />}
                     >
                         Adicionar
@@ -179,39 +181,44 @@ export default function ReservationOptions() {
                         onChange={setSelectedFilters}
                     />
 
-                    <TextField
-                        variant="outlined"
-                        size="small"
-                        placeholder="Pesquisar"
-                        value={searchInputValue}
-                        onChange={(e) => setSearchInputValue(e.target.value)}
-                        slotProps={{
-                            input: {
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <IconButton
-                                            size="small"
-                                            onClick={() => {
-                                                setSearchInputValue('')
-                                                setSearchQuery('')
-                                            }}
-                                        >
-                                            {searchQuery.length > 0 ? (
-                                                <X size={16} />
-                                            ) : (
-                                                <Search size={16} />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            },
-                        }}
-                    />
+                    <Box sx={{ width: '300px' }}>
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            size="small"
+                            placeholder="Pesquisar"
+                            value={searchInputValue}
+                            onChange={(e) =>
+                                setSearchInputValue(e.target.value)
+                            }
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <IconButton
+                                                size="small"
+                                                onClick={() => {
+                                                    setSearchInputValue('')
+                                                    setSearchQuery('')
+                                                }}
+                                            >
+                                                {searchQuery.length > 0 ? (
+                                                    <X size={16} />
+                                                ) : (
+                                                    <Search size={16} />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                },
+                            }}
+                        />
+                    </Box>
                 </Stack>
 
                 <Table
                     columns={COLUMNS_DEFINITION}
-                    data={reservationOptions?.items ?? []}
+                    data={rateOptions?.items ?? []}
                     error={error}
                     enableRowActions
                     renderRowActionMenuItems={({ row, closeMenu }) => [
@@ -289,7 +296,7 @@ export default function ReservationOptions() {
                         page={page}
                         itemsPerPage={itemsPerPage}
                         onItemsPerPageChange={setItemsPerPage}
-                        count={reservationOptions?.totalPages ?? 0}
+                        count={rateOptions?.totalPages ?? 0}
                         onChange={(_, value) => setPage(value)}
                     />
                 </Stack>

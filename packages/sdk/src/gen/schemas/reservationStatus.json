@@ -1,1 +1,1 @@
-{"type":"string","enum":["WAITING_PAYMENT","CONFIRMED","CHECKED_IN","CHECKED_OUT","ABANDONED","CANCELLED","PAYMENT_FAILED","OVERBOOKED","WAITING_LIST"],"description":"The status of the reservation","x-readme-ref-name":"ReservationStatus"}
+{"type":"string","enum":["WAITING_PAYMENT","CONFIRMED","CHECKED_IN","CHECKED_OUT","ABANDONED","CANCELLED","PAYMENT_FAILED","OVERBOOKED","WAITING_LIST"],"x-readme-ref-name":"ReservationStatus"}
