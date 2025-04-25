@@ -48,12 +48,12 @@ export const ImageGallery = ({
             />
             <div
                 className={`
-                    fixed inset-0 z-50 transform transition-all duration-300 ease-out
+                    fixed inset-0 z-50 transform transition-all duration-300 ease-out overflow-y-auto
                     ${isOpen ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}
                 `}
             >
                 <div
-                    className="min-h-screen bg-white overflow-y-auto"
+                    className="min-h-full bg-white"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <div className="max-w-7xl mx-auto px-4 py-8">

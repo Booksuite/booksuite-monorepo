@@ -12,6 +12,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 
 import { InputSelect } from '@/components/atoms/InputSelect'
+import { useParams } from 'next/navigation'
 
 interface Price {
     value: number
@@ -21,23 +22,34 @@ interface Price {
     minDays?: number
 }
 
-interface AvailabilityCalendarProps {
+interface HousingUnitTypeOption {
+    id: string
+    name: string
     prices: Record<string, Price>
-    propertyName: string
-    onDateSelect?: (date: Date) => void
     minDays: number
 }
 
+interface AvailabilityCalendarProps {
+    housingUnitTypes: HousingUnitTypeOption[]
+    currentHousingUnitId: string
+    onDateSelect?: (date: Date) => void
+    onHousingUnitTypeChange?: (housingUnitTypeId: string) => void
+}
+
 export function AvailabilityCalendar({
-    prices,
-    propertyName,
+    housingUnitTypes,
+    currentHousingUnitId,
     onDateSelect,
-    minDays,
+    onHousingUnitTypeChange,
 }: AvailabilityCalendarProps) {
     const [currentDate, setCurrentDate] = useState(new Date())
     const [nextMonthDate, setNextMonthDate] = useState(addMonths(new Date(), 1))
-    const [selectedPropertyName, setSelectedPropertyName] =
-        useState(propertyName)
+    const [selectedHousingUnitTypeId, setSelectedHousingUnitTypeId] =
+        useState<string>(currentHousingUnitId)
+
+    const selectedHousingUnitType = housingUnitTypes.find(
+        (type) => type.id === selectedHousingUnitTypeId,
+    )
 
     const weekDays = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 
@@ -49,6 +61,11 @@ export function AvailabilityCalendar({
     const handleNextMonth = () => {
         setCurrentDate((prev) => addMonths(prev, 1))
         setNextMonthDate((prev) => addMonths(prev, 1))
+    }
+
+    const handleHousingUnitTypeChange = (value: string) => {
+        setSelectedHousingUnitTypeId(value)
+        onHousingUnitTypeChange?.(value)
     }
 
     const getDaysInMonth = (date: Date) => {
@@ -72,7 +89,7 @@ export function AvailabilityCalendar({
                 ))}
                 {days.map((day) => {
                     const dateKey = format(day, 'yyyy-MM-dd')
-                    const price = prices[dateKey]
+                    const price = selectedHousingUnitType?.prices[dateKey]
                     const isCurrentMonth = isSameMonth(day, date)
 
                     if (!isCurrentMonth) {
@@ -96,11 +113,12 @@ export function AvailabilityCalendar({
                             }
                         >
                             <div className="flex flex-col gap-0 items-center">
-                                {!isUnavailable && minDays > 1 && (
-                                    <span className="bg-grey-800 text-white text-[12px] px-1 leading-4 rounded">
-                                        {minDays}
-                                    </span>
-                                )}
+                                {!isUnavailable &&
+                                    selectedHousingUnitType?.minDays > 1 && (
+                                        <span className="bg-grey-800 text-white text-[12px] px-1 leading-4 rounded">
+                                            {selectedHousingUnitType.minDays}
+                                        </span>
+                                    )}
                                 <span
                                     className={`text-md mt-0.5 ${
                                         isUnavailable
@@ -137,14 +155,12 @@ export function AvailabilityCalendar({
                 </h2>
                 <div className="relative w-[175px]">
                     <InputSelect
-                        value={selectedPropertyName}
-                        options={[
-                            {
-                                value: propertyName,
-                                label: propertyName,
-                            },
-                        ]}
-                        onChange={(value) => setSelectedPropertyName(value)}
+                        value={selectedHousingUnitTypeId}
+                        options={housingUnitTypes.map((type) => ({
+                            value: type.id,
+                            label: type.name,
+                        }))}
+                        onChange={handleHousingUnitTypeChange}
                     />
                 </div>
             </div>
