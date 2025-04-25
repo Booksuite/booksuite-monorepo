@@ -284,6 +284,7 @@ export function HousingUnitDetails() {
                                     minDays: companyHostingRules?.minDaily || 1,
                                 }),
                             )}
+                            currentHousingUnitId={housingUnit.id}
                         />
                     </div>
                 </div>

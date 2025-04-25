@@ -12,6 +12,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { useState } from 'react'
 
 import { InputSelect } from '@/components/atoms/InputSelect'
+import { useParams } from 'next/navigation'
 
 interface Price {
     value: number
@@ -30,19 +31,21 @@ interface HousingUnitTypeOption {
 
 interface AvailabilityCalendarProps {
     housingUnitTypes: HousingUnitTypeOption[]
+    currentHousingUnitId: string
     onDateSelect?: (date: Date) => void
     onHousingUnitTypeChange?: (housingUnitTypeId: string) => void
 }
 
 export function AvailabilityCalendar({
     housingUnitTypes,
+    currentHousingUnitId,
     onDateSelect,
     onHousingUnitTypeChange,
 }: AvailabilityCalendarProps) {
     const [currentDate, setCurrentDate] = useState(new Date())
     const [nextMonthDate, setNextMonthDate] = useState(addMonths(new Date(), 1))
     const [selectedHousingUnitTypeId, setSelectedHousingUnitTypeId] =
-        useState<string>(housingUnitTypes[0]?.id ?? '')
+        useState<string>(currentHousingUnitId)
 
     const selectedHousingUnitType = housingUnitTypes.find(
         (type) => type.id === selectedHousingUnitTypeId,
