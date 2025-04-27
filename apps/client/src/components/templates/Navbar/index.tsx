@@ -2,7 +2,7 @@
 
 import { ShoppingCart, User } from 'lucide-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { cn } from '@/common/lib/utils'
@@ -17,7 +17,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ darkMode = false }) => {
     const { company } = useCurrentCompanyStore()
     const pathname = usePathname()
-
+    const router = useRouter()
     return (
         <header className="w-full z-50">
             <div className="container mx-auto px-4 py-4">
@@ -71,7 +71,10 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode = false }) => {
 
                     <div className="flex items-center">
                         <div className="bg-white rounded-full flex items-center overflow-hidden ">
-                            <button className="p-3">
+                            <button
+                                className="p-3"
+                                onClick={() => router.push('/cart')}
+                            >
                                 <ShoppingCart className="h-5 w-5 text-black" />
                             </button>
                             <button className="bg-primary-500 rounded-full p-3 border-2 border-white">
