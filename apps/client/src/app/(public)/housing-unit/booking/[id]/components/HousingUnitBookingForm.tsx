@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useCallback, useEffect, useState } from 'react'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
+import { useCart } from '@/common/hooks/useCart'
 import { Button } from '@/components/atoms/Button'
 import { InputCalendar } from '@/components/atoms/InputCalendar'
 import { InputSelect } from '@/components/atoms/InputSelect'
@@ -28,6 +29,7 @@ interface HousingUnitBookingFormProps {
         { value: number; available: number; isUnavailable?: boolean }
     >
     weekendDays: number[]
+    image?: string
 }
 
 export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
@@ -38,10 +40,12 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
     maxGuests,
     prices,
     weekendDays,
+    image,
 }) => {
     const router = useRouter()
     const searchParams = useSearchParams()
     const { company } = useCurrentCompanyStore()
+    const { addToCart } = useCart()
     const [selectedMealPlans, setSelectedMealPlans] = useState<MealPlan[]>([])
     const [error, setError] = useState<string | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
@@ -173,7 +177,25 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
         )
 
     const handleAddToCart = () => {
-        // TODO: Implement actual cart functionality
+        if (!checkIn || !checkOut) {
+            setError('Selecione as datas da sua estadia')
+            return
+        }
+
+        addToCart({
+            id: housingUnitTypeId,
+            name: title,
+            price: totalPrice,
+            image: image ?? '',
+            checkIn,
+            checkOut,
+            guests: parseInt(guests, 10),
+            mealPlan:
+                selectedMealPlans.length > 0
+                    ? selectedMealPlans.map((plan) => plan.title).join(' + ')
+                    : undefined,
+        })
+
         setIsModalOpen(true)
     }
 
@@ -294,6 +316,7 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
                                 <div className="flex-1">
                                     <MealPlanSelector
                                         plans={mealPlans}
+                                        multiSelect={true}
                                         onChange={setSelectedMealPlans}
                                         value={selectedMealPlans}
                                     />
