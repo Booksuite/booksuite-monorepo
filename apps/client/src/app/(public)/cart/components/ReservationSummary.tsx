@@ -18,7 +18,7 @@ export function ReservationSummary() {
         0,
     )
     const additionalItemsTotal = services.reduce(
-        (acc, item) => acc + item.price,
+        (acc, item) => acc + item.price * item.quantity,
         0,
     )
     const discountsTotal = 0

@@ -1,13 +1,15 @@
 'use client'
 
 import { Flame, Images, Minus, Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import { useCart } from '@/common/hooks/useCart'
 import { formatCurrency } from '@/common/utils/formatCurrency'
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
 
 interface ExtraServicesCardProps {
+    id: string
     title: string
     description: string
     images: string[]
@@ -15,11 +17,11 @@ interface ExtraServicesCardProps {
     originalPrice?: number
     hasOffer?: boolean
     discount?: number
-    onQuantityChange?: (quantity: number) => void
     onViewAllPhotos?: () => void
 }
 
 export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
+    id,
     title,
     description,
     images,
@@ -27,16 +29,37 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
     originalPrice,
     hasOffer,
     discount,
-    onQuantityChange,
     onViewAllPhotos,
 }) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const [quantity, setQuantity] = useState(0)
+    const { addToCart, removeFromCart, services } = useCart()
+
+    useEffect(() => {
+        const existingService = services.find((service) => service.id === id)
+        if (existingService) {
+            setQuantity(existingService.quantity)
+        }
+    }, [id, services])
 
     const handleQuantityChange = (newQuantity: number) => {
         if (newQuantity >= 0) {
             setQuantity(newQuantity)
-            onQuantityChange?.(newQuantity)
+
+            if (newQuantity === 0) {
+                removeFromCart(id)
+            } else {
+                addToCart({
+                    id,
+                    name: title,
+                    description,
+                    price,
+                    originalPrice,
+                    discount,
+                    image: images[0] ?? '',
+                    quantity: newQuantity,
+                })
+            }
         }
     }
 
