@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
+import { useCart } from '@/common/hooks/useCart'
 import { cn } from '@/common/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/atoms/Avatar'
 
@@ -18,6 +19,8 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode = false }) => {
     const { company } = useCurrentCompanyStore()
     const pathname = usePathname()
     const router = useRouter()
+    const { housingUnits, services } = useCart()
+    const cartCount = housingUnits.length + services.length
     return (
         <header className="w-full z-50">
             <div className="container mx-auto px-4 py-4">
@@ -72,12 +75,17 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode = false }) => {
                     <div className="flex items-center">
                         <div className="bg-white rounded-full flex items-center overflow-hidden ">
                             <button
-                                className="p-3"
+                                className="p-3 relative hover:bg-systemColors-blueLight transition-colors text-grey-primary hover:text-primary-500 rounded-full"
                                 onClick={() => router.push('/cart')}
                             >
-                                <ShoppingCart className="h-5 w-5 text-black" />
+                                <ShoppingCart className="h-5 w-5  transition-colors" />
+                                {cartCount > 0 && (
+                                    <span className="absolute top-2 right-0.5 bg-systemColors-orange text-white text-xs rounded-full px-1 text-center font-regular">
+                                        {cartCount}
+                                    </span>
+                                )}
                             </button>
-                            <button className="bg-primary-500 rounded-full p-3 border-2 border-white">
+                            <button className="bg-primary-500 hover:bg-primary-600 transition-colors rounded-full p-3 border-2 border-white">
                                 <User className="h-5 w-5 text-white" />
                             </button>
                         </div>

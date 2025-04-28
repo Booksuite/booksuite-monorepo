@@ -42,7 +42,7 @@ export function Cart() {
                 <div className="border border-grey-200 rounded-full p-6 mb-6">
                     <ShoppingCart className="w-12 h-12 text-primary-500" />
                 </div>
-                <h2 className="text-2xl font-semibold mb-2">
+                <h2 className="text-2xl font-regular mb-2">
                     Sem itens no carrinho!
                 </h2>
                 <p className="text-gray-600 mb-8">
@@ -220,6 +220,9 @@ export function Cart() {
                                             </div>
                                             {!incompatibilityReason ? (
                                                 <>
+                                                    <span className="text-grey-secondary">
+                                                        {service.description}
+                                                    </span>
                                                     <div className="flex items-center gap-2 mt-1">
                                                         {service.originalPrice && (
                                                             <span className="text-gray-400 line-through">
