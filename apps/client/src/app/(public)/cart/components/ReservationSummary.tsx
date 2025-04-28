@@ -28,6 +28,13 @@ export function ReservationSummary() {
 
     const hasItems = housingUnits.length > 0 || services.length > 0
 
+    const housingUnit = housingUnits[0]
+    const incompatibilityReason = services.some(
+        (service) =>
+            housingUnit &&
+            cart.getServiceIncompatibilityReason(service, housingUnit),
+    )
+
     return (
         <div className="bg-white rounded-xl border border-grey-200 p-6">
             <h2
@@ -120,7 +127,16 @@ export function ReservationSummary() {
                         </div>
                     </div>
 
-                    <button className="w-full bg-primary-500 text-white rounded-md py-3 px-4 font-medium hover:bg-primary-600 transition-colors flex items-center justify-center gap-2">
+                    <button
+                        className={`w-full ${
+                            housingUnits.length > 0 && !incompatibilityReason
+                                ? 'bg-primary-500 hover:bg-primary-600'
+                                : 'bg-grey-200'
+                        } text-white rounded-md py-3 px-4 font-medium transition-colors flex items-center justify-center gap-2`}
+                        disabled={
+                            housingUnits.length === 0 || incompatibilityReason
+                        }
+                    >
                         Ir para o pagamento
                         <ChevronRight className="w-4 h-4" />
                     </button>

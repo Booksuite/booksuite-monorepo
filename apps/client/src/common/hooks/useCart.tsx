@@ -11,6 +11,7 @@ export interface HousingUnit {
     checkOut: Date
     guests: number
     mealPlan?: string
+    housingUnitTypeId: string
 }
 
 export interface Service {
@@ -22,6 +23,10 @@ export interface Service {
     description?: string
     originalPrice?: number
     discount?: number
+    availableHousingUnitTypeIds?: string[]
+    minDaily?: number
+    minNotice?: number
+    availableWeekDays?: number[]
 }
 
 interface CartContextData {
@@ -32,6 +37,10 @@ interface CartContextData {
     clearCart: () => void
     isInCart: (itemId: string) => boolean
     total: number
+    getServiceIncompatibilityReason: (
+        service: Service,
+        housingUnit: HousingUnit,
+    ) => string | null
 }
 
 const CartContext = createContext<CartContextData>({} as CartContextData)
@@ -83,6 +92,58 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         ...services.map((item) => item.price * item.quantity),
     ].reduce((acc, price) => acc + price, 0)
 
+    const getDaysDifference = useCallback((checkIn: Date, checkOut: Date) => {
+        const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime())
+        return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+    }, [])
+
+    const getServiceIncompatibilityReason = useCallback(
+        (service: Service, housingUnit: HousingUnit): string | null => {
+            if (!service || !housingUnit) return null
+            if (
+                Array.isArray(service.availableHousingUnitTypeIds) &&
+                service.availableHousingUnitTypeIds.length > 0
+            ) {
+                if (
+                    !service.availableHousingUnitTypeIds.includes(
+                        housingUnit.housingUnitTypeId,
+                    )
+                ) {
+                    return 'Extra não disponível nesta acomodação.'
+                }
+            }
+            const days = getDaysDifference(
+                housingUnit.checkIn,
+                housingUnit.checkOut,
+            )
+            if (
+                typeof service.minDaily === 'number' &&
+                service.minDaily > 0 &&
+                days < service.minDaily
+            ) {
+                return `Mínimo de ${service.minDaily} diárias para reservar este item.`
+            }
+            if (
+                Array.isArray(service.availableWeekDays) &&
+                service.availableWeekDays.length > 0
+            ) {
+                let hasAvailable = false
+                for (let d = 0; d < days; d++) {
+                    const date = new Date(housingUnit.checkIn)
+                    date.setDate(date.getDate() + d)
+                    if (service.availableWeekDays.includes(date.getDay())) {
+                        hasAvailable = true
+                        break
+                    }
+                }
+                if (!hasAvailable)
+                    return 'Extra não disponível na data de estadia escolhida.'
+            }
+            return null
+        },
+        [getDaysDifference],
+    )
+
     return (
         <CartContext.Provider
             value={{
@@ -93,6 +154,7 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 clearCart,
                 isInCart,
                 total,
+                getServiceIncompatibilityReason,
             }}
         >
             {children}
