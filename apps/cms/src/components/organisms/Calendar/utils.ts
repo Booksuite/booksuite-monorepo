@@ -1,5 +1,4 @@
 import {
-    AvailabilityAndPricing,
     AvailAndPricingReservationInput,
     CalendarDay,
     ReservationResponseFullDTOStatus,
@@ -29,42 +28,8 @@ export const getDaysArray = (
     return days
 }
 
-export const getDayPrice = (
-    day: Dayjs,
-    availabilityAndPricing: AvailabilityAndPricing,
-    weekendDays: number[],
-) => {
-    const dayOfWeek = day.day()
-    const isWeekend = weekendDays.includes(dayOfWeek)
-    const price = isWeekend
-        ? availabilityAndPricing.weekendPrice
-        : availabilityAndPricing.weekdaysPrice
-
-    return price || 0
-}
-type GetCellColorPayload = {
-    currentDay: Dayjs
-    calendarDay: CalendarDay
-    weekendDays: number[]
-}
-export const getCellBgColor = ({
-    currentDay,
-    calendarDay,
-    weekendDays,
-}: GetCellColorPayload) => {
-    const hasOffer = !!calendarDay.offers
-
-    const dayOfWeek = currentDay.day()
-    const isWeekend = weekendDays.includes(dayOfWeek)
-    const bgColor = hasOffer
-        ? isWeekend
-            ? 'blueGrey.300'
-            : 'blueGrey.200'
-        : isWeekend
-          ? 'blueGrey.50'
-          : 'white'
-
-    return bgColor
+export const getDayPrice = (calendarDay: CalendarDay) => {
+    return calendarDay.finalPrice
 }
 
 export const getReservationColorFromStatus = (
