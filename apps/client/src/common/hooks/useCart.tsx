@@ -19,6 +19,9 @@ export interface Service {
     price: number
     image: string
     quantity: number
+    description?: string
+    originalPrice?: number
+    discount?: number
 }
 
 interface CartContextData {
@@ -41,7 +44,17 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         if ('checkIn' in item) {
             setHousingUnits((state) => [...state, item as HousingUnit])
         } else {
-            setServices((state) => [...state, item as Service])
+            setServices((state) => {
+                const existingServiceIndex = state.findIndex(
+                    (s) => s.id === item.id,
+                )
+                if (existingServiceIndex >= 0) {
+                    const newState = [...state]
+                    newState[existingServiceIndex] = item as Service
+                    return newState
+                }
+                return [...state, item as Service]
+            })
         }
     }, [])
 
@@ -65,10 +78,10 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
         [housingUnits, services],
     )
 
-    const total = [...housingUnits, ...services].reduce(
-        (acc, item) => acc + item.price,
-        0,
-    )
+    const total = [
+        ...housingUnits.map((item) => item.price),
+        ...services.map((item) => item.price * item.quantity),
+    ].reduce((acc, price) => acc + price, 0)
 
     return (
         <CartContext.Provider
