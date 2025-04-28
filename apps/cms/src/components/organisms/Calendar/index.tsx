@@ -18,12 +18,7 @@ import { CalendarSkeleton } from './CalendarSkeleton'
 import { CalendarCell, HeaderCell, RoomCell } from './components/table'
 import { HEADER_CELL_HEIGHT, ROOMS_COLUMN_WIDTH } from './constants'
 import { ReservationItem } from './ReservationItem'
-import {
-    getCellBgColor,
-    getDayPrice,
-    getDaysArray,
-    getTotalOccupancyPercentage,
-} from './utils'
+import { getDayPrice, getDaysArray, getTotalOccupancyPercentage } from './utils'
 
 interface CalendarProps {
     startDate: Date | string | Dayjs
@@ -159,12 +154,22 @@ export const Calendar: React.FC<CalendarProps> = ({
                                 reservations,
                             )
 
+                            const isSpecialDates = availabilityAndPricing.some(
+                                (housingType) =>
+                                    !!housingType.calendar[
+                                        day.format('YYYY-MM-DD')
+                                    ]?.specialDates,
+                            )
+
                             return (
                                 <Tooltip
                                     key={index}
                                     title={`${occupancyPct}% de ocupação`}
                                 >
-                                    <HeaderCell gap={0.5}>
+                                    <HeaderCell
+                                        gap={0.5}
+                                        isSpecialDate={isSpecialDates!}
+                                    >
                                         <Typography
                                             variant="caption"
                                             fontSize={12}
@@ -205,14 +210,14 @@ export const Calendar: React.FC<CalendarProps> = ({
                                     <CalendarCell
                                         key={dayIndex}
                                         gap={0.5}
-                                        bgcolor={getCellBgColor({
-                                            calendarDay:
-                                                housingType.calendar[
-                                                    day.format('YYYY-MM-DD')
-                                                ]!,
-                                            currentDay: day,
-                                            weekendDays,
-                                        })}
+                                        isSpecialDate={
+                                            !!housingType.calendar[
+                                                day.format('YYYY-MM-DD')
+                                            ]?.specialDates
+                                        }
+                                        isWeekend={weekendDays.includes(
+                                            day.day(),
+                                        )}
                                     >
                                         <Box
                                             sx={{
@@ -233,9 +238,9 @@ export const Calendar: React.FC<CalendarProps> = ({
                                         >
                                             {formatCurrency(
                                                 getDayPrice(
-                                                    day,
-                                                    housingType,
-                                                    weekendDays,
+                                                    housingType.calendar[
+                                                        day.format('YYYY-MM-DD')
+                                                    ]!,
                                                 ),
                                             )}
                                         </Typography>
@@ -262,14 +267,14 @@ export const Calendar: React.FC<CalendarProps> = ({
                                     {days.map((day, dayIndex) => (
                                         <CalendarCell
                                             key={dayIndex}
-                                            bgcolor={getCellBgColor({
-                                                calendarDay:
-                                                    housingType.calendar[
-                                                        day.format('YYYY-MM-DD')
-                                                    ]!,
-                                                currentDay: day,
-                                                weekendDays,
-                                            })}
+                                            isSpecialDate={
+                                                !!housingType.calendar[
+                                                    day.format('YYYY-MM-DD')
+                                                ]?.specialDates
+                                            }
+                                            isWeekend={weekendDays.includes(
+                                                day.day(),
+                                            )}
                                         ></CalendarCell>
                                     ))}
                                 </Stack>

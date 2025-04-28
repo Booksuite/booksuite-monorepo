@@ -22,20 +22,34 @@ export const RoomCell = styled(Cell)(({ theme }) => ({
     // minWidth: '200px',
 }))
 
-export const HeaderCell = styled(Cell)(({ theme }) => ({
-    backgroundColor: theme.palette.blueGrey[700],
-    color: theme.palette.primary.contrastText,
-    minWidth: CELL_WIDTH,
-    maxWidth: CELL_WIDTH,
-    height: HEADER_CELL_HEIGHT,
-    fontWeight: 'bold',
-}))
+export const HeaderCell = styled(Cell)<{ isSpecialDate: boolean }>(
+    ({ theme, isSpecialDate }) => ({
+        backgroundColor: isSpecialDate
+            ? theme.palette.primary.main
+            : theme.palette.blueGrey[700],
+        color: theme.palette.primary.contrastText,
+        minWidth: CELL_WIDTH,
+        maxWidth: CELL_WIDTH,
+        height: HEADER_CELL_HEIGHT,
+        fontWeight: 'bold',
+    }),
+)
 
-export const CalendarCell = styled(Cell)(() => ({
+export const CalendarCell = styled(Cell)<{
+    isSpecialDate: boolean
+    isWeekend: boolean
+}>(({ theme, isSpecialDate, isWeekend }) => ({
     overflow: 'hidden',
     minWidth: CELL_WIDTH,
     maxWidth: CELL_WIDTH,
     '&:last-child': {
         borderRight: 'none',
     },
+    backgroundColor: isSpecialDate
+        ? isWeekend
+            ? theme.palette.blueGrey[300]
+            : theme.palette.blueGrey[200]
+        : isWeekend
+          ? theme.palette.blueGrey[50]
+          : 'white',
 }))
