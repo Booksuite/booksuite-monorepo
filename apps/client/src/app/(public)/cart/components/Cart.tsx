@@ -12,6 +12,7 @@ export function Cart() {
     const cart = useCart()
     const { housingUnits, services, removeFromCart, addToCart } = cart
 
+
     function getDaysDifference(checkIn: Date, checkOut: Date) {
         const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime())
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
