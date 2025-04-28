@@ -6,16 +6,12 @@ export const inter = Inter({
     variable: '--font-inter',
 })
 
-import pluralize from 'pluralize'
-
 import { Providers } from './providers'
 
 export const metadata = {
     title: 'Booksuite',
     description: '',
 }
-
-pluralize.addPluralRule('item', 'itens')
 
 interface RootLayoutProps {
     children: React.ReactNode

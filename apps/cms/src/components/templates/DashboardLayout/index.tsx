@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { DashboardHeader } from '../DashboardHeader'
 import { DashboardSidebar } from '../DashboardSidebar'
 
+import { useDashboardLayoutStore } from './stores'
 import type { DashboardLayoutProps } from './types'
 
 const avatarUrl = '/profile-pic.png'
@@ -15,7 +16,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     children,
 }) => {
     const [isMobileOpen, setIsMobileOpen] = useState(false)
-    const [isCollapsed, setIsCollapsed] = useState(false)
+    const { isCollapsed, fullWidth, bgcolor, setIsCollapsed } =
+        useDashboardLayoutStore()
 
     const handleToggleCollapse = () => {
         setIsCollapsed(!isCollapsed)
@@ -23,6 +25,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 
     return (
         <Box
+            bgcolor={bgcolor}
             sx={{
                 display: 'flex',
                 height: '100vh',
@@ -37,7 +40,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 onToggleCollapse={handleToggleCollapse}
             />
             <Box
-                component="main"
                 sx={{
                     flexGrow: 1,
                     width: { md: `calc(100% - ${isCollapsed ? 80 : 280}px)` },
@@ -64,7 +66,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         overflow: 'auto',
                     }}
                 >
-                    <Container maxWidth="lg">{children}</Container>
+                    <Container
+                        disableGutters
+                        maxWidth={fullWidth ? false : 'lg'}
+                        fixed={!fullWidth}
+                    >
+                        {children}
+                    </Container>
                 </Box>
             </Box>
         </Box>
