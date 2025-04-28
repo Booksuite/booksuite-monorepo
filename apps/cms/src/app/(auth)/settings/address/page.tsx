@@ -1,10 +1,6 @@
 'use client'
 
-import {
-    useGetCalendarFromHousingUnitTypeId,
-    useGetCompanyById,
-    useUpdateCompany,
-} from '@booksuite/sdk'
+import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
