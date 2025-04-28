@@ -194,6 +194,7 @@ export const HousingUnitBookingForm: React.FC<HousingUnitBookingFormProps> = ({
                 selectedMealPlans.length > 0
                     ? selectedMealPlans.map((plan) => plan.title).join(' + ')
                     : undefined,
+            housingUnitTypeId: housingUnitTypeId,
         })
 
         setIsModalOpen(true)

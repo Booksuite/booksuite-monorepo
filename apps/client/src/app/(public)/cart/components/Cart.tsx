@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronRight, ShoppingCart, Trash2 } from 'lucide-react'
+import { ChevronRight, OctagonAlert, ShoppingCart, Trash2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -11,7 +11,6 @@ import { Button } from '@/components/atoms/Button'
 export function Cart() {
     const cart = useCart()
     const { housingUnits, services, removeFromCart, addToCart } = cart
-
 
     function getDaysDifference(checkIn: Date, checkOut: Date) {
         const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime())
@@ -34,6 +33,8 @@ export function Cart() {
             }
         }
     }
+
+    const housingUnit = housingUnits[0]
 
     if (housingUnits.length === 0 && services.length === 0) {
         return (
@@ -58,7 +59,7 @@ export function Cart() {
                     </Link>
                     <Link
                         href="/"
-                        className="border border-primary-500 flex flex-row text-center items-center gap-2 text-primary-500 px-6 py-3 rounded-md font-medium hover:bg-primary-50 transition-colors"
+                        className="border border-primary-500 flex flex-row text-center items-center gap-2 text-primary-500 px-6 py-3 rounded-md font-medium hover:bg-primary-500 hover:text-white transition-colors"
                     >
                         Adicionar experiências e extras
                         <ChevronRight className="w-4 h-4" />
@@ -181,87 +182,113 @@ export function Cart() {
                     </h2>
                     {services.length > 0 ? (
                         <div className="flex flex-col gap-6">
-                            {services.map((service) => (
-                                <div
-                                    key={service.id}
-                                    className="flex items-start w-full gap-8"
-                                >
-                                    <div className="relative w-32 h-32 rounded-md overflow-hidden flex-shrink-0">
-                                        <Image
-                                            src={service.image}
-                                            alt={service.name}
-                                            fill
-                                            className="object-cover"
-                                        />
-                                    </div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center justify-between w-full mb-2">
-                                            <h3 className="font-medium text-xl text-grey-primary">
-                                                {service.name}
-                                            </h3>
-                                            <button
-                                                onClick={() =>
-                                                    removeFromCart(service.id)
-                                                }
-                                                className="text-grey-secondary hover:text-systemColors-red transition-colors"
-                                            >
-                                                <Trash2 className="w-5 h-5" />
-                                            </button>
+                            {services.map((service) => {
+                                const incompatibilityReason = housingUnit
+                                    ? cart.getServiceIncompatibilityReason(
+                                          service,
+                                          housingUnit,
+                                      )
+                                    : null
+                                return (
+                                    <div
+                                        key={service.id}
+                                        className="flex items-start w-full gap-8"
+                                    >
+                                        <div className="relative w-32 h-32 rounded-md overflow-hidden flex-shrink-0">
+                                            <Image
+                                                src={service.image}
+                                                alt={service.name}
+                                                fill
+                                                className="object-cover"
+                                            />
                                         </div>
-                                        <p className="text-sm text-grey-secondary">
-                                            {service.description}
-                                        </p>
-                                        <div className="flex items-center gap-2 mt-1">
-                                            {service.originalPrice && (
-                                                <span className="text-gray-400 line-through">
-                                                    {formatCurrency(
-                                                        service.originalPrice,
-                                                    )}
-                                                </span>
-                                            )}
-                                            {service.discount && (
-                                                <span className="text-systemColors-green text-sm">
-                                                    -{service.discount}%
-                                                </span>
-                                            )}
-                                        </div>
-                                        <div className="flex items-center justify-between w-full mt-1">
-                                            <p className="font-medium text-xl text-grey-primary">
-                                                {formatCurrency(service.price)}
-                                            </p>
-                                            <div className="flex items-center">
-                                                <Button
+                                        <div className="flex-1">
+                                            <div className="flex items-center justify-between w-full mb-2">
+                                                <h3 className="font-medium text-xl text-grey-primary">
+                                                    {service.name}
+                                                </h3>
+                                                <button
                                                     onClick={() =>
-                                                        handleQuantityChange(
+                                                        removeFromCart(
                                                             service.id,
-                                                            service.quantity -
-                                                                1,
                                                         )
                                                     }
-                                                    className="w-10 h-10 font-medium text-white text-lg flex items-center justify-center bg-primary-500 hover:bg-primary-600 rounded-l-lg rounded-r-none transition-colors"
+                                                    className="text-grey-secondary hover:text-systemColors-red transition-colors"
                                                 >
-                                                    -
-                                                </Button>
-                                                <span className="w-10 h-10 flex items-center justify-center bg-grey-100 text-primary-500">
-                                                    {service.quantity}
-                                                </span>
-                                                <Button
-                                                    onClick={() =>
-                                                        handleQuantityChange(
-                                                            service.id,
-                                                            service.quantity +
-                                                                1,
-                                                        )
-                                                    }
-                                                    className="w-10 h-10 font-medium text-white text-lg flex items-center justify-center bg-primary-500 hover:bg-primary-600 rounded-r-lg rounded-l-none transition-colors"
-                                                >
-                                                    +
-                                                </Button>
+                                                    <Trash2 className="w-5 h-5" />
+                                                </button>
                                             </div>
+                                            {!incompatibilityReason ? (
+                                                <>
+                                                    <div className="flex items-center gap-2 mt-1">
+                                                        {service.originalPrice && (
+                                                            <span className="text-gray-400 line-through">
+                                                                {formatCurrency(
+                                                                    service.originalPrice,
+                                                                )}
+                                                            </span>
+                                                        )}
+                                                        {service.discount && (
+                                                            <span className="text-systemColors-green text-sm">
+                                                                -
+                                                                {
+                                                                    service.discount
+                                                                }
+                                                                %
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                    <div className="flex items-center justify-between w-full mt-1">
+                                                        <p className="font-medium text-xl text-grey-primary">
+                                                            {formatCurrency(
+                                                                service.price,
+                                                            )}
+                                                        </p>
+                                                        <div className="flex items-center">
+                                                            <Button
+                                                                onClick={() =>
+                                                                    handleQuantityChange(
+                                                                        service.id,
+                                                                        service.quantity -
+                                                                            1,
+                                                                    )
+                                                                }
+                                                                className="w-10 h-10 font-medium text-white text-lg flex items-center justify-center bg-primary-500 hover:bg-primary-600 rounded-l-lg rounded-r-none transition-colors"
+                                                            >
+                                                                -
+                                                            </Button>
+                                                            <span className="w-10 h-10 flex items-center justify-center bg-grey-100 text-primary-500">
+                                                                {
+                                                                    service.quantity
+                                                                }
+                                                            </span>
+                                                            <Button
+                                                                onClick={() =>
+                                                                    handleQuantityChange(
+                                                                        service.id,
+                                                                        service.quantity +
+                                                                            1,
+                                                                    )
+                                                                }
+                                                                className="w-10 h-10 font-medium text-white text-lg flex items-center justify-center bg-primary-500 hover:bg-primary-600 rounded-r-lg rounded-l-none transition-colors"
+                                                            >
+                                                                +
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div className="bg-grey-100 rounded-md p-4 mt-4 flex items-center justify-center gap-2">
+                                                    <span className="text-grey-secondary flex items-center gap-2">
+                                                        <OctagonAlert className="w-4 h-4" />
+                                                        {incompatibilityReason}
+                                                    </span>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                )
+                            })}
                             <div className="border-t-2 pt-4 border-grey-200">
                                 <Link
                                     href="/"

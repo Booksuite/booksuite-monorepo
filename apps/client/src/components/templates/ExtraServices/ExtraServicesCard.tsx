@@ -1,5 +1,6 @@
 'use client'
 
+import type { ServiceFull } from '@booksuite/sdk'
 import { Flame, Images, Minus, Plus } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -18,6 +19,7 @@ interface ExtraServicesCardProps {
     hasOffer?: boolean
     discount?: number
     onViewAllPhotos?: () => void
+    serviceFull: ServiceFull
 }
 
 export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
@@ -30,6 +32,7 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
     hasOffer,
     discount,
     onViewAllPhotos,
+    serviceFull,
 }) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const [quantity, setQuantity] = useState(0)
@@ -58,6 +61,12 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
                     discount,
                     image: images[0] ?? '',
                     quantity: newQuantity,
+                    availableHousingUnitTypeIds:
+                        serviceFull.availableHousingUnitTypes?.map(
+                            (t) => t.housingUnitType.id,
+                        ) ?? [],
+                    minDaily: serviceFull.minDaily,
+                    availableWeekDays: serviceFull.availableWeekDays,
                 })
             }
         }

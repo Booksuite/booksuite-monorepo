@@ -187,6 +187,7 @@ export const ExtraServices: React.FC = () => {
                                 onViewAllPhotos={() => {
                                     setSelectedService(service)
                                 }}
+                                serviceFull={service}
                             />
                         )
                     })}
