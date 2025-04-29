@@ -34,7 +34,6 @@ interface CartContextData {
     services: Service[]
     addToCart: (item: HousingUnit | Service) => void
     removeFromCart: (itemId: string) => void
-    clearCart: () => void
     isInCart: (itemId: string) => boolean
     total: number
     getServiceIncompatibilityReason: (
@@ -70,11 +69,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const removeFromCart = useCallback((itemId: string) => {
         setHousingUnits((state) => state.filter((item) => item.id !== itemId))
         setServices((state) => state.filter((item) => item.id !== itemId))
-    }, [])
-
-    const clearCart = useCallback(() => {
-        setHousingUnits([])
-        setServices([])
     }, [])
 
     const isInCart = useCallback(
@@ -151,7 +145,6 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 services,
                 addToCart,
                 removeFromCart,
-                clearCart,
                 isInCart,
                 total,
                 getServiceIncompatibilityReason,
