@@ -48,15 +48,6 @@ const getDaysDifference = (checkIn: Date, checkOut: Date) => {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
 }
 
-type StorageState = Omit<
-    CartState,
-    | 'addToCart'
-    | 'removeFromCart'
-    | 'isInCart'
-    | 'getTotal'
-    | 'getServiceIncompatibilityReason'
->
-
 export const useCart = create<CartState>()(
     persist(
         (set, get) => ({
@@ -173,19 +164,17 @@ export const useCart = create<CartState>()(
 
                         if (data?.state?.housingUnits) {
                             data.state.housingUnits =
-                                data.state.housingUnits.map((unit: any) => ({
-                                    ...unit,
-                                    checkIn: new Date(unit.checkIn),
-                                    checkOut: new Date(unit.checkOut),
-                                }))
+                                data.state.housingUnits.map(
+                                    (unit: HousingUnit) => ({
+                                        ...unit,
+                                        checkIn: new Date(unit.checkIn),
+                                        checkOut: new Date(unit.checkOut),
+                                    }),
+                                )
                         }
 
                         return data
-                    } catch (e) {
-                        console.warn(
-                            'Erro ao parsear o carrinho do localStorage:',
-                            e,
-                        )
+                    } catch {
                         return null
                     }
                 },
