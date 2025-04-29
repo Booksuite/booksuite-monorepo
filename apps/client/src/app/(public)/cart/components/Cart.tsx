@@ -12,8 +12,16 @@ export function Cart() {
     const cart = useCart()
     const { housingUnits, services, removeFromCart, addToCart } = cart
 
-    function getDaysDifference(checkIn: Date, checkOut: Date) {
-        const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime())
+    function getDaysDifference(
+        checkIn: Date | string,
+        checkOut: Date | string,
+    ) {
+        const start = new Date(checkIn)
+        const end = new Date(checkOut)
+
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) return 0
+
+        const diffTime = Math.abs(end.getTime() - start.getTime())
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
     }
 
@@ -109,11 +117,15 @@ export function Cart() {
                                                         item.checkOut,
                                                     )}{' '}
                                                     diárias,{' '}
-                                                    {item.checkIn.toLocaleDateString(
+                                                    {new Date(
+                                                        item.checkIn,
+                                                    ).toLocaleDateString(
                                                         'pt-BR',
                                                     )}{' '}
                                                     a{' '}
-                                                    {item.checkOut.toLocaleDateString(
+                                                    {new Date(
+                                                        item.checkOut,
+                                                    ).toLocaleDateString(
                                                         'pt-BR',
                                                     )}
                                                     , para {item.guests}{' '}

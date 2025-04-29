@@ -9,7 +9,7 @@ import { InputText } from '@/components/atoms/InputText'
 
 export function ReservationSummary() {
     const cart = useCart()
-    const { housingUnits, services, total } = cart
+    const { housingUnits, services } = cart
     const [isPromoCodeVisible, setIsPromoCodeVisible] = useState(false)
     const [promoCode, setPromoCode] = useState('')
 
@@ -21,6 +21,7 @@ export function ReservationSummary() {
         (acc, item) => acc + item.price * item.quantity,
         0,
     )
+    const total = housingUnitTotal + additionalItemsTotal
     const discountsTotal = 0
 
     const pixDiscount = total * 0.1

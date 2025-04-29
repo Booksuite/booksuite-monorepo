@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, useCallback, useContext, useState } from 'react'
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
 
 export interface HousingUnit {
     id: string
@@ -14,7 +15,7 @@ export interface HousingUnit {
     housingUnitTypeId: string
 }
 
-export interface Service {
+export interface CartService {
     id: string
     name: string
     price: number
@@ -29,138 +30,174 @@ export interface Service {
     availableWeekDays?: number[]
 }
 
-interface CartContextData {
+interface CartState {
     housingUnits: HousingUnit[]
-    services: Service[]
-    addToCart: (item: HousingUnit | Service) => void
+    services: CartService[]
+    addToCart: (item: HousingUnit | CartService) => void
     removeFromCart: (itemId: string) => void
     isInCart: (itemId: string) => boolean
-    total: number
+    getTotal: () => number
     getServiceIncompatibilityReason: (
-        service: Service,
+        service: CartService,
         housingUnit: HousingUnit,
     ) => string | null
 }
 
-const CartContext = createContext<CartContextData>({} as CartContextData)
+const getDaysDifference = (checkIn: Date, checkOut: Date) => {
+    const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime())
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+}
 
-export const CartProvider = ({ children }: { children: React.ReactNode }) => {
-    const [housingUnits, setHousingUnits] = useState<HousingUnit[]>([])
-    const [services, setServices] = useState<Service[]>([])
+type StorageState = Omit<
+    CartState,
+    | 'addToCart'
+    | 'removeFromCart'
+    | 'isInCart'
+    | 'getTotal'
+    | 'getServiceIncompatibilityReason'
+>
 
-    const addToCart = useCallback((item: HousingUnit | Service) => {
-        if ('checkIn' in item) {
-            setHousingUnits((state) => [...state, item as HousingUnit])
-        } else {
-            setServices((state) => {
-                const existingServiceIndex = state.findIndex(
-                    (s) => s.id === item.id,
-                )
-                if (existingServiceIndex >= 0) {
-                    const newState = [...state]
-                    newState[existingServiceIndex] = item as Service
-                    return newState
+export const useCart = create<CartState>()(
+    persist(
+        (set, get) => ({
+            housingUnits: [],
+            services: [],
+            addToCart: (item: HousingUnit | CartService) => {
+                if ('checkIn' in item) {
+                    set((state) => ({
+                        housingUnits: [
+                            ...state.housingUnits,
+                            {
+                                ...item,
+                                checkIn: new Date(item.checkIn),
+                                checkOut: new Date(item.checkOut),
+                            },
+                        ],
+                    }))
+                } else {
+                    set((state) => {
+                        const existingIndex = state.services.findIndex(
+                            (s) => s.id === item.id,
+                        )
+                        if (existingIndex >= 0) {
+                            const newServices = [...state.services]
+                            newServices[existingIndex] = item
+                            return { services: newServices }
+                        }
+                        return { services: [...state.services, item] }
+                    })
                 }
-                return [...state, item as Service]
-            })
-        }
-    }, [])
+            },
+            removeFromCart: (itemId: string) => {
+                set((state) => ({
+                    housingUnits: state.housingUnits.filter(
+                        (item) => item.id !== itemId,
+                    ),
+                    services: state.services.filter(
+                        (item) => item.id !== itemId,
+                    ),
+                }))
+            },
+            isInCart: (itemId: string) => {
+                const state = get()
+                return (
+                    state.housingUnits.some((item) => item.id === itemId) ||
+                    state.services.some((item) => item.id === itemId)
+                )
+            },
+            getTotal: () => {
+                const state = get()
+                return [
+                    ...state.housingUnits.map((item) => item.price),
+                    ...state.services.map((item) => item.price * item.quantity),
+                ].reduce((acc, price) => acc + price, 0)
+            },
+            getServiceIncompatibilityReason: (
+                service: CartService,
+                housingUnit: HousingUnit,
+            ): string | null => {
+                if (!service || !housingUnit) return null
 
-    const removeFromCart = useCallback((itemId: string) => {
-        setHousingUnits((state) => state.filter((item) => item.id !== itemId))
-        setServices((state) => state.filter((item) => item.id !== itemId))
-    }, [])
-
-    const isInCart = useCallback(
-        (itemId: string) => {
-            return (
-                housingUnits.some((item) => item.id === itemId) ||
-                services.some((item) => item.id === itemId)
-            )
-        },
-        [housingUnits, services],
-    )
-
-    const total = [
-        ...housingUnits.map((item) => item.price),
-        ...services.map((item) => item.price * item.quantity),
-    ].reduce((acc, price) => acc + price, 0)
-
-    const getDaysDifference = useCallback((checkIn: Date, checkOut: Date) => {
-        const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime())
-        return Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-    }, [])
-
-    const getServiceIncompatibilityReason = useCallback(
-        (service: Service, housingUnit: HousingUnit): string | null => {
-            if (!service || !housingUnit) return null
-            if (
-                Array.isArray(service.availableHousingUnitTypeIds) &&
-                service.availableHousingUnitTypeIds.length > 0
-            ) {
                 if (
+                    Array.isArray(service.availableHousingUnitTypeIds) &&
+                    service.availableHousingUnitTypeIds.length > 0 &&
                     !service.availableHousingUnitTypeIds.includes(
                         housingUnit.housingUnitTypeId,
                     )
                 ) {
                     return 'Extra não disponível nesta acomodação.'
                 }
-            }
-            const days = getDaysDifference(
-                housingUnit.checkIn,
-                housingUnit.checkOut,
-            )
-            if (
-                typeof service.minDaily === 'number' &&
-                service.minDaily > 0 &&
-                days < service.minDaily
-            ) {
-                return `Mínimo de ${service.minDaily} diárias para reservar este item.`
-            }
-            if (
-                Array.isArray(service.availableWeekDays) &&
-                service.availableWeekDays.length > 0
-            ) {
-                let hasAvailable = false
-                for (let d = 0; d < days; d++) {
-                    const date = new Date(housingUnit.checkIn)
-                    date.setDate(date.getDate() + d)
-                    if (service.availableWeekDays.includes(date.getDay())) {
-                        hasAvailable = true
-                        break
-                    }
+
+                const days = getDaysDifference(
+                    housingUnit.checkIn,
+                    housingUnit.checkOut,
+                )
+
+                if (
+                    typeof service.minDaily === 'number' &&
+                    service.minDaily > 0 &&
+                    days < service.minDaily
+                ) {
+                    return `Mínimo de ${service.minDaily} diárias para reservar este item.`
                 }
-                if (!hasAvailable)
-                    return 'Extra não disponível na data de estadia escolhida.'
-            }
-            return null
+
+                if (
+                    Array.isArray(service.availableWeekDays) &&
+                    service.availableWeekDays.length > 0
+                ) {
+                    let available = false
+                    for (let d = 0; d < days; d++) {
+                        const date = new Date(housingUnit.checkIn)
+                        date.setDate(date.getDate() + d)
+                        if (service.availableWeekDays.includes(date.getDay())) {
+                            available = true
+                            break
+                        }
+                    }
+                    if (!available)
+                        return 'Extra não disponível na data de estadia escolhida.'
+                }
+
+                return null
+            },
+        }),
+        {
+            name: 'shopping-cart',
+            storage: {
+                getItem: (name) => {
+                    const str = localStorage.getItem(name)
+                    if (!str) return null
+
+                    try {
+                        const data = JSON.parse(str)
+
+                        if (data?.state?.housingUnits) {
+                            data.state.housingUnits =
+                                data.state.housingUnits.map((unit: any) => ({
+                                    ...unit,
+                                    checkIn: new Date(unit.checkIn),
+                                    checkOut: new Date(unit.checkOut),
+                                }))
+                        }
+
+                        return data
+                    } catch (e) {
+                        console.warn(
+                            'Erro ao parsear o carrinho do localStorage:',
+                            e,
+                        )
+                        return null
+                    }
+                },
+                setItem: (name, value) =>
+                    localStorage.setItem(name, JSON.stringify(value)),
+                removeItem: (name) => localStorage.removeItem(name),
+            },
+            partialize: (state): CartState => ({
+                ...state,
+                housingUnits: state.housingUnits,
+                services: state.services,
+            }),
         },
-        [getDaysDifference],
-    )
-
-    return (
-        <CartContext.Provider
-            value={{
-                housingUnits,
-                services,
-                addToCart,
-                removeFromCart,
-                isInCart,
-                total,
-                getServiceIncompatibilityReason,
-            }}
-        >
-            {children}
-        </CartContext.Provider>
-    )
-}
-
-export const useCart = (): CartContextData => {
-    const context = useContext(CartContext)
-
-    if (!context) {
-        throw new Error('useCart must be used within a CartProvider')
-    }
-
-    return context
-}
+    ),
+)
