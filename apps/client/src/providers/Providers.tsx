@@ -3,8 +3,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { type ReactNode, useState } from 'react'
 
-import { CartProvider } from '@/common/hooks/useCart'
-
 import { CompanyProvider } from './CompanyProvider'
 import { ThemeProvider } from './ThemeProvider'
 
@@ -18,9 +16,7 @@ export function Providers({ children }: ProvidersProps) {
     return (
         <QueryClientProvider client={queryClient}>
             <CompanyProvider>
-                <ThemeProvider>
-                    <CartProvider>{children}</CartProvider>
-                </ThemeProvider>
+                <ThemeProvider>{children}</ThemeProvider>
             </CompanyProvider>
         </QueryClientProvider>
     )
