@@ -19,6 +19,8 @@ import {
     agePolicyFormSchema,
     createAgePolicyInitialValues,
 } from './utils/config'
+import { getErrorMessage } from '@/common/utils'
+import { normalize } from 'path'
 
 export default function AgePolicy() {
     const companyId = useCurrentCompanyId()
@@ -38,10 +40,17 @@ export default function AgePolicy() {
 
     async function handleSubmit(formData: AgePolicyFormData) {
         try {
+            const normalizedFormData = {
+                ...formData,
+                ageGroups: formData.ageGroups.map((group) => ({
+                    ...group,
+                    value: Number(group.value),
+                })),
+            }
+
             await updateCompanyAgePolicy({
-                id: formData.id,
-                companyId: companyId,
-                data: formData,
+                companyId,
+                data: normalizedFormData,
             })
 
             await queryClient.invalidateQueries({ queryKey })
@@ -55,15 +64,18 @@ export default function AgePolicy() {
                 autoHideDuration: 3000,
             })
             back()
-        } catch {
-            enqueueSnackbar(`Erro ao modificar políticas`, {
-                variant: 'error',
-                anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right',
+        } catch (error) {
+            enqueueSnackbar(
+                `Erro ao modificar políticas ${getErrorMessage(error)}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
                 },
-                autoHideDuration: 5000,
-            })
+            )
         }
     }
 

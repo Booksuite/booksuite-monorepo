@@ -26,6 +26,7 @@ export function getCompanyAgePolicyQueryOptions(
 }
 
 /**
+ * @summary Get age policy by company ID
  * {@link /company/:companyId/agePolicy}
  */
 export function useGetCompanyAgePolicy<

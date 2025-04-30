@@ -1,5 +1,6 @@
 export type { AgeGroupResponseDTOChargeType, AgeGroup } from './AgeGroup.ts'
-export type { AgeGroupDTOChargeType, AgeGroupInput } from './AgeGroupInput.ts'
+export type { AgeGroupChargeType } from './AgeGroupChargeType.ts'
+export type { AgeGroupInput } from './AgeGroupInput.ts'
 export type { AgePolicy } from './AgePolicy.ts'
 export type {
   GetCompanyAgePolicyPathParams,
@@ -534,6 +535,7 @@ export type { UnavailabilityReason } from './UnavailabilityReason.ts'
 export type { UnavailableSource } from './UnavailableSource.ts'
 export type { UpdateOfferDto } from './UpdateOfferDto.ts'
 export type { User } from './User.ts'
+export type { UserCreateInput } from './UserCreateInput.ts'
 export type { UtilityLinks } from './UtilityLinks.ts'
 export type { GetUtilityLinkPathParams, GetUtilityLink200, GetUtilityLinkQueryResponse, GetUtilityLinkQuery } from './UtilityLinksController/GetUtilityLink.ts'
 export type {

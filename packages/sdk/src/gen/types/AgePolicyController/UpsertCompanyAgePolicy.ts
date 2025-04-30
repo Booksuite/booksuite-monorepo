@@ -3,15 +3,15 @@ import type { AgePolicyInput } from '../AgePolicyInput.ts'
 
 export type UpsertCompanyAgePolicyPathParams = {
   /**
+   * @description Company ID
    * @type string
    */
   companyId: string
-  /**
-   * @type string
-   */
-  id: string
 }
 
+/**
+ * @description Age policy created or updated
+ */
 export type UpsertCompanyAgePolicy200 = AgePolicyFull
 
 export type UpsertCompanyAgePolicyMutationRequest = AgePolicyInput
