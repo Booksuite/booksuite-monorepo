@@ -66,7 +66,8 @@ export type { SearchUtilityLinksQueryKey } from './hooks/UtilityLinksHooks/useSe
 export type { UtilityLinksControllerCreateMutationKey } from './hooks/UtilityLinksHooks/useUtilityLinksControllerCreate.ts'
 export type { UtilityLinksControllerUpdateMutationKey } from './hooks/UtilityLinksHooks/useUtilityLinksControllerUpdate.ts'
 export type { AgeGroupResponseDTOChargeType, AgeGroup } from './types/AgeGroup.ts'
-export type { AgeGroupDTOChargeType, AgeGroupInput } from './types/AgeGroupInput.ts'
+export type { AgeGroupChargeType } from './types/AgeGroupChargeType.ts'
+export type { AgeGroupInput } from './types/AgeGroupInput.ts'
 export type { AgePolicy } from './types/AgePolicy.ts'
 export type {
   GetCompanyAgePolicyPathParams,
@@ -621,6 +622,7 @@ export type { UnavailabilityReason } from './types/UnavailabilityReason.ts'
 export type { UnavailableSource } from './types/UnavailableSource.ts'
 export type { UpdateOfferDto } from './types/UpdateOfferDto.ts'
 export type { User } from './types/User.ts'
+export type { UserCreateInput } from './types/UserCreateInput.ts'
 export type { UtilityLinks } from './types/UtilityLinks.ts'
 export type {
   GetUtilityLinkPathParams,

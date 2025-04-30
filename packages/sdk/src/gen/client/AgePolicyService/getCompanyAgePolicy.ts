@@ -8,6 +8,7 @@ export function getGetCompanyAgePolicyUrl({ companyId }: { companyId: GetCompany
 }
 
 /**
+ * @summary Get age policy by company ID
  * {@link /company/:companyId/agePolicy}
  */
 export async function getCompanyAgePolicy(
