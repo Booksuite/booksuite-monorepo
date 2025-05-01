@@ -176,7 +176,9 @@ export const CancellationPolicyForm = () => {
                                                         <h2
                                                             style={{
                                                                 fontWeight:
-                                                                    '600',
+                                                                    '500',
+                                                                fontSize:
+                                                                    '20px',
                                                             }}
                                                         >
                                                             Taxa de penalização{' '}
@@ -196,7 +198,8 @@ export const CancellationPolicyForm = () => {
                                                     <NumberInput
                                                         label="Dias antes do check-in"
                                                         value={
-                                                            penalty.daysBeforeCheckIn
+                                                            penalty.daysBeforeCheckIn ||
+                                                            1
                                                         }
                                                         min={1}
                                                         onChange={(e) => {
@@ -274,8 +277,10 @@ export const CancellationPolicyForm = () => {
                                                             )?.label ||
                                                             'Valor padrão (%)'
                                                         }
-                                                        value={penalty.value}
-                                                        min={0}
+                                                        value={
+                                                            penalty.value || 1
+                                                        }
+                                                        min={1}
                                                         max={100}
                                                         onChange={(e) => {
                                                             const newValueNumber =

@@ -52,10 +52,10 @@ export const createOfferFormInitialValues = (
     validEndDate: data?.validEndDate
         ? String(data.validEndDate).split('T').at(0)
         : '',
-    minDays: data?.minDays ?? 0,
-    maxDays: data?.maxDays ?? 0,
-    minAdvanceDays: data?.minAdvanceDays ?? 0,
-    maxAdvanceDays: data?.maxAdvanceDays ?? 0,
+    minDays: data?.minDays ?? 1,
+    maxDays: data?.maxDays ?? 1,
+    minAdvanceDays: data?.minAdvanceDays ?? 1,
+    maxAdvanceDays: data?.maxAdvanceDays ?? 1,
     validForAbandoned: data?.validForAbandoned ?? false,
     validForPackages: data?.validForPackages ?? false,
     availableWeekDays: data?.availableWeekDays || [],

@@ -271,7 +271,7 @@ export const RoomsForm: React.FC = () => {
                 <NumberInput
                     label="Cobrar valor extra por adulto acima de"
                     error={!!errors.chargeExtraAdultHigherThan}
-                    max={values.maxGuests ? values.maxGuests - 1 : 0}
+                    max={values.maxGuests}
                     min={values.minGuests}
                     helperText={errors.chargeExtraAdultHigherThan}
                     {...getFieldProps('chargeExtraAdultHigherThan')}

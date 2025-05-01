@@ -162,6 +162,7 @@ export const HostingRulesForm = () => {
                     label="Mínimo de diárias"
                     {...getFieldProps('minDaily')}
                     value={values.minDaily}
+                    min={1}
                     onChange={(e) => {
                         const newValueNumber = Number(e.target.value)
                         if (Number.isNaN(newValueNumber)) return
@@ -278,6 +279,7 @@ export const HostingRulesForm = () => {
                     label="Janela de abertura (dias)"
                     value={getFieldProps('fixedWindowPeriod').value}
                     disabled={selectedOpening == 1}
+                    min={1}
                     onChange={(e) => {
                         if (selectedOpening != 1) {
                             if (
