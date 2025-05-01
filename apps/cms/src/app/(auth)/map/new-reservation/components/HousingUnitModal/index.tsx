@@ -1,4 +1,4 @@
-import { useGetCalendar } from '@booksuite/sdk'
+import { useGetCalendar, useSearchHousingUnitTypes } from '@booksuite/sdk'
 import SearchIcon from '@mui/icons-material/Search'
 import {
     Box,
@@ -12,13 +12,12 @@ import {
     TextField,
     Typography,
 } from '@mui/material'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import { enqueueSnackbar } from 'notistack'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { formatCurrency } from '@/common/utils/currency'
-import { useCompanyHousingUnitTypes } from '../../utils/config'
 
 interface HousingUnitModalProps {
     open: boolean
@@ -54,51 +53,73 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
             companyId,
         },
         {
-            currentDate: moment().startOf('day').toISOString(),
+            currentDate: dayjs().startOf('day').toISOString(),
             viewWindow: {
-                start: moment(startDate).toISOString(),
-                end: moment(endDate).toISOString(),
+                start: dayjs(startDate).format('YYYY-MM-DD'),
+                end: dayjs(endDate).format('YYYY-MM-DD'),
             },
             search: {
                 dateRange: {
-                    start: moment(startDate).toISOString(),
-                    end: moment(endDate).toISOString(),
+                    start: dayjs(startDate).format('YYYY-MM-DD'),
+                    end: dayjs(endDate).format('YYYY-MM-DD'),
                 },
+            },
+        },
+        {
+            query: {
+                enabled: open,
             },
         },
     )
 
     const {
-        data: allhousingUnitTypes,
+        data: allHousingUnitTypes,
         isLoading: isLoadingHousingUnitType,
         error,
-    } = useCompanyHousingUnitTypes(companyId, open)
-
-    const pricing = availAndPricing?.filter((avail) =>
-        Object.entries(avail.calendar).every(
-            (day) => day[1].availability.available === false,
-        ),
+    } = useSearchHousingUnitTypes(
+        { companyId },
+        {
+            pagination: { page: 1, itemsPerPage: 100 },
+            filter: { published: true },
+        },
+        undefined,
+        {
+            query: {
+                enabled: !!companyId && open,
+            },
+        },
     )
 
-    if (pricing?.length && pricing.length > 0) {
+    const availableHousingUnitTypes =
+        availAndPricing?.filter((avail) =>
+            Object.entries(avail.calendar).some(
+                (day) => day[1].availability.available,
+            ),
+        ) || []
+
+    const hasAvailability = availableHousingUnitTypes?.length > 0
+
+    useEffect(() => {
+        if (
+            !availAndPricing?.length ||
+            hasAvailability ||
+            isLoadingHousingUnitType
+        )
+            return
+
         enqueueSnackbar(
             'Disponibilidade de reserva não encontrada para a data especificada',
             {
-                variant: 'info',
-                anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right',
-                },
-                autoHideDuration: 3000,
+                key: 'no-availability',
+                variant: 'warning',
             },
         )
-        return
-    }
+    }, [hasAvailability, isLoadingHousingUnitType, availAndPricing])
 
     const housingUnitTypesAvailAndPricing = availAndPricing?.map(
         (availAndPrice) => ({
             ...availAndPrice,
-            housingUnitType: allhousingUnitTypes?.items.find(
+            housingUnitType: allHousingUnitTypes?.items.find(
                 (type) => type.id === availAndPrice.id,
             ),
         }),

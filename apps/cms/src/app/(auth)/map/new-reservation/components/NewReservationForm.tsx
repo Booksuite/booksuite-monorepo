@@ -1,4 +1,8 @@
-import { useGetCompanyAgePolicy, useSearchRateOption } from '@booksuite/sdk'
+import {
+    useGetCompanyAgePolicy,
+    useSearchHousingUnitTypes,
+    useSearchRateOption,
+} from '@booksuite/sdk'
 import { Box, Button, Grid, TextField, Typography } from '@mui/material'
 import { getIn, useFormikContext } from 'formik'
 import { Minus, Plus } from 'lucide-react'
@@ -10,11 +14,7 @@ import { formatCurrency } from '@/common/utils/currency'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
-import {
-    ReservationFormData,
-    useCompanyHousingUnitTypes,
-    useCompanyServices,
-} from '../utils/config'
+import { ReservationFormData, useCompanyServices } from '../utils/config'
 
 import { HousingUnitModal } from './HousingUnitModal'
 import { RateOptionsSelector } from './RateOptionsSelector'
@@ -29,7 +29,19 @@ export const NewReservationForm: React.FC = () => {
 
     const { data: agePolicy } = useGetCompanyAgePolicy({ companyId })
 
-    const { data: housingUnitTypes } = useCompanyHousingUnitTypes(companyId)
+    const { data: housingUnitTypes } = useSearchHousingUnitTypes(
+        { companyId },
+        {
+            pagination: { page: 1, itemsPerPage: 100 },
+            filter: { published: true },
+        },
+        undefined,
+        {
+            query: {
+                enabled: !!companyId,
+            },
+        },
+    )
 
     const { data: reservationOptions } = useSearchRateOption(
         {
@@ -168,8 +180,10 @@ export const NewReservationForm: React.FC = () => {
                             }
                             error={!!errors.startDate}
                             helperText={errors.startDate}
-                            InputLabelProps={{
-                                shrink: true,
+                            slotProps={{
+                                inputLabel: {
+                                    shrink: true,
+                                },
                             }}
                         />
                     </Grid>
@@ -185,8 +199,10 @@ export const NewReservationForm: React.FC = () => {
                             }
                             error={!!errors.endDate}
                             helperText={errors.endDate}
-                            InputLabelProps={{
-                                shrink: true,
+                            slotProps={{
+                                inputLabel: {
+                                    shrink: true,
+                                },
                             }}
                         />
                     </Grid>

@@ -1,30 +1,10 @@
 import {
     ReservationCreateInput,
     ReservationFull,
-    useSearchHousingUnitTypes,
     useSearchRateOption,
     useSearchServices,
 } from '@booksuite/sdk'
 import * as yup from 'yup'
-
-export const useCompanyHousingUnitTypes = (
-    companyId: string,
-    open?: boolean,
-) => {
-    return useSearchHousingUnitTypes(
-        { companyId },
-        {
-            pagination: { page: 1, itemsPerPage: 100 },
-            filter: { published: true },
-        },
-        undefined,
-        {
-            query: {
-                enabled: !!companyId && open,
-            },
-        },
-    )
-}
 
 export const useCompanyRateOption = (
     companyId: string,
@@ -131,7 +111,14 @@ export const createReservationFormInitialValues = (
             quantity: s.quantity || 0,
             totalPrice: s.totalPrice || 0,
         })) || [],
-    guestUser: {email: '', firstName: '', password: '', lastName: '', metaData: {}, phone: ''},
+    guestUser: {
+        email: '',
+        firstName: '',
+        password: '',
+        lastName: '',
+        metaData: {},
+        phone: '',
+    },
     sellerUserId: 'b79d6ce7-8766-478c-a752-9770d200256d',
     rateOptionId: '',
     summary: {

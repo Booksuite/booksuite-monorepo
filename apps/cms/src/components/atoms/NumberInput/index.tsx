@@ -65,12 +65,9 @@ export const NumberInput: React.FC<NumberInputProps> = ({
                     <IconButton
                         color={props.color || 'primary'}
                         tabIndex={-1}
-                        disabled={Boolean(
-                            valueNumber === 0 ||
-                                (min !== undefined && valueNumber === min),
-                        )}
+                        disabled={min !== undefined && valueNumber === min}
                         onClick={() => {
-                            if (min && valueNumber === min) return
+                            if (min !== undefined && valueNumber === min) return
 
                             props.onChange?.({
                                 target: {
@@ -90,20 +87,22 @@ export const NumberInput: React.FC<NumberInputProps> = ({
                             '& input': {
                                 textAlign: 'center',
                                 width: '30px',
-                                '&::-webkit-outer-spin-button': {
-                                    appearance: 'none',
-                                    margin: 0,
-                                },
-                                '&::-webkit-inner-spin-button': {
-                                    appearance: 'none',
-                                    margin: 0,
+                                '&::-webkit-outer-spin-button, &::-webkit-inner-spin-button':
+                                    {
+                                        '-webkit-appearance': 'none',
+                                        margin: 0,
+                                    },
+                                '&[type=number]': {
+                                    '-moz-appearance': 'textfield',
                                 },
                             },
                         }}
                         onChange={(e) => {
                             const newValueNumber = Number(e.target.value)
-                            if (min && newValueNumber < min) return
-                            if (max && newValueNumber > max) return
+                            if (min !== undefined && newValueNumber < min)
+                                return
+                            if (max !== undefined && newValueNumber > max)
+                                return
 
                             props.onChange?.(e)
                         }}
@@ -111,11 +110,9 @@ export const NumberInput: React.FC<NumberInputProps> = ({
                     <IconButton
                         color={props.color || 'primary'}
                         tabIndex={-1}
-                        disabled={Boolean(
-                            max !== undefined && valueNumber === max,
-                        )}
+                        disabled={max !== undefined && valueNumber === max}
                         onClick={() => {
-                            if (max && valueNumber === max) return
+                            if (max !== undefined && valueNumber === max) return
 
                             props.onChange?.({
                                 target: {
