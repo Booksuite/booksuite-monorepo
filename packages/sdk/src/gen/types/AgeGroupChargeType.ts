@@ -1,0 +1,1 @@
+export type AgeGroupChargeType = 'DAILY_PER_CHILDREN' | 'DAILY_PERCENTAGE_PER_CHILDREN' | 'FREE'

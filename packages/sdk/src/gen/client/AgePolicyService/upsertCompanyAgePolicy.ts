@@ -7,21 +7,16 @@ import type {
   UpsertCompanyAgePolicyPathParams,
 } from '../../types/AgePolicyController/UpsertCompanyAgePolicy.ts'
 
-export function getUpsertCompanyAgePolicyUrl({
-  companyId,
-  id,
-}: {
-  companyId: UpsertCompanyAgePolicyPathParams['companyId']
-  id: UpsertCompanyAgePolicyPathParams['id']
-}) {
-  return `/company/${companyId}/agePolicy/${id}` as const
+export function getUpsertCompanyAgePolicyUrl({ companyId }: { companyId: UpsertCompanyAgePolicyPathParams['companyId'] }) {
+  return `/company/${companyId}/agePolicy` as const
 }
 
 /**
- * {@link /company/:companyId/agePolicy/:id}
+ * @summary Create or update age policy
+ * {@link /company/:companyId/agePolicy}
  */
 export async function upsertCompanyAgePolicy(
-  { companyId, id }: { companyId: UpsertCompanyAgePolicyPathParams['companyId']; id: UpsertCompanyAgePolicyPathParams['id'] },
+  { companyId }: { companyId: UpsertCompanyAgePolicyPathParams['companyId'] },
   data: UpsertCompanyAgePolicyMutationRequest,
   config: Partial<RequestConfig<UpsertCompanyAgePolicyMutationRequest>> & { client?: typeof client } = {},
 ) {
@@ -29,7 +24,7 @@ export async function upsertCompanyAgePolicy(
 
   const res = await request<UpsertCompanyAgePolicyMutationResponse, ResponseErrorConfig<Error>, UpsertCompanyAgePolicyMutationRequest>({
     method: 'PATCH',
-    url: getUpsertCompanyAgePolicyUrl({ companyId, id }).toString(),
+    url: getUpsertCompanyAgePolicyUrl({ companyId }).toString(),
     data,
     ...requestConfig,
   })

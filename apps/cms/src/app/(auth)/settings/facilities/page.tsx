@@ -56,7 +56,6 @@ export default function Facilities() {
                 autoHideDuration: 3000,
             })
 
-            back()
         } catch {
             enqueueSnackbar('Erro ao atualizar comodidades', {
                 variant: 'error',

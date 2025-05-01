@@ -2,11 +2,10 @@
 
 import { Box, Container } from '@mui/material'
 import type React from 'react'
-import { useState } from 'react'
 
-import { DashboardHeader } from '../DashboardHeader'
-import { DashboardSidebar } from '../DashboardSidebar'
-
+import { DashboardHeader } from './components/DashboardHeader'
+import { DashboardSidebar } from './components/DashboardSidebar'
+import { useDashboardSidebarStore } from './stores/dashboardSidebar'
 import type { DashboardLayoutProps } from './types'
 
 const avatarUrl = '/profile-pic.png'
@@ -14,12 +13,7 @@ const avatarUrl = '/profile-pic.png'
 export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     children,
 }) => {
-    const [isMobileOpen, setIsMobileOpen] = useState(false)
-    const [isCollapsed, setIsCollapsed] = useState(false)
-
-    const handleToggleCollapse = () => {
-        setIsCollapsed(!isCollapsed)
-    }
+    const { drawerWidth } = useDashboardSidebarStore()
 
     return (
         <Box
@@ -29,18 +23,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                 overflow: 'hidden',
             }}
         >
-            <DashboardSidebar
-                isOpen={isMobileOpen}
-                onClose={() => setIsMobileOpen(false)}
-                userImageSrc={''}
-                isCollapsed={isCollapsed}
-                onToggleCollapse={handleToggleCollapse}
-            />
+            <DashboardSidebar />
             <Box
-                component="main"
                 sx={{
                     flexGrow: 1,
-                    width: { md: `calc(100% - ${isCollapsed ? 80 : 280}px)` },
+                    marginLeft: `${drawerWidth}px`,
                     transition: 'margin 0.3s, width 0.3s',
                     height: '100vh',
                     display: 'flex',
@@ -50,7 +37,6 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
             >
                 <Box sx={{ position: 'sticky', top: 0, zIndex: 1100 }}>
                     <DashboardHeader
-                        onToggleSidebar={handleToggleCollapse}
                         userName="Admin Booksuite"
                         userImageSrc={avatarUrl}
                     />

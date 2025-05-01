@@ -57,12 +57,12 @@ export const transformSpecialDateFormDataForSubmit = (
             mediaId: media.media.id,
             order: typeof media.order === 'number' ? media.order : undefined,
         })),
-        housingUnitTypePrices: housingUnitTypePrices.map((unit) => ({
-            ...unit,
-            baseWeekPrice: Number(unit.baseWeekPrice),
-            finalWeekPrice: Number(unit.finalWeekPrice),
-            baseWeekendPrice: Number(unit.baseWeekendPrice),
-            finalWeekendPrice: Number(unit.finalWeekendPrice),
+        housingUnitTypePrices: housingUnitTypePrices.map((item) => ({
+            housingUnitTypeId: item.housingUnitTypeId,
+            baseWeekPrice: item.baseWeekPrice,
+            finalWeekPrice: item.finalWeekPrice,
+            baseWeekendPrice: item.baseWeekendPrice,
+            finalWeekendPrice: item.finalWeekendPrice,
         })),
         includedServices: services.map((serviceId) => ({
             serviceId,
@@ -121,6 +121,26 @@ export const specialDateFormSchema = yup.object({
     medias: yup.array().min(1, 'Pelo menos uma mídia é obrigatória'),
     housingUnitTypePrices: yup
         .array()
+        .of(
+            yup.object({
+                housingUnitTypeId: yup
+                    .string()
+                    .uuid('ID do tipo de unidade deve ser um UUID válido')
+                    .required('ID do tipo de unidade é obrigatório'),
+                baseWeekPrice: yup
+                    .number()
+                    .required('Preço base da semana é obrigatório'),
+                finalWeekPrice: yup
+                    .number()
+                    .required('Preço final da semana é obrigatório'),
+                baseWeekendPrice: yup
+                    .number()
+                    .required('Preço base do fim de semana é obrigatório'),
+                finalWeekendPrice: yup
+                    .number()
+                    .required('Preço final do fim de semana é obrigatório'),
+            }),
+        )
         .min(
             1,
             'É necessário definir ao menos um tipo de unidade habitacional',

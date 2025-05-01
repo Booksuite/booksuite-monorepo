@@ -1,13 +1,6 @@
-import {
-    Alert,
-    AlertTitle,
-    Button,
-    CircularProgress,
-    Stack,
-    Typography,
-} from '@mui/material'
+import { Alert, AlertTitle, Button, Stack, Typography } from '@mui/material'
 import { Form, FormikErrors, useFormikContext } from 'formik'
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useEffect, useState } from 'react'
 
 export const extractErrorMessages = (
     errors: FormikErrors<unknown>,
@@ -31,8 +24,8 @@ export const extractErrorMessages = (
 export interface FormikControllerProps {
     onSubmit?: () => void
     onCancel?: () => void
-    loadingText?: string
     submitText?: string
+    publishedAndSubmitText?: string
     cancelText?: string
 }
 
@@ -43,15 +36,38 @@ export const FormikController: React.FC<
     onSubmit,
     onCancel,
     submitText = 'Salvar',
+    publishedAndSubmitText = 'Salvar e Publicar',
     cancelText = 'Cancelar',
-    loadingText = 'Carregando',
 }) => {
+    const [isSavingAndPublishing, setIsSavingAndPublishing] = useState(false)
     const { isSubmitting, errors } = useFormikContext()
+
     const errorMessages = extractErrorMessages(errors)
     const alertMessage =
         errorMessages.length > 2
             ? `${errorMessages.length} problemas encontrados`
             : errorMessages.join(', ')
+
+    const { values, setFieldValue, handleSubmit } = useFormikContext<{
+        published?: boolean
+    }>()
+
+    const handleSaveAndPublish = () => {
+        setIsSavingAndPublishing(true)
+        setFieldValue('published', true)
+    }
+
+    useEffect(() => {
+        if (!isSavingAndPublishing || values.published !== true) return
+
+        handleSubmit()
+        setIsSavingAndPublishing(false)
+    }, [handleSubmit, isSavingAndPublishing, values])
+
+    const hasPublishedField =
+        typeof values === 'object' && values !== null && 'published' in values
+
+    const buttonsDisabled = isSavingAndPublishing || isSubmitting
 
     return (
         <Form>
@@ -104,7 +120,7 @@ export const FormikController: React.FC<
                         <Stack direction="row" gap={3}>
                             {!!onCancel && (
                                 <Button
-                                    disabled={isSubmitting}
+                                    disabled={buttonsDisabled}
                                     type="button"
                                     color="secondary"
                                     onClick={onCancel}
@@ -114,21 +130,32 @@ export const FormikController: React.FC<
                                     {cancelText}
                                 </Button>
                             )}
+
                             <Button
                                 type={onSubmit ? 'button' : 'submit'}
+                                disabled={buttonsDisabled}
+                                loading={isSubmitting && !isSavingAndPublishing}
                                 color="secondary"
                                 onClick={onSubmit}
-                                loading={isSubmitting}
-                                loadingIndicator={
-                                    <>
-                                        <CircularProgress />
-                                        {loadingText}
-                                    </>
-                                }
                                 size="medium"
                             >
                                 {submitText}
                             </Button>
+
+                            {hasPublishedField && !values.published && (
+                                <Button
+                                    disabled={buttonsDisabled}
+                                    type={onSubmit ? 'button' : 'submit'}
+                                    loading={
+                                        isSubmitting && isSavingAndPublishing
+                                    }
+                                    color="primary"
+                                    onClick={handleSaveAndPublish}
+                                    size="medium"
+                                >
+                                    {publishedAndSubmitText}
+                                </Button>
+                            )}
                         </Stack>
                     </Stack>
                 </Stack>

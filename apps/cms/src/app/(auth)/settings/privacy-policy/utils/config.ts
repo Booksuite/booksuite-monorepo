@@ -1,9 +1,10 @@
-import { CompanyFull } from '@booksuite/sdk'
+import { CompanyFull, CompanyUpdateInput } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type PrivacyPolicyFormData = {
-    privacyPolicyDescription: string
-}
+export type PrivacyPolicyFormData = Pick<
+    CompanyUpdateInput,
+    'privacyPolicyDescription'
+>
 
 export const createPrivacyPolicyInitialValues = (
     data?: CompanyFull | null,
