@@ -58,7 +58,7 @@ export const FormikController: React.FC<
     }
 
     useEffect(() => {
-        if (!isSavingAndPublishing && values.published !== true) return
+        if (!isSavingAndPublishing || values.published !== true) return
 
         handleSubmit()
         setIsSavingAndPublishing(false)
