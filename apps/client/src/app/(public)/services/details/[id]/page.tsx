@@ -7,7 +7,7 @@ import { useParams, useRouter } from 'next/navigation'
 import { ServicesInfo } from './components/ServicesInfo'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 import { useState } from 'react'
-
+import { ServicesBooking } from './components/ServicesBooking'
 export default function ServiceDetailsPage() {
     const { company } = useCurrentCompanyStore()
     const params = useParams()
@@ -40,17 +40,25 @@ export default function ServiceDetailsPage() {
                             Voltar
                         </button>
                     </div>
-                    <ServicesInfo
-                        onViewAllPhotos={() => {
-                            setIsViewingAllPhotos(true)
-                        }}
-                        description={service?.description ?? ''}
-                        generalInfo={service?.notes ?? ''}
-                        images={
-                            service?.medias?.map((media) => media.media.url) ??
-                            []
-                        }
-                    />
+                    <div className="flex flex-row gap-4">
+                        <ServicesInfo
+                            onViewAllPhotos={() => {
+                                setIsViewingAllPhotos(true)
+                            }}
+                            description={service?.description ?? ''}
+                            generalInfo={service?.notes ?? ''}
+                            images={
+                                service?.medias?.map(
+                                    (media) => media.media.url,
+                                ) ?? []
+                            }
+                        />
+                        <ServicesBooking
+                            name={service?.name ?? ''}
+                            prices={service?.price ?? 0}
+                            billingType={service?.billingType ?? ''}
+                        />
+                    </div>
                 </div>
             </Container>
 
