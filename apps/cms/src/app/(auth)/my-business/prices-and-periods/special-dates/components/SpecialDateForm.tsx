@@ -125,11 +125,11 @@ export const SpecialDateForm: React.FC = () => {
             setFieldValue(
                 'housingUnitTypePrices',
                 housingUnitTypesData.items.map((type) => ({
-                    housingUnitType: type,
+                    housingUnitTypeId: type.id,
                     baseWeekPrice: type.weekdaysPrice || 0,
-                    newWeekPrice: type.weekdaysPrice || 0,
-                    weekendBasePrice: type.weekendPrice || 0,
-                    weekendNewPrice: type.weekendPrice || 0,
+                    finalWeekPrice: type.weekdaysPrice || 0,
+                    baseWeekendPrice: type.weekendPrice || 0,
+                    finalWeekendPrice: type.weekendPrice || 0,
                 })),
             )
         }
@@ -149,26 +149,26 @@ export const SpecialDateForm: React.FC = () => {
                     values.priceVariationType,
                 )
                 const newWeekendPrice = applyPriceVariation(
-                    unit.weekendBasePrice,
+                    unit.baseWeekendPrice,
                     values.price,
                     values.priceVariationType,
                 )
                 return (
-                    Math.abs(unit.newWeekPrice - newWeekPrice) > 0.01 ||
-                    Math.abs(unit.weekendNewPrice - newWeekendPrice) > 0.01
+                    Math.abs(unit.finalWeekPrice - newWeekPrice) > 0.01 ||
+                    Math.abs(unit.finalWeekendPrice - newWeekendPrice) > 0.01
                 )
             })
 
             if (shouldUpdate) {
                 const updatedPrices = currentPrices.map((unit) => ({
                     ...unit,
-                    newWeekPrice: applyPriceVariation(
+                    finalWeekPrice: applyPriceVariation(
                         unit.baseWeekPrice,
                         values.price,
                         values.priceVariationType,
                     ),
-                    weekendNewPrice: applyPriceVariation(
-                        unit.weekendBasePrice,
+                    finalWeekendPrice: applyPriceVariation(
+                        unit.baseWeekendPrice,
                         values.price,
                         values.priceVariationType,
                     ),
@@ -442,12 +442,16 @@ export const SpecialDateForm: React.FC = () => {
                 <Grid container spacing={2}>
                     {values.housingUnitTypePrices.map((item, index) => {
                         const baseWeek = item.baseWeekPrice ?? 0
-                        const baseWeekend = item.weekendBasePrice ?? 0
+                        const baseWeekend = item.baseWeekendPrice ?? 0
+                        const housingUnitType =
+                            housingUnitTypesData?.items.find(
+                                (type) => type.id === item.housingUnitTypeId,
+                            )
                         return (
-                            <Grid size={12} key={item.housingUnitType.id}>
+                            <Grid size={12} key={item.housingUnitTypeId}>
                                 <Stack spacing={2}>
                                     <Typography>
-                                        {item.housingUnitType.name} (preço por
+                                        {housingUnitType?.name} (preço por
                                         diária)
                                     </Typography>
 
@@ -462,29 +466,27 @@ export const SpecialDateForm: React.FC = () => {
                                         </Grid>
                                         <Grid size={6}>
                                             <TextField
-                                                label="Novo Preço (Semana)"
+                                                label="Preço Final (Semana)"
                                                 fullWidth
                                                 value={formatCurrency(
-                                                    item.newWeekPrice ?? 0,
+                                                    item.finalWeekPrice ?? 0,
                                                 )}
                                                 onChange={(e) => {
-                                                    const raw =
-                                                        e.target.value.replace(
-                                                            /\D/g,
-                                                            '',
-                                                        )
+                                                    const raw = e.target.value
+                                                        .replace(/[^0-9]/g, '')
+                                                        .replace(/^0+/, '0')
                                                     const numeric =
                                                         Number(raw) / 100
 
                                                     const updated = [
-                                                        ...(values.housingUnitTypePrices ??
-                                                            []),
+                                                        ...values.housingUnitTypePrices,
                                                     ]
 
                                                     if (updated[index]) {
                                                         updated[
                                                             index
-                                                        ].newWeekPrice = numeric
+                                                        ].finalWeekPrice =
+                                                            numeric
                                                         setFieldValue(
                                                             'priceVariationType',
                                                             'CUSTOM',
@@ -509,29 +511,26 @@ export const SpecialDateForm: React.FC = () => {
                                         </Grid>
                                         <Grid size={6}>
                                             <TextField
-                                                label="Novo Preço (Fim de Semana)"
+                                                label="Preço Final (Fim de Semana)"
                                                 fullWidth
                                                 value={formatCurrency(
-                                                    item.weekendNewPrice ?? 0,
+                                                    item.finalWeekendPrice ?? 0,
                                                 )}
                                                 onChange={(e) => {
-                                                    const raw =
-                                                        e.target.value.replace(
-                                                            /\D/g,
-                                                            '',
-                                                        )
+                                                    const raw = e.target.value
+                                                        .replace(/[^0-9]/g, '')
+                                                        .replace(/^0+/, '0')
                                                     const numeric =
                                                         Number(raw) / 100
 
                                                     const updated = [
-                                                        ...(values.housingUnitTypePrices ??
-                                                            []),
+                                                        ...values.housingUnitTypePrices,
                                                     ]
 
                                                     if (updated[index]) {
                                                         updated[
                                                             index
-                                                        ].weekendNewPrice =
+                                                        ].finalWeekendPrice =
                                                             numeric
                                                         setFieldValue(
                                                             'priceVariationType',
