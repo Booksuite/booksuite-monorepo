@@ -77,7 +77,7 @@ export const FacilitiesForm = () => {
                         <SelectModal
                             items={facilities.items}
                             initialSelectedItems={allFacilities}
-                            isOpen={isOpen}
+                            open={isOpen}
                             onClose={() => setIsOpen(false)}
                             onSelect={(items) => {
                                 const existingFeatured = new Map(
