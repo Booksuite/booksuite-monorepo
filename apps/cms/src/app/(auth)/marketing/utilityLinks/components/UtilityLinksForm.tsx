@@ -78,46 +78,52 @@ export const UtilityLinksForm = () => {
                     label="Exibir em período especifico"
                 />
 
-                <FormSection
-                    title="Período de Exibição"
-                    hidden={!specificPeriod}
-                >
-                    <Grid size={6}>
-                        <TextField
-                            label="Inicio de exibição"
-                            type="date"
-                            fullWidth
-                            value={values.startDate?.split('T').at(0)}
-                            hidden={!specificPeriod}
-                            onChange={(e) =>
-                                setFieldValue('startDate', e.target.value)
-                            }
-                            error={!!errors.startDate}
-                            helperText={errors.startDate}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </Grid>
+                {specificPeriod && (
+                    <FormSection title="Período de Exibição">
+                        <Grid container spacing={2}>
+                            <Grid size={6}>
+                                <TextField
+                                    label="Início da exibição"
+                                    type="date"
+                                    fullWidth
+                                    value={
+                                        values.startDate?.split('T').at(0) || ''
+                                    }
+                                    onChange={(e) =>
+                                        setFieldValue(
+                                            'startDate',
+                                            e.target.value,
+                                        )
+                                    }
+                                    error={!!errors.startDate}
+                                    helperText={errors.startDate}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            </Grid>
 
-                    <Grid size={6}>
-                        <TextField
-                            label="Fim de exibição"
-                            type="date"
-                            fullWidth
-                            hidden={!specificPeriod}
-                            value={values.endDate?.split('T').at(0)}
-                            onChange={(e) =>
-                                setFieldValue('endDate', e.target.value)
-                            }
-                            error={!!errors.endDate}
-                            helperText={errors.endDate}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </Grid>
-                </FormSection>
+                            <Grid size={6}>
+                                <TextField
+                                    label="Fim da exibição"
+                                    type="date"
+                                    fullWidth
+                                    value={
+                                        values.endDate?.split('T').at(0) || ''
+                                    }
+                                    onChange={(e) =>
+                                        setFieldValue('endDate', e.target.value)
+                                    }
+                                    error={!!errors.endDate}
+                                    helperText={errors.endDate}
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
+                            </Grid>
+                        </Grid>
+                    </FormSection>
+                )}
             </FormSection>
         </FormContainer>
     )
