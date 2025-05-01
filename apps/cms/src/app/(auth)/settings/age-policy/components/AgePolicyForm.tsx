@@ -34,6 +34,7 @@ export const AgePolicyForm = () => {
                 <NumberInput
                     label="Idade inicial para adultos"
                     value={values.adultMinAge}
+                    min={1}
                     onChange={(e) => {
                         const newValueNumber = Number(e.target.value)
                         if (Number.isNaN(newValueNumber)) return
