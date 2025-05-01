@@ -1,8 +1,8 @@
-import { CompanyFull } from '@booksuite/sdk'
+import { CompanyFull, CompanyUpdateInput } from '@booksuite/sdk'
 import * as yup from 'yup'
 
 export type TaxInformationData = Pick<
-    CompanyFull,
+    CompanyUpdateInput,
     | 'responsible'
     | 'responsibleEmail'
     | 'responsiblePhone'
@@ -31,7 +31,7 @@ export const createTaxInformationInitialValues = (
     city: data?.city || '',
     country: data?.country || '',
     zipcode: data?.zipcode || '',
-    companyName: data?.companyName || ''
+    companyName: data?.companyName || '',
 })
 
 export const taxInformationSchema = yup.object({

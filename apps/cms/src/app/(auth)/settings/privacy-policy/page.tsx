@@ -49,8 +49,6 @@ export default function PrivacyPolicy() {
                     autoHideDuration: 3000,
                 },
             )
-
-            back()
         } catch {
             enqueueSnackbar(`Erro ao modificar políticas de privacidade`, {
                 variant: 'error',

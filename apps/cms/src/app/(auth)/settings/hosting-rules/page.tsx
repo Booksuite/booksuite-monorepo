@@ -54,8 +54,6 @@ export default function HostingRules() {
                 queryKey: ['getCompanyHostingRules'],
                 refetchType: 'all',
             })
-
-            back()
         } catch {
             enqueueSnackbar(`Erro ao modificar regras`, {
                 variant: 'error',

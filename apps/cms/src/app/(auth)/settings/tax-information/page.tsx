@@ -54,8 +54,6 @@ export default function TaxInformation() {
                 queryKey: ['getCompanyById'],
                 refetchType: 'all',
             })
-
-            back()
         } catch {
             enqueueSnackbar(`Erro ao modificar informações`, {
                 variant: 'error',
