@@ -43,7 +43,7 @@ export const createFormInitialValues = (
     weekdaysPrice: data?.weekdaysPrice || 0,
     weekendPrice: data?.weekendPrice || 0,
     maxAdults: data?.maxAdults || 1,
-    maxChildren: data?.maxChildren || 0,
+    maxChildren: data?.maxChildren || 1,
     minGuests: data?.minGuests || 1,
     maxGuests: data?.maxGuests || 1,
     extraAdultPrice: data?.extraAdultPrice || 0,
