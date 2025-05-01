@@ -20,7 +20,9 @@ export default function CompanyContactsForm() {
     const { getFieldProps, values, handleChange, setFieldValue } =
         useFormikContext<ContactsData>()
 
-    const [selectedType, setSelectedType] = useState<number | null>(null)
+    const [selectedEmailType, setSelectedEmailType] = useState<number | null>(
+        null,
+    )
     const [selectedPhoneType, setSelectedPhoneType] = useState<number | null>(
         null,
     )
@@ -71,9 +73,9 @@ export default function CompanyContactsForm() {
                                     <TextField
                                         select
                                         label="Tipo do Email"
-                                        value={selectedType}
+                                        value={selectedEmailType}
                                         onChange={(e) =>
-                                            setSelectedType(
+                                            setSelectedEmailType(
                                                 Number(e.target.value),
                                             )
                                         }
@@ -95,17 +97,18 @@ export default function CompanyContactsForm() {
                                     fullWidth
                                     startIcon={<CirclePlus />}
                                     size="large"
-                                    disabled={selectedType === null}
+                                    disabled={selectedEmailType === null}
                                     onClick={() => {
-                                        if (selectedType !== null) {
+                                        if (selectedEmailType !== null) {
                                             push({
                                                 type: 'email',
                                                 category:
-                                                    TYPES_OPTIONS[selectedType]
-                                                        ?.label || '',
+                                                    TYPES_OPTIONS[
+                                                        selectedEmailType
+                                                    ]?.label || '',
                                                 value: '',
                                             })
-                                            setSelectedType(null)
+                                            setSelectedEmailType(null)
                                         }
                                     }}
                                 >
@@ -163,7 +166,7 @@ export default function CompanyContactsForm() {
                                         label="Tipo do Telefone"
                                         value={selectedPhoneType}
                                         onChange={(e) =>
-                                            setSelectedType(
+                                            setSelectedPhoneType(
                                                 Number(e.target.value),
                                             )
                                         }
