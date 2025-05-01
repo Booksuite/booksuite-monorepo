@@ -53,7 +53,7 @@ export default function ServicesPage() {
                     <div className="grid grid-cols-2 gap-8 w-full items-center justify-items-center">
                         {services?.items?.map((service: ServiceFull) => (
                             <ServicesCard
-                                key={service.id}
+                                id={service.id}
                                 title={service.name ?? ''}
                                 description={service.description ?? ''}
                                 images={
