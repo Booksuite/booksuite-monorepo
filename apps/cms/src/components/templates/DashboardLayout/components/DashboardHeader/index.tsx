@@ -14,15 +14,14 @@ import {
 import { Bell, ExternalLink, Menu as MenuIcon, Search } from 'lucide-react'
 
 import { Logo } from '@/components/atoms/Logo'
+import { useDashboardSidebarStore } from '../../stores/dashboardSidebar'
 
 import type { DashboardHeaderProps } from './types'
 
-export const DashboardHeader = ({
-    onToggleSidebar,
-    userImageSrc,
-}: DashboardHeaderProps) => {
+export const DashboardHeader = ({ userImageSrc }: DashboardHeaderProps) => {
     const theme = useTheme()
     const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+    const { toggleIsOpen } = useDashboardSidebarStore()
 
     return (
         <AppBar
@@ -36,7 +35,7 @@ export const DashboardHeader = ({
             <Toolbar>
                 <IconButton
                     color="inherit"
-                    onClick={onToggleSidebar}
+                    onClick={() => toggleIsOpen()}
                     edge="start"
                     sx={{
                         marginLeft: 2,
@@ -77,15 +76,17 @@ export const DashboardHeader = ({
                                 opacity: 0.7,
                             },
                         }}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <Search
-                                        color={theme.palette.blue[900]}
-                                        size={20}
-                                    />
-                                </InputAdornment>
-                            ),
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Search
+                                            color={theme.palette.blue[900]}
+                                            size={20}
+                                        />
+                                    </InputAdornment>
+                                ),
+                            },
                         }}
                     />
                 )}

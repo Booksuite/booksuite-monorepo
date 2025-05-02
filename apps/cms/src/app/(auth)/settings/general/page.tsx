@@ -38,10 +38,7 @@ export default function GeneralDataPage() {
         try {
             if (!companyGeneralData) return
 
-            const transformedFormData = transformFormDataForSubmit(
-                formData,
-                companyGeneralData,
-            )
+            const transformedFormData = transformFormDataForSubmit(formData)
 
             await updateCompany({
                 id: companyId,
@@ -61,8 +58,6 @@ export default function GeneralDataPage() {
                 },
                 autoHideDuration: 3000,
             })
-
-            back()
         } catch {
             enqueueSnackbar(`Erro ao modificar os dados gerais`, {
                 variant: 'error',

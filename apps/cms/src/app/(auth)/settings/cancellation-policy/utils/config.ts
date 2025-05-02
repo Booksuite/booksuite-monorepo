@@ -7,8 +7,8 @@ export const createCancellationPolicyInitialValues = (
     data?: CancellationPolicyFull | null,
 ): CancellationPolicyFormData => ({
     defaultPenaltyBy: data?.defaultPenaltyBy || 'RESERVATION_PERCENTAGE',
-    defaultValue: data?.defaultValue || 0,
-    withdrawalPeriod: data?.withdrawalPeriod || 0,
+    defaultValue: data?.defaultValue || 1,
+    withdrawalPeriod: data?.withdrawalPeriod || 1,
     applyCancellationTax: data?.applyCancellationTax || false,
     balancedModel: data?.balancedModel || '',
     dynamicDescription: data?.dynamicDescription || '',
@@ -20,9 +20,9 @@ export const createCancellationPolicyInitialValues = (
     penaltyRanges: Array.isArray(data?.penaltyRanges)
         ? data!.penaltyRanges.map((range) => ({
               id: range.id,
-              daysBeforeCheckIn: range.daysBeforeCheckIn,
+              daysBeforeCheckIn: range.daysBeforeCheckIn || 1,
               penaltyBy: range.penaltyBy,
-              value: range.value,
+              value: range.value || 1,
           }))
         : [],
 })

@@ -170,7 +170,8 @@ export const OffersAndCouponsForm = () => {
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Estadia Mínima (opcional)"
-                                min={0}
+                                min={1}
+                                max={values.maxDays}
                                 error={
                                     touched.minDays && Boolean(errors.minDays)
                                 }
@@ -189,7 +190,8 @@ export const OffersAndCouponsForm = () => {
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Estadia Máxima (opcional)"
-                                min={0}
+                                min={values.minDays}
+                                max={values.maxDays}
                                 error={
                                     touched.maxDays && Boolean(errors.maxDays)
                                 }
@@ -208,7 +210,7 @@ export const OffersAndCouponsForm = () => {
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Antecedência Mínima (opcional)"
-                                min={0}
+                                min={values.minDays}
                                 error={
                                     touched.minAdvanceDays &&
                                     Boolean(errors.minAdvanceDays)
@@ -231,7 +233,7 @@ export const OffersAndCouponsForm = () => {
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Antecedência Máxima (opcional)"
-                                min={0}
+                                min={values.minAdvanceDays}
                                 error={
                                     touched.maxAdvanceDays &&
                                     Boolean(errors.maxAdvanceDays)

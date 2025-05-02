@@ -228,7 +228,7 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
         isUpsertPending ||
         isUploadPending ||
         (!!minItems && selectedItems.length < minItems) ||
-        (!!maxItems && selectedItems.length >= maxItems)
+        (!!maxItems && selectedItems.length > maxItems)
 
     return (
         <Modal

@@ -76,7 +76,7 @@ export const HousingUnitTypeFacilitiesField = () => {
                         <SelectModal
                             items={facilities.items}
                             initialSelectedItems={allFacilities}
-                            isOpen={isOpen}
+                            open={isOpen}
                             onClose={() => setIsOpen(false)}
                             onSelect={(items) => {
                                 setFieldValue(
