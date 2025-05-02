@@ -1,6 +1,8 @@
 'use client'
 
+import React from 'react'
 import { Gift, MapPin } from 'lucide-react'
+import { useDynamicLucideIcon } from '@/providers/DynamicIconProvider'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Button } from '@/components/atoms/Button'
@@ -9,6 +11,7 @@ import { Container } from '@/components/organisms/Container'
 
 export const About: React.FC = () => {
     const { company } = useCurrentCompanyStore()
+    const DynamicLucideIcon = useDynamicLucideIcon()
 
     const bannerUrl = company?.bannerImage?.url || '/placeholder.svg'
     const images = Array(9).fill(bannerUrl)
@@ -47,7 +50,14 @@ export const About: React.FC = () => {
                                     className="text-center flex flex-col items-center justify-center"
                                 >
                                     <div className="text-3xl mb-2 flex items-center justify-center text-grey-primary">
-                                        {facility.facility.icon || (
+                                        {facility.facility.icon ? (
+                                            <DynamicLucideIcon
+                                                iconName={
+                                                    facility.facility.icon
+                                                }
+                                                className="w-8 h-8"
+                                            />
+                                        ) : (
                                             <Gift className="w-8 h-8" />
                                         )}
                                     </div>

@@ -2,11 +2,11 @@
 
 import type { HousingUnitTypeFacility } from '@booksuite/sdk'
 import { ArrowRight, Images, Users } from 'lucide-react'
-import Image from 'next/image'
 import { useState } from 'react'
 
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
+import { useDynamicLucideIcon } from '@/providers/DynamicIconProvider'
 
 interface HousingUnitTypeCardProps {
     title: string
@@ -30,6 +30,7 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
     onViewAllPhotos,
 }) => {
     const [isExpanded, setIsExpanded] = useState(false)
+    const DynamicLucideIcon = useDynamicLucideIcon()
 
     return (
         <div className="bg-white flex flex-row rounded-xl overflow-hidden border border-1 hover:shadow-md transition-shadow w-[900px]">
@@ -83,25 +84,26 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 mt-4 mb-4">
-                    {facilities.map((facility) => (
-                        <div
-                            key={facility.id}
-                            className="flex items-center gap-1.5 text-gray-secondary"
-                        >
-                            {facility.facility.icon && (
-                                <Image
-                                    src={facility.facility.icon}
-                                    alt={facility.facility.name}
-                                    width={16}
-                                    height={16}
-                                    className="w-4 h-4"
-                                />
-                            )}
-                            <span className="text-xs">
-                                {facility.facility.name}
-                            </span>
-                        </div>
-                    ))}
+                    {facilities
+                        .filter((facility) => facility.isFeatured)
+                        .map((facility) => (
+                            <div
+                                key={facility.id}
+                                className="flex items-center gap-1.5 text-gray-secondary"
+                            >
+                                {facility.facility.icon ? (
+                                    <DynamicLucideIcon
+                                        iconName={facility.facility.icon}
+                                        className="w-4 h-4"
+                                    />
+                                ) : (
+                                    <div className="w-4 h-4" />
+                                )}
+                                <span className="text-xs">
+                                    {facility.facility.name}
+                                </span>
+                            </div>
+                        ))}
                 </div>
 
                 <div className="flex gap-3 mt-auto">
