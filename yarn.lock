@@ -147,7 +147,7 @@ __metadata:
     color2k: "npm:^2.0.3"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.6"
-    lucide-react: "npm:^0.359.0"
+    lucide-react: "npm:^0.506.0"
     next: "npm:14.2.4"
     postcss: "npm:^8.x"
     react: "npm:^18.2.0"
@@ -5887,21 +5887,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.359.0":
-  version: 0.359.0
-  resolution: "lucide-react@npm:0.359.0"
-  peerDependencies:
-    react: ^16.5.1 || ^17.0.0 || ^18.0.0
-  checksum: 10c0/6a6c8ec41d69ef8b13ec51526ac4eb0a847041b2e3feffe9a916d166b9df4334ed20dbc092aaa1a53278e88d694dbf86df2f8a8e47e46dfcbbd20087cbc776b9
-  languageName: node
-  linkType: hard
-
 "lucide-react@npm:^0.479.0":
   version: 0.479.0
   resolution: "lucide-react@npm:0.479.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
   checksum: 10c0/a0a13aea535cfcd85a38f66bcc931110af28f232457334a6ed0cd1393f565be28139495864831d835c57bd071b5ddd3036b66eda3a2e8c5d401ece71ee29d970
+  languageName: node
+  linkType: hard
+
+"lucide-react@npm:^0.506.0":
+  version: 0.506.0
+  resolution: "lucide-react@npm:0.506.0"
+  peerDependencies:
+    react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
+  checksum: 10c0/2f6ece3804804e2a558d179a9df2a472b736f8152d3daa6847dd0bf62330aefc2b1d02354ce0ab09a8d4e3018a915c7977ff56dadbe1c0fb06bc34bceca214a8
   languageName: node
   linkType: hard
 
