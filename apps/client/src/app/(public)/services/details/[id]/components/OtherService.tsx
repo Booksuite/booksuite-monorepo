@@ -1,8 +1,7 @@
 import { ServiceFull } from '@booksuite/sdk/src/gen/types/ServiceFull'
 
 import { Container } from '@/components/organisms/Container'
-import { ExtraServicesCard } from '@/components/templates/ExtraServices/ExtraServicesCard'
-
+import { ServicesCardComponent } from '@/components/templates/ServicesCardTemplate/ServicesCardComponent'
 interface OtherServiceProps {
     services: ServiceFull[]
     currentServiceId: string
@@ -29,7 +28,7 @@ export const OtherService: React.FC<OtherServiceProps> = ({
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 text-start lg:grid-cols-4 gap-6">
                     {filteredServices.map((service) => (
-                        <ExtraServicesCard
+                        <ServicesCardComponent
                             key={service.id}
                             title={service.name}
                             description={service.description}

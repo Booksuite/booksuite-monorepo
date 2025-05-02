@@ -7,9 +7,9 @@ import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Container } from '@/components/organisms/Container'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 
-import { HousingUnitTypeCard } from './components/HousingUnitTypeCard'
+import { HousingUnitTypeCardComponent } from './HousingUnitTypeCardComponent'
 
-export const HousingUnitType: React.FC = () => {
+export const HousingUnitTypeCardTemplate: React.FC = () => {
     const router = useRouter()
 
     const { company } = useCurrentCompanyStore()
@@ -51,7 +51,7 @@ export const HousingUnitType: React.FC = () => {
                 <div className="grid grid-cols-3 gap-8 w-full">
                     {housingUnitTypes?.items?.map(
                         (unitType: HousingUnitTypeFull) => (
-                            <HousingUnitTypeCard
+                            <HousingUnitTypeCardComponent
                                 key={unitType.id}
                                 title={unitType.name ?? ''}
                                 description={unitType.description ?? ''}

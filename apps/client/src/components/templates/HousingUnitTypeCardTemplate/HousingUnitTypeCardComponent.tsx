@@ -8,7 +8,7 @@ import { useState } from 'react'
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
 
-interface HousingUnitTypeCardProps {
+interface HousingUnitTypeCardComponentProps {
     title: string
     description: string
     images: string[]
@@ -19,7 +19,9 @@ interface HousingUnitTypeCardProps {
     onViewAllPhotos?: () => void
 }
 
-export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
+export const HousingUnitTypeCardComponent: React.FC<
+    HousingUnitTypeCardComponentProps
+> = ({
     title,
     description,
     images,

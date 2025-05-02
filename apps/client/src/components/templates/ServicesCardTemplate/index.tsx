@@ -11,7 +11,7 @@ import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Container } from '@/components/organisms/Container'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 
-import { ExtraServicesCard } from './ExtraServicesCard'
+import { ServicesCardComponent } from './ServicesCardComponent'
 
 const PRICE_VARIATION = {
     PERCENTAGE_REDUCTION: 'PERCENTAGE_REDUCTION',
@@ -27,7 +27,7 @@ interface ValidService {
 interface OfferWithValidServices extends Offer {
     validServices: ValidService[]
 }
-export const ExtraServices: React.FC = () => {
+export const ServicesCardTemplate: React.FC = () => {
     const { company: currentCompany } = useCurrentCompanyStore()
     const [selectedService, setSelectedService] = useState<ServiceFull | null>(
         null,
@@ -170,7 +170,7 @@ export const ExtraServices: React.FC = () => {
                             discount,
                         } = calculateFinalPrice(service)
                         return (
-                            <ExtraServicesCard
+                            <ServicesCardComponent
                                 key={service.id}
                                 title={service.name ?? ''}
                                 description={service.description ?? ''}
