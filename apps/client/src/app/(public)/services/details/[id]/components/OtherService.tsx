@@ -1,7 +1,7 @@
 import { ServiceFull } from '@booksuite/sdk/src/gen/types/ServiceFull'
 
 import { Container } from '@/components/organisms/Container'
-import { ServicesCardComponent } from '@/components/templates/ServicesCardTemplate/ServicesCardComponent'
+import { ServicesCardComponent } from '@/components/templates/ServicesCard/ServicesCardComponent'
 interface OtherServiceProps {
     services: ServiceFull[]
     currentServiceId: string

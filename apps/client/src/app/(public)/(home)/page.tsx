@@ -2,8 +2,8 @@
 
 import { Others } from '@/components/organisms/Others'
 import { ReceiveOurPromotions } from '@/components/organisms/ReceiveOurPromotions'
-import { HousingUnitTypeCardTemplate } from '@/components/templates/HousingUnitTypeCardTemplate'
-import { ServicesCardTemplate } from '@/components/templates/ServicesCardTemplate'
+import { HousingUnitTypeCard } from '@/components/templates/HousingUnitTypeCard'
+import { ServicesCard } from '@/components/templates/ServicesCard'
 
 import { About } from './components/About'
 import { BannerFixed } from './components/BannerFixed'
@@ -14,8 +14,8 @@ export default function Home() {
         <div className="relative min-h-screen flex flex-col">
             <HeaderHome />
             <About />
-            <HousingUnitTypeCardTemplate />
-            <ServicesCardTemplate />
+            <HousingUnitTypeCard />
+            <ServicesCard />
             <BannerFixed />
             <ReceiveOurPromotions />
             <Others />

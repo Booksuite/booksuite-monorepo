@@ -9,7 +9,7 @@ import { Container } from '@/components/organisms/Container'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 import { Others } from '@/components/organisms/Others'
 import { ReceiveOurPromotions } from '@/components/organisms/ReceiveOurPromotions'
-import { HousingUnitTypeCardTemplate } from '@/components/templates/HousingUnitTypeCardTemplate'
+import { HousingUnitTypeCard } from '@/components/templates/HousingUnitTypeCard'
 
 import { OtherService } from './components/OtherService'
 import { ServicesBooking } from './components/ServicesBooking'
@@ -93,7 +93,7 @@ export default function ServiceDetailsPage() {
                     currentServiceId={service.id}
                 />
             )}
-            <HousingUnitTypeCardTemplate />
+            <HousingUnitTypeCard />
             <ReceiveOurPromotions />
             <Others />
 

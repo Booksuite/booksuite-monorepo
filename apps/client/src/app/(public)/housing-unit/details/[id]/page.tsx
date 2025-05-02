@@ -3,7 +3,7 @@
 import { Container } from '@/components/organisms/Container'
 import { Others } from '@/components/organisms/Others'
 import { ReceiveOurPromotions } from '@/components/organisms/ReceiveOurPromotions'
-import { ServicesCardTemplate } from '@/components/templates/ServicesCardTemplate'
+import { ServicesCard } from '@/components/templates/ServicesCard'
 
 import { HousingUnitDetails } from './components/HousingUnitDetails'
 import { OthersHousingUnit } from './components/OthersHousingUnit'
@@ -17,7 +17,7 @@ export default function HousingUnitDetailsPage() {
             </Container>
 
             <OthersHousingUnit />
-            <ServicesCardTemplate />
+            <ServicesCard />
             <Others />
         </>
     )

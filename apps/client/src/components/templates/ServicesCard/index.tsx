@@ -27,7 +27,7 @@ interface ValidService {
 interface OfferWithValidServices extends Offer {
     validServices: ValidService[]
 }
-export const ServicesCardTemplate: React.FC = () => {
+export const ServicesCard: React.FC = () => {
     const { company: currentCompany } = useCurrentCompanyStore()
     const [selectedService, setSelectedService] = useState<ServiceFull | null>(
         null,

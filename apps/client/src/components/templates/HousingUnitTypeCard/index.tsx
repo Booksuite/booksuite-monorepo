@@ -9,7 +9,7 @@ import { ImageGallery } from '@/components/organisms/ImageGallery'
 
 import { HousingUnitTypeCardComponent } from './HousingUnitTypeCardComponent'
 
-export const HousingUnitTypeCardTemplate: React.FC = () => {
+export const HousingUnitTypeCard: React.FC = () => {
     const router = useRouter()
 
     const { company } = useCurrentCompanyStore()
