@@ -1,9 +1,10 @@
 import { Info, Minus, Plus, Share2 } from 'lucide-react'
 import { useState } from 'react'
 
-import { Button } from '@/components/atoms/Button'
-import { PriceDisplay } from '@/components/molecules/PriceDisplay'
 import { formatCurrency } from '@/common/utils/formatCurrency'
+import { Button } from '@/components/atoms/Button'
+
+import { AddedToCartModal } from './AddedToCartModal'
 
 interface ServicesBookingProps {
     name: string
@@ -31,7 +32,6 @@ export const ServicesBooking: React.FC<ServicesBookingProps> = ({
     const totalPrice = prices * quantity
 
     const handleAddToCart = () => {
-        // TODO: Implement actual cart functionality
         setIsModalOpen(true)
     }
 
@@ -125,6 +125,15 @@ export const ServicesBooking: React.FC<ServicesBookingProps> = ({
                     </div>
                 </div>
             </div>
+            <AddedToCartModal
+                isOpen={isModalOpen}
+                onAddMore={() => {
+                    setIsModalOpen(false)
+                }}
+                onAdvance={() => {
+                    setIsModalOpen(false)
+                }}
+            />
         </div>
     )
 }

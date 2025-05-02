@@ -1,9 +1,10 @@
+import { Flame, Images, Plus } from 'lucide-react'
+import { useState } from 'react'
+
 import { formatCurrency } from '@/common/utils/formatCurrency'
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
-import { Flame, Images, Plus } from 'lucide-react'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+
 interface ServicesCardProps {
     title: string
     description: string
@@ -13,7 +14,7 @@ interface ServicesCardProps {
     originalPrice?: number
     discount?: number
     onViewAllPhotos: () => void
-    id: string
+    onAddService: () => void
 }
 
 export const ServicesCard: React.FC<ServicesCardProps> = ({
@@ -25,9 +26,8 @@ export const ServicesCard: React.FC<ServicesCardProps> = ({
     originalPrice,
     discount = 10,
     onViewAllPhotos,
-    id,
+    onAddService,
 }) => {
-    const router = useRouter()
     const [isExpanded, setIsExpanded] = useState(false)
 
     return (
@@ -102,9 +102,7 @@ export const ServicesCard: React.FC<ServicesCardProps> = ({
                         </div>
                         <Button
                             className="hover:bg-primary-700 transition-colors gap-2 text-white w-[30%]"
-                            onClick={() => {
-                                router.push(`/services/details/${id}`)
-                            }}
+                            onClick={onAddService}
                         >
                             <Plus className="w-4 h-4" />
                             <span>Adicionar</span>

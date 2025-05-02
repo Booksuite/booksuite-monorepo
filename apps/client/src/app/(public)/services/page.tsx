@@ -1,18 +1,21 @@
 'use client'
 
+import { useSearchServices } from '@booksuite/sdk'
+import { ServiceFull } from '@booksuite/sdk/src/gen/types/ServiceFull'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+
+import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { SmartBannerSearch } from '@/components/molecules/SmartBannerSearch'
 import { Container } from '@/components/organisms/Container'
+import { ImageGallery } from '@/components/organisms/ImageGallery'
 import { SectionSmartBannerSearch } from '@/components/organisms/SectionSmartBannerSearch'
 
 import { ServicesCard } from './components/ServicesCard'
-import { ServiceFull } from '@booksuite/sdk/src/gen/types/ServiceFull'
-import { useState } from 'react'
-import { ImageGallery } from '@/components/organisms/ImageGallery'
-import { useCurrentCompanyStore } from '@/common/contexts/company'
-import { useSearchServices } from '@booksuite/sdk'
 
 export default function ServicesPage() {
     const { company } = useCurrentCompanyStore()
+    const router = useRouter()
     const [selectedService, setSelectedService] = useState<{
         title: string
         images: string[]
@@ -53,7 +56,7 @@ export default function ServicesPage() {
                     <div className="grid grid-cols-2 gap-8 w-full items-center justify-items-center">
                         {services?.items?.map((service: ServiceFull) => (
                             <ServicesCard
-                                id={service.id}
+                                key={service.id}
                                 title={service.name ?? ''}
                                 description={service.description ?? ''}
                                 images={
@@ -64,6 +67,11 @@ export default function ServicesPage() {
                                 price={service.price ?? 0}
                                 hasOffer={true}
                                 originalPrice={service.price ?? 0}
+                                onAddService={() => {
+                                    router.push(
+                                        `/services/details/${service.id}`,
+                                    )
+                                }}
                                 onViewAllPhotos={() => {
                                     setSelectedService({
                                         title: service.name ?? '',

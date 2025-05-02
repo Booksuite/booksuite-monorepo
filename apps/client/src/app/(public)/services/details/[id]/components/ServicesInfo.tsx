@@ -1,9 +1,5 @@
 import { ChevronRight, Images } from 'lucide-react'
 
-import {
-    useCurrentCompanyId,
-    useCurrentCompanyStore,
-} from '@/common/contexts/company'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
 
 interface ServicesInfoProps {
@@ -55,11 +51,13 @@ export const ServicesInfo: React.FC<ServicesInfoProps> = ({
                         Informações gerais
                     </h1>
 
-                    <ul className="list-disc pl-5 text-grey-secondary space-y-1 text-sm">
+                    <ul className="pl-5 text-grey-secondary space-y-1 text-sm">
                         {generalInfo
-                            .split(/(?<=[.;?!])\s+/)
+                            .split(/(?<=[.;?!])\s+|(?:\r?\n)+/)
                             .map((item, index) => (
-                                <li key={index}>{item}</li>
+                                <li key={index} className="list-none">
+                                    {item}
+                                </li>
                             ))}
                     </ul>
                 </div>

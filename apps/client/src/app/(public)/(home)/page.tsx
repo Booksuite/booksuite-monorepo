@@ -3,11 +3,11 @@
 import { Others } from '@/components/organisms/Others'
 import { ReceiveOurPromotions } from '@/components/organisms/ReceiveOurPromotions'
 import { ExtraServices } from '@/components/templates/ExtraServices'
+import { HousingUnitType } from '@/components/templates/HousingUnitType'
 
 import { About } from './components/About'
 import { BannerFixed } from './components/BannerFixed'
 import { HeaderHome } from './components/HeaderHome'
-import { HousingUnitType } from './components/HousingUnitType'
 
 export default function Home() {
     return (

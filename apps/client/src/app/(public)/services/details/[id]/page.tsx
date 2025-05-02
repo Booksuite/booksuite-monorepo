@@ -1,13 +1,20 @@
 'use client'
 
+import { useGetServiceById, useSearchServices } from '@booksuite/sdk'
+import { useParams, useRouter } from 'next/navigation'
+import { useState } from 'react'
+
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Container } from '@/components/organisms/Container'
-import { useGetServiceById } from '@booksuite/sdk'
-import { useParams, useRouter } from 'next/navigation'
-import { ServicesInfo } from './components/ServicesInfo'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
-import { useState } from 'react'
+import { Others } from '@/components/organisms/Others'
+import { ReceiveOurPromotions } from '@/components/organisms/ReceiveOurPromotions'
+import { HousingUnitType } from '@/components/templates/HousingUnitType'
+
+import { OtherService } from './components/OtherService'
 import { ServicesBooking } from './components/ServicesBooking'
+import { ServicesInfo } from './components/ServicesInfo'
+
 export default function ServiceDetailsPage() {
     const { company } = useCurrentCompanyStore()
     const params = useParams()
@@ -22,6 +29,22 @@ export default function ServiceDetailsPage() {
         {
             query: {
                 enabled: !!company?.id && !!id,
+            },
+        },
+    )
+
+    const { data: servicesData } = useSearchServices(
+        { companyId: company?.id ?? '' },
+        {
+            filter: {
+                published: true,
+            },
+            pagination: { page: 1, itemsPerPage: 12 },
+        },
+        undefined,
+        {
+            query: {
+                enabled: !!company?.id,
             },
         },
     )
@@ -61,6 +84,18 @@ export default function ServiceDetailsPage() {
                     </div>
                 </div>
             </Container>
+
+            <div className="w-full h-16 border-t border-gray-secondary" />
+
+            {servicesData?.items && service?.id && (
+                <OtherService
+                    services={servicesData.items}
+                    currentServiceId={service.id}
+                />
+            )}
+            <HousingUnitType />
+            <ReceiveOurPromotions />
+            <Others />
 
             <ImageGallery
                 title={service?.name ?? ''}
