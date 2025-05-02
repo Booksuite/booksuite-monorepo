@@ -6,7 +6,7 @@ import { useState } from 'react'
 
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
-import { useDynamicLucideIcon } from '@/providers/DynamicIconProvider'
+import { DynamicIcon, IconName } from 'lucide-react/dynamic'
 
 interface HousingUnitTypeCardProps {
     title: string
@@ -30,7 +30,6 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
     onViewAllPhotos,
 }) => {
     const [isExpanded, setIsExpanded] = useState(false)
-    const DynamicLucideIcon = useDynamicLucideIcon()
 
     return (
         <div className="bg-white flex flex-row rounded-xl overflow-hidden border border-1 hover:shadow-md transition-shadow w-[900px]">
@@ -92,8 +91,10 @@ export const HousingUnitTypeCard: React.FC<HousingUnitTypeCardProps> = ({
                                 className="flex items-center gap-1.5 text-gray-secondary"
                             >
                                 {facility.facility.icon ? (
-                                    <DynamicLucideIcon
-                                        iconName={facility.facility.icon}
+                                    <DynamicIcon
+                                        name={
+                                            facility.facility.icon as IconName
+                                        }
                                         className="w-4 h-4"
                                     />
                                 ) : (

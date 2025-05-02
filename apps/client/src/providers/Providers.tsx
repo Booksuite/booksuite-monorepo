@@ -5,7 +5,6 @@ import { type ReactNode, useState } from 'react'
 
 import { CompanyProvider } from './CompanyProvider'
 import { ThemeProvider } from './ThemeProvider'
-import { DynamicIconProvider } from './DynamicIconProvider'
 
 interface ProvidersProps {
     children: ReactNode
@@ -17,9 +16,7 @@ export function Providers({ children }: ProvidersProps) {
     return (
         <QueryClientProvider client={queryClient}>
             <CompanyProvider>
-                <DynamicIconProvider>
-                    <ThemeProvider>{children}</ThemeProvider>
-                </DynamicIconProvider>
+                <ThemeProvider>{children}</ThemeProvider>
             </CompanyProvider>
         </QueryClientProvider>
     )

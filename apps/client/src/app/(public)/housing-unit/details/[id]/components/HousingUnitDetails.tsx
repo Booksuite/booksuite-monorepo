@@ -15,12 +15,11 @@ import { AvailabilityCalendar } from '@/app/(public)/housing-unit/details/[id]/c
 import { useCurrentCompanyId } from '@/common/contexts/company'
 import { useCalendarPrices } from '@/common/hooks/useCalendarPrices'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
-import { useDynamicLucideIcon } from '@/providers/DynamicIconProvider'
 
 import { SearchAvailability } from './SearchAvailability'
+import { DynamicIcon, IconName } from 'lucide-react/dynamic'
 
 export function HousingUnitDetails() {
-    const DynamicLucideIcon = useDynamicLucideIcon()
     const { id } = useParams()
     const companyId = useCurrentCompanyId()
     const [selectedImages, setSelectedImages] = useState<{
@@ -165,11 +164,11 @@ export function HousingUnitDetails() {
                                                     <div className="w-12 h-12 flex items-center justify-center">
                                                         {facility.facility
                                                             .icon && (
-                                                            <DynamicLucideIcon
-                                                                iconName={
+                                                            <DynamicIcon
+                                                                name={
                                                                     facility
                                                                         .facility
-                                                                        .icon
+                                                                        .icon as IconName
                                                                 }
                                                                 className="w-8 h-8"
                                                             />
