@@ -11,7 +11,7 @@ import { Container } from '@/components/organisms/Container'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 import { SectionSmartBannerSearch } from '@/components/organisms/SectionSmartBannerSearch'
 
-import { ServicesCard } from './components/ServicesCard'
+import { ServicePageCard } from './components/ServicePageCard'
 
 export default function ServicesPage() {
     const { company } = useCurrentCompanyStore()
@@ -55,7 +55,7 @@ export default function ServicesPage() {
                     </h1>
                     <div className="grid grid-cols-2 gap-8 w-full items-center justify-items-center">
                         {services?.items?.map((service: ServiceFull) => (
-                            <ServicesCard
+                            <ServicePageCard
                                 key={service.id}
                                 title={service.name ?? ''}
                                 description={service.description ?? ''}
