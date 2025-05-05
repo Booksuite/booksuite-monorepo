@@ -209,11 +209,11 @@ export const BannerForm = () => {
                 <MediaGallery
                     isOpen={isMediaGalleryOpen}
                     onClose={() => setIsMediaGalleryOpen(false)}
-                    selectedItems={values.medias.map((item) => item.mediaId)}
+                    selectedItems={values.medias.map((item) => item.media.id)}
                     initialItems={values.medias.map((item) => item.media)}
                     onItemsChange={handleMediaChange}
-                    maxItems={2}
                     minItems={1}
+                    maxItems={1}
                 />
             </FormSection>
 

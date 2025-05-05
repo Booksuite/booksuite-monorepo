@@ -7,7 +7,13 @@ import {
     useSearchBanners,
     useUpdateBanner,
 } from '@booksuite/sdk'
-import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
+import {
+    Box,
+    IconButton,
+    InputAdornment,
+    Stack,
+    TextField,
+} from '@mui/material'
 import { useQueries } from '@tanstack/react-query'
 import {
     Check,
@@ -54,7 +60,7 @@ export default function Banners() {
     const { mutateAsync: updateBanner } = useUpdateBanner()
 
     const [selectedFilters, setSelectedFilters] = useState<string[]>([
-        'published ',
+        'published',
     ])
     const [searchQuery, setSearchQuery] = useState<string>('')
     const [searchInputValue, setSearchInputValue] = useState<string>('')
@@ -192,34 +198,39 @@ export default function Banners() {
                         onChange={setSelectedFilters}
                     />
 
-                    <TextField
-                        variant="outlined"
-                        size="small"
-                        placeholder="Pesquisar"
-                        value={searchInputValue}
-                        onChange={(e) => setSearchInputValue(e.target.value)}
-                        slotProps={{
-                            input: {
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <IconButton
-                                            size="small"
-                                            onClick={() => {
-                                                setSearchInputValue('')
-                                                setSearchQuery('')
-                                            }}
-                                        >
-                                            {searchQuery.length > 0 ? (
-                                                <X size={16} />
-                                            ) : (
-                                                <Search size={16} />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                ),
-                            },
-                        }}
-                    />
+                    <Box sx={{ width: '300px' }}>
+                        <TextField
+                            fullWidth
+                            variant="outlined"
+                            size="small"
+                            placeholder="Pesquisar"
+                            value={searchInputValue}
+                            onChange={(e) =>
+                                setSearchInputValue(e.target.value)
+                            }
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <IconButton
+                                                size="small"
+                                                onClick={() => {
+                                                    setSearchInputValue('')
+                                                    setSearchQuery('')
+                                                }}
+                                            >
+                                                {searchQuery.length > 0 ? (
+                                                    <X size={16} />
+                                                ) : (
+                                                    <Search size={16} />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                },
+                            }}
+                        />
+                    </Box>
                 </Stack>
 
                 <Table
