@@ -1,5 +1,4 @@
 import { CompanyFull, CompanyUpdateInput, Media } from '@booksuite/sdk'
-import { omit } from 'radash'
 import * as yup from 'yup'
 
 export type VisualIdentityFormData = Pick<
@@ -13,23 +12,35 @@ export type VisualIdentityFormData = Pick<
 export function normalizeVisualIdentityFormData(
     data: VisualIdentityFormData,
 ): CompanyUpdateInput {
-    return {
-        ...omit(data, ['logoMedia', 'favIconMedia']),
+    const result: CompanyUpdateInput = {}
+
+    if (typeof data.logo !== 'undefined') {
+        result.logo = data.logo || null
     }
+
+    if (typeof data.favIcon !== 'undefined') {
+        result.favIcon = data.favIcon || null
+    }
+
+    if (typeof data.settings !== 'undefined') {
+        result.settings = data.settings
+    }
+
+    return result
 }
 
 export const createvisualIdentityInitialValues = (
     data?: Partial<CompanyFull> | null,
 ): VisualIdentityFormData => ({
-    ...data,
-    logo: data?.logo || '',
-    favIcon: data?.favIcon || '',
-    settings: data?.settings || {},
+    logo: data?.logo ?? null,
+    favIcon: data?.favIcon ?? null,
+    settings: data?.settings ?? {},
     logoMedia: null,
     favIconMedia: null,
 })
 
 export const visualIdentityFormSchema = yup.object({
-    logo: yup.string(),
-    favIcon: yup.string(),
+    logo: yup.string().nullable(),
+    favIcon: yup.string().nullable(),
+    settings: yup.object(),
 })
