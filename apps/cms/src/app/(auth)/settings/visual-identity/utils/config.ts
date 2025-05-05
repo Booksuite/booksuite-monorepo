@@ -12,21 +12,11 @@ export type VisualIdentityFormData = Pick<
 export function normalizeVisualIdentityFormData(
     data: VisualIdentityFormData,
 ): CompanyUpdateInput {
-    const result: CompanyUpdateInput = {}
-
-    if (typeof data.logo !== 'undefined') {
-        result.logo = data.logo || null
+    return {
+        logo: data.logo ?? null,
+        favIcon: data.favIcon ?? null,
+        settings: data.settings || undefined,
     }
-
-    if (typeof data.favIcon !== 'undefined') {
-        result.favIcon = data.favIcon || null
-    }
-
-    if (typeof data.settings !== 'undefined') {
-        result.settings = data.settings
-    }
-
-    return result
 }
 
 export const createvisualIdentityInitialValues = (
