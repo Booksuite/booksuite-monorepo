@@ -1,4 +1,9 @@
-import { CompanyFull, CompanyMedia, Media } from '@booksuite/sdk'
+import {
+    CompanyFull,
+    CompanyMedia,
+    CompanyUpdateInput,
+    Media,
+} from '@booksuite/sdk'
 import * as yup from 'yup'
 
 export interface BannerMedia {
@@ -30,6 +35,20 @@ function normalize(media: Media | undefined | null): BannerMedia {
         },
         mediaId: media?.id || '',
         order: 0,
+    }
+}
+
+export const transformFormDataForSubmit = (
+    formData: BusinessDescriptionFormData,
+): CompanyUpdateInput => {
+    return {
+        ...formData,
+        companyMedias: formData.companyMedias.map((media) => ({
+            mediaId: media.media.id,
+            isFeatured: media.isFeatured,
+            order: media.order ?? undefined,
+        })),
+        bannerImageId: formData.medias[0]?.mediaId || '',
     }
 }
 

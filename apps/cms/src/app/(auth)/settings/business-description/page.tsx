@@ -9,7 +9,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
-import { omit } from 'radash'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { getErrorMessage } from '@/common/utils/errorHandling'
@@ -21,6 +20,7 @@ import {
     BusinessDescriptionFormData,
     businessDescriptionFormSchema,
     businessDescriptionInitialValues,
+    transformFormDataForSubmit,
 } from './utils/config'
 
 export default function BusinessDescription() {
@@ -41,18 +41,11 @@ export default function BusinessDescription() {
 
     async function handleSubmit(formData: BusinessDescriptionFormData) {
         try {
-            const data: CompanyUpdateInput = {
-                ...omit(formData, ['medias', 'bannerImage']),
-                companyMedias: formData.companyMedias.map((media) => ({
-                    mediaId: media.media.id,
-                    isFeatured: media.isFeatured,
-                    order: media.order ?? undefined,
-                })),
-            }
+            const data: CompanyUpdateInput =
+                transformFormDataForSubmit(formData)
 
-            console.log(data)
-            if (formData.medias[0]?.mediaId) {
-                data.bannerImageId = formData.medias[0].mediaId
+            if (formData.companyMedias.length === 0) {
+                data.companyMedias = []
             }
 
             await updateCompanyBusinessDescription({
