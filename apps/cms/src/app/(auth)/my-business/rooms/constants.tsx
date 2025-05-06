@@ -1,5 +1,5 @@
 import { HousingUnitTypeFull } from '@booksuite/sdk'
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 import pluralize from 'pluralize'
 
@@ -14,30 +14,43 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
         header: '',
         size: 85,
         Cell: ({ row }) => (
-            <Image
-                src={row.original.medias[0]?.media.url}
-                alt={row.original.name}
+            <Box
                 sx={{
-                    objectFit: 'cover',
-                    borderRadius: 2,
-                    width: '72px',
-                    height: '72px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '100%',
                 }}
-            />
+            >
+                <Image
+                    src={row.original.medias[0]?.media.url}
+                    alt={row.original.name}
+                    sx={{
+                        objectFit: 'cover',
+                        borderRadius: 2,
+                        width: '72px',
+                        height: '72px',
+                    }}
+                />
+            </Box>
         ),
     },
     {
         id: 'name',
         header: 'Nome',
-        size: 200,
         accessorKey: 'name',
-        enableSorting: true,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
-                    fontWeight: 'bold',
+                    textAlign: 'left',
                     fontSize: '1rem',
-                    color: '#486581',
+                    marginLeft: '10px',
                 }}
             >
                 {row.original.name}
@@ -47,36 +60,121 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
     {
         id: 'weekdaysPrice',
         header: 'Dia de semana',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
 
-        accessorFn: (row) =>
-            row.weekdaysPrice ? formatCurrency(row.weekdaysPrice) : '-',
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    textAlign: 'left',
+                    fontSize: '1rem',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.weekdaysPrice
+                    ? formatCurrency(row.original.weekdaysPrice)
+                    : '-'}
+            </Typography>
+        ),
     },
     {
         id: 'weekendPrice',
         header: 'Fim de semana',
-
-        accessorFn: (row) =>
-            row.weekendPrice ? formatCurrency(row.weekendPrice) : '-',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'right',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    textAlign: 'left',
+                    fontSize: '1rem',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.weekendPrice
+                    ? formatCurrency(row.original.weekendPrice)
+                    : '-'}
+            </Typography>
+        ),
     },
     {
         id: 'maxGuests',
         header: 'Max. de hóspedes',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
 
-        accessorFn: (row) =>
-            row.maxGuests
-                ? `${row.maxGuests} ${pluralize('hóspede', row.maxGuests)}`
-                : 'Sem limites',
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    textAlign: 'left',
+                    fontSize: '1rem',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.maxGuests
+                    ? `${row.original.maxGuests} ${pluralize('hóspede', row.original.maxGuests)}`
+                    : 'Sem limites'}
+            </Typography>
+        ),
     },
     {
         id: 'housingUnits',
         header: 'Unidades',
-
-        accessorFn: (row) =>
-            `${row.housingUnits.length} ${pluralize('unidade', row.housingUnits.length)}`,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    textAlign: 'left',
+                    fontSize: '1rem',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.housingUnits.length
+                    ? `${row.original.housingUnits.length} ${pluralize('unidade', row.original.housingUnits.length)}`
+                    : 'Sem unidades'}
+            </Typography>
+        ),
     },
     {
         id: 'published',
         header: 'Status',
-    accessorFn: (row) => (row.published ? 'Publicado' : 'Não publicado'),
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    textAlign: 'left',
+                    fontSize: '1rem',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.published ? 'Publicado' : 'Não publicado'}
+            </Typography>
+        ),
     },
 ]
