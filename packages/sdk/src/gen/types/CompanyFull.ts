@@ -1,5 +1,6 @@
 import type { CompanyContact } from './CompanyContact.ts'
 import type { CompanyFacility } from './CompanyFacility.ts'
+import type { CompanyMedia } from './CompanyMedia.ts'
 import type { CompanySettings } from './CompanySettings.ts'
 import type { MapCoordinatesInput } from './MapCoordinatesInput.ts'
 import type { Media } from './Media.ts'
@@ -125,6 +126,10 @@ export type CompanyFull = {
    */
   bannerDescription: string | null
   bannerImage: Media | null
+  /**
+   * @type array
+   */
+  companyMedias: CompanyMedia[] | null
   settings: CompanySettings | null
   /**
    * @type array
