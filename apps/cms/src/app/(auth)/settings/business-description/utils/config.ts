@@ -1,4 +1,4 @@
-import { CompanyFull, Media } from '@booksuite/sdk'
+import { CompanyFull, CompanyMedia, Media } from '@booksuite/sdk'
 import * as yup from 'yup'
 
 export interface BannerMedia {
@@ -17,6 +17,7 @@ export type BusinessDescriptionFormData = Pick<
     | 'bannerImage'
 > & {
     medias: BannerMedia[]
+    companyMedias: CompanyMedia[]
 }
 
 function normalize(media: Media | undefined | null): BannerMedia {
@@ -42,6 +43,7 @@ export const businessDescriptionInitialValues = (
     bannerDescription: data?.bannerDescription || '',
     bannerImage: data?.bannerImage || null,
     medias: [normalize(data?.bannerImage)],
+    companyMedias: data?.companyMedias || [],
 })
 
 export const businessDescriptionFormSchema = yup.object({
@@ -50,4 +52,5 @@ export const businessDescriptionFormSchema = yup.object({
     description: yup.string().nullable(),
     bannerTitle: yup.string().nullable(),
     bannerDescription: yup.string().nullable(),
+    companyMedias: yup.array().min(1, 'Mídia é obrigatório'),
 })

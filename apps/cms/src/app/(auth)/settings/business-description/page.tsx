@@ -1,6 +1,10 @@
 'use client'
 
-import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
+import {
+    CompanyUpdateInput,
+    useGetCompanyById,
+    useUpdateCompany,
+} from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
@@ -8,6 +12,7 @@ import { useSnackbar } from 'notistack'
 import { omit } from 'radash'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils/errorHandling'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
@@ -36,14 +41,23 @@ export default function BusinessDescription() {
 
     async function handleSubmit(formData: BusinessDescriptionFormData) {
         try {
+            const data: CompanyUpdateInput = {
+                ...omit(formData, ['medias', 'bannerImage']),
+                companyMedias: formData.companyMedias.map((media) => ({
+                    mediaId: media.media.id,
+                    isFeatured: media.isFeatured,
+                    order: media.order ?? undefined,
+                })),
+            }
+
+            console.log(data)
+            if (formData.medias[0]?.mediaId) {
+                data.bannerImageId = formData.medias[0].mediaId
+            }
+
             await updateCompanyBusinessDescription({
                 id: companyId,
-                data: {
-                    ...omit(formData, ['medias', 'bannerImage']),
-                    bannerImageId: formData.medias[0]
-                        ? formData.medias[0].mediaId
-                        : '',
-                },
+                data,
             })
 
             await queryClient.invalidateQueries({ queryKey: queryKey })
@@ -56,15 +70,20 @@ export default function BusinessDescription() {
                 },
                 autoHideDuration: 3000,
             })
-        } catch {
-            enqueueSnackbar(`Erro ao modificar a descrição do negócio`, {
-                variant: 'error',
-                anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right',
+        } catch (error) {
+            enqueueSnackbar(
+                `Erro ao modificar a descrição do negócio ${getErrorMessage(
+                    error,
+                )}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
                 },
-                autoHideDuration: 5000,
-            })
+            )
         }
     }
 
