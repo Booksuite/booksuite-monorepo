@@ -3,7 +3,7 @@ import { Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 
 import { BILLING_TYPE_RESERVATION_OPTION_MAPPING } from '@/common/constants/billingType'
-import { theme, themeOptions } from '@/common/theme'
+import { theme } from '@/common/theme'
 
 export const MAX_FEATURED_FACILITIES = 5
 

@@ -1,8 +1,9 @@
-import { theme } from '@/common/theme'
 import { UtilityLinks } from '@booksuite/sdk'
 import { Typography } from '@mui/material'
 import dayjs from 'dayjs'
 import { MRT_ColumnDef } from 'material-react-table'
+
+import { theme } from '@/common/theme'
 
 export const MAX_FEATURED_FACILITIES = 5
 

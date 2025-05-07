@@ -32,6 +32,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { useSearchParamsOrder } from '@/common/hooks/useOrder'
 import { useSearchParamsPagination } from '@/common/hooks/usePagination'
+import { theme } from '@/common/theme'
 import { formatCurrency } from '@/common/utils/currency'
 import { Image } from '@/components/atoms/Image'
 import { LinkButton } from '@/components/atoms/LinkButton'
@@ -41,7 +42,6 @@ import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Table } from '@/components/organisms/Table'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
-import { theme } from '@/common/theme'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },

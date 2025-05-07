@@ -3,9 +3,9 @@ import { Box, Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 import pluralize from 'pluralize'
 
+import { theme } from '@/common/theme'
 import { formatCurrency } from '@/common/utils/currency'
 import { Image } from '@/components/atoms/Image'
-import { theme } from '@/common/theme'
 
 export const MAX_FEATURED_FACILITIES = 5
 

@@ -1,8 +1,9 @@
-import { theme } from '@/common/theme'
 import { Banner, BannerMedia, BannerPosition } from '@booksuite/sdk'
 import { Box, Typography } from '@mui/material'
-import { Image } from '@/components/atoms/Image'
 import { MRT_ColumnDef } from 'material-react-table'
+
+import { theme } from '@/common/theme'
+import { Image } from '@/components/atoms/Image'
 
 export const BANNER_POSITION_OPTIONS = [
     { value: 'FEATURED_CONTENT', label: 'Banner Fixado' },
