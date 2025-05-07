@@ -21,11 +21,19 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
         header: 'Nome',
         accessorKey: 'name',
         enableSorting: true,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
                     fontWeight: 'bold',
-                    fontSize: '1rem',
+                    fontSize: '14px',
+                    marginLeft: '10px',
                     color: themeOptions.palette?.blueGrey?.[700],
                 }}
             >
@@ -36,11 +44,19 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
     {
         id: 'billingType',
         header: 'Tipo de Cobrança',
-
+        accessorKey: 'billingType',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
-                    fontSize: '1rem',
+                    fontSize: '14px',
+                    marginLeft: '10px',
                     color: '#486581',
                     fontWeight: '400',
                 }}
@@ -55,11 +71,20 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
     {
         id: 'published',
         header: 'Visibilidade',
+        accessorKey: 'published',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
                     fontWeight: '500',
-                    fontSize: '1rem',
+                    fontSize: '14px',
+                    marginLeft: '10px',
                     color: row.original.published ? '#1D7F52' : '#6B7279',
                 }}
             >

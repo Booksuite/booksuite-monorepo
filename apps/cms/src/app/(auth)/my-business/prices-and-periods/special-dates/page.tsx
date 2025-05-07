@@ -53,16 +53,24 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
         header: '',
         size: 85,
         Cell: ({ row }) => (
-            <Image
-                src={row.original.medias[0]?.media.url}
-                alt={row.original.name}
+            <Box
                 sx={{
-                    objectFit: 'cover',
-                    borderRadius: 2,
-                    width: '72px',
-                    height: '72px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '100%',
                 }}
-            />
+            >
+                <Image
+                    src={row.original.medias[0]?.media.url}
+                    alt={row.original.name}
+                    sx={{
+                        objectFit: 'cover',
+                        borderRadius: 2,
+                        width: '72px',
+                        height: '72px',
+                    }}
+                />
+            </Box>
         ),
     },
     {
@@ -71,8 +79,21 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
         size: 200,
         accessorKey: 'name',
         enableSorting: true,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
-            <Typography fontWeight="bold" fontSize="1rem" color="#486581">
+            <Typography
+                sx={{
+                    fontWeight: 'bold',
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
                 {row.original.name}
             </Typography>
         ),
@@ -80,14 +101,38 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
     {
         id: 'date',
         header: 'Data',
-        accessorFn: (row) =>
-            row.startDate
-                ? new Date(row.startDate).toLocaleDateString('pt-BR')
-                : '-',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.startDate
+                    ? new Date(row.original.startDate).toLocaleDateString(
+                          'pt-BR',
+                      )
+                    : '-'}
+            </Typography>
+        ),
     },
     {
         header: 'Status',
         accessorKey: 'status',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => {
             const { published, startDate } = row.original
             const now = new Date()
@@ -109,13 +154,40 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
                 }
             }
 
-            return <span style={{ color, fontWeight: 'bold' }}>{text}</span>
+            return (
+                <Typography
+                    sx={{
+                        color,
+                        fontWeight: 'bold',
+                        fontSize: '14px',
+                        marginLeft: '10px',
+                    }}
+                >
+                    {text}
+                </Typography>
+            )
         },
     },
     {
         id: 'published',
         header: 'Visibilidade',
-        accessorFn: (row) => (row.published ? 'Publicado' : 'Não Publicado'),
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.published ? 'Publicado' : 'Não Publicado'}
+            </Typography>
+        ),
     },
 ]
 

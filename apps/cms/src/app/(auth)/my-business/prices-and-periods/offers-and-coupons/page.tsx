@@ -49,15 +49,22 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
     {
         id: 'name',
         header: 'Nome',
-        size: 200,
         accessorKey: 'name',
         enableSorting: true,
+        size: 200,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
                     fontWeight: 'bold',
-                    fontSize: '1rem',
-                    color: '#486581',
+                    fontSize: '14px',
+                    marginLeft: '10px',
                 }}
             >
                 {row.original.name}
@@ -67,22 +74,65 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
     {
         id: 'purchaseStartDate',
         header: 'Início da Compra',
-        accessorFn: (row) =>
-            row.purchaseStartDate
-                ? new Date(row.purchaseStartDate).toLocaleDateString('pt-BR')
-                : '-',
+        accessorKey: 'purchaseStartDate',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.purchaseStartDate
+                    ? new Date(
+                          row.original.purchaseStartDate,
+                      ).toLocaleDateString('pt-BR')
+                    : '-'}
+            </Typography>
+        ),
     },
     {
         id: 'purchaseEndDate',
         header: 'Fim da Compra',
-        accessorFn: (row) =>
-            row.purchaseEndDate
-                ? new Date(row.purchaseEndDate).toLocaleDateString('pt-BR')
-                : '-',
+        accessorKey: 'purchaseEndDate',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.purchaseEndDate
+                    ? new Date(row.original.purchaseEndDate).toLocaleDateString(
+                          'pt-BR',
+                      )
+                    : '-'}
+            </Typography>
+        ),
     },
     {
         header: 'Status',
         accessorKey: 'status',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => {
             const { published, purchaseStartDate, purchaseEndDate } =
                 row.original
@@ -109,13 +159,41 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
                 }
             }
 
-            return <span style={{ color, fontWeight: 'bold' }}>{text}</span>
+            return (
+                <Typography
+                    sx={{
+                        fontSize: '14px',
+                        marginLeft: '10px',
+                        color,
+                    }}
+                >
+                    {text}
+                </Typography>
+            )
         },
     },
     {
         id: 'published',
         header: 'Visibilidade',
-        accessorFn: (row) => (row.published ? 'Publicado' : 'Não Publicado'),
+        accessorKey: 'published',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                    color: row.original.published ? '#1D7F52' : '#6B7279',
+                }}
+            >
+                {row.original.published ? 'Publicado' : 'Não Publicado'}
+            </Typography>
+        ),
     },
 ]
 

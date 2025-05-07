@@ -3,8 +3,6 @@ import { Box, Typography } from '@mui/material'
 import { ImageOff } from 'lucide-react'
 import { MRT_ColumnDef } from 'material-react-table'
 
-import { themeOptions } from '@/common/theme'
-
 export const BANNER_POSITION_OPTIONS = [
     { value: 'FEATURED_CONTENT', label: 'Banner Fixado' },
     { value: 'HOME_TOP', label: 'Topo da página' },
@@ -29,49 +27,50 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<BannerWithMedias>[] = [
         id: 'image',
         header: '',
         size: 85,
-        Cell: ({ row }) => {
-            const imageUrl = row.original.medias?.[0]?.media?.url
-
-            return imageUrl ? (
-                <Box
-                    component="img"
-                    src={imageUrl}
-                    alt={row.original.name}
-                    sx={{
-                        objectFit: 'cover',
-                        borderRadius: 1,
-                        width: '80px',
-                        height: '80px',
-                        backgroundColor: (theme) => theme.palette.grey[100],
-                    }}
-                />
-            ) : (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '72px',
-                        height: '40px',
-                        borderRadius: 1,
-                        backgroundColor: (theme) => theme.palette.grey[100],
-                    }}
-                >
-                    <ImageOff size={20} color="#9E9E9E" />
-                </Box>
-            )
-        },
+        Cell: ({ row }) => (
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '100%',
+                }}
+            >
+                {row.original.medias?.[0]?.media.url ? (
+                    <Box
+                        component="img"
+                        src={row.original.medias[0].media.url}
+                        alt={row.original.name}
+                        sx={{
+                            objectFit: 'cover',
+                            borderRadius: 2,
+                            width: '72px',
+                            height: '72px',
+                        }}
+                    />
+                ) : (
+                    <ImageOff size={72} />
+                )}
+            </Box>
+        ),
     },
     {
         id: 'name',
         header: 'Nome',
         accessorKey: 'name',
+        size: 150,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
                     fontWeight: 'bold',
-                    fontSize: '1rem',
-                    color: themeOptions.palette?.blueGrey?.[700],
+                    fontSize: '14px',
+                    marginLeft: '10px',
                 }}
             >
                 {row.original.name}
@@ -83,17 +82,40 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<BannerWithMedias>[] = [
         id: 'bannerPosition',
         header: 'Posição do Banner',
         accessorKey: 'bannerPosition',
-        accessorFn: (row) => BannerPositionMap[row.position],
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {BannerPositionMap[row.original.position]}
+            </Typography>
+        ),
     },
 
     {
         id: 'published',
         header: 'Visibilidade',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
-                    fontWeight: '500',
-                    fontSize: '1rem',
+                    fontSize: '14px',
+                    marginLeft: '10px',
                     color: row.original.published ? '#1D7F52' : '#6B7279',
                 }}
             >

@@ -6,7 +6,13 @@ import {
     useSearchServices,
     useUpdateService,
 } from '@booksuite/sdk'
-import { IconButton, InputAdornment, Stack, TextField } from '@mui/material'
+import {
+    IconButton,
+    InputAdornment,
+    Stack,
+    TextField,
+    Typography,
+} from '@mui/material'
 import { Box } from '@mui/system'
 import {
     Check,
@@ -47,16 +53,24 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<ServiceFull>[] = [
         header: '',
         size: 85,
         Cell: ({ row }) => (
-            <Image
-                src={row.original.medias[0]?.media.url}
-                alt={row.original.name}
-                style={{
-                    width: '72px',
-                    height: '72px',
-                    objectFit: 'cover',
-                    borderRadius: '8px',
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '100%',
                 }}
-            />
+            >
+                <Image
+                    src={row.original.medias[0]?.media.url}
+                    alt={row.original.name}
+                    sx={{
+                        objectFit: 'cover',
+                        borderRadius: 2,
+                        width: '72px',
+                        height: '72px',
+                    }}
+                />
+            </Box>
         ),
     },
     {
@@ -64,27 +78,68 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<ServiceFull>[] = [
         header: 'Nome',
         accessorKey: 'name',
         enableSorting: true,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }: { row: { original: ServiceFull } }) => (
-            <span
-                style={{
+            <Typography
+                sx={{
                     fontWeight: 'bold',
                     fontSize: '14px',
-                    color: '#486581',
+                    marginLeft: '10px',
                 }}
             >
                 {row.original.name}
-            </span>
+            </Typography>
         ),
     },
     {
         id: 'price',
         header: 'Preço',
-        accessorFn: (row) => (row.price ? formatCurrency(row.price) : '-'),
+        accessorKey: 'price',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.price ? formatCurrency(row.original.price) : '-'}
+            </Typography>
+        ),
     },
     {
         id: 'published',
         header: 'Status',
-        accessorFn: (row) => (row.published ? 'Ativo' : 'Inativo'),
+        accessorKey: 'published',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.published ? 'Ativo' : 'Inativo'}
+            </Typography>
+        ),
     },
 ]
 

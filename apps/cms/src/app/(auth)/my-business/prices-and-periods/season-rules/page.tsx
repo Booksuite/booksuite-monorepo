@@ -49,15 +49,22 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SeasonRuleFull>[] = [
     {
         id: 'name',
         header: 'Nome',
-        size: 200,
         accessorKey: 'name',
+        size: 200,
         enableSorting: true,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
                     fontWeight: 'bold',
-                    fontSize: '1rem',
-                    color: '#486581',
+                    fontSize: '14px',
+                    marginLeft: '10px',
                 }}
             >
                 {row.original.name}
@@ -67,22 +74,60 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SeasonRuleFull>[] = [
     {
         id: 'startDate',
         header: 'Inicio',
-        accessorFn: (row) =>
-            row.startDate
-                ? new Date(row.startDate).toLocaleDateString('pt-BR')
-                : '-',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.startDate
+                    ? new Date(row.original.startDate).toLocaleDateString(
+                          'pt-BR',
+                      )
+                    : '-'}
+            </Typography>
+        ),
     },
     {
         id: 'endDate',
         header: 'Fim',
-        accessorFn: (row) =>
-            row.endDate
-                ? new Date(row.endDate).toLocaleDateString('pt-BR')
-                : '-',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.endDate
+                    ? new Date(row.original.endDate).toLocaleDateString('pt-BR')
+                    : '-'}
+            </Typography>
+        ),
     },
     {
         header: 'Status',
-        accessorKey: 'status',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => {
             const { published, startDate, endDate } = row.original
 
@@ -108,14 +153,41 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SeasonRuleFull>[] = [
                 }
             }
 
-            return <span style={{ color, fontWeight: 'bold' }}>{text}</span>
+            return (
+                <Typography
+                    sx={{
+                        color,
+                        fontWeight: 'bold',
+                        fontSize: '14px',
+                        marginLeft: '10px',
+                    }}
+                >
+                    {text}
+                </Typography>
+            )
         },
     },
-
     {
         id: 'published',
         header: 'Visibilidade',
-        accessorFn: (row) => (row.published ? 'Publicado' : 'Não Publicado'),
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                    color: row.original.published ? '#1D7F52' : '#6B7279',
+                }}
+            >
+                {row.original.published ? 'Publicado' : 'Não Publicado'}
+            </Typography>
+        ),
     },
 ]
 

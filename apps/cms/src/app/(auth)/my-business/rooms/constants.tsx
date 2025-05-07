@@ -38,6 +38,8 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
         id: 'name',
         header: 'Nome',
         accessorKey: 'name',
+        enableSorting: true,
+        size: 150,
         muiTableHeadCellProps: {
             sx: {
                 textAlign: 'left',
@@ -49,8 +51,9 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
             <Typography
                 sx={{
                     textAlign: 'left',
-                    fontSize: '1rem',
+                    fontSize: '14px',
                     marginLeft: '10px',
+                    fontWeight: 'bold',
                 }}
             >
                 {row.original.name}
@@ -72,7 +75,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
             <Typography
                 sx={{
                     textAlign: 'left',
-                    fontSize: '1rem',
+                    fontSize: '14px',
                     marginLeft: '10px',
                 }}
             >
@@ -96,7 +99,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
             <Typography
                 sx={{
                     textAlign: 'left',
-                    fontSize: '1rem',
+                    fontSize: '14px',
                     marginLeft: '10px',
                 }}
             >
@@ -121,7 +124,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
             <Typography
                 sx={{
                     textAlign: 'left',
-                    fontSize: '1rem',
+                    fontSize: '14px',
                     marginLeft: '10px',
                 }}
             >
@@ -145,7 +148,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
             <Typography
                 sx={{
                     textAlign: 'left',
-                    fontSize: '1rem',
+                    fontSize: '14px',
                     marginLeft: '10px',
                 }}
             >
@@ -169,7 +172,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
             <Typography
                 sx={{
                     textAlign: 'left',
-                    fontSize: '1rem',
+                    fontSize: '14px',
                     marginLeft: '10px',
                 }}
             >
