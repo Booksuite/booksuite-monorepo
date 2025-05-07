@@ -5,6 +5,7 @@ import pluralize from 'pluralize'
 
 import { formatCurrency } from '@/common/utils/currency'
 import { Image } from '@/components/atoms/Image'
+import { theme } from '@/common/theme'
 
 export const MAX_FEATURED_FACILITIES = 5
 
@@ -174,6 +175,9 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
                     textAlign: 'left',
                     fontSize: '14px',
                     marginLeft: '10px',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
                 }}
             >
                 {row.original.published ? 'Publicado' : 'Não publicado'}

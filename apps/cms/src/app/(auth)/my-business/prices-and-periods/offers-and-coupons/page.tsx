@@ -39,6 +39,8 @@ import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Table } from '@/components/organisms/Table'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
+import dayjs from 'dayjs'
+import { theme } from '@/common/theme'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
@@ -90,9 +92,7 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
                 }}
             >
                 {row.original.purchaseStartDate
-                    ? new Date(
-                          row.original.purchaseStartDate,
-                      ).toLocaleDateString('pt-BR')
+                    ? dayjs(row.original.purchaseStartDate).format('DD/MM/YYYY')
                     : '-'}
             </Typography>
         ),
@@ -116,9 +116,7 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
                 }}
             >
                 {row.original.purchaseEndDate
-                    ? new Date(row.original.purchaseEndDate).toLocaleDateString(
-                          'pt-BR',
-                      )
+                    ? dayjs(row.original.purchaseEndDate).format('DD/MM/YYYY')
                     : '-'}
             </Typography>
         ),
@@ -148,13 +146,13 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
                 if (start && end) {
                     if (now >= start && now <= end) {
                         text = 'Em Andamento'
-                        color = '#1D7F52'
+                        color = theme.palette.success.main
                     } else if (now < start) {
                         text = 'Programada'
-                        color = '#E0AE15'
+                        color = theme.palette.warning.main
                     } else if (now > end) {
                         text = 'Finalizada'
-                        color = '#D63841'
+                        color = theme.palette.error.main
                     }
                 }
             }
@@ -188,7 +186,9 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
                 sx={{
                     fontSize: '14px',
                     marginLeft: '10px',
-                    color: row.original.published ? '#1D7F52' : '#6B7279',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
                 }}
             >
                 {row.original.published ? 'Publicado' : 'Não Publicado'}

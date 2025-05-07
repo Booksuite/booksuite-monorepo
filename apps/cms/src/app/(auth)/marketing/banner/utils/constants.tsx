@@ -1,6 +1,7 @@
+import { theme } from '@/common/theme'
 import { Banner, BannerMedia, BannerPosition } from '@booksuite/sdk'
 import { Box, Typography } from '@mui/material'
-import { ImageOff } from 'lucide-react'
+import { Image } from '@/components/atoms/Image'
 import { MRT_ColumnDef } from 'material-react-table'
 
 export const BANNER_POSITION_OPTIONS = [
@@ -35,21 +36,16 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<BannerWithMedias>[] = [
                     height: '100%',
                 }}
             >
-                {row.original.medias?.[0]?.media.url ? (
-                    <Box
-                        component="img"
-                        src={row.original.medias[0].media.url}
-                        alt={row.original.name}
-                        sx={{
-                            objectFit: 'cover',
-                            borderRadius: 2,
-                            width: '72px',
-                            height: '72px',
-                        }}
-                    />
-                ) : (
-                    <ImageOff size={72} />
-                )}
+                <Image
+                    src={row.original.medias?.[0]?.media.url}
+                    alt={row.original.name}
+                    sx={{
+                        objectFit: 'cover',
+                        borderRadius: 2,
+                        width: '72px',
+                        height: '72px',
+                    }}
+                />
             </Box>
         ),
     },
@@ -58,6 +54,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<BannerWithMedias>[] = [
         header: 'Nome',
         accessorKey: 'name',
         size: 150,
+        enableSorting: true,
         muiTableHeadCellProps: {
             sx: {
                 textAlign: 'left',
@@ -116,7 +113,9 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<BannerWithMedias>[] = [
                 sx={{
                     fontSize: '14px',
                     marginLeft: '10px',
-                    color: row.original.published ? '#1D7F52' : '#6B7279',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
                 }}
             >
                 {row.original.published ? 'Publicado' : 'Não publicado'}

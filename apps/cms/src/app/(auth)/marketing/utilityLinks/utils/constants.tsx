@@ -1,5 +1,7 @@
+import { theme } from '@/common/theme'
 import { UtilityLinks } from '@booksuite/sdk'
 import { Typography } from '@mui/material'
+import dayjs from 'dayjs'
 import { MRT_ColumnDef } from 'material-react-table'
 
 export const MAX_FEATURED_FACILITIES = 5
@@ -50,9 +52,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<UtilityLinks>[] = [
                 }}
             >
                 {row.original.startDate
-                    ? new Date(row.original.startDate).toLocaleDateString(
-                          'pt-BR',
-                      )
+                    ? dayjs(row.original.startDate).format('DD/MM/YYYY')
                     : '---'}
             </Typography>
         ),
@@ -77,7 +77,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<UtilityLinks>[] = [
                 }}
             >
                 {row.original.endDate
-                    ? new Date(row.original.endDate).toLocaleDateString('pt-BR')
+                    ? dayjs(row.original.endDate).format('DD/MM/YYYY')
                     : '---'}
             </Typography>
         ),
@@ -98,7 +98,9 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<UtilityLinks>[] = [
                 sx={{
                     fontSize: '14px',
                     marginLeft: '10px',
-                    color: row.original.published ? '#1D7F52' : '#6B7279',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
                 }}
             >
                 {row.original.published ? 'Publicado' : 'Não publicado'}

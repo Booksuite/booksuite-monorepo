@@ -41,6 +41,8 @@ import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Table } from '@/components/organisms/Table'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
+import dayjs from 'dayjs'
+import { theme } from '@/common/theme'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
@@ -100,7 +102,7 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
     },
     {
         id: 'date',
-        header: 'Data',
+        header: 'Início da Estadia',
         muiTableHeadCellProps: {
             sx: {
                 textAlign: 'left',
@@ -116,14 +118,36 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
                 }}
             >
                 {row.original.startDate
-                    ? new Date(row.original.startDate).toLocaleDateString(
-                          'pt-BR',
-                      )
+                    ? dayjs(row.original.startDate).format('DD/MM/YYYY')
                     : '-'}
             </Typography>
         ),
     },
     {
+        id: 'endDate',
+        header: 'Fim da Estadia',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.endDate
+                    ? dayjs(row.original.endDate).format('DD/MM/YYYY')
+                    : '-'}
+            </Typography>
+        ),
+    },
+    {
+        id: 'status',
         header: 'Status',
         accessorKey: 'status',
         muiTableHeadCellProps: {
@@ -144,13 +168,13 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
             if (published && eventDate) {
                 if (eventDate > now) {
                     text = 'Programada'
-                    color = '#E0AE15'
+                    color = theme.palette.warning.main
                 } else if (eventDate.toDateString() === now.toDateString()) {
                     text = 'Hoje'
-                    color = '#1D7F52'
+                    color = theme.palette.success.main
                 } else {
                     text = 'Finalizada'
-                    color = '#D63841'
+                    color = theme.palette.error.main
                 }
             }
 
@@ -183,6 +207,9 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
                 sx={{
                     fontSize: '14px',
                     marginLeft: '10px',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
                 }}
             >
                 {row.original.published ? 'Publicado' : 'Não Publicado'}

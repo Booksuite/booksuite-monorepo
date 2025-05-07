@@ -3,7 +3,7 @@ import { Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 
 import { BILLING_TYPE_RESERVATION_OPTION_MAPPING } from '@/common/constants/billingType'
-import { themeOptions } from '@/common/theme'
+import { theme, themeOptions } from '@/common/theme'
 
 export const MAX_FEATURED_FACILITIES = 5
 
@@ -21,6 +21,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
         header: 'Nome',
         accessorKey: 'name',
         enableSorting: true,
+        size: 200,
         muiTableHeadCellProps: {
             sx: {
                 textAlign: 'left',
@@ -34,7 +35,6 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
                     fontWeight: 'bold',
                     fontSize: '14px',
                     marginLeft: '10px',
-                    color: themeOptions.palette?.blueGrey?.[700],
                 }}
             >
                 {row.original.name}
@@ -57,7 +57,6 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
                 sx={{
                     fontSize: '14px',
                     marginLeft: '10px',
-                    color: '#486581',
                     fontWeight: '400',
                 }}
             >
@@ -85,7 +84,9 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
                     fontWeight: '500',
                     fontSize: '14px',
                     marginLeft: '10px',
-                    color: row.original.published ? '#1D7F52' : '#6B7279',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
                 }}
             >
                 {row.original.published ? 'Publicado' : 'Não publicado'}

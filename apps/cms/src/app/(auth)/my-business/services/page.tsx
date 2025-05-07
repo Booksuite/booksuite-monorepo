@@ -41,6 +41,7 @@ import { ChipFilter } from '@/components/organisms/ChipFilter'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { Table } from '@/components/organisms/Table'
 import { useConfirmationDialog } from '@/components/templates/ConfirmationDialog'
+import { theme } from '@/common/theme'
 
 const chipItems = [
     { key: 'published', label: 'Publicadas' },
@@ -135,6 +136,9 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<ServiceFull>[] = [
                 sx={{
                     fontSize: '14px',
                     marginLeft: '10px',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
                 }}
             >
                 {row.original.published ? 'Ativo' : 'Inativo'}
