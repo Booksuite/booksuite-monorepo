@@ -135,22 +135,22 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
             const { published, purchaseStartDate, purchaseEndDate } =
                 row.original
 
-            const now = new Date()
-            const start = purchaseStartDate ? new Date(purchaseStartDate) : null
-            const end = purchaseEndDate ? new Date(purchaseEndDate) : null
+            const now = dayjs()
+            const start = purchaseStartDate ? dayjs(purchaseStartDate) : null
+            const end = purchaseEndDate ? dayjs(purchaseEndDate) : null
 
             let text = 'Inativa'
             let color = 'inherit'
 
             if (published) {
                 if (start && end) {
-                    if (now >= start && now <= end) {
+                    if (now.isAfter(start) && now.isBefore(end)) {
                         text = 'Em Andamento'
                         color = theme.palette.success.main
-                    } else if (now < start) {
+                    } else if (now.isBefore(start)) {
                         text = 'Programada'
                         color = theme.palette.warning.main
-                    } else if (now > end) {
+                    } else if (now.isAfter(end)) {
                         text = 'Finalizada'
                         color = theme.palette.error.main
                     }

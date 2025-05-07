@@ -131,22 +131,22 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SeasonRuleFull>[] = [
         Cell: ({ row }) => {
             const { published, startDate, endDate } = row.original
 
-            const now = new Date()
-            const start = startDate ? new Date(startDate) : null
-            const end = endDate ? new Date(endDate) : null
+            const now = dayjs()
+            const start = startDate ? dayjs(startDate) : null
+            const end = endDate ? dayjs(endDate) : null
 
             let text = 'Inativa'
             let color = 'inherit'
 
             if (published) {
                 if (start && end) {
-                    if (now >= start && now <= end) {
+                    if (now.isAfter(start) && now.isBefore(end)) {
                         text = 'Em Andamento'
                         color = theme.palette.success.main
-                    } else if (now < start) {
+                    } else if (now.isBefore(start)) {
                         text = 'Programada'
                         color = theme.palette.warning.main
-                    } else if (now > end) {
+                    } else if (now.isAfter(end)) {
                         text = 'Finalizada'
                         color = theme.palette.error.main
                     }

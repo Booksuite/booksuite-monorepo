@@ -159,17 +159,17 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
         },
         Cell: ({ row }) => {
             const { published, startDate } = row.original
-            const now = new Date()
-            const eventDate = startDate ? new Date(startDate) : null
+            const now = dayjs()
+            const eventDate = startDate ? dayjs(startDate) : null
 
             let text = 'Inativa'
             let color = 'inherit'
 
             if (published && eventDate) {
-                if (eventDate > now) {
+                if (eventDate.isAfter(now, 'day')) {
                     text = 'Programada'
                     color = theme.palette.warning.main
-                } else if (eventDate.toDateString() === now.toDateString()) {
+                } else if (eventDate.isSame(now, 'day')) {
                     text = 'Hoje'
                     color = theme.palette.success.main
                 } else {
