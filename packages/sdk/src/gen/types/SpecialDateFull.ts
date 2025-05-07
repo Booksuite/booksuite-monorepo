@@ -17,17 +17,21 @@ export type SpecialDateFull = {
    */
   published: boolean
   /**
-   * @type string, date-time
+   * @type string, date
+   */
+  visibilityStartDate: string
+  /**
+   * @type string, date
    */
   startDate: string
   /**
-   * @type string, date-time
+   * @type string, date
    */
   endDate: string
   /**
    * @type number
    */
-  minDaily: number
+  minStay: number
   /**
    * @type object | undefined
    */
@@ -39,12 +43,12 @@ export type SpecialDateFull = {
   /**
    * @type array
    */
-  availableWeekDays: number[]
+  validWeekDays: number[]
   priceVariationType: PriceVariationType
   /**
    * @type number
    */
-  price: number
+  priceVariationValue: number
   /**
    * @type array
    */

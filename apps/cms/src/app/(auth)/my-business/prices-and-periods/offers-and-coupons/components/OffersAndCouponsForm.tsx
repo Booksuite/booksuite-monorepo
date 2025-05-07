@@ -19,7 +19,11 @@ import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { OfferFormData } from '../utils/config'
-import { PRICE_VARIATION_TYPE, VALID_NIGHTS } from '../utils/constants'
+import {
+    PRICE_VARIATION_TYPE,
+    TYPE_OPTIONS,
+    VALID_NIGHTS,
+} from '../utils/constants'
 
 export const OffersAndCouponsForm = () => {
     const { values, errors, touched, getFieldProps, setFieldValue } =
@@ -61,6 +65,23 @@ export const OffersAndCouponsForm = () => {
 
             <FormSection>
                 <TextField
+                    select
+                    label="Tipo de oferta"
+                    value={values.type}
+                    onChange={(e) => setFieldValue('type', e.target.value)}
+                >
+                    <MenuItem value="" disabled>
+                        Selecione um tipo de oferta
+                    </MenuItem>
+                    {Object.entries(TYPE_OPTIONS).map(([key, label]) => (
+                        <MenuItem key={key} value={key}>
+                            {label}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            </FormSection>
+            <FormSection>
+                <TextField
                     label={'Nome da oferta'}
                     error={touched.name && Boolean(errors.name)}
                     helperText={touched.name && errors.name}
@@ -81,45 +102,22 @@ export const OffersAndCouponsForm = () => {
 
             <FormSection title="Períodos Válidos">
                 <FormSection title="Períodos de compra">
-                    <Grid container spacing={2}>
-                        <Grid size={6}>
-                            <TextField
-                                label="Início do período de compra"
-                                type="date"
-                                error={
-                                    touched.purchaseStartDate &&
-                                    Boolean(errors.purchaseStartDate)
-                                }
-                                helperText={
-                                    touched.purchaseStartDate &&
-                                    errors.purchaseStartDate
-                                }
-                                {...getFieldProps('purchaseStartDate')}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </Grid>
-
-                        <Grid size={6}>
-                            <TextField
-                                label="Fim do período de compra"
-                                type="date"
-                                error={
-                                    touched.purchaseEndDate &&
-                                    Boolean(errors.purchaseEndDate)
-                                }
-                                helperText={
-                                    touched.purchaseEndDate &&
-                                    errors.purchaseEndDate
-                                }
-                                {...getFieldProps('purchaseEndDate')}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                            />
-                        </Grid>
-                    </Grid>
+                    <TextField
+                        label="Início do período de compra"
+                        type="date"
+                        error={
+                            touched.visibilityStartDate &&
+                            Boolean(errors.visibilityStartDate)
+                        }
+                        helperText={
+                            touched.visibilityStartDate &&
+                            errors.visibilityStartDate
+                        }
+                        {...getFieldProps('visibilityStartDate')}
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
                 </FormSection>
 
                 <FormSection title="Períodos de estadia">
@@ -129,14 +127,13 @@ export const OffersAndCouponsForm = () => {
                                 label="Início do período de estadia"
                                 type="date"
                                 error={
-                                    touched.validStartDate &&
-                                    Boolean(errors.validStartDate)
+                                    touched.startDate &&
+                                    Boolean(errors.startDate)
                                 }
                                 helperText={
-                                    touched.validStartDate &&
-                                    errors.validStartDate
+                                    touched.startDate && errors.startDate
                                 }
-                                {...getFieldProps('validStartDate')}
+                                {...getFieldProps('startDate')}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -148,13 +145,10 @@ export const OffersAndCouponsForm = () => {
                                 label="Fim do período de estadia"
                                 type="date"
                                 error={
-                                    touched.validEndDate &&
-                                    Boolean(errors.validEndDate)
+                                    touched.endDate && Boolean(errors.endDate)
                                 }
-                                helperText={
-                                    touched.validEndDate && errors.validEndDate
-                                }
-                                {...getFieldProps('validEndDate')}
+                                helperText={touched.endDate && errors.endDate}
+                                {...getFieldProps('endDate')}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
@@ -170,19 +164,19 @@ export const OffersAndCouponsForm = () => {
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Estadia Mínima (opcional)"
-                                min={1}
-                                max={values.maxDays}
                                 error={
-                                    touched.minDays && Boolean(errors.minDays)
+                                    touched.minStay && Boolean(errors.minStay)
                                 }
-                                {...getFieldProps('minDays')}
-                                onChange={(e) => {
-                                    const newValueNumber = Number(
-                                        e.target.value,
+                                helperText={errors.minStay}
+                                min={1}
+                                max={values.maxStay}
+                                {...getFieldProps('minStay')}
+                                onChange={(e) =>
+                                    setFieldValue(
+                                        'minStay',
+                                        Number(e.target.value),
                                     )
-                                    if (Number.isNaN(newValueNumber)) return
-                                    setFieldValue('minDays', newValueNumber)
-                                }}
+                                }
                             />
                         </Stack>
                     </Grid>
@@ -190,19 +184,18 @@ export const OffersAndCouponsForm = () => {
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Estadia Máxima (opcional)"
-                                min={values.minDays}
-                                max={values.maxDays}
                                 error={
-                                    touched.maxDays && Boolean(errors.maxDays)
+                                    touched.maxStay && Boolean(errors.maxStay)
                                 }
-                                {...getFieldProps('maxDays')}
-                                onChange={(e) => {
-                                    const newValueNumber = Number(
-                                        e.target.value,
+                                helperText={errors.maxStay}
+                                min={values.minStay}
+                                {...getFieldProps('maxStay')}
+                                onChange={(e) =>
+                                    setFieldValue(
+                                        'maxStay',
+                                        Number(e.target.value),
                                     )
-                                    if (Number.isNaN(newValueNumber)) return
-                                    setFieldValue('maxDays', newValueNumber)
-                                }}
+                                }
                             />
                         </Stack>
                     </Grid>
@@ -210,22 +203,20 @@ export const OffersAndCouponsForm = () => {
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Antecedência Mínima (opcional)"
-                                min={values.minDays}
                                 error={
                                     touched.minAdvanceDays &&
                                     Boolean(errors.minAdvanceDays)
                                 }
+                                helperText={errors.minAdvanceDays}
+                                min={1}
+                                max={values.maxAdvanceDays}
                                 {...getFieldProps('minAdvanceDays')}
-                                onChange={(e) => {
-                                    const newValueNumber = Number(
-                                        e.target.value,
-                                    )
-                                    if (Number.isNaN(newValueNumber)) return
+                                onChange={(e) =>
                                     setFieldValue(
                                         'minAdvanceDays',
-                                        newValueNumber,
+                                        Number(e.target.value),
                                     )
-                                }}
+                                }
                             />
                         </Stack>
                     </Grid>
@@ -233,22 +224,19 @@ export const OffersAndCouponsForm = () => {
                         <Stack width={'100%'}>
                             <NumberInput
                                 label="Antecedência Máxima (opcional)"
-                                min={values.minAdvanceDays}
                                 error={
                                     touched.maxAdvanceDays &&
                                     Boolean(errors.maxAdvanceDays)
                                 }
+                                helperText={errors.maxAdvanceDays}
+                                min={values.minAdvanceDays}
                                 {...getFieldProps('maxAdvanceDays')}
-                                onChange={(e) => {
-                                    const newValueNumber = Number(
-                                        e.target.value,
-                                    )
-                                    if (Number.isNaN(newValueNumber)) return
+                                onChange={(e) =>
                                     setFieldValue(
                                         'maxAdvanceDays',
-                                        newValueNumber,
+                                        Number(e.target.value),
                                     )
-                                }}
+                                }
                             />
                         </Stack>
                     </Grid>
@@ -347,174 +335,181 @@ export const OffersAndCouponsForm = () => {
                 />
             </FormSection>
 
-            <FormSection title="Acomodações Válidas">
-                <FormControl component="fieldset">
-                    <Grid container spacing={2}>
-                        <Grid size={3}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={
-                                            housingUnitTypes?.items.length ===
-                                            values.availableHousingUnitTypes
-                                                ?.length
-                                        }
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                const getAll =
-                                                    housingUnitTypes?.items.map(
-                                                        (type) => type.id,
+            {values.type === 'HOUSING_UNIT_TYPE' && (
+                <FormSection title="Acomodações Válidas">
+                    <FormControl component="fieldset">
+                        <Grid container spacing={2}>
+                            <Grid size={3}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={
+                                                housingUnitTypes?.items
+                                                    .length ===
+                                                values.validHousingUnitTypes
+                                                    ?.length
+                                            }
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    const getAll =
+                                                        housingUnitTypes?.items.map(
+                                                            (type) => type.id,
+                                                        )
+
+                                                    setFieldValue(
+                                                        'validHousingUnitTypes',
+                                                        getAll,
                                                     )
+                                                } else {
+                                                    setFieldValue(
+                                                        'validHousingUnitTypes',
+                                                        [],
+                                                    )
+                                                }
+                                            }}
+                                        />
+                                    }
+                                    label="Selecionar Todos"
+                                />
+                            </Grid>
 
-                                                setFieldValue(
-                                                    'availableHousingUnitTypes',
-                                                    getAll,
-                                                )
-                                            } else {
-                                                setFieldValue(
-                                                    'availableHousingUnitTypes',
-                                                    [],
-                                                )
-                                            }
-                                        }}
-                                    />
-                                }
-                                label="Selecionar Todos"
-                            />
-                        </Grid>
+                            {housingUnitTypes?.items
+                                ? housingUnitTypes?.items.map((housing) => {
+                                      const exists =
+                                          values.validHousingUnitTypes?.some(
+                                              (h) => h === housing.id,
+                                          )
 
-                        {housingUnitTypes?.items
-                            ? housingUnitTypes?.items.map((housing) => {
-                                  const exists =
-                                      values.availableHousingUnitTypes?.some(
-                                          (h) => h === housing.id,
-                                      )
-
-                                  return (
-                                      <Grid size={3} key={housing.id}>
-                                          <FormControlLabel
-                                              control={
-                                                  <Checkbox
-                                                      checked={exists}
-                                                      onChange={() => {
-                                                          if (!exists) {
-                                                              const updatedHousingUnitTypes =
-                                                                  [
-                                                                      ...(values.availableHousingUnitTypes ||
-                                                                          []),
-                                                                      housing.id,
-                                                                  ]
-                                                              setFieldValue(
-                                                                  'availableHousingUnitTypes',
-                                                                  updatedHousingUnitTypes,
-                                                              )
-                                                          } else {
-                                                              const updatedHousingUnitTypes =
-                                                                  values.availableHousingUnitTypes?.filter(
-                                                                      (type) =>
-                                                                          type !==
+                                      return (
+                                          <Grid size={3} key={housing.id}>
+                                              <FormControlLabel
+                                                  control={
+                                                      <Checkbox
+                                                          checked={exists}
+                                                          onChange={() => {
+                                                              if (!exists) {
+                                                                  const updatedHousingUnitTypes =
+                                                                      [
+                                                                          ...(values.validHousingUnitTypes ||
+                                                                              []),
                                                                           housing.id,
+                                                                      ]
+                                                                  setFieldValue(
+                                                                      'validHousingUnitTypes',
+                                                                      updatedHousingUnitTypes,
                                                                   )
-                                                              setFieldValue(
-                                                                  'availableHousingUnitTypes',
-                                                                  updatedHousingUnitTypes,
-                                                              )
-                                                          }
-                                                      }}
-                                                  />
-                                              }
-                                              label={housing.name}
-                                          />
-                                      </Grid>
-                                  )
-                              })
-                            : undefined}
-                    </Grid>
-                </FormControl>
-            </FormSection>
-
-            <FormSection title="Itens Válidos">
-                <FormControl component="fieldset">
-                    <Grid container spacing={2}>
-                        <Grid size={3}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={
-                                            values.validServices
-                                                ? values.validServices
-                                                      .length ===
-                                                  serviceItems.length
-                                                : false
-                                        }
-                                        onChange={(e) => {
-                                            if (e.target.checked) {
-                                                setFieldValue(
-                                                    'validServices',
-                                                    serviceItems.map(
-                                                        (s) => s.id,
-                                                    ),
-                                                )
-                                            } else {
-                                                setFieldValue(
-                                                    'validServices',
-                                                    [],
-                                                )
-                                            }
-                                        }}
-                                    />
-                                }
-                                label="Selecionar Todos"
-                            />
+                                                              } else {
+                                                                  const updatedHousingUnitTypes =
+                                                                      values.validHousingUnitTypes?.filter(
+                                                                          (
+                                                                              type,
+                                                                          ) =>
+                                                                              type !==
+                                                                              housing.id,
+                                                                      )
+                                                                  setFieldValue(
+                                                                      'validHousingUnitTypes',
+                                                                      updatedHousingUnitTypes,
+                                                                  )
+                                                              }
+                                                          }}
+                                                      />
+                                                  }
+                                                  label={housing.name}
+                                              />
+                                          </Grid>
+                                      )
+                                  })
+                                : undefined}
                         </Grid>
+                    </FormControl>
+                </FormSection>
+            )}
 
-                        {serviceItems?.map((service) => {
-                            const exists =
-                                values.validServices?.some(
-                                    (s) => s === service.id,
-                                ) || false
+            {values.type === 'SERVICE' && (
+                <FormSection title="Itens Válidos">
+                    <FormControl component="fieldset">
+                        <Grid container spacing={2}>
+                            <Grid size={3}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={
+                                                values.validServices
+                                                    ? values.validServices
+                                                          .length ===
+                                                      serviceItems.length
+                                                    : false
+                                            }
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setFieldValue(
+                                                        'validServices',
+                                                        serviceItems.map(
+                                                            (s) => s.id,
+                                                        ),
+                                                    )
+                                                } else {
+                                                    setFieldValue(
+                                                        'validServices',
+                                                        [],
+                                                    )
+                                                }
+                                            }}
+                                        />
+                                    }
+                                    label="Selecionar Todos"
+                                />
+                            </Grid>
 
-                            return (
-                                <Grid size={3} key={service.id}>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                checked={exists}
-                                                onChange={() => {
-                                                    if (!exists) {
-                                                        const updatedValidServices =
-                                                            [
-                                                                ...(values.validServices ||
-                                                                    []),
-                                                                service.id,
-                                                            ]
-                                                        setFieldValue(
-                                                            'validServices',
-                                                            updatedValidServices,
-                                                        )
-                                                    } else {
-                                                        const updatedValidServices =
-                                                            values.validServices?.filter(
-                                                                (id) =>
-                                                                    id !==
+                            {serviceItems?.map((service) => {
+                                const exists =
+                                    values.validServices?.some(
+                                        (s) => s === service.id,
+                                    ) || false
+
+                                return (
+                                    <Grid size={3} key={service.id}>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={exists}
+                                                    onChange={() => {
+                                                        if (!exists) {
+                                                            const updatedValidServices =
+                                                                [
+                                                                    ...(values.validServices ||
+                                                                        []),
                                                                     service.id,
+                                                                ]
+                                                            setFieldValue(
+                                                                'validServices',
+                                                                updatedValidServices,
                                                             )
-                                                        setFieldValue(
-                                                            'validServices',
-                                                            updatedValidServices,
-                                                        )
-                                                    }
-                                                }}
-                                            />
-                                        }
-                                        label={service.name}
-                                    />
-                                </Grid>
-                            )
-                        })}
-                    </Grid>
-                </FormControl>
-            </FormSection>
+                                                        } else {
+                                                            const updatedValidServices =
+                                                                values.validServices?.filter(
+                                                                    (id) =>
+                                                                        id !==
+                                                                        service.id,
+                                                                )
+                                                            setFieldValue(
+                                                                'validServices',
+                                                                updatedValidServices,
+                                                            )
+                                                        }
+                                                    }}
+                                                />
+                                            }
+                                            label={service.name}
+                                        />
+                                    </Grid>
+                                )
+                            })}
+                        </Grid>
+                    </FormControl>
+                </FormSection>
+            )}
 
             {/* TODO - FORMAS DE PAGAMENTO */}
             {/* <FormSection title="Formas de pagamento">
@@ -545,9 +540,9 @@ export const OffersAndCouponsForm = () => {
                                             <Checkbox
                                                 checked={
                                                     Array.isArray(
-                                                        values.availableWeekDays,
+                                                        values.validWeekDays,
                                                     ) &&
-                                                    values.availableWeekDays.includes(
+                                                    values.validWeekDays.includes(
                                                         Number(night.value),
                                                     )
                                                 }
@@ -555,14 +550,14 @@ export const OffersAndCouponsForm = () => {
                                                     const newValue = e.target
                                                         .checked
                                                         ? [
-                                                              ...(values.availableWeekDays ||
+                                                              ...(values.validWeekDays ||
                                                                   []),
                                                               Number(
                                                                   night.value,
                                                               ),
                                                           ]
                                                         : (
-                                                              values.availableWeekDays ||
+                                                              values.validWeekDays ||
                                                               []
                                                           ).filter(
                                                               (v) =>
@@ -572,7 +567,7 @@ export const OffersAndCouponsForm = () => {
                                                                   ),
                                                           )
                                                     setFieldValue(
-                                                        'availableWeekDays',
+                                                        'validWeekDays',
                                                         newValue,
                                                     )
                                                 }}

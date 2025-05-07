@@ -11,11 +11,15 @@ export type SeasonRuleUpdateInput = {
    */
   published?: boolean
   /**
-   * @type string | undefined
+   * @type string, date
+   */
+  visibilityStartDate?: string | null
+  /**
+   * @type string | undefined, date
    */
   startDate?: string
   /**
-   * @type string | undefined
+   * @type string | undefined, date
    */
   endDate?: string
   /**
@@ -25,12 +29,12 @@ export type SeasonRuleUpdateInput = {
   /**
    * @type array | undefined
    */
-  availableWeekDays?: number[]
+  validWeekDays?: number[]
   priceVariationType?: PriceVariationType
   /**
    * @type number | undefined
    */
-  price?: number
+  priceVariationValue?: number
   /**
    * @type array | undefined
    */

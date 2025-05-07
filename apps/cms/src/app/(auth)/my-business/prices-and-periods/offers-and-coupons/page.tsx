@@ -91,32 +91,10 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
                     marginLeft: '10px',
                 }}
             >
-                {row.original.purchaseStartDate
-                    ? dayjs(row.original.purchaseStartDate).format('DD/MM/YYYY')
-                    : '-'}
-            </Typography>
-        ),
-    },
-    {
-        id: 'purchaseEndDate',
-        header: 'Fim da Compra',
-        accessorKey: 'purchaseEndDate',
-        muiTableHeadCellProps: {
-            sx: {
-                textAlign: 'left',
-                border: 'none',
-                fontWeight: 'medium',
-            },
-        },
-        Cell: ({ row }) => (
-            <Typography
-                sx={{
-                    fontSize: '14px',
-                    marginLeft: '10px',
-                }}
-            >
-                {row.original.purchaseEndDate
-                    ? dayjs(row.original.purchaseEndDate).format('DD/MM/YYYY')
+                {row.original.visibilityStartDate
+                    ? dayjs(row.original.visibilityStartDate).format(
+                          'DD/MM/YYYY',
+                      )
                     : '-'}
             </Typography>
         ),
@@ -132,12 +110,11 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
             },
         },
         Cell: ({ row }) => {
-            const { published, purchaseStartDate, purchaseEndDate } =
-                row.original
+            const { published, startDate, endDate } = row.original
 
             const now = dayjs()
-            const start = purchaseStartDate ? dayjs(purchaseStartDate) : null
-            const end = purchaseEndDate ? dayjs(purchaseEndDate) : null
+            const start = startDate ? dayjs(startDate) : null
+            const end = endDate ? dayjs(endDate) : null
 
             let text = 'Inativa'
             let color = 'inherit'

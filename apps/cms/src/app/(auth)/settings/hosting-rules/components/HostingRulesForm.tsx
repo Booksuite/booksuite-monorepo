@@ -160,13 +160,13 @@ export const HostingRulesForm = () => {
 
                 <NumberInput
                     label="Mínimo de diárias"
-                    {...getFieldProps('minDaily')}
-                    value={values.minDaily}
+                    {...getFieldProps('minStay')}
+                    value={values.minStay}
                     min={1}
                     onChange={(e) => {
                         const newValueNumber = Number(e.target.value)
                         if (Number.isNaN(newValueNumber)) return
-                        setFieldValue('minDaily', newValueNumber)
+                        setFieldValue('minStay', newValueNumber)
                     }}
                 />
             </FormSection>

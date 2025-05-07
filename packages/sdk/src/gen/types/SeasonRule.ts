@@ -14,24 +14,28 @@ export type SeasonRule = {
    */
   published: boolean
   /**
-   * @type string, date-time
+   * @type string, date
+   */
+  visibilityStartDate: string | null
+  /**
+   * @type string, date
    */
   startDate: string
   /**
-   * @type string, date-time
+   * @type string, date
    */
   endDate: string
   /**
    * @type number
    */
-  minDaily: number
+  minStay: number
   /**
    * @type array
    */
-  availableWeekDays: number[]
+  validWeekDays: number[]
   priceVariationType: PriceVariationType
   /**
    * @type number
    */
-  price: number
+  priceVariationValue: number
 }

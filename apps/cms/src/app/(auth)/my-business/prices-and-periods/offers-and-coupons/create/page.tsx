@@ -15,6 +15,7 @@ import {
     offerFormSchema,
     transformOfferFormDataForSubmit,
 } from '../utils/config'
+import { getErrorMessage } from '@/common/utils/errorHandling'
 
 export default function CreateOffer() {
     const { back } = useRouter()
@@ -37,8 +38,8 @@ export default function CreateOffer() {
             })
 
             back()
-        } catch {
-            enqueueSnackbar(`Erro ao criar oferta`, {
+        } catch (error) {
+            enqueueSnackbar(`Erro ao criar oferta ${getErrorMessage(error)}`, {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',

@@ -10,7 +10,7 @@ export type HostingRulesInput = {
   /**
    * @type number
    */
-  minDaily: number
+  minStay: number
   /**
    * @type number
    */

@@ -32,6 +32,7 @@ export default function CreateSpecialDatePage() {
                 companyId,
                 data: {
                     ...apiData,
+                    visibilityStartDate: apiData.startDate,
                     medias: apiData.medias.map((media) => ({
                         ...media,
                         order: media.order ?? undefined,

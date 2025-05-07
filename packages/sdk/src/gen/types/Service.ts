@@ -26,7 +26,7 @@ export type Service = {
   /**
    * @type number
    */
-  minDaily: number
+  minStay: number
   /**
    * @type number
    */

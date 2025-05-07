@@ -1,3 +1,5 @@
+export type OfferResponseDTOType = 'SERVICE' | 'HOUSING_UNIT_TYPE'
+
 export type OfferResponseDTOPriceAdjustmentType = 'ABSOLUTE_INCREASE' | 'ABSOLUTE_REDUCTION' | 'PERCENTAGE_INCREASE' | 'PERCENTAGE_REDUCTION' | 'CUSTOM'
 
 export type Offer = {
@@ -12,35 +14,35 @@ export type Offer = {
   /**
    * @type string
    */
+  type: OfferResponseDTOType
+  /**
+   * @type string
+   */
   description: string | null
   /**
    * @type boolean
    */
   published: boolean
   /**
-   * @type string, date-time
+   * @type string, date
    */
-  purchaseStartDate: string
+  visibilityStartDate: string
   /**
-   * @type string, date-time
+   * @type string, date
    */
-  purchaseEndDate: string
+  startDate: string
   /**
-   * @type object
+   * @type string, date
    */
-  validStartDate: object | null
-  /**
-   * @type object
-   */
-  validEndDate: object | null
+  endDate: string
   /**
    * @type number
    */
-  minDays: number | null
+  minStay: number | null
   /**
    * @type number
    */
-  maxDays: number | null
+  maxStay: number | null
   /**
    * @type number
    */
@@ -60,7 +62,7 @@ export type Offer = {
   /**
    * @type array
    */
-  availableWeekDays: number[]
+  validWeekDays: number[]
   /**
    * @type string
    */

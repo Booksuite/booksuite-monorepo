@@ -125,19 +125,6 @@ export const RateOptionForm: React.FC = () => {
                             )
                         }}
                     />
-                    <TextFieldCurrency
-                        fullWidth
-                        label="Valor Adicional (por criança)"
-                        error={!!errors.additionalChildrenPrice}
-                        helperText={errors.additionalChildrenPrice}
-                        {...getFieldProps('additionalChildrenPrice')}
-                        onChange={(e) => {
-                            setFieldValue(
-                                'additionalChildrenPrice',
-                                e.target.value,
-                            )
-                        }}
-                    />
                 </Box>
                 {agePolicy?.ageGroups?.map((a, index) => {
                     return (
@@ -172,7 +159,7 @@ export const RateOptionForm: React.FC = () => {
                 <FieldArray name="includedItems">
                     {({ push, remove }) => (
                         <Box>
-                            {values.includedItems.map((a, index) => {
+                            {values.includedItems?.map((a, index) => {
                                 return (
                                     <FormSection key={index}>
                                         <Box key={index} display={'flex'}>
@@ -231,7 +218,7 @@ export const RateOptionForm: React.FC = () => {
                                     key={housing.id}
                                     control={
                                         <Checkbox
-                                            checked={values.availableHousingUnitTypes.some(
+                                            checked={values.availableHousingUnitTypes?.some(
                                                 (h) =>
                                                     h.housingUnitTypeId ===
                                                     housing.id,
@@ -240,13 +227,14 @@ export const RateOptionForm: React.FC = () => {
                                                 const newValue = e.target
                                                     .checked
                                                     ? [
-                                                          ...values.availableHousingUnitTypes,
+                                                          ...(values.availableHousingUnitTypes ??
+                                                              []),
                                                           {
                                                               housingUnitTypeId:
                                                                   housing.id,
                                                           },
                                                       ]
-                                                    : values.availableHousingUnitTypes.filter(
+                                                    : values.availableHousingUnitTypes?.filter(
                                                           (h) =>
                                                               h.housingUnitTypeId !==
                                                               housing.id,

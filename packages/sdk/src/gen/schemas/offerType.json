@@ -1,0 +1,1 @@
+{"type":"string","enum":["SERVICE","HOUSING_UNIT_TYPE"],"description":"Offer type","x-readme-ref-name":"OfferType"}

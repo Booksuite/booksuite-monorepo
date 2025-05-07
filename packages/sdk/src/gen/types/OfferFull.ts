@@ -2,6 +2,8 @@ import type { OfferHousingUnitType } from './OfferHousingUnitType.ts'
 import type { OfferPaymentMethod } from './OfferPaymentMethod.ts'
 import type { OfferService } from './OfferService.ts'
 
+export type OfferResponseFullDTOType = 'SERVICE' | 'HOUSING_UNIT_TYPE'
+
 export type OfferResponseFullDTOPriceAdjustmentType = 'ABSOLUTE_INCREASE' | 'ABSOLUTE_REDUCTION' | 'PERCENTAGE_INCREASE' | 'PERCENTAGE_REDUCTION' | 'CUSTOM'
 
 export type OfferFull = {
@@ -16,35 +18,35 @@ export type OfferFull = {
   /**
    * @type string
    */
+  type: OfferResponseFullDTOType
+  /**
+   * @type string
+   */
   description: string | null
   /**
    * @type boolean
    */
   published: boolean
   /**
-   * @type string, date-time
+   * @type string, date
    */
-  purchaseStartDate: string
+  visibilityStartDate: string
   /**
-   * @type string, date-time
+   * @type string, date
    */
-  purchaseEndDate: string
+  startDate: string
   /**
-   * @type object
+   * @type string, date
    */
-  validStartDate: object | null
-  /**
-   * @type object
-   */
-  validEndDate: object | null
+  endDate: string
   /**
    * @type number
    */
-  minDays: number | null
+  minStay: number | null
   /**
    * @type number
    */
-  maxDays: number | null
+  maxStay: number | null
   /**
    * @type number
    */
@@ -64,7 +66,7 @@ export type OfferFull = {
   /**
    * @type array
    */
-  availableWeekDays: number[]
+  validWeekDays: number[]
   /**
    * @type string
    */
@@ -104,7 +106,7 @@ export type OfferFull = {
   /**
    * @type array
    */
-  availableHousingUnitTypes: OfferHousingUnitType[]
+  validHousingUnitTypes: OfferHousingUnitType[]
   /**
    * @type array
    */

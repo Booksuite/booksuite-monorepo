@@ -125,15 +125,15 @@ export const SeasonRulesForm: React.FC = () => {
                             <NumberInput
                                 label="Mínimo de Diárias"
                                 min={1}
-                                error={!!errors.minDaily}
-                                helperText={errors.minDaily}
-                                {...getFieldProps('minDaily')}
+                                error={!!errors.minStay}
+                                helperText={errors.minStay}
+                                {...getFieldProps('minStay')}
                                 onChange={(e) => {
                                     const newValueNumber = Number(
                                         e.target.value,
                                     )
                                     if (Number.isNaN(newValueNumber)) return
-                                    setFieldValue('minDaily', newValueNumber)
+                                    setFieldValue('minStay', newValueNumber)
                                 }}
                             />
                         </Stack>
@@ -186,9 +186,9 @@ export const SeasonRulesForm: React.FC = () => {
                                             <Checkbox
                                                 checked={
                                                     Array.isArray(
-                                                        values.availableWeekDays,
+                                                        values.validWeekDays,
                                                     ) &&
-                                                    values.availableWeekDays.includes(
+                                                    values.validWeekDays.includes(
                                                         night.value,
                                                     )
                                                 }
@@ -196,12 +196,12 @@ export const SeasonRulesForm: React.FC = () => {
                                                     const newValue = e.target
                                                         .checked
                                                         ? [
-                                                              ...(values.availableWeekDays ||
+                                                              ...(values.validWeekDays ||
                                                                   []),
                                                               night.value,
                                                           ]
                                                         : (
-                                                              values.availableWeekDays ||
+                                                              values.validWeekDays ||
                                                               []
                                                           ).filter(
                                                               (v) =>
@@ -210,7 +210,7 @@ export const SeasonRulesForm: React.FC = () => {
                                                           )
 
                                                     setFieldValue(
-                                                        'availableWeekDays',
+                                                        'validWeekDays',
                                                         newValue,
                                                     )
                                                 }}
@@ -358,7 +358,7 @@ export const SeasonRulesForm: React.FC = () => {
                             setFieldValue('priceVariationType', e.target.value)
                             applyNewVariation(
                                 values.housingUnitTypePrices,
-                                values.price,
+                                values.priceVariationValue,
                                 e.target.value as PriceVariationType,
                             )
                         }}
@@ -375,14 +375,22 @@ export const SeasonRulesForm: React.FC = () => {
                     <TextField
                         label="Variação de Preço Geral"
                         fullWidth
-                        error={touched.price && Boolean(errors.price)}
-                        helperText={touched.price && errors.price}
+                        error={
+                            touched.priceVariationValue &&
+                            Boolean(errors.priceVariationValue)
+                        }
+                        helperText={
+                            touched.priceVariationValue &&
+                            errors.priceVariationValue
+                        }
                         value={
                             values.priceVariationType ===
                                 'PERCENTAGE_INCREASE' ||
                             values.priceVariationType === 'PERCENTAGE_REDUCTION'
-                                ? values.price
-                                : formatCurrency(values.price || 0)
+                                ? values.priceVariationValue
+                                : formatCurrency(
+                                      values.priceVariationValue || 0,
+                                  )
                         }
                         onChange={(e) => {
                             const newValue = e.target.value
@@ -397,7 +405,7 @@ export const SeasonRulesForm: React.FC = () => {
                                     0,
                                     Math.min(100, Number(newValue)),
                                 )
-                                setFieldValue('price', numeric)
+                                setFieldValue('priceVariationValue', numeric)
 
                                 applyNewVariation(
                                     values.housingUnitTypePrices,
@@ -407,7 +415,7 @@ export const SeasonRulesForm: React.FC = () => {
                             } else {
                                 const raw = newValue.replace(/\D/g, '')
                                 const numeric = Number(raw) / 100
-                                setFieldValue('price', numeric)
+                                setFieldValue('priceVariationValue', numeric)
 
                                 applyNewVariation(
                                     values.housingUnitTypePrices,
@@ -484,7 +492,7 @@ export const SeasonRulesForm: React.FC = () => {
                                                                 applyVariation(
                                                                     numeric,
                                                                     Number(
-                                                                        values.price,
+                                                                        values.priceVariationValue,
                                                                     ),
                                                                     values.priceVariationType,
                                                                 )
@@ -570,7 +578,7 @@ export const SeasonRulesForm: React.FC = () => {
                                                                 applyVariation(
                                                                     numeric,
                                                                     Number(
-                                                                        values.price,
+                                                                        values.priceVariationValue,
                                                                     ),
                                                                     values.priceVariationType,
                                                                 )

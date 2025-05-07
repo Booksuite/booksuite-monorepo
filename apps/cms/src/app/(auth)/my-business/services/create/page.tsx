@@ -16,6 +16,7 @@ import {
     serviceFormSchema,
     transformFormDataForSubmit,
 } from '../utils/config'
+import { getErrorMessage } from '@/common/utils'
 
 export default function CreateServicePage() {
     const companyId = useCurrentCompanyId()
@@ -48,8 +49,8 @@ export default function CreateServicePage() {
             })
 
             back()
-        } catch {
-            enqueueSnackbar('Erro ao criar serviço', {
+        } catch (error) {
+            enqueueSnackbar(`Erro ao criar serviço ${getErrorMessage(error)}`, {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',
