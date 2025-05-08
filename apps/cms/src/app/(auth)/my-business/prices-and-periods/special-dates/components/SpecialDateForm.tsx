@@ -139,18 +139,18 @@ export const SpecialDateForm: React.FC = () => {
         if (
             values.priceVariationType !== 'CUSTOM' &&
             values.housingUnitTypePrices?.length > 0 &&
-            typeof values.price === 'number'
+            typeof values.priceVariationValue === 'number'
         ) {
             const currentPrices = values.housingUnitTypePrices
             const shouldUpdate = currentPrices.some((unit) => {
                 const newWeekPrice = applyPriceVariation(
                     unit.baseWeekPrice,
-                    values.price,
+                    values.priceVariationValue,
                     values.priceVariationType,
                 )
                 const newWeekendPrice = applyPriceVariation(
                     unit.baseWeekendPrice,
-                    values.price,
+                    values.priceVariationValue,
                     values.priceVariationType,
                 )
                 return (
@@ -164,12 +164,12 @@ export const SpecialDateForm: React.FC = () => {
                     ...unit,
                     finalWeekPrice: applyPriceVariation(
                         unit.baseWeekPrice,
-                        values.price,
+                        values.priceVariationValue,
                         values.priceVariationType,
                     ),
                     finalWeekendPrice: applyPriceVariation(
                         unit.baseWeekendPrice,
-                        values.price,
+                        values.priceVariationValue,
                         values.priceVariationType,
                     ),
                 }))
@@ -177,7 +177,7 @@ export const SpecialDateForm: React.FC = () => {
             }
         }
     }, [
-        values.price,
+        values.priceVariationValue,
         values.priceVariationType,
         values.housingUnitTypePrices,
         setFieldValue,
@@ -206,6 +206,23 @@ export const SpecialDateForm: React.FC = () => {
                     helperText={touched.name && errors.name}
                     fullWidth
                     {...getFieldProps('name')}
+                />
+            </FormSection>
+
+            <FormSection title="Data de visibilidade">
+                <TextField
+                    label="Data de início de visibilidade"
+                    type="date"
+                    fullWidth
+                    value={values.visibilityStartDate || ''}
+                    onChange={(e) =>
+                        setFieldValue('visibilityStartDate', e.target.value)
+                    }
+                    error={!!errors.visibilityStartDate}
+                    helperText={errors.visibilityStartDate}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
             </FormSection>
 
@@ -249,13 +266,13 @@ export const SpecialDateForm: React.FC = () => {
                     <NumberInput
                         label="Mínimo de Diárias"
                         min={1}
-                        error={!!errors.minDaily}
-                        helperText={errors.minDaily}
-                        {...getFieldProps('minDaily')}
+                        error={!!errors.minStay}
+                        helperText={errors.minStay}
+                        {...getFieldProps('minStay')}
                         onChange={(e) => {
                             const newValueNumber = Number(e.target.value)
                             if (Number.isNaN(newValueNumber)) return
-                            setFieldValue('minDaily', newValueNumber)
+                            setFieldValue('minStay', newValueNumber)
                         }}
                     />
                 </Stack>
@@ -272,31 +289,33 @@ export const SpecialDateForm: React.FC = () => {
                                             <Checkbox
                                                 checked={
                                                     Array.isArray(
-                                                        values.availableWeekDays,
+                                                        values.validWeekDays,
                                                     ) &&
-                                                    values.availableWeekDays.includes(
-                                                        night.value,
+                                                    values.validWeekDays.includes(
+                                                        Number(night.value),
                                                     )
                                                 }
                                                 onChange={(e) => {
                                                     const newValue = e.target
                                                         .checked
                                                         ? [
-                                                              ...(values.availableWeekDays ||
+                                                              ...(values.validWeekDays ||
                                                                   []),
                                                               night.value,
                                                           ]
                                                         : (
-                                                              values.availableWeekDays ||
+                                                              values.validWeekDays ||
                                                               []
                                                           ).filter(
                                                               (v) =>
                                                                   v !==
-                                                                  night.value,
+                                                                  Number(
+                                                                      night.value,
+                                                                  ),
                                                           )
 
                                                     setFieldValue(
-                                                        'availableWeekDays',
+                                                        'validWeekDays',
                                                         newValue,
                                                     )
                                                 }}
@@ -394,14 +413,22 @@ export const SpecialDateForm: React.FC = () => {
                     <TextField
                         label="Variação de Preço Geral"
                         fullWidth
-                        error={touched.price && Boolean(errors.price)}
-                        helperText={touched.price && errors.price}
+                        error={
+                            touched.priceVariationValue &&
+                            Boolean(errors.priceVariationValue)
+                        }
+                        helperText={
+                            touched.priceVariationValue &&
+                            errors.priceVariationValue
+                        }
                         value={
                             values.priceVariationType ===
                                 'PERCENTAGE_INCREASE' ||
                             values.priceVariationType === 'PERCENTAGE_REDUCTION'
-                                ? values.price
-                                : formatCurrency(values.price || 0)
+                                ? values.priceVariationValue
+                                : formatCurrency(
+                                      values.priceVariationValue || 0,
+                                  )
                         }
                         onChange={(e) => {
                             const newValue = e.target.value
@@ -416,11 +443,11 @@ export const SpecialDateForm: React.FC = () => {
                                     0,
                                     Math.min(100, Number(newValue)),
                                 )
-                                setFieldValue('price', numeric)
+                                setFieldValue('priceVariationValue', numeric)
                             } else {
                                 const raw = newValue.replace(/\D/g, '')
                                 const numeric = Number(raw) / 100
-                                setFieldValue('price', numeric)
+                                setFieldValue('priceVariationValue', numeric)
                             }
                         }}
                         InputProps={{

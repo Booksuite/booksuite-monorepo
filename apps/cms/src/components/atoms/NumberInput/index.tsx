@@ -65,6 +65,10 @@ export const NumberInput: React.FC<NumberInputProps> = ({
                     <IconButton
                         color={props.color || 'primary'}
                         tabIndex={-1}
+                        disabled={Boolean(
+                            valueNumber === 0 ||
+                                (min !== undefined && valueNumber === min),
+                        )}
                         onClick={() => {
                             if (min && valueNumber === min) return
 
@@ -86,6 +90,14 @@ export const NumberInput: React.FC<NumberInputProps> = ({
                             '& input': {
                                 textAlign: 'center',
                                 width: '30px',
+                                '&::-webkit-outer-spin-button': {
+                                    appearance: 'none',
+                                    margin: 0,
+                                },
+                                '&::-webkit-inner-spin-button': {
+                                    appearance: 'none',
+                                    margin: 0,
+                                },
                             },
                         }}
                         onChange={(e) => {
@@ -99,6 +111,9 @@ export const NumberInput: React.FC<NumberInputProps> = ({
                     <IconButton
                         color={props.color || 'primary'}
                         tabIndex={-1}
+                        disabled={Boolean(
+                            max !== undefined && valueNumber === max,
+                        )}
                         onClick={() => {
                             if (max && valueNumber === max) return
 

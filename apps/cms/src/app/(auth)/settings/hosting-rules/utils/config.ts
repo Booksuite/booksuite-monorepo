@@ -31,7 +31,7 @@ export const createHostingRulesInitialValues = (
     availableWeekend: data?.availableWeekend?.map(String) || [],
     checkIn: data?.checkIn ? data?.checkIn / 60 : 0,
     checkOut: data?.checkOut ? data.checkOut / 60 : 0,
-    minDaily: data?.minDaily ?? 0,
+    minStay: data?.minStay ?? 0,
     fixedWindowPeriod: data?.fixedWindowPeriod ?? 0,
     reservationWindowEnd: data?.reservationWindowEnd ?? null,
     reservationWindowStart: data?.reservationWindowStart ?? null,
@@ -52,7 +52,7 @@ export const hostingRulesDataSchema = yup.object({
         .number()
         .min(1, 'Janela de dias deve ser um valor maior que 1')
         .required('Janela de dias obrigatória'),
-    minDaily: yup
+    minStay: yup
         .number()
         .min(0, 'Mínimo de diárias deve ser maior ou igual a 0')
         .required('Mínimo de diárias é obrigatório'),

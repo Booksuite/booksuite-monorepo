@@ -1,5 +1,6 @@
 export type { GetCompanyAgePolicyQueryKey } from './AgePolicyHooks/useGetCompanyAgePolicy.ts'
 export type { UpsertCompanyAgePolicyMutationKey } from './AgePolicyHooks/useUpsertCompanyAgePolicy.ts'
+export type { CalculatePriceMutationKey } from './Availability and PricingHooks/useCalculatePrice.ts'
 export type { GetCalendarQueryKey } from './Availability and PricingHooks/useGetCalendar.ts'
 export type { GetCalendarFromHousingUnitTypeIdQueryKey } from './Availability and PricingHooks/useGetCalendarFromHousingUnitTypeId.ts'
 export type { CreateBannerMutationKey } from './BannerHooks/useCreateBanner.ts'
@@ -67,6 +68,7 @@ export type { UtilityLinksControllerCreateMutationKey } from './UtilityLinksHook
 export type { UtilityLinksControllerUpdateMutationKey } from './UtilityLinksHooks/useUtilityLinksControllerUpdate.ts'
 export { getCompanyAgePolicyQueryKey, getCompanyAgePolicyQueryOptions, useGetCompanyAgePolicy } from './AgePolicyHooks/useGetCompanyAgePolicy.ts'
 export { upsertCompanyAgePolicyMutationKey, useUpsertCompanyAgePolicy } from './AgePolicyHooks/useUpsertCompanyAgePolicy.ts'
+export { calculatePriceMutationKey, useCalculatePrice } from './Availability and PricingHooks/useCalculatePrice.ts'
 export { getCalendarQueryKey, getCalendarQueryOptions, useGetCalendar } from './Availability and PricingHooks/useGetCalendar.ts'
 export {
   getCalendarFromHousingUnitTypeIdQueryKey,

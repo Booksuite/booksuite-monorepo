@@ -1,8 +1,9 @@
 import { UtilityLinks } from '@booksuite/sdk'
 import { Typography } from '@mui/material'
+import dayjs from 'dayjs'
 import { MRT_ColumnDef } from 'material-react-table'
 
-import { themeOptions } from '@/common/theme'
+import { theme } from '@/common/theme'
 
 export const MAX_FEATURED_FACILITIES = 5
 
@@ -11,12 +12,20 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<UtilityLinks>[] = [
         id: 'title',
         header: 'Titulo',
         accessorKey: 'title',
+        size: 150,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
                     fontWeight: 'bold',
-                    fontSize: '1rem',
-                    color: themeOptions.palette?.blueGrey?.[700],
+                    fontSize: '14px',
+                    marginLeft: '10px',
                 }}
             >
                 {row.original.title}
@@ -28,31 +37,71 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<UtilityLinks>[] = [
         id: 'startDate',
         header: 'Inicio de Exibição',
         accessorKey: 'startDate',
-        accessorFn: (row) =>
-            row.startDate
-                ? new Date(row.startDate).toLocaleDateString('pt-BR')
-                : '---',
+        size: 200,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.startDate
+                    ? dayjs(row.original.startDate).format('DD/MM/YYYY')
+                    : '---'}
+            </Typography>
+        ),
     },
 
     {
         id: 'endDate',
         header: 'Fim de Exibição',
         accessorKey: 'endDate',
-        accessorFn: (row) =>
-            row.endDate
-                ? new Date(row.endDate).toLocaleDateString('pt-BR')
-                : '---',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.endDate
+                    ? dayjs(row.original.endDate).format('DD/MM/YYYY')
+                    : '---'}
+            </Typography>
+        ),
     },
 
     {
         id: 'published',
         header: 'Visibilidade',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
-                    fontWeight: '500',
-                    fontSize: '1rem',
-                    color: row.original.published ? '#1D7F52' : '#6B7279',
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
                 }}
             >
                 {row.original.published ? 'Publicado' : 'Não publicado'}

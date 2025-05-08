@@ -14,6 +14,7 @@ import {
     Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import dayjs from 'dayjs'
 import {
     Check,
     CheckCheck,
@@ -33,6 +34,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { useSearchParamsOrder } from '@/common/hooks/useOrder'
 import { useSearchParamsPagination } from '@/common/hooks/usePagination'
+import { theme } from '@/common/theme'
 import { Image } from '@/components/atoms/Image'
 import { LinkButton } from '@/components/atoms/LinkButton'
 import { PaginationControls } from '@/components/molecules/PaginationControl'
@@ -53,16 +55,24 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
         header: '',
         size: 85,
         Cell: ({ row }) => (
-            <Image
-                src={row.original.medias[0]?.media.url}
-                alt={row.original.name}
+            <Box
                 sx={{
-                    objectFit: 'cover',
-                    borderRadius: 2,
-                    width: '72px',
-                    height: '72px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '100%',
                 }}
-            />
+            >
+                <Image
+                    src={row.original.medias[0]?.media.url}
+                    alt={row.original.name}
+                    sx={{
+                        objectFit: 'cover',
+                        borderRadius: 2,
+                        width: '72px',
+                        height: '72px',
+                    }}
+                />
+            </Box>
         ),
     },
     {
@@ -71,51 +81,140 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
         size: 200,
         accessorKey: 'name',
         enableSorting: true,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
-            <Typography fontWeight="bold" fontSize="1rem" color="#486581">
+            <Typography
+                sx={{
+                    fontWeight: 'bold',
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
                 {row.original.name}
             </Typography>
         ),
     },
     {
         id: 'date',
-        header: 'Data',
-        accessorFn: (row) =>
-            row.startDate
-                ? new Date(row.startDate).toLocaleDateString('pt-BR')
-                : '-',
+        header: 'Início da Estadia',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.startDate
+                    ? dayjs(row.original.startDate).format('DD/MM/YYYY')
+                    : '-'}
+            </Typography>
+        ),
     },
     {
+        id: 'endDate',
+        header: 'Fim da Estadia',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.endDate
+                    ? dayjs(row.original.endDate).format('DD/MM/YYYY')
+                    : '-'}
+            </Typography>
+        ),
+    },
+    {
+        id: 'status',
         header: 'Status',
         accessorKey: 'status',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => {
             const { published, startDate } = row.original
-            const now = new Date()
-            const eventDate = startDate ? new Date(startDate) : null
+            const now = dayjs()
+            const eventDate = startDate ? dayjs(startDate) : null
 
             let text = 'Inativa'
             let color = 'inherit'
 
             if (published && eventDate) {
-                if (eventDate > now) {
+                if (eventDate.isAfter(now, 'day')) {
                     text = 'Programada'
-                    color = '#E0AE15'
-                } else if (eventDate.toDateString() === now.toDateString()) {
+                    color = theme.palette.warning.main
+                } else if (eventDate.isSame(now, 'day')) {
                     text = 'Hoje'
-                    color = '#1D7F52'
+                    color = theme.palette.success.main
                 } else {
                     text = 'Finalizada'
-                    color = '#D63841'
+                    color = theme.palette.error.main
                 }
             }
 
-            return <span style={{ color, fontWeight: 'bold' }}>{text}</span>
+            return (
+                <Typography
+                    sx={{
+                        color,
+                        fontWeight: 'bold',
+                        fontSize: '14px',
+                        marginLeft: '10px',
+                    }}
+                >
+                    {text}
+                </Typography>
+            )
         },
     },
     {
         id: 'published',
         header: 'Visibilidade',
-        accessorFn: (row) => (row.published ? 'Publicado' : 'Não Publicado'),
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
+                }}
+            >
+                {row.original.published ? 'Publicado' : 'Não Publicado'}
+            </Typography>
+        ),
     },
 ]
 

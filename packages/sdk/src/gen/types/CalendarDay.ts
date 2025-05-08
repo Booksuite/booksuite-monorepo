@@ -20,7 +20,7 @@ export type CalendarDay = {
    * @description Final minimum days required
    * @type number
    */
-  finalMinDays: number
+  finalMinStay: number
   /**
    * @description Hosting rules for the day
    */

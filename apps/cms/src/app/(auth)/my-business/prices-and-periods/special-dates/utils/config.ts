@@ -4,7 +4,7 @@ import {
     SpecialDateFull,
     SpecialDateMedia,
 } from '@booksuite/sdk'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import * as yup from 'yup'
 
 interface LocalizedText {
@@ -16,14 +16,14 @@ export type SpecialDateFormData = Omit<
     | 'medias'
     | 'housingUnitTypePrices'
     | 'includedServices'
-    | 'availableWeekDays'
+    | 'validWeekDays'
     | 'description'
     | 'generalDescription'
 > & {
     medias: SpecialDateMedia[]
     housingUnitTypePrices: HousingUnitTypePricingChangeInput[]
     services: string[]
-    availableWeekDays: string[]
+    validWeekDays: number[]
     description?: string
     generalDescription?: string
 }
@@ -39,20 +39,20 @@ export const transformSpecialDateFormDataForSubmit = (
         generalDescription,
     } = formData
 
-    const startDate = moment.utc(formData.startDate).startOf('day')
-    const endDate = moment.utc(formData.endDate).endOf('day')
+    const startDate = dayjs(formData.startDate).startOf('day')
+    const endDate = dayjs(formData.endDate).endOf('day')
 
     const transformedData = {
         name: formData.name,
         published: formData.published,
         startDate: startDate.toISOString(),
         endDate: endDate.toISOString(),
-        minDaily: formData.minDaily,
+        minStay: formData.minStay,
         priceVariationType: formData.priceVariationType,
-        price: formData.price,
+        priceVariationValue: formData.priceVariationValue,
         description: description || undefined,
         generalDescription: generalDescription || undefined,
-        availableWeekDays: formData.availableWeekDays.map(Number),
+        validWeekDays: formData.validWeekDays.map(Number),
         medias: medias.map((media) => ({
             mediaId: media.media.id,
             order: typeof media.order === 'number' ? media.order : undefined,
@@ -78,13 +78,14 @@ export const createSpecialDateFormInitialValues = (
     id: data?.id || '',
     name: data?.name || '',
     published: data?.published || false,
+    visibilityStartDate: data?.visibilityStartDate.split('T').at(0) || '',
     startDate: data?.startDate.split('T').at(0) || '',
     endDate: data?.endDate.split('T').at(0) || '',
-    minDaily: data?.minDaily || 1,
+    minStay: data?.minStay || 1,
     priceVariationType: data?.priceVariationType || 'ABSOLUTE_INCREASE',
-    price: data?.price || 0,
-    availableWeekDays: Array.isArray(data?.availableWeekDays)
-        ? data.availableWeekDays.map(String)
+    priceVariationValue: data?.priceVariationValue || 0,
+    validWeekDays: Array.isArray(data?.validWeekDays)
+        ? data.validWeekDays.map(Number)
         : [],
     description: (data?.description as LocalizedText)?.pt_BR || '',
     generalDescription:
@@ -97,15 +98,14 @@ export const createSpecialDateFormInitialValues = (
 export const specialDateFormSchema = yup.object({
     name: yup.string().required('Nome é obrigatório'),
     published: yup.boolean().required('Status é obrigatório'),
+    visibilityStartDate: yup
+        .string()
+        .required('Data de visibilidade é obrigatória'),
     startDate: yup.string().required('Data de início é obrigatória'),
     endDate: yup.string().required('Data de fim é obrigatória'),
-    minDaily: yup
-        .number()
-        .min(1, 'Mínimo de diárias deve ser pelo menos 1')
-        .required('Mínimo de diárias é obrigatório'),
-    availableWeekDays: yup
+    validWeekDays: yup
         .array()
-        .of(yup.string())
+        .of(yup.number().min(0).max(6))
         .required('Dias da semana são obrigatórios'),
     priceVariationType: yup
         .mixed<PriceVariationType>()
@@ -117,7 +117,6 @@ export const specialDateFormSchema = yup.object({
             'CUSTOM',
         ])
         .required('Tipo de variação de preço é obrigatório'),
-    price: yup.number().min(0).required('Preço é obrigatório'),
     medias: yup.array().min(1, 'Pelo menos uma mídia é obrigatória'),
     housingUnitTypePrices: yup
         .array()

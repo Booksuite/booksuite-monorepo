@@ -30,7 +30,7 @@ export type AvailAndPricingSeasonRulesInput = {
    * @description Minimum daily price
    * @type number
    */
-  minDaily: number
+  minStay: number
   /**
    * @description Price variation type
    */
@@ -39,7 +39,7 @@ export type AvailAndPricingSeasonRulesInput = {
    * @description Price value
    * @type number
    */
-  price: number
+  priceVariationValue: number
   /**
    * @description Whether the season rule is published
    * @type boolean
@@ -49,17 +49,12 @@ export type AvailAndPricingSeasonRulesInput = {
    * @description Visibility start date
    * @type string, date-time
    */
-  visibilityStart: string | null
-  /**
-   * @description Visibility end date
-   * @type string, date-time
-   */
-  visibilityEnd: string | null
+  visibilityStartDate: string | null
   /**
    * @description Available week days
    * @type array
    */
-  availableWeekDays: number[]
+  validWeekDays: number[]
   /**
    * @description Housing unit type prices
    * @type array

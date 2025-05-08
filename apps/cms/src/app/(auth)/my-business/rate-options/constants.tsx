@@ -3,7 +3,7 @@ import { Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 
 import { BILLING_TYPE_RESERVATION_OPTION_MAPPING } from '@/common/constants/billingType'
-import { themeOptions } from '@/common/theme'
+import { theme } from '@/common/theme'
 
 export const MAX_FEATURED_FACILITIES = 5
 
@@ -21,12 +21,20 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
         header: 'Nome',
         accessorKey: 'name',
         enableSorting: true,
+        size: 200,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
                     fontWeight: 'bold',
-                    fontSize: '1rem',
-                    color: themeOptions.palette?.blueGrey?.[700],
+                    fontSize: '14px',
+                    marginLeft: '10px',
                 }}
             >
                 {row.original.name}
@@ -36,12 +44,19 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
     {
         id: 'billingType',
         header: 'Tipo de Cobrança',
-
+        accessorKey: 'billingType',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
-                    fontSize: '1rem',
-                    color: '#486581',
+                    fontSize: '14px',
+                    marginLeft: '10px',
                     fontWeight: '400',
                 }}
             >
@@ -55,12 +70,23 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
     {
         id: 'published',
         header: 'Visibilidade',
+        accessorKey: 'published',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
                     fontWeight: '500',
-                    fontSize: '1rem',
-                    color: row.original.published ? '#1D7F52' : '#6B7279',
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
                 }}
             >
                 {row.original.published ? 'Publicado' : 'Não publicado'}

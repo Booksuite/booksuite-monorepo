@@ -1,10 +1,16 @@
 import type { PriceVariationType } from './PriceVariationType.ts'
 
+export type UpdateOfferDtoType = 'SERVICE' | 'HOUSING_UNIT_TYPE'
+
 export type UpdateOfferDto = {
   /**
    * @type string | undefined
    */
   name?: string
+  /**
+   * @type string | undefined
+   */
+  type?: UpdateOfferDtoType
   /**
    * @type string | undefined
    */
@@ -16,27 +22,23 @@ export type UpdateOfferDto = {
   /**
    * @type string | undefined, date
    */
-  purchaseStartDate?: string
+  visibilityStartDate?: string
   /**
    * @type string | undefined, date
    */
-  purchaseEndDate?: string
+  startDate?: string
   /**
-   * @type string, date
+   * @type string | undefined, date
    */
-  validStartDate?: string | null
-  /**
-   * @type string, date
-   */
-  validEndDate?: string | null
+  endDate?: string
   /**
    * @type number
    */
-  minDays?: number | null
+  minStay?: number | null
   /**
    * @type number
    */
-  maxDays?: number | null
+  maxStay?: number | null
   /**
    * @type number
    */
@@ -56,7 +58,7 @@ export type UpdateOfferDto = {
   /**
    * @type array | undefined
    */
-  availableHousingUnitTypes?: string[]
+  validHousingUnitTypes?: string[]
   /**
    * @type array | undefined
    */
@@ -64,7 +66,7 @@ export type UpdateOfferDto = {
   /**
    * @type array | undefined
    */
-  availableWeekDays?: number[]
+  validWeekDays?: number[]
   /**
    * @type array | undefined
    */
