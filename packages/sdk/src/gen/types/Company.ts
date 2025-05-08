@@ -1,3 +1,4 @@
+import type { CompanyMedia } from './CompanyMedia.ts'
 import type { MapCoordinatesInput } from './MapCoordinatesInput.ts'
 import type { Media } from './Media.ts'
 
@@ -122,4 +123,8 @@ export type Company = {
    */
   bannerDescription: string | null
   bannerImage: Media | null
+  /**
+   * @type array
+   */
+  companyMedias: CompanyMedia[] | null
 }

@@ -1,4 +1,9 @@
-import { CompanyFull, Media } from '@booksuite/sdk'
+import {
+    CompanyFull,
+    CompanyMedia,
+    CompanyUpdateInput,
+    Media,
+} from '@booksuite/sdk'
 import * as yup from 'yup'
 
 export interface BannerMedia {
@@ -17,6 +22,7 @@ export type BusinessDescriptionFormData = Pick<
     | 'bannerImage'
 > & {
     medias: BannerMedia[]
+    companyMedias: CompanyMedia[]
 }
 
 function normalize(media: Media | undefined | null): BannerMedia {
@@ -32,6 +38,20 @@ function normalize(media: Media | undefined | null): BannerMedia {
     }
 }
 
+export const transformFormDataForSubmit = (
+    formData: BusinessDescriptionFormData,
+): CompanyUpdateInput => {
+    return {
+        ...formData,
+        companyMedias: formData.companyMedias.map((media) => ({
+            mediaId: media.media.id,
+            isFeatured: media.isFeatured,
+            order: media.order ?? undefined,
+        })),
+        bannerImageId: formData.medias[0]?.mediaId || '',
+    }
+}
+
 export const businessDescriptionInitialValues = (
     data?: Partial<CompanyFull> | null,
 ): BusinessDescriptionFormData => ({
@@ -42,6 +62,7 @@ export const businessDescriptionInitialValues = (
     bannerDescription: data?.bannerDescription || '',
     bannerImage: data?.bannerImage || null,
     medias: [normalize(data?.bannerImage)],
+    companyMedias: data?.companyMedias || [],
 })
 
 export const businessDescriptionFormSchema = yup.object({
@@ -50,4 +71,5 @@ export const businessDescriptionFormSchema = yup.object({
     description: yup.string().nullable(),
     bannerTitle: yup.string().nullable(),
     bannerDescription: yup.string().nullable(),
+    companyMedias: yup.array().min(1, 'Mídia é obrigatório'),
 })
