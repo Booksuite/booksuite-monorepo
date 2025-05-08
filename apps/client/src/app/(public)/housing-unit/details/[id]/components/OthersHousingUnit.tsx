@@ -80,7 +80,7 @@ export function OthersHousingUnit() {
                                             <Images className="w-4 h-4" />
                                         </button>
                                     </div>
-                                    <div className="absolute bg-black/50 w-full bottom-0">
+                                    <div className="absolute w-full bottom-0 h-32 bg-gradient-to-t from-black/80 to-black/30">
                                         <div className="flex items-center gap-2 justify-between px-3 mt-5">
                                             <h3 className="text-xl font-semibold text-white mb-2">
                                                 {unit.name}

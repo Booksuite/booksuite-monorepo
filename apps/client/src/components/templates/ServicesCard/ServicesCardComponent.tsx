@@ -7,7 +7,7 @@ import { formatCurrency } from '@/common/utils/formatCurrency'
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
 
-interface ExtraServicesCardProps {
+interface ServicesCardComponentProps {
     title: string
     description: string
     images: string[]
@@ -19,7 +19,7 @@ interface ExtraServicesCardProps {
     onViewAllPhotos?: () => void
 }
 
-export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
+export const ServicesCardComponent: React.FC<ServicesCardComponentProps> = ({
     title,
     description,
     images,
