@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { ServiceForm } from '../components/ServiceForm'
@@ -16,7 +17,6 @@ import {
     serviceFormSchema,
     transformFormDataForSubmit,
 } from '../utils/config'
-import { getErrorMessage } from '@/common/utils'
 
 export default function CreateServicePage() {
     const companyId = useCurrentCompanyId()
