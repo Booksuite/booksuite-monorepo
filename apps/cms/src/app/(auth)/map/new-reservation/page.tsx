@@ -36,6 +36,7 @@ export default function NewReservation() {
                     ...omit(formData, ['summary', 'sellerUserId']),
                     startDate: moment(formData.startDate).toISOString(),
                     endDate: moment(formData.endDate).toISOString(),
+                    sellerUserId: formData.sellerUserId,
                     finalPrice:
                         formData.summary.dailyTotal +
                         formData.summary.additionalTotal +
