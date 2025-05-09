@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { ServiceForm } from '../components/ServiceForm'
@@ -48,8 +49,8 @@ export default function CreateServicePage() {
             })
 
             back()
-        } catch {
-            enqueueSnackbar('Erro ao criar serviço', {
+        } catch (error) {
+            enqueueSnackbar(`Erro ao criar serviço ${getErrorMessage(error)}`, {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',

@@ -205,7 +205,7 @@ export const RoomsForm: React.FC = () => {
                     label="Máximo de Hóspedes"
                     error={!!errors.maxGuests}
                     helperText={errors.maxGuests}
-                    min={1}
+                    min={values.minGuests}
                     {...getFieldProps('maxGuests')}
                     onChange={(e) =>
                         setFieldValue('maxGuests', Number(e.target.value))
@@ -214,6 +214,7 @@ export const RoomsForm: React.FC = () => {
                 <NumberInput
                     label="Mínimo de Hóspedes"
                     min={1}
+                    max={values.maxGuests}
                     error={!!errors.minGuests}
                     helperText={errors.minGuests}
                     {...getFieldProps('minGuests')}
@@ -270,7 +271,7 @@ export const RoomsForm: React.FC = () => {
                 <NumberInput
                     label="Cobrar valor extra por adulto acima de"
                     error={!!errors.chargeExtraAdultHigherThan}
-                    max={values.maxGuests ? values.maxGuests - 1 : 0}
+                    max={values.maxGuests}
                     min={values.minGuests}
                     helperText={errors.chargeExtraAdultHigherThan}
                     {...getFieldProps('chargeExtraAdultHigherThan')}

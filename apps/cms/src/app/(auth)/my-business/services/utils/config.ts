@@ -5,7 +5,7 @@ import {
     ServiceMedia,
     ServiceMediaInput,
 } from '@booksuite/sdk'
-import moment from 'moment'
+import dayjs from 'dayjs'
 import * as yup from 'yup'
 
 export type ServiceFormData = Omit<
@@ -32,8 +32,8 @@ export const transformFormDataForSubmit = (
         coverMediaId: medias[0]?.media.id,
         medias: transformedMedias,
         availableWeekDays: formData.availableWeekDays.map(Number),
-        seasonStart: moment(formData.seasonStart).toISOString(),
-        seasonEnd: moment(formData.seasonEnd).toISOString(),
+        seasonStart: dayjs(formData.seasonStart).toISOString(),
+        seasonEnd: dayjs(formData.seasonEnd).toISOString(),
         availableHousingUnitTypes: formData.availableHousingUnitTypes.map(
             (item) => ({ housingUnitTypeId: item.housingUnitTypeId }),
         ),
@@ -52,7 +52,7 @@ export const createFormInitialValues = (
         : [],
     medias: data?.medias || [],
     description: data?.name || '',
-    minDaily: data?.minDaily || 1,
+    minStay: data?.minStay || 1,
     minNotice: data?.minNotice || 1,
     included: data?.included || '',
     notes: data?.notes || '',
@@ -60,8 +60,8 @@ export const createFormInitialValues = (
     panelSale: data?.panelSale || false,
     seasonalSale: data?.seasonalSale || false,
     price: data?.price || 0,
-    seasonEnd: data?.seasonEnd || '',
-    seasonStart: data?.seasonStart || '',
+    seasonStart: data?.seasonStart ? dayjs(data.seasonStart).toISOString() : '',
+    seasonEnd: data?.seasonEnd ? dayjs(data.seasonEnd).toISOString() : '',
     coverMediaId: data?.coverMedia?.id || '',
     availableHousingUnitTypes:
         data?.availableHousingUnitTypes?.map((h) => ({
@@ -77,7 +77,7 @@ export const serviceFormSchema = yup.object({
     availableHousingUnitTypes: yup.array().min(1),
     medias: yup.array().min(1),
     description: yup.string().required('Descrição é obrigatória'),
-    minDaily: yup
+    minStay: yup
         .number()
         .min(1, 'Mínimo de diárias deve ser pelo menos 1')
         .required('Mínimo de diárias é obrigatório'),

@@ -1,32 +1,36 @@
-import {
-    CompanyFull,
-    CompanySettingsInput,
-    CompanyUpdateInput,
-} from '@booksuite/sdk'
+import { CompanyFull, CompanyUpdateInput, Media } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type visualIdentityFormData = Pick<
+export type VisualIdentityFormData = Pick<
     CompanyUpdateInput,
-    'favIcon' | 'logo' | 'settings'
+    'settings' | 'logo' | 'favIcon'
 > & {
-    favIcon: string
-    logo: string
-    settings: CompanySettingsInput
-    favIconFile?: File
-    logoFile?: File
+    logoMedia: Media | null
+    favIconMedia: Media | null
+}
+
+export function normalizeVisualIdentityFormData(
+    data: VisualIdentityFormData,
+): CompanyUpdateInput {
+    return {
+        logo: data.logo ?? null,
+        favIcon: data.favIcon ?? null,
+        settings: data.settings || undefined,
+    }
 }
 
 export const createvisualIdentityInitialValues = (
     data?: Partial<CompanyFull> | null,
-): visualIdentityFormData => ({
-    favIcon: data?.favIcon || '',
-    logo: data?.logo || '',
-    settings: data?.settings || {},
-    favIconFile: undefined,
-    logoFile: undefined,
+): VisualIdentityFormData => ({
+    logo: data?.logo ?? null,
+    favIcon: data?.favIcon ?? null,
+    settings: data?.settings ?? {},
+    logoMedia: null,
+    favIconMedia: null,
 })
 
 export const visualIdentityFormSchema = yup.object({
-    logo: yup.string(),
-    favIcon: yup.string(),
+    logo: yup.string().nullable(),
+    favIcon: yup.string().nullable(),
+    settings: yup.object(),
 })

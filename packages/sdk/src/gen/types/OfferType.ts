@@ -1,0 +1,1 @@
+export type OfferType = 'SERVICE' | 'HOUSING_UNIT_TYPE'

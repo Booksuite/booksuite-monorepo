@@ -1,11 +1,13 @@
 'use client'
 
+import React from 'react'
 import { Gift, MapPin } from 'lucide-react'
 
 import { useCurrentCompanyStore } from '@/common/contexts/company'
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
 import { Container } from '@/components/organisms/Container'
+import { DynamicIcon, IconName } from 'lucide-react/dynamic'
 
 export const About: React.FC = () => {
     const { company } = useCurrentCompanyStore()
@@ -47,7 +49,15 @@ export const About: React.FC = () => {
                                     className="text-center flex flex-col items-center justify-center"
                                 >
                                     <div className="text-3xl mb-2 flex items-center justify-center text-grey-primary">
-                                        {facility.facility.icon || (
+                                        {facility.facility.icon ? (
+                                            <DynamicIcon
+                                                name={
+                                                    facility.facility
+                                                        .icon as IconName
+                                                }
+                                                className="w-8 h-8"
+                                            />
+                                        ) : (
                                             <Gift className="w-8 h-8" />
                                         )}
                                     </div>

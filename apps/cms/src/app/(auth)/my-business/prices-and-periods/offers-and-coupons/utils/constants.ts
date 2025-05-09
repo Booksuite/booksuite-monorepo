@@ -20,3 +20,8 @@ export const PRICE_VARIATION_TYPE = [
     { label: 'Acréscimo em Percentual', value: 'PERCENTAGE_INCREASE' },
     { label: 'Redução em Percentual', value: 'PERCENTAGE_REDUCTION' },
 ]
+
+export const TYPE_OPTIONS = {
+    SERVICE: 'Serviço',
+    HOUSING_UNIT_TYPE: 'Acomodação',
+}

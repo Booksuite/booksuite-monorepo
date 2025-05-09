@@ -1,5 +1,5 @@
-import type { AvailabilityAndPricing } from '../AvailabilityAndPricing.ts'
 import type { CalendarBodyInput } from '../CalendarBodyInput.ts'
+import type { HousingUnitTypeWithCalendarInput } from '../HousingUnitTypeWithCalendarInput.ts'
 
 export type GetCalendarFromHousingUnitTypeIdPathParams = {
   /**
@@ -13,7 +13,7 @@ export type GetCalendarFromHousingUnitTypeIdPathParams = {
 /**
  * @description Calendar data for the housing unit type
  */
-export type GetCalendarFromHousingUnitTypeId200 = AvailabilityAndPricing
+export type GetCalendarFromHousingUnitTypeId200 = HousingUnitTypeWithCalendarInput
 
 export type GetCalendarFromHousingUnitTypeIdMutationRequest = CalendarBodyInput
 

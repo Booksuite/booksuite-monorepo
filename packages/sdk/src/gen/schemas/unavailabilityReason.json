@@ -1,1 +1,1 @@
-{"type":"string","enum":["MIN_DAYS_NOT_REACHED","ALL_ROOMS_OCCUPIED","WEEKDAY_NOT_AVAILABLE"],"description":"Unavailability reason","x-readme-ref-name":"UnavailabilityReason"}
+{"type":"string","enum":["MIN_DAYS_NOT_REACHED","ALL_ROOMS_OCCUPIED","WEEKDAY_NOT_AVAILABLE","MAX_GUESTS_EXCEEDED","MAX_CHILDREN_EXCEEDED"],"description":"Unavailability reason","x-readme-ref-name":"UnavailabilityReason"}

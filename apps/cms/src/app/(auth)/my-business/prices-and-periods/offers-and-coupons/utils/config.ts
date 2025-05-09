@@ -3,6 +3,7 @@ import {
     OfferFull,
     OfferResponseDTOPriceAdjustmentType,
 } from '@booksuite/sdk'
+import dayjs from 'dayjs'
 import * as yup from 'yup'
 
 export type OfferFormData = CreateOfferDto
@@ -10,31 +11,15 @@ export type OfferFormData = CreateOfferDto
 export const transformOfferFormDataForSubmit = (
     formData: OfferFormData,
 ): CreateOfferDto => {
-    const {
-        validStartDate,
-        validEndDate,
-        purchaseEndDate,
-        purchaseStartDate,
-        name,
-        ...rest
-    } = formData
-
-    const validStartDateISO = validStartDate
-        ? new Date(validStartDate).toISOString()
-        : undefined
-    const validEndDateISO = validEndDate
-        ? new Date(validEndDate).toISOString()
-        : undefined
-    const purchaseStartDateISO = new Date(purchaseStartDate || '').toISOString()
-    const purchaseEndDateISO = new Date(purchaseEndDate || '').toISOString()
+    const { visibilityStartDate, startDate, endDate, ...rest } = formData
 
     return {
         ...rest,
-        name: name,
-        purchaseEndDate: purchaseEndDateISO,
-        purchaseStartDate: purchaseStartDateISO,
-        validStartDate: validStartDateISO,
-        validEndDate: validEndDateISO,
+        visibilityStartDate: dayjs(visibilityStartDate).toISOString(),
+        startDate: startDate
+            ? dayjs(startDate).toISOString()
+            : dayjs().toISOString(),
+        endDate: endDate ? dayjs(endDate).toISOString() : dayjs().toISOString(),
     }
 }
 
@@ -42,33 +27,28 @@ export const createOfferFormInitialValues = (
     data?: OfferFull,
 ): OfferFormData => ({
     name: data?.name || '',
+    type: data?.type || 'HOUSING_UNIT_TYPE',
     description: data?.description || '',
     published: data?.published ?? false,
-    purchaseStartDate: data?.purchaseStartDate.split('T').at(0) || '',
-    purchaseEndDate: data?.purchaseEndDate.split('T').at(0) || '',
-    validStartDate: data?.validStartDate
-        ? String(data.validStartDate).split('T').at(0)
-        : '',
-    validEndDate: data?.validEndDate
-        ? String(data.validEndDate).split('T').at(0)
-        : '',
-    minDays: data?.minDays ?? 0,
-    maxDays: data?.maxDays ?? 0,
-    minAdvanceDays: data?.minAdvanceDays ?? 0,
-    maxAdvanceDays: data?.maxAdvanceDays ?? 0,
+    visibilityStartDate: data?.visibilityStartDate.split('T').at(0) || '',
+    startDate: data?.startDate.split('T').at(0) || '',
+    endDate: data?.endDate.split('T').at(0) || '',
+    minStay: data?.minStay ?? 1,
+    maxStay: data?.maxStay ?? 2,
+    minAdvanceDays: data?.minAdvanceDays ?? 1,
+    maxAdvanceDays: data?.maxAdvanceDays ?? 2,
     validForAbandoned: data?.validForAbandoned ?? false,
     validForPackages: data?.validForPackages ?? false,
-    availableWeekDays: data?.availableWeekDays || [],
+    validWeekDays: data?.validWeekDays || [],
     priceAdjustmentType: data?.priceAdjustmentType || 'ABSOLUTE_REDUCTION',
     priceAdjustmentValue: data?.priceAdjustmentValue ?? 0,
     showInHighlights: data?.showInHighlights ?? false,
     showDiscountTag: data?.showDiscountTag ?? false,
     isExclusive: data?.isExclusive ?? false,
     couponCode: data?.couponCode || '',
-    availableHousingUnitTypes:
-        data?.availableHousingUnitTypes.map(
-            (type) => type.housingUnitType.id,
-        ) || [],
+    validHousingUnitTypes:
+        data?.validHousingUnitTypes.map((type) => type.housingUnitType.id) ||
+        [],
     validServices:
         data?.validServices.map((service) => service.service.id) || [],
     validPaymentMethods: [],
@@ -78,21 +58,18 @@ export const offerFormSchema = yup.object({
     name: yup.string().required('Nome é obrigatório'),
     description: yup.string().nullable(),
     published: yup.boolean().required('Status é obrigatório'),
-    purchaseStartDate: yup
+    visibilityStartDate: yup
         .string()
         .required('Data inicial de compra é obrigatória'),
-    purchaseEndDate: yup
-        .string()
-        .required('Data final de compra é obrigatória'),
-    validStartDate: yup.string().nullable(),
-    validEndDate: yup.string().nullable(),
-    minDays: yup.number().nullable(),
-    maxDays: yup.number().nullable(),
-    minAdvanceDays: yup.number().nullable(),
-    maxAdvanceDays: yup.number().nullable(),
+    startDate: yup.string().nullable(),
+    endDate: yup.string().nullable(),
+    minStay: yup.number().optional(),
+    maxStay: yup.number().optional(),
+    minAdvanceDays: yup.number().optional(),
+    maxAdvanceDays: yup.number().optional(),
     validForAbandoned: yup.boolean().required(),
     validForPackages: yup.boolean().required(),
-    availableWeekDays: yup
+    validWeekDays: yup
         .array()
         .of(yup.number().min(0).max(6))
         .required('Dias disponíveis são obrigatórios'),

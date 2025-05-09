@@ -27,10 +27,15 @@ export type AvailAndPricingSpecialDatesInput = {
    */
   endDate: string
   /**
+   * @description Visibility start date
+   * @type string, date-time
+   */
+  visibilityStartDate: string
+  /**
    * @description Minimum daily price
    * @type number
    */
-  minDaily: number
+  minStay: number
   /**
    * @description Price variation type
    */
@@ -39,7 +44,7 @@ export type AvailAndPricingSpecialDatesInput = {
    * @description Price value
    * @type number
    */
-  price: number
+  priceVariationValue: number
   /**
    * @description Whether the special date rule is published
    * @type boolean
@@ -49,7 +54,7 @@ export type AvailAndPricingSpecialDatesInput = {
    * @description Available week days
    * @type array
    */
-  availableWeekDays: number[]
+  validWeekDays: number[]
   /**
    * @description Housing unit type prices
    * @type array

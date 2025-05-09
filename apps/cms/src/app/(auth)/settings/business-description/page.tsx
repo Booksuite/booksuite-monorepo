@@ -56,8 +56,6 @@ export default function BusinessDescription() {
                 },
                 autoHideDuration: 3000,
             })
-
-            back()
         } catch {
             enqueueSnackbar(`Erro ao modificar a descrição do negócio`, {
                 variant: 'error',

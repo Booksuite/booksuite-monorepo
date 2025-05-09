@@ -6,7 +6,6 @@ export type AgePolicyFormData = AgePolicyFull
 export const createAgePolicyInitialValues = (
     data?: Partial<AgePolicyFull>,
 ): AgePolicyFormData => ({
-    id: data?.id || '',
     acceptChildren: data?.acceptChildren || false,
     adultMinAge: data?.adultMinAge || 0,
     ageGroups:

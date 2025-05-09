@@ -193,15 +193,15 @@ export const ServiceForm: React.FC = () => {
                             <NumberInput
                                 label="Mínimo de Diárias"
                                 min={1}
-                                error={!!errors.minDaily}
-                                helperText={errors.minDaily}
-                                {...getFieldProps('minDaily')}
+                                error={!!errors.minStay}
+                                helperText={errors.minStay}
+                                {...getFieldProps('minStay')}
                                 onChange={(e) => {
                                     const newValueNumber = Number(
                                         e.target.value,
                                     )
                                     if (Number.isNaN(newValueNumber)) return
-                                    setFieldValue('minDaily', newValueNumber)
+                                    setFieldValue('minStay', newValueNumber)
                                 }}
                             />
                         </Stack>

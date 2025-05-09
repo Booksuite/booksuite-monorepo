@@ -228,7 +228,7 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
         isUpsertPending ||
         isUploadPending ||
         (!!minItems && selectedItems.length < minItems) ||
-        (!!maxItems && selectedItems.length >= maxItems)
+        (!!maxItems && selectedItems.length > maxItems)
 
     return (
         <Modal
@@ -256,10 +256,6 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                             <AddUrlModal
                                 allowVideos={allowVideos}
                                 onAddUrl={handleAddUrl}
-                                disabled={
-                                    !!maxItems &&
-                                    allMediaItems.length >= maxItems
-                                }
                             />
                         )}
 
@@ -267,9 +263,6 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                             size="small"
                             onClick={() => fileInputRef.current?.click()}
                             startIcon={<UploadIcon size={16} />}
-                            disabled={
-                                !!maxItems && allMediaItems.length >= maxItems
-                            }
                             variant="outlined"
                         >
                             Fazer upload

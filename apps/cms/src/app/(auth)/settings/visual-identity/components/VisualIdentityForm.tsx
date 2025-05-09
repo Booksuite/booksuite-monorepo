@@ -1,55 +1,44 @@
 'use client'
 
+import { Media } from '@booksuite/sdk'
 import { Box, Button, Grid, TextField, Typography } from '@mui/material'
 import { useFormikContext } from 'formik'
-import { ChangeEvent, useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
-import { visualIdentityFormData } from '../utils/config'
+import { Image } from '@/components/atoms/Image'
+import { MediaGallery } from '@/components/organisms/MediaGallery'
+import { VisualIdentityFormData } from '../utils/config'
 
 export default function VisualIdentityForm() {
-    const { values, setFieldValue } = useFormikContext<visualIdentityFormData>()
+    const { values, setFieldValue } = useFormikContext<VisualIdentityFormData>()
 
-    const [logo, setLogo] = useState<string | null>(null)
-    const [favicon, setFavicon] = useState<string | null>(null)
-    const [mainColor, setMainColor] = useState(
-        `${values.settings.theme?.color}`,
-    )
+    const [isLogoMediaGalleryOpen, setIsLogoMediaGalleryOpen] = useState(false)
+    const [isFavIconMediaGalleryOpen, setIsFavIconMediaGalleryOpen] =
+        useState(false)
 
-    const logoInputRef = useRef<HTMLInputElement>(null)
-    const faviconInputRef = useRef<HTMLInputElement>(null)
+    const handleFavIconMediaChange = (selectedMedia: Media[]) => {
+        const [media] = selectedMedia
 
-    const handleLogoChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
-        if (file) {
-            const imageUrl = URL.createObjectURL(file)
-            setLogo(imageUrl)
-            setFieldValue('logoFile', file)
-        }
+        if (!media) return
+
+        setFieldValue('favIcon', media.url)
+        setFieldValue('favIconMedia', media)
+
+        setIsFavIconMediaGalleryOpen(false)
     }
 
-    const handleFaviconChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]
-        if (file) {
-            const imageUrl = URL.createObjectURL(file)
-            setFavicon(imageUrl)
-            setFieldValue('favIconFile', file)
-        }
-    }
+    const handleLogoMediaChange = (selectedMedia: Media[]) => {
+        const [media] = selectedMedia
 
-    const openLogoSelector = () => {
-        logoInputRef.current?.click()
-    }
+        if (!media) return
 
-    const openFaviconSelector = () => {
-        faviconInputRef.current?.click()
-    }
+        setFieldValue('logo', media.url)
+        setFieldValue('logoMedia', media)
 
-    useEffect(() => {
-        setLogo(values.logo)
-        setFavicon(values.favIcon)
-    }, [values.favIcon, values.logo])
+        setIsLogoMediaGalleryOpen(false)
+    }
 
     return (
         <FormContainer>
@@ -76,13 +65,27 @@ export default function VisualIdentityForm() {
                         </Typography>
                     </Box>
                     <Button
-                        onClick={openLogoSelector}
+                        onClick={() => {
+                            setIsLogoMediaGalleryOpen(true)
+                        }}
                         variant="contained"
                         color="primary"
                     >
                         Adicionar
                     </Button>
                 </Grid>
+
+                <MediaGallery
+                    isOpen={isLogoMediaGalleryOpen}
+                    onClose={() => setIsLogoMediaGalleryOpen(false)}
+                    selectedItems={
+                        values.logoMedia ? [values.logoMedia.id] : []
+                    }
+                    initialItems={values.logoMedia ? [values.logoMedia] : []}
+                    onItemsChange={handleLogoMediaChange}
+                    maxItems={1}
+                    minItems={1}
+                />
 
                 <Box
                     sx={{
@@ -95,11 +98,12 @@ export default function VisualIdentityForm() {
                         minHeight: 120,
                     }}
                 >
-                    {logo ? (
-                        <Box
-                            component="img"
-                            src={logo}
+                    {values.logo ? (
+                        <Image
+                            src={values.logo}
                             alt="Logotipo"
+                            width={120}
+                            height={120}
                             sx={{
                                 width: 120,
                                 height: 120,
@@ -113,14 +117,6 @@ export default function VisualIdentityForm() {
                         </Typography>
                     )}
                 </Box>
-
-                <input
-                    type="file"
-                    ref={logoInputRef}
-                    onChange={handleLogoChange}
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                />
             </FormSection>
 
             <FormSection
@@ -146,13 +142,29 @@ export default function VisualIdentityForm() {
                         </Typography>
                     </Box>
                     <Button
-                        onClick={openFaviconSelector}
+                        onClick={() => {
+                            setIsFavIconMediaGalleryOpen(true)
+                        }}
                         variant="contained"
                         color="primary"
                     >
                         Adicionar
                     </Button>
                 </Grid>
+
+                <MediaGallery
+                    isOpen={isFavIconMediaGalleryOpen}
+                    onClose={() => setIsFavIconMediaGalleryOpen(false)}
+                    selectedItems={
+                        values.favIconMedia ? [values.favIconMedia.id] : []
+                    }
+                    initialItems={
+                        values.favIconMedia ? [values.favIconMedia] : []
+                    }
+                    onItemsChange={handleFavIconMediaChange}
+                    maxItems={1}
+                    minItems={1}
+                />
                 <Box
                     sx={{
                         borderRadius: 1,
@@ -164,10 +176,10 @@ export default function VisualIdentityForm() {
                         minHeight: 70,
                     }}
                 >
-                    {favicon ? (
+                    {values.favIcon ? (
                         <Box
                             component="img"
-                            src={favicon}
+                            src={values.favIcon}
                             alt="Favicon"
                             sx={{
                                 width: 70,
@@ -182,14 +194,6 @@ export default function VisualIdentityForm() {
                         </Typography>
                     )}
                 </Box>
-
-                <input
-                    type="file"
-                    ref={faviconInputRef}
-                    onChange={handleFaviconChange}
-                    accept="image/*"
-                    style={{ display: 'none' }}
-                />
             </FormSection>
 
             <FormSection title="Cor principal do site">
@@ -198,18 +202,14 @@ export default function VisualIdentityForm() {
                         <TextField
                             placeholder="#"
                             label="Cor principal (HEX)"
-                            value={values.settings.theme?.color}
+                            value={values.settings?.theme?.color || ''}
                             fullWidth
                             onChange={(e) => {
-                                const formatted = e.target.value.includes('#')
+                                const formatted = e.target.value.startsWith('#')
                                     ? e.target.value
                                     : `#${e.target.value}`
 
-                                setFieldValue(
-                                    'settings.theme.color',
-                                    formatted,
-                                )
-                                setMainColor(formatted)
+                                setFieldValue('settings.theme.color', formatted)
                             }}
                         />
                     </Grid>
@@ -218,7 +218,8 @@ export default function VisualIdentityForm() {
                             sx={{
                                 border: '1px solid',
                                 borderColor: 'divider',
-                                bgcolor: mainColor,
+                                bgcolor:
+                                    values.settings?.theme?.color || '#ffffff',
                                 borderRadius: 1,
                                 width: '100%',
                                 height: 60,

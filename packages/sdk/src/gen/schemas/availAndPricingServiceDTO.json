@@ -1,0 +1,1 @@
+{"type":"object","properties":{"quantity":{"type":"number","example":2},"serviceId":{"type":"string","example":"f47ac10b-58cc-4372-a567-0e02b2c3d479"}},"required":["quantity","serviceId"],"x-readme-ref-name":"AvailAndPricingServiceDTO"}

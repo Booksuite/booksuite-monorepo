@@ -1,4 +1,5 @@
 import { BannerCreateInput, BannerFull, Media } from '@booksuite/sdk'
+import dayjs from 'dayjs'
 import * as yup from 'yup'
 
 export interface BannerFormMedia {
@@ -42,9 +43,9 @@ export const transformToApiData = (
     actionButtonText: formData.actionButtonText || undefined,
     actionButtonLink: formData.actionButtonLink || undefined,
     startAt: formData.startAt
-        ? new Date(formData.startAt).toISOString()
+        ? dayjs(formData.startAt).toISOString()
         : undefined,
-    endAt: formData.endAt ? new Date(formData.endAt).toISOString() : undefined,
+    endAt: formData.endAt ? dayjs(formData.endAt).toISOString() : undefined,
     medias: formData.medias.map((item) => ({
         mediaId: item.mediaId,
         order: isCreate ? 0 : item.order,

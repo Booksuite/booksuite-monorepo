@@ -9,19 +9,20 @@ import type { UseMutationOptions } from '@tanstack/react-query'
 import { upsertCompanyAgePolicy } from '../../client/AgePolicyService/upsertCompanyAgePolicy.ts'
 import { useMutation } from '@tanstack/react-query'
 
-export const upsertCompanyAgePolicyMutationKey = () => [{ url: '/company/{companyId}/agePolicy/{id}' }] as const
+export const upsertCompanyAgePolicyMutationKey = () => [{ url: '/company/{companyId}/agePolicy' }] as const
 
 export type UpsertCompanyAgePolicyMutationKey = ReturnType<typeof upsertCompanyAgePolicyMutationKey>
 
 /**
- * {@link /company/:companyId/agePolicy/:id}
+ * @summary Create or update age policy
+ * {@link /company/:companyId/agePolicy}
  */
 export function useUpsertCompanyAgePolicy<TContext>(
   options: {
     mutation?: UseMutationOptions<
       UpsertCompanyAgePolicyMutationResponse,
       ResponseErrorConfig<Error>,
-      { companyId: UpsertCompanyAgePolicyPathParams['companyId']; id: UpsertCompanyAgePolicyPathParams['id']; data: UpsertCompanyAgePolicyMutationRequest },
+      { companyId: UpsertCompanyAgePolicyPathParams['companyId']; data: UpsertCompanyAgePolicyMutationRequest },
       TContext
     >
     client?: Partial<RequestConfig<UpsertCompanyAgePolicyMutationRequest>> & { client?: typeof client }
@@ -33,11 +34,11 @@ export function useUpsertCompanyAgePolicy<TContext>(
   return useMutation<
     UpsertCompanyAgePolicyMutationResponse,
     ResponseErrorConfig<Error>,
-    { companyId: UpsertCompanyAgePolicyPathParams['companyId']; id: UpsertCompanyAgePolicyPathParams['id']; data: UpsertCompanyAgePolicyMutationRequest },
+    { companyId: UpsertCompanyAgePolicyPathParams['companyId']; data: UpsertCompanyAgePolicyMutationRequest },
     TContext
   >({
-    mutationFn: async ({ companyId, id, data }) => {
-      return upsertCompanyAgePolicy({ companyId, id }, data, config)
+    mutationFn: async ({ companyId, data }) => {
+      return upsertCompanyAgePolicy({ companyId }, data, config)
     },
     mutationKey,
     ...mutationOptions,

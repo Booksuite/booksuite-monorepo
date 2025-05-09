@@ -50,15 +50,15 @@ export type HousingUnitTypeFull = {
   /**
    * @type number
    */
-  weekdaysPrice: number | null
+  weekdaysPrice: number
   /**
    * @type number
    */
-  weekendPrice: number | null
+  weekendPrice: number
   /**
    * @type number
    */
-  extraAdultPrice: number | null
+  extraAdultPrice: number
   /**
    * @type number
    */
@@ -71,6 +71,10 @@ export type HousingUnitTypeFull = {
    * @type string, date-time
    */
   updatedAt: string
+  /**
+   * @type object
+   */
+  deletedAt: object | null
   /**
    * @type array
    */

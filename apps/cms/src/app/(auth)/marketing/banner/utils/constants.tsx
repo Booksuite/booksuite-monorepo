@@ -1,9 +1,9 @@
 import { Banner, BannerMedia, BannerPosition } from '@booksuite/sdk'
 import { Box, Typography } from '@mui/material'
-import { ImageOff } from 'lucide-react'
 import { MRT_ColumnDef } from 'material-react-table'
 
-import { themeOptions } from '@/common/theme'
+import { theme } from '@/common/theme'
+import { Image } from '@/components/atoms/Image'
 
 export const BANNER_POSITION_OPTIONS = [
     { value: 'FEATURED_CONTENT', label: 'Banner Fixado' },
@@ -29,49 +29,46 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<BannerWithMedias>[] = [
         id: 'image',
         header: '',
         size: 85,
-        Cell: ({ row }) => {
-            const imageUrl = row.original.medias?.[0]?.media?.url
-
-            return imageUrl ? (
-                <Box
-                    component="img"
-                    src={imageUrl}
+        Cell: ({ row }) => (
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    height: '100%',
+                }}
+            >
+                <Image
+                    src={row.original.medias?.[0]?.media.url}
                     alt={row.original.name}
                     sx={{
                         objectFit: 'cover',
-                        borderRadius: 1,
-                        width: '80px',
-                        height: '80px',
-                        backgroundColor: (theme) => theme.palette.grey[100],
+                        borderRadius: 2,
+                        width: '72px',
+                        height: '72px',
                     }}
                 />
-            ) : (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: '72px',
-                        height: '40px',
-                        borderRadius: 1,
-                        backgroundColor: (theme) => theme.palette.grey[100],
-                    }}
-                >
-                    <ImageOff size={20} color="#9E9E9E" />
-                </Box>
-            )
-        },
+            </Box>
+        ),
     },
     {
         id: 'name',
         header: 'Nome',
         accessorKey: 'name',
+        size: 150,
+        enableSorting: true,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
                     fontWeight: 'bold',
-                    fontSize: '1rem',
-                    color: themeOptions.palette?.blueGrey?.[700],
+                    fontSize: '14px',
+                    marginLeft: '10px',
                 }}
             >
                 {row.original.name}
@@ -83,18 +80,43 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<BannerWithMedias>[] = [
         id: 'bannerPosition',
         header: 'Posição do Banner',
         accessorKey: 'bannerPosition',
-        accessorFn: (row) => BannerPositionMap[row.position],
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {BannerPositionMap[row.original.position]}
+            </Typography>
+        ),
     },
 
     {
         id: 'published',
         header: 'Visibilidade',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
-                    fontWeight: '500',
-                    fontSize: '1rem',
-                    color: row.original.published ? '#1D7F52' : '#6B7279',
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
                 }}
             >
                 {row.original.published ? 'Publicado' : 'Não publicado'}

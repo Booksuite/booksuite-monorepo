@@ -14,6 +14,7 @@ import {
     Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import dayjs from 'dayjs'
 import {
     Check,
     CheckCheck,
@@ -32,6 +33,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { useSearchParamsOrder } from '@/common/hooks/useOrder'
 import { useSearchParamsPagination } from '@/common/hooks/usePagination'
+import { theme } from '@/common/theme'
 import { LinkButton } from '@/components/atoms/LinkButton'
 import { PaginationControls } from '@/components/molecules/PaginationControl'
 import { TableRowActionItem } from '@/components/molecules/TableRowActionItem'
@@ -49,15 +51,22 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
     {
         id: 'name',
         header: 'Nome',
-        size: 200,
         accessorKey: 'name',
         enableSorting: true,
+        size: 200,
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => (
             <Typography
                 sx={{
                     fontWeight: 'bold',
-                    fontSize: '1rem',
-                    color: '#486581',
+                    fontSize: '14px',
+                    marginLeft: '10px',
                 }}
             >
                 {row.original.name}
@@ -67,55 +76,101 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
     {
         id: 'purchaseStartDate',
         header: 'Início da Compra',
-        accessorFn: (row) =>
-            row.purchaseStartDate
-                ? new Date(row.purchaseStartDate).toLocaleDateString('pt-BR')
-                : '-',
-    },
-    {
-        id: 'purchaseEndDate',
-        header: 'Fim da Compra',
-        accessorFn: (row) =>
-            row.purchaseEndDate
-                ? new Date(row.purchaseEndDate).toLocaleDateString('pt-BR')
-                : '-',
+        accessorKey: 'purchaseStartDate',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.visibilityStartDate
+                    ? dayjs(row.original.visibilityStartDate).format(
+                          'DD/MM/YYYY',
+                      )
+                    : '-'}
+            </Typography>
+        ),
     },
     {
         header: 'Status',
         accessorKey: 'status',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
         Cell: ({ row }) => {
-            const { published, purchaseStartDate, purchaseEndDate } =
-                row.original
+            const { published, startDate, endDate } = row.original
 
-            const now = new Date()
-            const start = purchaseStartDate ? new Date(purchaseStartDate) : null
-            const end = purchaseEndDate ? new Date(purchaseEndDate) : null
+            const now = dayjs()
+            const start = startDate ? dayjs(startDate) : null
+            const end = endDate ? dayjs(endDate) : null
 
             let text = 'Inativa'
             let color = 'inherit'
 
             if (published) {
                 if (start && end) {
-                    if (now >= start && now <= end) {
+                    if (now.isAfter(start) && now.isBefore(end)) {
                         text = 'Em Andamento'
-                        color = '#1D7F52'
-                    } else if (now < start) {
+                        color = theme.palette.success.main
+                    } else if (now.isBefore(start)) {
                         text = 'Programada'
-                        color = '#E0AE15'
-                    } else if (now > end) {
+                        color = theme.palette.warning.main
+                    } else if (now.isAfter(end)) {
                         text = 'Finalizada'
-                        color = '#D63841'
+                        color = theme.palette.error.main
                     }
                 }
             }
 
-            return <span style={{ color, fontWeight: 'bold' }}>{text}</span>
+            return (
+                <Typography
+                    sx={{
+                        fontSize: '14px',
+                        marginLeft: '10px',
+                        color,
+                    }}
+                >
+                    {text}
+                </Typography>
+            )
         },
     },
     {
         id: 'published',
         header: 'Visibilidade',
-        accessorFn: (row) => (row.published ? 'Publicado' : 'Não Publicado'),
+        accessorKey: 'published',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                    color: row.original.published
+                        ? theme.palette.success.main
+                        : theme.palette.blueGrey[700],
+                }}
+            >
+                {row.original.published ? 'Publicado' : 'Não Publicado'}
+            </Typography>
+        ),
     },
 ]
 

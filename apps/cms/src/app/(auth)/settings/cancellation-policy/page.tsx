@@ -56,7 +56,6 @@ export default function CancellationPolicy() {
                 },
             )
 
-            back()
         } catch {
             enqueueSnackbar(`Erro ao modificar políticas`, {
                 variant: 'error',

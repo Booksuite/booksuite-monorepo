@@ -1,3 +1,4 @@
+import type { OfferType } from './OfferType.ts'
 import type { PriceVariationType } from './PriceVariationType.ts'
 
 export type AvailAndPricingOffersInput = {
@@ -5,22 +6,26 @@ export type AvailAndPricingOffersInput = {
    * @description Purchase start date
    * @type string, date-time
    */
-  purchaseStartDate: string
-  /**
-   * @description Purchase end date
-   * @type string, date-time
-   */
-  purchaseEndDate: string
+  visibilityStartDate: string
   /**
    * @description Minimum number of days for the offer
    * @type number
    */
-  minDays: number | null
+  minStay: number | null
+  /**
+   * @description Valid week days
+   * @type array
+   */
+  validWeekDays: number[]
+  /**
+   * @description Offer type
+   */
+  type: OfferType
   /**
    * @description Maximum number of days for the offer
    * @type number
    */
-  maxDays: number | null
+  maxStay: number | null
   /**
    * @description Minimum advance days required
    * @type number
@@ -75,12 +80,12 @@ export type AvailAndPricingOffersInput = {
    * @description Valid start date
    * @type string, date-time
    */
-  validStartDate: string | null
+  startDate: string
   /**
    * @description Valid end date
    * @type string, date-time
    */
-  validEndDate: string | null
+  endDate: string
   /**
    * @description Price adjustment type
    */
@@ -90,11 +95,6 @@ export type AvailAndPricingOffersInput = {
    * @type number
    */
   priceAdjustmentValue: number
-  /**
-   * @description Available week days
-   * @type array
-   */
-  availableWeekDays: number[]
   /**
    * @description Whether the offer is valid for packages
    * @type boolean
@@ -109,7 +109,7 @@ export type AvailAndPricingOffersInput = {
    * @description Available housing unit types
    * @type array
    */
-  availableHousingUnitTypes: {
+  validHousingUnitTypes: {
     /**
      * @type string | undefined
      */

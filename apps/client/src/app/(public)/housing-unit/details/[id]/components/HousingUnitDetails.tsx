@@ -17,6 +17,7 @@ import { useCalendarPrices } from '@/common/hooks/useCalendarPrices'
 import { ImageGallery } from '@/components/organisms/ImageGallery'
 
 import { SearchAvailability } from './SearchAvailability'
+import { DynamicIcon, IconName } from 'lucide-react/dynamic'
 
 export function HousingUnitDetails() {
     const { id } = useParams()
@@ -162,22 +163,15 @@ export function HousingUnitDetails() {
                                                 >
                                                     <div className="w-12 h-12 flex items-center justify-center">
                                                         {facility.facility
-                                                            .icon ? (
-                                                            <Image
-                                                                src={
+                                                            .icon && (
+                                                            <DynamicIcon
+                                                                name={
                                                                     facility
                                                                         .facility
-                                                                        .icon
-                                                                }
-                                                                alt={
-                                                                    facility
-                                                                        .facility
-                                                                        .name
+                                                                        .icon as IconName
                                                                 }
                                                                 className="w-8 h-8"
                                                             />
-                                                        ) : (
-                                                            <Gift className="w-8 h-8" />
                                                         )}
                                                     </div>
                                                     <span className="text-sm text-grey-primary">

@@ -131,7 +131,7 @@ export const BusinessDescriptionForm = () => {
                         )}
                         initialItems={values.medias.map((item) => item.media)}
                         onItemsChange={handleMediaChange}
-                        maxItems={2}
+                        maxItems={1}
                         minItems={1}
                     />
                 </FormSection>

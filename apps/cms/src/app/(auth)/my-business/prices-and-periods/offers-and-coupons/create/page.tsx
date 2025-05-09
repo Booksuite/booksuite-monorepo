@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils/errorHandling'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { OffersAndCouponsForm } from '../components/OffersAndCouponsForm'
@@ -37,8 +38,8 @@ export default function CreateOffer() {
             })
 
             back()
-        } catch {
-            enqueueSnackbar(`Erro ao criar oferta`, {
+        } catch (error) {
+            enqueueSnackbar(`Erro ao criar oferta ${getErrorMessage(error)}`, {
                 variant: 'error',
                 anchorOrigin: {
                     vertical: 'top',

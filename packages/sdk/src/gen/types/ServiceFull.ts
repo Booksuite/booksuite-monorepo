@@ -28,7 +28,7 @@ export type ServiceFull = {
   /**
    * @type number
    */
-  minDaily: number
+  minStay: number
   /**
    * @type number
    */

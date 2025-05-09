@@ -1,4 +1,4 @@
-export type AgeGroupDTOChargeType = 'DAILY_PER_CHILDREN' | 'DAILY_PERCENTAGE_PER_CHILDREN' | 'FREE'
+import type { AgeGroupChargeType } from './AgeGroupChargeType.ts'
 
 export type AgeGroupInput = {
   /**
@@ -13,10 +13,7 @@ export type AgeGroupInput = {
    * @type number
    */
   finalAge: number
-  /**
-   * @type string
-   */
-  chargeType: AgeGroupDTOChargeType
+  chargeType: AgeGroupChargeType
   /**
    * @type number | undefined
    */

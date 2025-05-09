@@ -38,10 +38,17 @@ export default function AgePolicy() {
 
     async function handleSubmit(formData: AgePolicyFormData) {
         try {
+            const normalizedFormData = {
+                ...formData,
+                ageGroups: formData.ageGroups.map((group) => ({
+                    ...group,
+                    value: Number(group.value),
+                })),
+            }
+
             await updateCompanyAgePolicy({
-                id: formData.id,
-                companyId: companyId,
-                data: formData,
+                companyId,
+                data: normalizedFormData,
             })
 
             await queryClient.invalidateQueries({ queryKey })
@@ -54,7 +61,6 @@ export default function AgePolicy() {
                 },
                 autoHideDuration: 3000,
             })
-            back()
         } catch {
             enqueueSnackbar(`Erro ao modificar políticas`, {
                 variant: 'error',
