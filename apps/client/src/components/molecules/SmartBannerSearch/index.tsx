@@ -1,6 +1,7 @@
 import { Search } from 'lucide-react'
-
+import { useState } from 'react'
 import { Button } from '@/components/atoms/Button'
+import { SmartSearch } from '@/components/templates/SmartSearch'
 
 export interface SearchBannerProps {
     className?: string
@@ -11,6 +12,11 @@ export function SmartBannerSearch({
     className,
     showBookButton = true,
 }: SearchBannerProps) {
+    const [openSmartSearch, setOpenSmartSearch] = useState(false)
+
+    const openSearch = () => setOpenSmartSearch(true)
+    const closeSearch = () => setOpenSmartSearch(false)
+
     return (
         <div
             className={`w-full max-w-4xl bg-white rounded-xl shadow-lg p-4 md:p-6 ${className}`}
@@ -29,6 +35,7 @@ export function SmartBannerSearch({
                     <Button
                         variant="default"
                         className="flex-1 md:flex-none bg-primary-500 hover:bg-primary-700 text-white px-6 py-3 min-w-[120px]"
+                        onClick={openSearch}
                     >
                         <Search className="mr-2 h-5 w-5" />
                         Pesquisar
@@ -43,6 +50,12 @@ export function SmartBannerSearch({
                     )}
                 </div>
             </div>
+
+            {/* Passando as props para o SmartSearch */}
+            <SmartSearch
+                openSmartSearch={openSmartSearch}
+                closeSmartSearch={closeSearch}
+            />
         </div>
     )
 }
