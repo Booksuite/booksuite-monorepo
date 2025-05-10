@@ -15,6 +15,7 @@ import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { ReservationFormData, useCompanyServices } from '../utils/config'
+import { useHousingUnitPricing } from '../utils/housingUnitPricing'
 
 import { HousingUnitModal } from './HousingUnitModal'
 import { RateOptionsSelector } from './RateOptionsSelector'
@@ -66,6 +67,15 @@ export const NewReservationForm: React.FC = () => {
 
     const selectedHousingUnitType = housingUnitTypes?.items.find((type) =>
         type.housingUnits.some((unit) => unit.id === values.housingUnitId),
+    )
+
+    const { data: calendarData } = useHousingUnitPricing(
+        companyId,
+        selectedHousingUnitType?.id,
+        values.startDate,
+        values.endDate,
+        values.adults || 0,
+        values.ageGroups || [],
     )
 
     const openHousingUnitSelector = () => {
@@ -120,6 +130,23 @@ export const NewReservationForm: React.FC = () => {
             })),
         )
     }, [agePolicy, services?.items, setFieldValue, values])
+
+    useEffect(() => {
+        if (calendarData && selectedHousingUnitType) {
+            const totalPrice = Object.values(calendarData.calendar).reduce(
+                (total, dayData) => {
+                    if (dayData.availability.available) {
+                        return total + dayData.finalPrice
+                    }
+                    return total
+                },
+                0,
+            )
+
+            setFieldValue('finalPrice', totalPrice)
+            setFieldValue('summary.dailyTotal', totalPrice)
+        }
+    }, [calendarData, selectedHousingUnitType, setFieldValue])
 
     return (
         <FormContainer>

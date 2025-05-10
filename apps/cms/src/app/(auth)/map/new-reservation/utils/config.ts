@@ -58,7 +58,6 @@ export type ReservationFormData = ReservationCreateInput & {
             nights: number
             children: number
         }
-
         dailyTotal: number
         additionalTotal: number
         discounts: number
@@ -151,9 +150,6 @@ export const reservationFormSchema = yup.object({
     housingUnitId: yup.string().required('Unidade habitacional é obrigatória'),
     services: yup.array().min(0),
     guestUser: yup.object().nullable(),
-    sellerUser: yup
-        .object()
-
-        .nullable(),
+    sellerUser: yup.object().nullable(),
     reservationOptions: yup.array().min(0),
 })

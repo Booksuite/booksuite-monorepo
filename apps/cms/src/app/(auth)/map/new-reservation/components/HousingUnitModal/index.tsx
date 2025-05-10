@@ -63,6 +63,7 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                     start: dayjs(startDate).format('YYYY-MM-DD'),
                     end: dayjs(endDate).format('YYYY-MM-DD'),
                 },
+                adults,
             },
         },
         {
@@ -231,9 +232,10 @@ export const HousingUnitModal: React.FC<HousingUnitModalProps> = ({
                             {housingUnitTypesAvailAndPricing.map((type) => {
                                 const isDisabled =
                                     childrens >
-                                        type.housingUnitType?.maxChildren ||
+                                        (type.housingUnitType?.maxChildren ??
+                                            0) ||
                                     adults + childrens >
-                                        type.housingUnitType?.maxGuests
+                                        (type.housingUnitType?.maxGuests ?? 0)
 
                                 return type.housingUnits.map((unit) => (
                                     <Box
