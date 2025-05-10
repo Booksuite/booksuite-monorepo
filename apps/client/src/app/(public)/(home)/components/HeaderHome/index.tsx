@@ -49,7 +49,7 @@ export const HeaderHome: React.FC = () => {
     })
 
     return (
-        <div className="relative -mt-24 -z-10 min-h-screen flex flex-col">
+        <div className="relative -mt-28 lg:-mt-24 -z-10 min-h-screen flex flex-col">
             <div className="relative w-full h-screen">
                 <div className="absolute inset-0 bg-grey-primary/50 z-10" />
                 <Image

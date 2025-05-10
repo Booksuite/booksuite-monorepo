@@ -63,13 +63,13 @@ export default function BookingPage() {
 
     const basePrice = housingUnit?.weekdaysPrice ?? 0
     const weekendPrice = housingUnit?.weekendPrice ?? basePrice
-
     const weekendDays = hostingRules?.availableWeekend ?? [6, 0]
+    const mainImage = housingUnit?.medias?.[0]?.media.url
 
     return (
         <>
             <Container>
-                <div className="w-full  mx-auto">
+                <div className="w-full mx-auto">
                     <div className="flex items-start w-full mb-2">
                         <button
                             onClick={() => router.back()}
@@ -108,6 +108,7 @@ export default function BookingPage() {
                                     }
                                     prices={prices}
                                     weekendDays={weekendDays}
+                                    image={mainImage}
                                 />
                             </div>
                         </div>

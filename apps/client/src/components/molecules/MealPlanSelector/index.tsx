@@ -1,5 +1,3 @@
-import { Check } from 'lucide-react'
-
 export interface MealPlan {
     id: string
     title: string
@@ -67,7 +65,7 @@ export const MealPlanSelector: React.FC<MealPlanSelectorProps> = ({
                         </span>
                         {isSelected(plan) && (
                             <div className="w-6 h-6 rounded-full bg-primary-500 flex items-center justify-center">
-                                <Check className="w-4 h-4 text-white" />
+                                <span className="bg-white rounded-full w-2.5 h-2.5"></span>
                             </div>
                         )}
                     </div>

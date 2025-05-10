@@ -48,7 +48,7 @@ export const HousingUnitType: React.FC = () => {
                         <span>Escolha uma de nossas opções</span>
                     </div>
                 </div>
-                <div className="grid grid-cols-3 gap-8 w-full">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
                     {housingUnitTypes?.items?.map(
                         (unitType: HousingUnitTypeFull) => (
                             <HousingUnitTypeCard

@@ -210,7 +210,7 @@ export const Footer: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="mt-12 pt-8 border-t-2 flex justify-between items-center gap-4 border-white text-center text-sm">
+                <div className="mt-12 pt-8 border-t-2 flex justify-between sm:flex-row flex-col items-center gap-4 border-white text-center text-sm">
                     <p>
                         © {new Date().getFullYear()} {company.name}®. Todos os
                         direitos reservados.
