@@ -1,5 +1,5 @@
 import type { AvailAndPricingAgeGroupSearchInput } from './AvailAndPricingAgeGroupSearchInput.ts'
-import type { AvailAndPricingServiceInput } from './AvailAndPricingServiceInput.ts'
+import type { AvailAndPricingSearchServiceInput } from './AvailAndPricingSearchServiceInput.ts'
 import type { DateRangeInput } from './DateRangeInput.ts'
 
 export type AvailAndPricingSearchInput = {
@@ -21,5 +21,10 @@ export type AvailAndPricingSearchInput = {
    * @description Services
    * @type array | undefined
    */
-  services?: AvailAndPricingServiceInput[]
+  services?: AvailAndPricingSearchServiceInput[]
+  /**
+   * @description Rate option ID
+   * @type string | undefined
+   */
+  rateOptionId?: string
 }

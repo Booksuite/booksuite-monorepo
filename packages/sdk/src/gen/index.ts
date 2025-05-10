@@ -109,14 +109,16 @@ export type {
 export type { AvailabilityInput } from './types/AvailabilityInput.ts'
 export type { AvailAndPricingAgeGroupSearchInput } from './types/AvailAndPricingAgeGroupSearchInput.ts'
 export type { AvailAndPricingOffersInput } from './types/AvailAndPricingOffersInput.ts'
+export type { AvailAndPricingRateOptionInput } from './types/AvailAndPricingRateOptionInput.ts'
 export type {
   AvailAndPricingReservationDTOStatus,
   AvailAndPricingReservationDTOSaleChannel,
   AvailAndPricingReservationInput,
 } from './types/AvailAndPricingReservationInput.ts'
 export type { AvailAndPricingSearchInput } from './types/AvailAndPricingSearchInput.ts'
+export type { AvailAndPricingSearchServiceInput } from './types/AvailAndPricingSearchServiceInput.ts'
 export type { AvailAndPricingSeasonRulesInput } from './types/AvailAndPricingSeasonRulesInput.ts'
-export type { AvailAndPricingServiceInput } from './types/AvailAndPricingServiceInput.ts'
+export type { AvailAndPricingSpecialDateIncludedServiceInput } from './types/AvailAndPricingSpecialDateIncludedServiceInput.ts'
 export type { AvailAndPricingSpecialDatesInput } from './types/AvailAndPricingSpecialDatesInput.ts'
 export type { Banner } from './types/Banner.ts'
 export type { BannerAction } from './types/BannerAction.ts'
@@ -158,7 +160,6 @@ export type { BannerUpdateDTOPosition, BannerUpdateDTOAction, BannerUpdateInput 
 export type { BillingType } from './types/BillingType.ts'
 export type { CalculatePriceBody } from './types/CalculatePriceBody.ts'
 export type { CalendarBodyInput } from './types/CalendarBodyInput.ts'
-export type { CalendarDay } from './types/CalendarDay.ts'
 export type {
   DeleteCompanyCancellationPolicyPathParams,
   DeleteCompanyCancellationPolicy200,
@@ -407,6 +408,7 @@ export type { PaymentMethod } from './types/PaymentMethod.ts'
 export type { PenaltyRangeResponseDTOPenaltyBy, PenaltyRange } from './types/PenaltyRange.ts'
 export type { PenaltyRangeDTOPenaltyBy, PenaltyRangeInput } from './types/PenaltyRangeInput.ts'
 export type { PriceVariationType } from './types/PriceVariationType.ts'
+export type { PricingSummaryInput } from './types/PricingSummaryInput.ts'
 export type { RateOption } from './types/RateOption.ts'
 export type { RateOptionAgeGroup } from './types/RateOptionAgeGroup.ts'
 export type { RateOptionAgeGroupInput } from './types/RateOptionAgeGroupInput.ts'

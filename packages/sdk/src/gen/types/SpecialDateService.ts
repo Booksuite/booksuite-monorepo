@@ -6,6 +6,10 @@ export type SpecialDateService = {
    */
   id: string
   /**
+   * @type string
+   */
+  serviceId: string
+  /**
    * @type object
    */
   service: Service
