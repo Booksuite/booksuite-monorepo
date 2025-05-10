@@ -1,7 +1,7 @@
-import { AgePolicyFull, AgePolicyInput } from '@booksuite/sdk'
+import { AgePolicyFull } from '@booksuite/sdk'
 import * as yup from 'yup'
 
-export type AgePolicyFormData = AgePolicyInput
+export type AgePolicyFormData = AgePolicyFull
 
 export const createAgePolicyInitialValues = (
     data?: Partial<AgePolicyFull>,

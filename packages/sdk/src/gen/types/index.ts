@@ -41,14 +41,16 @@ export type {
 export type { AvailabilityInput } from './AvailabilityInput.ts'
 export type { AvailAndPricingAgeGroupSearchInput } from './AvailAndPricingAgeGroupSearchInput.ts'
 export type { AvailAndPricingOffersInput } from './AvailAndPricingOffersInput.ts'
+export type { AvailAndPricingRateOptionInput } from './AvailAndPricingRateOptionInput.ts'
 export type {
   AvailAndPricingReservationDTOStatus,
   AvailAndPricingReservationDTOSaleChannel,
   AvailAndPricingReservationInput,
 } from './AvailAndPricingReservationInput.ts'
 export type { AvailAndPricingSearchInput } from './AvailAndPricingSearchInput.ts'
+export type { AvailAndPricingSearchServiceInput } from './AvailAndPricingSearchServiceInput.ts'
 export type { AvailAndPricingSeasonRulesInput } from './AvailAndPricingSeasonRulesInput.ts'
-export type { AvailAndPricingServiceInput } from './AvailAndPricingServiceInput.ts'
+export type { AvailAndPricingSpecialDateIncludedServiceInput } from './AvailAndPricingSpecialDateIncludedServiceInput.ts'
 export type { AvailAndPricingSpecialDatesInput } from './AvailAndPricingSpecialDatesInput.ts'
 export type { Banner } from './Banner.ts'
 export type { BannerAction } from './BannerAction.ts'
@@ -90,7 +92,6 @@ export type { BannerUpdateDTOPosition, BannerUpdateDTOAction, BannerUpdateInput 
 export type { BillingType } from './BillingType.ts'
 export type { CalculatePriceBody } from './CalculatePriceBody.ts'
 export type { CalendarBodyInput } from './CalendarBodyInput.ts'
-export type { CalendarDay } from './CalendarDay.ts'
 export type {
   DeleteCompanyCancellationPolicyPathParams,
   DeleteCompanyCancellationPolicy200,
@@ -324,6 +325,7 @@ export type { PaymentMethod } from './PaymentMethod.ts'
 export type { PenaltyRangeResponseDTOPenaltyBy, PenaltyRange } from './PenaltyRange.ts'
 export type { PenaltyRangeDTOPenaltyBy, PenaltyRangeInput } from './PenaltyRangeInput.ts'
 export type { PriceVariationType } from './PriceVariationType.ts'
+export type { PricingSummaryInput } from './PricingSummaryInput.ts'
 export type { RateOption } from './RateOption.ts'
 export type { RateOptionAgeGroup } from './RateOptionAgeGroup.ts'
 export type { RateOptionAgeGroupInput } from './RateOptionAgeGroupInput.ts'

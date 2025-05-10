@@ -116,6 +116,11 @@ export type AvailAndPricingOffersInput = {
     housingUnitTypeId?: string
   }[]
   /**
+   * @description Available services
+   * @type array
+   */
+  validServices: string[]
+  /**
    * @description Whether the offer is published
    * @type boolean
    */
