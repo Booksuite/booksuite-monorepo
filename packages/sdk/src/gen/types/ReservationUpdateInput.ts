@@ -16,6 +16,31 @@ export type ReservationUpdateDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAPP'
 
 export type ReservationUpdateInput = {
   /**
+   * @description Base price for the day
+   * @type number | undefined
+   */
+  basePrice?: number
+  /**
+   * @description Services price for the day
+   * @type number | undefined
+   */
+  servicesPrice?: number
+  /**
+   * @description Children price for the day
+   * @type number | undefined
+   */
+  childrenPrice?: number
+  /**
+   * @description Rate option price for the day
+   * @type number | undefined
+   */
+  rateOptionPrice?: number
+  /**
+   * @description Final price for the day
+   * @type number | undefined
+   */
+  finalPrice?: number
+  /**
    * @type string | undefined
    */
   status?: ReservationUpdateDTOStatus
@@ -42,10 +67,6 @@ export type ReservationUpdateInput = {
   /**
    * @type number | undefined
    */
-  totalDays?: number
-  /**
-   * @type number | undefined
-   */
   adults?: number
   /**
    * @type array | undefined
@@ -60,9 +81,9 @@ export type ReservationUpdateInput = {
    */
   housingUnitId?: string
   /**
-   * @type number | undefined
+   * @type string | undefined
    */
-  finalPrice?: number
+  housingUnitTypeId?: string
   /**
    * @type array | undefined
    */

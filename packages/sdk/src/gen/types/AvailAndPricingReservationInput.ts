@@ -1,4 +1,5 @@
 import type { HousingUnit } from './HousingUnit.ts'
+import type { HousingUnitType } from './HousingUnitType.ts'
 import type { User } from './User.ts'
 
 export type AvailAndPricingReservationDTOStatus =
@@ -15,6 +16,31 @@ export type AvailAndPricingReservationDTOStatus =
 export type AvailAndPricingReservationDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAPP' | 'INSTAGRAM' | 'TIKTOK' | 'EMAIL' | 'BOOKSUITE' | 'OTHER'
 
 export type AvailAndPricingReservationInput = {
+  /**
+   * @description Base price for the day
+   * @type number
+   */
+  basePrice: number
+  /**
+   * @description Services price for the day
+   * @type number
+   */
+  servicesPrice: number
+  /**
+   * @description Children price for the day
+   * @type number
+   */
+  childrenPrice: number
+  /**
+   * @description Rate option price for the day
+   * @type number
+   */
+  rateOptionPrice: number
+  /**
+   * @description Final price for the day
+   * @type number
+   */
+  finalPrice: number
   /**
    * @type string
    */
@@ -35,14 +61,6 @@ export type AvailAndPricingReservationInput = {
    * @type string, date
    */
   endDate: string
-  /**
-   * @type number
-   */
-  totalDays: number | null
-  /**
-   * @type number
-   */
-  finalPrice: number
   /**
    * @type number
    */
@@ -82,6 +100,10 @@ export type AvailAndPricingReservationInput = {
   /**
    * @type string
    */
+  housingUnitTypeId: string | null
+  /**
+   * @type string
+   */
   rateOptionId: string | null
   /**
    * @type string, date-time
@@ -92,4 +114,5 @@ export type AvailAndPricingReservationInput = {
    * @type object
    */
   guestUser: User
+  housingUnitType: HousingUnitType | null
 }

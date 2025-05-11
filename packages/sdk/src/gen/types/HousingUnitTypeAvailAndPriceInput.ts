@@ -1,3 +1,4 @@
+import type { AvailAndPricingSummaryInput } from './AvailAndPricingSummaryInput.ts'
 import type { HousingUnit } from './HousingUnit.ts'
 
 export type HousingUnitTypeAvailAndPriceInput = {
@@ -21,6 +22,10 @@ export type HousingUnitTypeAvailAndPriceInput = {
    * @type boolean
    */
   published: boolean
+  /**
+   * @type string
+   */
+  companyId: string
   /**
    * @type string
    */
@@ -77,4 +82,8 @@ export type HousingUnitTypeAvailAndPriceInput = {
    * @type array
    */
   housingUnits: HousingUnit[]
+  /**
+   * @type object
+   */
+  summary: AvailAndPricingSummaryInput
 }

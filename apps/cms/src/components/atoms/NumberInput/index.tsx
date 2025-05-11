@@ -5,14 +5,13 @@ import {
     FormControl,
     FormHelperText,
     FormLabel,
-    IconButton,
-    InputBase,
     InputBaseProps,
     Stack,
     useTheme,
 } from '@mui/material'
-import { MinusCircle, PlusCircle } from 'lucide-react'
 import { useRef } from 'react'
+
+import { NumberInputBase } from './NumberInputBase'
 
 export type NumberInputProps = InputBaseProps & {
     label?: string
@@ -61,11 +60,23 @@ export const NumberInput: React.FC<NumberInputProps> = ({
                     {label ?? ' '}
                 </FormLabel>
 
-                <Stack direction="row" alignItems="center" gap={1}>
+                <NumberInputBase
+                    ref={inputRef}
+                    value={valueNumber}
+                    onChange={props.onChange}
+                    min={min}
+                    max={max}
+                    color={props.color}
+                />
+
+                {/* <Stack direction="row" alignItems="center" gap={1}>
                     <IconButton
                         color={props.color || 'primary'}
                         tabIndex={-1}
-                        disabled={min !== undefined && valueNumber === min}
+                        disabled={
+                            props.disabled ||
+                            (min !== undefined && valueNumber === min)
+                        }
                         onClick={() => {
                             if (min !== undefined && valueNumber === min) return
 
@@ -110,7 +121,10 @@ export const NumberInput: React.FC<NumberInputProps> = ({
                     <IconButton
                         color={props.color || 'primary'}
                         tabIndex={-1}
-                        disabled={max !== undefined && valueNumber === max}
+                        disabled={
+                            props.disabled ||
+                            (max !== undefined && valueNumber === max)
+                        }
                         onClick={() => {
                             if (max !== undefined && valueNumber === max) return
 
@@ -123,7 +137,7 @@ export const NumberInput: React.FC<NumberInputProps> = ({
                     >
                         <PlusCircle />
                     </IconButton>
-                </Stack>
+                </Stack> */}
             </Stack>
             <FormHelperText error={props.error}>{helperText}</FormHelperText>
         </FormControl>

@@ -112,9 +112,16 @@ export default defineConfig(async () => {
                 },
                 query: {
                     methods: ['get'],
-                    forceInclude: (operation) =>
-                        operation.path.includes('/search') ||
-                        operation.path.includes('/calendar'),
+                    forceInclude: (operation) => {
+                        const validPaths = [
+                            '/search',
+                            '/calendar',
+                            '/calculatePrice',
+                        ]
+                        return validPaths.some((path) =>
+                            operation.path.includes(path),
+                        )
+                    },
                     importPath: '@tanstack/react-query',
                 },
                 mutation: {

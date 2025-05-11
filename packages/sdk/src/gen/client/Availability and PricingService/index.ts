@@ -1,4 +1,5 @@
 export { availabilityAndPricingService } from './availabilityAndPricingService.ts'
 export { getCalculatePriceUrl, calculatePrice } from './calculatePrice.ts'
+export { getCalculatePriceFromHousingUnitTypeIdUrl, calculatePriceFromHousingUnitTypeId } from './calculatePriceFromHousingUnitTypeId.ts'
 export { getGetCalendarUrl, getCalendar } from './getCalendar.ts'
 export { getGetCalendarFromHousingUnitTypeIdUrl, getCalendarFromHousingUnitTypeId } from './getCalendarFromHousingUnitTypeId.ts'

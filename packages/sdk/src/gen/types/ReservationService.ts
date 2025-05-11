@@ -1,4 +1,4 @@
-import type { Service } from './Service.ts'
+import type { OmitTypeClass } from './OmitTypeClass.ts'
 
 export type ReservationService = {
   /**
@@ -16,5 +16,5 @@ export type ReservationService = {
   /**
    * @type object
    */
-  service: Service
+  service: OmitTypeClass
 }

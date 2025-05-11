@@ -3,6 +3,10 @@ export { getGetCompanyAgePolicyUrl, getCompanyAgePolicy } from './AgePolicyServi
 export { getUpsertCompanyAgePolicyUrl, upsertCompanyAgePolicy } from './AgePolicyService/upsertCompanyAgePolicy.ts'
 export { availabilityAndPricingService } from './Availability and PricingService/availabilityAndPricingService.ts'
 export { getCalculatePriceUrl, calculatePrice } from './Availability and PricingService/calculatePrice.ts'
+export {
+  getCalculatePriceFromHousingUnitTypeIdUrl,
+  calculatePriceFromHousingUnitTypeId,
+} from './Availability and PricingService/calculatePriceFromHousingUnitTypeId.ts'
 export { getGetCalendarUrl, getCalendar } from './Availability and PricingService/getCalendar.ts'
 export { getGetCalendarFromHousingUnitTypeIdUrl, getCalendarFromHousingUnitTypeId } from './Availability and PricingService/getCalendarFromHousingUnitTypeId.ts'
 export { bannerService } from './BannerService/bannerService.ts'

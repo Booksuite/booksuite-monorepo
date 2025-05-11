@@ -1,22 +1,21 @@
 'use client'
 
 import { useCreateReservation } from '@booksuite/sdk'
-import { MenuItem, Stack, TextField } from '@mui/material'
+import { Grid, MenuItem, TextField } from '@mui/material'
 import { Formik } from 'formik'
-import moment from 'moment'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
-import { omit } from 'radash'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
-import { NewReservationForm } from './components/NewReservationForm'
+import { ReservationForm } from './components/ReservationForm'
 import ReservationSummary from './components/ReservationSummary'
 import {
     createReservationFormInitialValues,
+    normalizeReservationFormData,
     ReservationFormData,
     reservationFormSchema,
 } from './utils/config'
@@ -32,16 +31,7 @@ export default function NewReservation() {
         try {
             await createReservation({
                 companyId,
-                data: {
-                    ...omit(formData, ['summary', 'sellerUserId']),
-                    startDate: moment(formData.startDate).toISOString(),
-                    endDate: moment(formData.endDate).toISOString(),
-                    sellerUserId: formData.sellerUserId,
-                    finalPrice:
-                        formData.summary.dailyTotal +
-                        formData.summary.additionalTotal +
-                        formData.summary.rateOption.price,
-                },
+                data: normalizeReservationFormData(formData),
             })
 
             enqueueSnackbar('Reserva criada com sucesso', {
@@ -74,12 +64,14 @@ export default function NewReservation() {
 
             <Formik<ReservationFormData>
                 initialValues={createReservationFormInitialValues()}
+                validateOnMount={false}
+                validateOnChange={false}
                 validationSchema={reservationFormSchema}
                 onSubmit={handleSubmit}
             >
                 <FormikController onCancel={() => back()}>
-                    <Stack display="flex" flexDirection="row" gap={7}>
-                        <Stack width="100%">
+                    <Grid container spacing={6}>
+                        <Grid size={8}>
                             <TextField
                                 select
                                 label="Status de Reserva"
@@ -95,11 +87,13 @@ export default function NewReservation() {
                                 ))}
                             </TextField>
 
-                            <NewReservationForm />
-                        </Stack>
+                            <ReservationForm />
+                        </Grid>
 
-                        <ReservationSummary />
-                    </Stack>
+                        <Grid size={4}>
+                            <ReservationSummary />
+                        </Grid>
+                    </Grid>
                 </FormikController>
             </Formik>
         </>
