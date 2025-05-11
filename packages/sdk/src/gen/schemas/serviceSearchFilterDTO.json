@@ -1,1 +1,1 @@
-{"type":"object","properties":{"published":{"type":"boolean","example":true}},"x-readme-ref-name":"ServiceSearchFilterDTO"}
+{"type":"object","properties":{"published":{"type":"boolean","example":true},"housingUnitTypeIds":{"example":["f47ac10b-58cc-4372-a567-0e02b2c3d479"],"type":"array","items":{"type":"string"}}},"x-readme-ref-name":"ServiceSearchFilterDTO"}

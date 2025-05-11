@@ -22,6 +22,10 @@ export type HousingUnitType = {
   /**
    * @type string
    */
+  companyId: string
+  /**
+   * @type string
+   */
   description: string | null
   /**
    * @type number

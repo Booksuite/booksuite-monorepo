@@ -1,8 +1,8 @@
 export type AvailAndPricingAgeGroupSearchInput = {
   /**
-   * @type number
+   * @type string
    */
-  ageGroupId: number
+  ageGroupId: string
   /**
    * @type number
    */

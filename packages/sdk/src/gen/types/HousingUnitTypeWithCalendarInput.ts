@@ -1,5 +1,5 @@
-import type { CalendarDay } from './CalendarDay.ts'
 import type { HousingUnit } from './HousingUnit.ts'
+import type { PricingSummaryInput } from './PricingSummaryInput.ts'
 
 export type HousingUnitTypeWithCalendarInput = {
   /**
@@ -22,6 +22,10 @@ export type HousingUnitTypeWithCalendarInput = {
    * @type boolean
    */
   published: boolean
+  /**
+   * @type string
+   */
+  companyId: string
   /**
    * @type string
    */
@@ -83,6 +87,6 @@ export type HousingUnitTypeWithCalendarInput = {
    * @type object
    */
   calendar: {
-    [key: string]: CalendarDay
+    [key: string]: PricingSummaryInput
   }
 }

@@ -17,6 +17,31 @@ export type ReservationCreateDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAPP'
 
 export type ReservationCreateInput = {
   /**
+   * @description Base price for the day
+   * @type number
+   */
+  basePrice: number
+  /**
+   * @description Services price for the day
+   * @type number
+   */
+  servicesPrice: number
+  /**
+   * @description Children price for the day
+   * @type number
+   */
+  childrenPrice: number
+  /**
+   * @description Rate option price for the day
+   * @type number
+   */
+  rateOptionPrice: number
+  /**
+   * @description Final price for the day
+   * @type number
+   */
+  finalPrice: number
+  /**
    * @type string
    */
   status: ReservationCreateDTOStatus
@@ -43,14 +68,6 @@ export type ReservationCreateInput = {
   /**
    * @type number
    */
-  totalDays: number
-  /**
-   * @type number
-   */
-  finalPrice: number
-  /**
-   * @type number
-   */
   adults: number
   /**
    * @type array
@@ -64,6 +81,10 @@ export type ReservationCreateInput = {
    * @type string
    */
   housingUnitId: string
+  /**
+   * @type string
+   */
+  housingUnitTypeId: string
   /**
    * @type array
    */

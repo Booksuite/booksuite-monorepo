@@ -25,6 +25,13 @@ export type {
   CalculatePriceMutation,
 } from './Availability and PricingController/CalculatePrice.ts'
 export type {
+  CalculatePriceFromHousingUnitTypeIdPathParams,
+  CalculatePriceFromHousingUnitTypeId200,
+  CalculatePriceFromHousingUnitTypeIdMutationRequest,
+  CalculatePriceFromHousingUnitTypeIdMutationResponse,
+  CalculatePriceFromHousingUnitTypeIdMutation,
+} from './Availability and PricingController/CalculatePriceFromHousingUnitTypeId.ts'
+export type {
   GetCalendarPathParams,
   GetCalendar200,
   GetCalendarMutationRequest,
@@ -41,15 +48,18 @@ export type {
 export type { AvailabilityInput } from './AvailabilityInput.ts'
 export type { AvailAndPricingAgeGroupSearchInput } from './AvailAndPricingAgeGroupSearchInput.ts'
 export type { AvailAndPricingOffersInput } from './AvailAndPricingOffersInput.ts'
+export type { AvailAndPricingRateOptionInput } from './AvailAndPricingRateOptionInput.ts'
 export type {
   AvailAndPricingReservationDTOStatus,
   AvailAndPricingReservationDTOSaleChannel,
   AvailAndPricingReservationInput,
 } from './AvailAndPricingReservationInput.ts'
 export type { AvailAndPricingSearchInput } from './AvailAndPricingSearchInput.ts'
+export type { AvailAndPricingSearchServiceInput } from './AvailAndPricingSearchServiceInput.ts'
 export type { AvailAndPricingSeasonRulesInput } from './AvailAndPricingSeasonRulesInput.ts'
-export type { AvailAndPricingServiceInput } from './AvailAndPricingServiceInput.ts'
+export type { AvailAndPricingSpecialDateIncludedServiceInput } from './AvailAndPricingSpecialDateIncludedServiceInput.ts'
 export type { AvailAndPricingSpecialDatesInput } from './AvailAndPricingSpecialDatesInput.ts'
+export type { AvailAndPricingSummaryInput } from './AvailAndPricingSummaryInput.ts'
 export type { Banner } from './Banner.ts'
 export type { BannerAction } from './BannerAction.ts'
 export type {
@@ -90,7 +100,6 @@ export type { BannerUpdateDTOPosition, BannerUpdateDTOAction, BannerUpdateInput 
 export type { BillingType } from './BillingType.ts'
 export type { CalculatePriceBody } from './CalculatePriceBody.ts'
 export type { CalendarBodyInput } from './CalendarBodyInput.ts'
-export type { CalendarDay } from './CalendarDay.ts'
 export type {
   DeleteCompanyCancellationPolicyPathParams,
   DeleteCompanyCancellationPolicy200,
@@ -318,12 +327,14 @@ export type { OfferSearchBodyInput } from './OfferSearchBodyInput.ts'
 export type { OfferSearchFilterInput } from './OfferSearchFilterInput.ts'
 export type { OfferService } from './OfferService.ts'
 export type { OfferType } from './OfferType.ts'
+export type { OmitTypeClass } from './OmitTypeClass.ts'
 export type { OrderDirection } from './OrderDirection.ts'
 export type { PaginationQueryInput } from './PaginationQueryInput.ts'
 export type { PaymentMethod } from './PaymentMethod.ts'
 export type { PenaltyRangeResponseDTOPenaltyBy, PenaltyRange } from './PenaltyRange.ts'
 export type { PenaltyRangeDTOPenaltyBy, PenaltyRangeInput } from './PenaltyRangeInput.ts'
 export type { PriceVariationType } from './PriceVariationType.ts'
+export type { PricingSummaryInput } from './PricingSummaryInput.ts'
 export type { RateOption } from './RateOption.ts'
 export type { RateOptionAgeGroup } from './RateOptionAgeGroup.ts'
 export type { RateOptionAgeGroupInput } from './RateOptionAgeGroupInput.ts'

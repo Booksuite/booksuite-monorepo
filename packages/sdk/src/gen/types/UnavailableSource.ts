@@ -1,1 +1,1 @@
-export type UnavailableSource = 'HOSTING_RULES' | 'SEASON_RULES' | 'SPECIAL_DATES' | 'OFFERS' | 'RESERVATION'
+export type UnavailableSource = 'HOSTING_RULES' | 'SEASON_RULES' | 'SPECIAL_DATES' | 'OFFERS' | 'RESERVATION' | 'SERVICE'

@@ -28,6 +28,10 @@ export const transformFormDataForSubmit = (
     return {
         ...rest,
         medias: transformedMedias,
+        maxGuests: Number(formData.maxGuests),
+        maxChildren: Number(formData.maxChildren),
+        maxAdults: Number(formData.maxAdults),
+        minGuests: Number(formData.minGuests)
     }
 }
 

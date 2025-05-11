@@ -1,6 +1,5 @@
 import type { BillingType } from './BillingType.ts'
 import type { RateOptionAgeGroup } from './RateOptionAgeGroup.ts'
-import type { RateOptionHousingUnitTypeInput } from './RateOptionHousingUnitTypeInput.ts'
 
 export type RateOptionFull = {
   /**
@@ -32,10 +31,6 @@ export type RateOptionFull = {
    * @type array
    */
   includedItems: string[]
-  /**
-   * @type array
-   */
-  availableHousingUnitTypes: RateOptionHousingUnitTypeInput[]
   /**
    * @type array
    */

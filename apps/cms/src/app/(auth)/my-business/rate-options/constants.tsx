@@ -2,7 +2,7 @@ import { BillingType, RateOptionFull } from '@booksuite/sdk'
 import { Typography } from '@mui/material'
 import { MRT_ColumnDef } from 'material-react-table'
 
-import { BILLING_TYPE_RESERVATION_OPTION_MAPPING } from '@/common/constants/billingType'
+import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
 import { theme } from '@/common/theme'
 
 export const MAX_FEATURED_FACILITIES = 5
@@ -60,9 +60,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<RateOptionFull>[] = [
                     fontWeight: '400',
                 }}
             >
-                {BILLING_TYPE_RESERVATION_OPTION_MAPPING[
-                    row.original.billingType
-                ] || ''}
+                {BILLING_TYPE_MAPPING[row.original.billingType] || ''}
             </Typography>
         ),
     },

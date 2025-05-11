@@ -1,1 +1,1 @@
-{"type":"object","properties":{"ageGroupId":{"type":"number"},"quantity":{"type":"number"}},"required":["ageGroupId","quantity"],"x-readme-ref-name":"AvailAndPricingAgeGroupSearchDTO"}
+{"type":"object","properties":{"ageGroupId":{"type":"string"},"quantity":{"type":"number"}},"required":["ageGroupId","quantity"],"x-readme-ref-name":"AvailAndPricingAgeGroupSearchDTO"}

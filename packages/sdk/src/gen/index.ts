@@ -1,6 +1,7 @@
 export type { GetCompanyAgePolicyQueryKey } from './hooks/AgePolicyHooks/useGetCompanyAgePolicy.ts'
 export type { UpsertCompanyAgePolicyMutationKey } from './hooks/AgePolicyHooks/useUpsertCompanyAgePolicy.ts'
-export type { CalculatePriceMutationKey } from './hooks/Availability and PricingHooks/useCalculatePrice.ts'
+export type { CalculatePriceQueryKey } from './hooks/Availability and PricingHooks/useCalculatePrice.ts'
+export type { CalculatePriceFromHousingUnitTypeIdQueryKey } from './hooks/Availability and PricingHooks/useCalculatePriceFromHousingUnitTypeId.ts'
 export type { GetCalendarQueryKey } from './hooks/Availability and PricingHooks/useGetCalendar.ts'
 export type { GetCalendarFromHousingUnitTypeIdQueryKey } from './hooks/Availability and PricingHooks/useGetCalendarFromHousingUnitTypeId.ts'
 export type { CreateBannerMutationKey } from './hooks/BannerHooks/useCreateBanner.ts'
@@ -93,6 +94,13 @@ export type {
   CalculatePriceMutation,
 } from './types/Availability and PricingController/CalculatePrice.ts'
 export type {
+  CalculatePriceFromHousingUnitTypeIdPathParams,
+  CalculatePriceFromHousingUnitTypeId200,
+  CalculatePriceFromHousingUnitTypeIdMutationRequest,
+  CalculatePriceFromHousingUnitTypeIdMutationResponse,
+  CalculatePriceFromHousingUnitTypeIdMutation,
+} from './types/Availability and PricingController/CalculatePriceFromHousingUnitTypeId.ts'
+export type {
   GetCalendarPathParams,
   GetCalendar200,
   GetCalendarMutationRequest,
@@ -109,15 +117,18 @@ export type {
 export type { AvailabilityInput } from './types/AvailabilityInput.ts'
 export type { AvailAndPricingAgeGroupSearchInput } from './types/AvailAndPricingAgeGroupSearchInput.ts'
 export type { AvailAndPricingOffersInput } from './types/AvailAndPricingOffersInput.ts'
+export type { AvailAndPricingRateOptionInput } from './types/AvailAndPricingRateOptionInput.ts'
 export type {
   AvailAndPricingReservationDTOStatus,
   AvailAndPricingReservationDTOSaleChannel,
   AvailAndPricingReservationInput,
 } from './types/AvailAndPricingReservationInput.ts'
 export type { AvailAndPricingSearchInput } from './types/AvailAndPricingSearchInput.ts'
+export type { AvailAndPricingSearchServiceInput } from './types/AvailAndPricingSearchServiceInput.ts'
 export type { AvailAndPricingSeasonRulesInput } from './types/AvailAndPricingSeasonRulesInput.ts'
-export type { AvailAndPricingServiceInput } from './types/AvailAndPricingServiceInput.ts'
+export type { AvailAndPricingSpecialDateIncludedServiceInput } from './types/AvailAndPricingSpecialDateIncludedServiceInput.ts'
 export type { AvailAndPricingSpecialDatesInput } from './types/AvailAndPricingSpecialDatesInput.ts'
+export type { AvailAndPricingSummaryInput } from './types/AvailAndPricingSummaryInput.ts'
 export type { Banner } from './types/Banner.ts'
 export type { BannerAction } from './types/BannerAction.ts'
 export type {
@@ -158,7 +169,6 @@ export type { BannerUpdateDTOPosition, BannerUpdateDTOAction, BannerUpdateInput 
 export type { BillingType } from './types/BillingType.ts'
 export type { CalculatePriceBody } from './types/CalculatePriceBody.ts'
 export type { CalendarBodyInput } from './types/CalendarBodyInput.ts'
-export type { CalendarDay } from './types/CalendarDay.ts'
 export type {
   DeleteCompanyCancellationPolicyPathParams,
   DeleteCompanyCancellationPolicy200,
@@ -401,12 +411,14 @@ export type { OfferSearchBodyInput } from './types/OfferSearchBodyInput.ts'
 export type { OfferSearchFilterInput } from './types/OfferSearchFilterInput.ts'
 export type { OfferService } from './types/OfferService.ts'
 export type { OfferType } from './types/OfferType.ts'
+export type { OmitTypeClass } from './types/OmitTypeClass.ts'
 export type { OrderDirection } from './types/OrderDirection.ts'
 export type { PaginationQueryInput } from './types/PaginationQueryInput.ts'
 export type { PaymentMethod } from './types/PaymentMethod.ts'
 export type { PenaltyRangeResponseDTOPenaltyBy, PenaltyRange } from './types/PenaltyRange.ts'
 export type { PenaltyRangeDTOPenaltyBy, PenaltyRangeInput } from './types/PenaltyRangeInput.ts'
 export type { PriceVariationType } from './types/PriceVariationType.ts'
+export type { PricingSummaryInput } from './types/PricingSummaryInput.ts'
 export type { RateOption } from './types/RateOption.ts'
 export type { RateOptionAgeGroup } from './types/RateOptionAgeGroup.ts'
 export type { RateOptionAgeGroupInput } from './types/RateOptionAgeGroupInput.ts'
@@ -676,6 +688,10 @@ export { getGetCompanyAgePolicyUrl, getCompanyAgePolicy } from './client/AgePoli
 export { getUpsertCompanyAgePolicyUrl, upsertCompanyAgePolicy } from './client/AgePolicyService/upsertCompanyAgePolicy.ts'
 export { availabilityAndPricingService } from './client/Availability and PricingService/availabilityAndPricingService.ts'
 export { getCalculatePriceUrl, calculatePrice } from './client/Availability and PricingService/calculatePrice.ts'
+export {
+  getCalculatePriceFromHousingUnitTypeIdUrl,
+  calculatePriceFromHousingUnitTypeId,
+} from './client/Availability and PricingService/calculatePriceFromHousingUnitTypeId.ts'
 export { getGetCalendarUrl, getCalendar } from './client/Availability and PricingService/getCalendar.ts'
 export {
   getGetCalendarFromHousingUnitTypeIdUrl,
@@ -761,7 +777,12 @@ export { getUtilityLinksControllerUpdateUrl, utilityLinksControllerUpdate } from
 export { utilityLinksService } from './client/UtilityLinksService/utilityLinksService.ts'
 export { getCompanyAgePolicyQueryKey, getCompanyAgePolicyQueryOptions, useGetCompanyAgePolicy } from './hooks/AgePolicyHooks/useGetCompanyAgePolicy.ts'
 export { upsertCompanyAgePolicyMutationKey, useUpsertCompanyAgePolicy } from './hooks/AgePolicyHooks/useUpsertCompanyAgePolicy.ts'
-export { calculatePriceMutationKey, useCalculatePrice } from './hooks/Availability and PricingHooks/useCalculatePrice.ts'
+export { calculatePriceQueryKey, calculatePriceQueryOptions, useCalculatePrice } from './hooks/Availability and PricingHooks/useCalculatePrice.ts'
+export {
+  calculatePriceFromHousingUnitTypeIdQueryKey,
+  calculatePriceFromHousingUnitTypeIdQueryOptions,
+  useCalculatePriceFromHousingUnitTypeId,
+} from './hooks/Availability and PricingHooks/useCalculatePriceFromHousingUnitTypeId.ts'
 export { getCalendarQueryKey, getCalendarQueryOptions, useGetCalendar } from './hooks/Availability and PricingHooks/useGetCalendar.ts'
 export {
   getCalendarFromHousingUnitTypeIdQueryKey,

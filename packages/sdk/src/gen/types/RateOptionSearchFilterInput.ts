@@ -9,4 +9,8 @@ export type RateOptionSearchFilterInput = {
    * @type array | undefined
    */
   billingType?: BillingType[]
+  /**
+   * @type array | undefined
+   */
+  housingUnitTypeIds?: string[]
 }

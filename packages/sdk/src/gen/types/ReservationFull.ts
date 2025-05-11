@@ -1,5 +1,6 @@
 import type { HousingUnit } from './HousingUnit.ts'
-import type { RateOption } from './RateOption.ts'
+import type { HousingUnitType } from './HousingUnitType.ts'
+import type { RateOptionFull } from './RateOptionFull.ts'
 import type { ReservationAgeGroup } from './ReservationAgeGroup.ts'
 import type { ReservationService } from './ReservationService.ts'
 import type { User } from './User.ts'
@@ -18,6 +19,31 @@ export type ReservationResponseFullDTOStatus =
 export type ReservationResponseFullDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAPP' | 'INSTAGRAM' | 'TIKTOK' | 'EMAIL' | 'BOOKSUITE' | 'OTHER'
 
 export type ReservationFull = {
+  /**
+   * @description Base price for the day
+   * @type number
+   */
+  basePrice: number
+  /**
+   * @description Services price for the day
+   * @type number
+   */
+  servicesPrice: number
+  /**
+   * @description Children price for the day
+   * @type number
+   */
+  childrenPrice: number
+  /**
+   * @description Rate option price for the day
+   * @type number
+   */
+  rateOptionPrice: number
+  /**
+   * @description Final price for the day
+   * @type number
+   */
+  finalPrice: number
   /**
    * @type string
    */
@@ -38,14 +64,6 @@ export type ReservationFull = {
    * @type string, date
    */
   endDate: string
-  /**
-   * @type number
-   */
-  totalDays: number | null
-  /**
-   * @type number
-   */
-  finalPrice: number
   /**
    * @type number
    */
@@ -85,6 +103,10 @@ export type ReservationFull = {
   /**
    * @type string
    */
+  housingUnitTypeId: string | null
+  /**
+   * @type string
+   */
   rateOptionId: string | null
   /**
    * @type string, date-time
@@ -104,5 +126,6 @@ export type ReservationFull = {
    * @type array
    */
   ageGroups: ReservationAgeGroup[]
-  rateOption: RateOption | null
+  rateOption: RateOptionFull | null
+  housingUnitType: HousingUnitType | null
 }

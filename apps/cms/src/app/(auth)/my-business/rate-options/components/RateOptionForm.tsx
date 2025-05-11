@@ -20,7 +20,7 @@ import {
 import { FieldArray, useFormikContext } from 'formik'
 import { CirclePlus, Trash } from 'lucide-react'
 
-import { BILLING_TYPE_RESERVATION_OPTION_MAPPING } from '@/common/constants/billingType'
+import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
@@ -93,13 +93,13 @@ export const RateOptionForm: React.FC = () => {
                             fullWidth
                             {...getFieldProps('billingType')}
                         >
-                            {Object.entries(
-                                BILLING_TYPE_RESERVATION_OPTION_MAPPING,
-                            ).map(([key, value]) => (
-                                <MenuItem key={key} value={key}>
-                                    {value}
-                                </MenuItem>
-                            ))}
+                            {Object.entries(BILLING_TYPE_MAPPING).map(
+                                ([key, value]) => (
+                                    <MenuItem key={key} value={key}>
+                                        {value}
+                                    </MenuItem>
+                                ),
+                            )}
                         </TextField>
                     </FormControl>
                 </Grid>
