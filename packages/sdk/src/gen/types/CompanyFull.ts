@@ -126,10 +126,6 @@ export type CompanyFull = {
    */
   bannerDescription: string | null
   bannerImage: Media | null
-  /**
-   * @type array
-   */
-  companyMedias: CompanyMedia[] | null
   settings: CompanySettings | null
   /**
    * @type array
@@ -139,4 +135,8 @@ export type CompanyFull = {
    * @type array
    */
   facilities: CompanyFacility[]
+  /**
+   * @type array
+   */
+  companyMedias: CompanyMedia[]
 }

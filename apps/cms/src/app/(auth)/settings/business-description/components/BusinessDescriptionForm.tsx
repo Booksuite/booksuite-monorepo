@@ -84,12 +84,10 @@ export const BusinessDescriptionForm = () => {
                 const sameMedia = values.companyMedias.find(
                     (item) => item.media.id === media.id,
                 )
-                const isFeatured = !!sameMedia?.isFeatured
                 const order = sameMedia?.order || index
 
                 return {
                     id: media.id,
-                    isFeatured,
                     order,
                     media,
                 }

@@ -6,10 +6,6 @@ export type CompanyMedia = {
    */
   id: string
   /**
-   * @type boolean
-   */
-  isFeatured: boolean
-  /**
    * @type number
    */
   order: number | null

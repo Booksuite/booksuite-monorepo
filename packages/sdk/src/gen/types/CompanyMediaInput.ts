@@ -4,10 +4,6 @@ export type CompanyMediaInput = {
    */
   mediaId: string
   /**
-   * @type boolean
-   */
-  isFeatured: boolean
-  /**
    * @type number | undefined
    */
   order?: number
