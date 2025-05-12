@@ -45,7 +45,6 @@ export const transformFormDataForSubmit = (
         ...formData,
         companyMedias: formData.companyMedias.map((media) => ({
             mediaId: media.media.id,
-            isFeatured: media.isFeatured,
             order: media.order ?? undefined,
         })),
         bannerImageId: formData.medias[0]?.mediaId || '',
