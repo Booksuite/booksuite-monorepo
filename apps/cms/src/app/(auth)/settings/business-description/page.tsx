@@ -43,10 +43,6 @@ export default function BusinessDescription() {
             const data: CompanyUpdateInput =
                 transformFormDataForSubmit(formData)
 
-            if (formData.companyMedias.length === 0) {
-                data.companyMedias = []
-            }
-
             await updateCompanyBusinessDescription({
                 id: companyId,
                 data,
