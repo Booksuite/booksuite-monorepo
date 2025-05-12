@@ -1,13 +1,25 @@
-import { Media } from '@booksuite/sdk'
+import { CompanyMedia, Media } from '@booksuite/sdk'
 import {
     closestCenter,
     DndContext,
+    DragEndEvent,
     PointerSensor,
     useSensor,
     useSensors,
 } from '@dnd-kit/core'
-import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable'
-import { Box, Button, TextField, Typography, useTheme } from '@mui/material'
+import {
+    arrayMove,
+    rectSortingStrategy,
+    SortableContext,
+} from '@dnd-kit/sortable'
+import {
+    Box,
+    Button,
+    Grid,
+    TextField,
+    Typography,
+    useTheme,
+} from '@mui/material'
 import { useFormikContext } from 'formik'
 import { Info } from 'lucide-react'
 import { useState } from 'react'
@@ -17,6 +29,8 @@ import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { MediaGallery } from '@/components/organisms/MediaGallery'
 import { BusinessDescriptionFormData } from '../utils/config'
+
+import { SortableMediaItem } from './SortableMediaItem'
 
 export const BusinessDescriptionForm = () => {
     const theme = useTheme()
@@ -29,9 +43,12 @@ export const BusinessDescriptionForm = () => {
         setFieldValue,
     } = useFormikContext<BusinessDescriptionFormData>()
 
+    const [isMediaBannerGalleryOpen, setIsMediaBannerGalleryOpen] =
+        useState(false)
+
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
-    const handleMediaChange = (selectedMedia: Media[]) => {
+    const handleMediaBannerChange = (selectedMedia: Media[]) => {
         const [media] = selectedMedia
 
         if (!media) return
@@ -50,7 +67,7 @@ export const BusinessDescriptionForm = () => {
         ]
 
         setFieldValue('medias', formattedMedia)
-        setIsMediaGalleryOpen(false)
+        setIsMediaBannerGalleryOpen(false)
     }
 
     const sensors = useSensors(
@@ -60,6 +77,50 @@ export const BusinessDescriptionForm = () => {
             },
         }),
     )
+
+    const handleMediaChange = (selectedMedia: Media[]) => {
+        const formattedMedia: CompanyMedia[] = selectedMedia.map(
+            (media, index) => {
+                const sameMedia = values.companyMedias.find(
+                    (item) => item.media.id === media.id,
+                )
+                const order = sameMedia?.order || index
+
+                return {
+                    id: media.id,
+                    order,
+                    media,
+                }
+            },
+        )
+
+        setFieldValue('companyMedias', formattedMedia)
+        setIsMediaGalleryOpen(false)
+    }
+
+    const handleMediaDragEnd = (event: DragEndEvent) => {
+        const { active, over } = event
+
+        if (over && active.id !== over.id) {
+            const oldIndex = values.companyMedias.findIndex(
+                (item) => item.media.id === active.id,
+            )
+            const newIndex = values.companyMedias.findIndex(
+                (item) => item.media.id === over.id,
+            )
+
+            const newMedias = arrayMove(
+                values.companyMedias,
+                oldIndex,
+                newIndex,
+            ).map((item, index) => ({
+                ...item,
+                order: index,
+            }))
+
+            setFieldValue('companyMedias', newMedias)
+        }
+    }
 
     return (
         <FormContainer>
@@ -97,12 +158,59 @@ export const BusinessDescriptionForm = () => {
                 />
             </FormSection>
 
+            <FormSection
+                title="Fotos e vídeos"
+                variant="outlined"
+                rightAction={
+                    <Button onClick={() => setIsMediaGalleryOpen(true)}>
+                        Selecionar Mídia
+                    </Button>
+                }
+            >
+                <DndContext
+                    collisionDetection={closestCenter}
+                    onDragEnd={handleMediaDragEnd}
+                >
+                    <SortableContext
+                        items={values.companyMedias.map(
+                            (item) => item.media.id,
+                        )}
+                        strategy={rectSortingStrategy}
+                    >
+                        <Grid container columns={[2, 4, 8]} spacing={2} mt={4}>
+                            {values.companyMedias.map((item) => (
+                                <Grid size={1} key={item.media.id}>
+                                    <SortableMediaItem
+                                        key={item.media.id}
+                                        mediaItem={item}
+                                    />
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </SortableContext>
+                </DndContext>
+
+                <MediaGallery
+                    isOpen={isMediaGalleryOpen}
+                    onClose={() => setIsMediaGalleryOpen(false)}
+                    selectedItems={values.companyMedias.map(
+                        (item) => item.media.id,
+                    )}
+                    initialItems={values.companyMedias.map(
+                        (item) => item.media,
+                    )}
+                    onItemsChange={handleMediaChange}
+                />
+            </FormSection>
+
             <FormSection title="Banner de compartilhamento">
                 <FormSection
                     title="Banner Inicial"
                     variant="outlined"
                     rightAction={
-                        <Button onClick={() => setIsMediaGalleryOpen(true)}>
+                        <Button
+                            onClick={() => setIsMediaBannerGalleryOpen(true)}
+                        >
                             Selecionar Mídia
                         </Button>
                     }
@@ -124,13 +232,13 @@ export const BusinessDescriptionForm = () => {
                     </DndContext>
 
                     <MediaGallery
-                        isOpen={isMediaGalleryOpen}
-                        onClose={() => setIsMediaGalleryOpen(false)}
+                        isOpen={isMediaBannerGalleryOpen}
+                        onClose={() => setIsMediaBannerGalleryOpen(false)}
                         selectedItems={values.medias.map(
                             (item) => item.mediaId,
                         )}
                         initialItems={values.medias.map((item) => item.media)}
-                        onItemsChange={handleMediaChange}
+                        onItemsChange={handleMediaBannerChange}
                         maxItems={1}
                         minItems={1}
                     />

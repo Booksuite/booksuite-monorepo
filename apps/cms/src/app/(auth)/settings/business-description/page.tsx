@@ -1,11 +1,14 @@
 'use client'
 
-import { useGetCompanyById, useUpdateCompany } from '@booksuite/sdk'
+import {
+    CompanyUpdateInput,
+    useGetCompanyById,
+    useUpdateCompany,
+} from '@booksuite/sdk'
 import { useQueryClient } from '@tanstack/react-query'
 import { Formik } from 'formik'
 import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
-import { omit } from 'radash'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { FormikController } from '@/components/molecules/FormikController'
@@ -16,6 +19,7 @@ import {
     BusinessDescriptionFormData,
     businessDescriptionFormSchema,
     businessDescriptionInitialValues,
+    transformFormDataForSubmit,
 } from './utils/config'
 
 export default function BusinessDescription() {
@@ -36,14 +40,12 @@ export default function BusinessDescription() {
 
     async function handleSubmit(formData: BusinessDescriptionFormData) {
         try {
+            const data: CompanyUpdateInput =
+                transformFormDataForSubmit(formData)
+
             await updateCompanyBusinessDescription({
                 id: companyId,
-                data: {
-                    ...omit(formData, ['medias', 'bannerImage']),
-                    bannerImageId: formData.medias[0]
-                        ? formData.medias[0].mediaId
-                        : '',
-                },
+                data,
             })
 
             await queryClient.invalidateQueries({ queryKey: queryKey })

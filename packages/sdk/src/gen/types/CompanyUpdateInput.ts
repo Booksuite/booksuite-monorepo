@@ -1,5 +1,6 @@
 import type { CompanyContactInput } from './CompanyContactInput.ts'
 import type { CompanyFacilityInput } from './CompanyFacilityInput.ts'
+import type { CompanyMediaInput } from './CompanyMediaInput.ts'
 import type { CompanySettingsInput } from './CompanySettingsInput.ts'
 import type { MapCoordinatesInput } from './MapCoordinatesInput.ts'
 
@@ -132,4 +133,8 @@ export type CompanyUpdateInput = {
    * @type string
    */
   bannerDescription?: string | null
+  /**
+   * @type array | undefined
+   */
+  companyMedias?: CompanyMediaInput[]
 }
