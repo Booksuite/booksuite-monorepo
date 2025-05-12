@@ -26,7 +26,6 @@ export const DashboardHeader = ({ userImageSrc }: DashboardHeaderProps) => {
     return (
         <AppBar
             position="static"
-            elevation={1}
             sx={{
                 bgcolor: 'background.paper',
                 color: 'blue.900',

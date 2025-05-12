@@ -7,10 +7,6 @@ import {
 import dayjs from 'dayjs'
 import * as yup from 'yup'
 
-interface LocalizedText {
-    pt_BR: string
-}
-
 export type SpecialDateFormData = Omit<
     SpecialDateFull,
     | 'medias'
@@ -87,9 +83,10 @@ export const createSpecialDateFormInitialValues = (
     validWeekDays: Array.isArray(data?.validWeekDays)
         ? data.validWeekDays.map(Number)
         : [],
-    description: (data?.description as LocalizedText)?.pt_BR || '',
-    generalDescription:
-        (data?.generalDescription as LocalizedText)?.pt_BR || '',
+    description: data?.description as unknown as string | undefined,
+    generalDescription: data?.generalDescription as unknown as
+        | string
+        | undefined,
     medias: data?.medias || [],
     housingUnitTypePrices: data?.housingUnitTypePrices || [],
     services: data?.includedServices?.map((s) => s.service.id) || [],
