@@ -42,12 +42,16 @@ export const transformFormDataForSubmit = (
     formData: BusinessDescriptionFormData,
 ): CompanyUpdateInput => {
     return {
-        ...formData,
+        name: formData.name,
+        shortDescription: formData.shortDescription,
+        description: formData.description,
+        bannerTitle: formData.bannerTitle,
+        bannerDescription: formData.bannerDescription,
+        bannerImageId: formData.medias[0]?.mediaId || '',
         companyMedias: formData.companyMedias.map((media) => ({
             mediaId: media.media.id,
-            order: media.order ?? undefined,
+            order: media.order ?? 0,
         })),
-        bannerImageId: formData.medias[0]?.mediaId || '',
     }
 }
 

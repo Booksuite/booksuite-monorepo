@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import { useSnackbar } from 'notistack'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
+import { getErrorMessage } from '@/common/utils/errorHandling'
 import { FormikController } from '@/components/molecules/FormikController'
 import { PageHeader } from '@/components/organisms/PageHeader'
 
@@ -62,15 +63,20 @@ export default function BusinessDescription() {
                 },
                 autoHideDuration: 3000,
             })
-        } catch {
-            enqueueSnackbar(`Erro ao modificar a descrição do negócio`, {
-                variant: 'error',
-                anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right',
+        } catch (error) {
+            enqueueSnackbar(
+                `Erro ao modificar a descrição do negócio ${getErrorMessage(
+                    error,
+                )}`,
+                {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    autoHideDuration: 5000,
                 },
-                autoHideDuration: 5000,
-            })
+            )
         }
     }
 
