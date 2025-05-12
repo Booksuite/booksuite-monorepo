@@ -3,7 +3,6 @@ import {
     SpecialDateMedia,
     useSearchHousingUnitTypes,
 } from '@booksuite/sdk'
-import { useSearchServices } from '@booksuite/sdk/src/gen/hooks/ServiceHooks'
 import { closestCenter, DndContext, DragEndEvent } from '@dnd-kit/core'
 import {
     arrayMove,
@@ -11,7 +10,6 @@ import {
     SortableContext,
 } from '@dnd-kit/sortable'
 import {
-    Box,
     Button,
     Checkbox,
     FormControl,
@@ -26,11 +24,9 @@ import {
     Typography,
 } from '@mui/material'
 import { useFormikContext } from 'formik'
-import { Info } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
-import { theme } from '@/common/theme'
 import { formatCurrency } from '@/common/utils/currency'
 import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
@@ -67,11 +63,6 @@ export const SpecialDateForm: React.FC = () => {
     const [isMediaGalleryOpen, setIsMediaGalleryOpen] = useState(false)
 
     const { data: housingUnitTypesData } = useSearchHousingUnitTypes(
-        { companyId },
-        { pagination: { page: 1, itemsPerPage: 100 } },
-    )
-
-    const { data: servicesData } = useSearchServices(
         { companyId },
         { pagination: { page: 1, itemsPerPage: 100 } },
     )
@@ -328,67 +319,6 @@ export const SpecialDateForm: React.FC = () => {
                         </Grid>
                     </FormGroup>
                 </FormControl>
-            </FormSection>
-
-            <FormSection title="Extras e Experiências Inclusas">
-                <FormControl component="fieldset">
-                    <FormGroup>
-                        <Grid container spacing={2}>
-                            {servicesData?.items?.map((service) => (
-                                <Grid size={6} key={service.id}>
-                                    <FormControlLabel
-                                        control={
-                                            <Checkbox
-                                                name={`services.${service.id}`}
-                                                checked={values.services?.includes(
-                                                    service.id,
-                                                )}
-                                                onChange={(e) => {
-                                                    const serviceId = service.id
-                                                    const newServices = e.target
-                                                        .checked
-                                                        ? [
-                                                              ...(values.services ||
-                                                                  []),
-                                                              serviceId,
-                                                          ]
-                                                        : (
-                                                              values.services ||
-                                                              []
-                                                          ).filter(
-                                                              (id) =>
-                                                                  id !==
-                                                                  serviceId,
-                                                          )
-                                                    setFieldValue(
-                                                        'services',
-                                                        newServices,
-                                                    )
-                                                }}
-                                            />
-                                        }
-                                        label={service.name}
-                                    />
-                                </Grid>
-                            ))}
-                        </Grid>
-                    </FormGroup>
-                </FormControl>
-                <Box
-                    bgcolor={'grey.100'}
-                    p={4}
-                    borderRadius={1}
-                    display={'flex'}
-                    alignItems={'center'}
-                >
-                    <Box display="flex" alignItems="center" gap={2}>
-                        <Info color={theme.palette.blue[900]} />
-                        <Typography variant="body1" color={'blue.900'}>
-                            <b>Atenção: </b> os preços dos itens não são
-                            calculados automaticamente na diária.
-                        </Typography>
-                    </Box>
-                </Box>
             </FormSection>
 
             <FormSection title="Ajuste de Preço por Diária">

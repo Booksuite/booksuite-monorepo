@@ -59,7 +59,7 @@ export const DashboardSidebar: React.FC = () => {
         >
             <Stack sx={{ px: 2.5, pt: 6.25, pb: 2.5, gap: 3 }}>
                 <Box sx={{ flex: 1, textAlign: 'flex-start' }}>
-                    <Logo.LogoText />
+                    <Logo.FullLogo />
                 </Box>
 
                 <BusinessSelectorButton fullWidth>
