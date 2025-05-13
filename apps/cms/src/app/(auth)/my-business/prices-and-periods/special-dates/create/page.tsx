@@ -47,7 +47,7 @@ export default function CreateSpecialDatePage() {
             })
 
             await queryClient.invalidateQueries({
-                queryKey: ['searchSpecialDate'],
+                queryKey: ['searchSpecialDates'],
                 refetchType: 'all',
             })
 
