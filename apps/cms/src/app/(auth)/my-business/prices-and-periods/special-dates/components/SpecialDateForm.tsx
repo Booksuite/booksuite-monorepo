@@ -292,7 +292,9 @@ export const SpecialDateForm: React.FC = () => {
                                                         ? [
                                                               ...(values.validWeekDays ||
                                                                   []),
-                                                              night.value,
+                                                              Number(
+                                                                  night.value,
+                                                              ),
                                                           ]
                                                         : (
                                                               values.validWeekDays ||

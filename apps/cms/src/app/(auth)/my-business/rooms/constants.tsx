@@ -161,7 +161,7 @@ export const COLUMNS_DEFINITION: MRT_ColumnDef<HousingUnitTypeFull>[] = [
     },
     {
         id: 'published',
-        header: 'Status',
+        header: 'Visibilidade',
         muiTableHeadCellProps: {
             sx: {
                 textAlign: 'left',

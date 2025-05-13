@@ -1,12 +1,6 @@
-import type { AvailAndPricingSpecialDateIncludedServiceInput } from './AvailAndPricingSpecialDateIncludedServiceInput.ts'
 import type { PriceVariationType } from './PriceVariationType.ts'
 
 export type AvailAndPricingSpecialDatesInput = {
-  /**
-   * @description Special date rule ID
-   * @type string
-   */
-  id: string
   /**
    * @description Company ID
    * @type string
@@ -66,11 +60,6 @@ export type AvailAndPricingSpecialDatesInput = {
      */
     housingUnitTypeId?: string
   }[]
-  /**
-   * @description Included services
-   * @type array
-   */
-  includedServices: AvailAndPricingSpecialDateIncludedServiceInput[]
   /**
    * @description Special date description
    * @type string
