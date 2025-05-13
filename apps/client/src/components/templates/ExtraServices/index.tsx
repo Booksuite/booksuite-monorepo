@@ -172,6 +172,7 @@ export const ExtraServices: React.FC = () => {
                         return (
                             <ExtraServicesCard
                                 key={service.id}
+                                id={service.id}
                                 title={service.name ?? ''}
                                 description={service.description ?? ''}
                                 images={
@@ -183,10 +184,10 @@ export const ExtraServices: React.FC = () => {
                                 originalPrice={originalPrice}
                                 hasOffer={hasOffer}
                                 discount={discount}
-                                onQuantityChange={() => {}}
                                 onViewAllPhotos={() => {
                                     setSelectedService(service)
                                 }}
+                                serviceFull={service}
                             />
                         )
                     })}

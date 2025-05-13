@@ -1,13 +1,16 @@
 'use client'
 
+import type { ServiceFull } from '@booksuite/sdk'
 import { Flame, Images, Minus, Plus } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import { useCart } from '@/common/hooks/useCart'
 import { formatCurrency } from '@/common/utils/formatCurrency'
 import { Button } from '@/components/atoms/Button'
 import { ImageSlider } from '@/components/molecules/ImageSlider'
 
 interface ExtraServicesCardProps {
+    id: string
     title: string
     description: string
     images: string[]
@@ -15,11 +18,12 @@ interface ExtraServicesCardProps {
     originalPrice?: number
     hasOffer?: boolean
     discount?: number
-    onQuantityChange?: (quantity: number) => void
     onViewAllPhotos?: () => void
+    serviceFull: ServiceFull
 }
 
 export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
+    id,
     title,
     description,
     images,
@@ -27,21 +31,49 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
     originalPrice,
     hasOffer,
     discount,
-    onQuantityChange,
     onViewAllPhotos,
+    serviceFull,
 }) => {
     const [isExpanded, setIsExpanded] = useState(false)
     const [quantity, setQuantity] = useState(0)
+    const { addToCart, removeFromCart, services } = useCart()
+
+    useEffect(() => {
+        const existingService = services.find((service) => service.id === id)
+        if (existingService) {
+            setQuantity(existingService.quantity)
+        }
+    }, [id, services])
 
     const handleQuantityChange = (newQuantity: number) => {
         if (newQuantity >= 0) {
             setQuantity(newQuantity)
-            onQuantityChange?.(newQuantity)
+
+            if (newQuantity === 0) {
+                removeFromCart(id)
+            } else {
+                addToCart({
+                    id,
+                    name: title,
+                    description,
+                    price,
+                    originalPrice,
+                    discount,
+                    image: images[0] ?? '',
+                    quantity: newQuantity,
+                    availableHousingUnitTypeIds:
+                        serviceFull.availableHousingUnitTypes?.map(
+                            (t) => t.housingUnitType.id,
+                        ) ?? [],
+                    minDaily: serviceFull.minDaily,
+                    availableWeekDays: serviceFull.availableWeekDays,
+                })
+            }
         }
     }
 
     return (
-        <div className="bg-white rounded-2xl overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="bg-white rounded-2xl flex flex-col flex-1 overflow-hidden border border-gray-200 hover:shadow-md transition-shadow">
             <div className="aspect-[4/3] w-full relative">
                 <ImageSlider
                     images={images}
@@ -65,11 +97,11 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
                 </button>
             </div>
 
-            <div className="p-6">
+            <div className="p-6 flex flex-col flex-1">
                 <h2 className="text-xl font-bold text-gray-800 mb-2">
                     {title}
                 </h2>
-                <div className="relative mb-6">
+                <div className="flex-1 ">
                     <p
                         className={`text-gray-600 text-md ${isExpanded ? '' : 'line-clamp-2'}`}
                     >
@@ -85,9 +117,9 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
                     )}
                 </div>
 
-                <div className="flex items-start justify-between">
+                <div className="flex items-end justify-between mt-5">
                     <div className="flex flex-col">
-                        <div className="flex flex-col items-baseline gap-2">
+                        <div className="flex flex-col items-baseline gap-1">
                             <div className="flex items-center gap-2">
                                 {originalPrice && originalPrice > price && (
                                     <span className="text-gray-400 line-through text-sm">
@@ -108,7 +140,7 @@ export const ExtraServicesCard: React.FC<ExtraServicesCardProps> = ({
                             Por unidade
                         </span>
                     </div>
-                    <div className="flex items-center gap-3 mt-10 ">
+                    <div className="flex items-center gap-3">
                         {quantity === 0 ? (
                             <Button
                                 onClick={() => handleQuantityChange(1)}
