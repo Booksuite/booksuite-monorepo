@@ -74,7 +74,9 @@ export const HousingUnitTypeFacilitiesField = () => {
                 >
                     {!!facilities && (
                         <SelectModal
-                            items={facilities.items}
+                            items={[...facilities.items].sort((a, b) =>
+                                a.name.localeCompare(b.name),
+                            )}
                             initialSelectedItems={allFacilities}
                             open={isOpen}
                             onClose={() => setIsOpen(false)}
@@ -103,33 +105,40 @@ export const HousingUnitTypeFacilitiesField = () => {
                             Top 5 destaques no site
                         </Typography>
                         <Stack spacing={2}>
-                            {featuredFacilities.slice(0, 5).map((facility) => (
-                                <HousintUnitTypeFacilityItem
-                                    key={facility.id}
-                                    facility={facility}
-                                    isFeatured
-                                    onClick={(item) => {
-                                        const facilityIndex =
-                                            values.facilities.findIndex(
-                                                (f) => f.facilityId === item.id,
+                            {featuredFacilities
+                                .sort((a, b) => a.name.localeCompare(b.name))
+                                .slice(0, 5)
+                                .map((facility) => (
+                                    <HousintUnitTypeFacilityItem
+                                        key={facility.id}
+                                        facility={facility}
+                                        isFeatured
+                                        onClick={(item) => {
+                                            const facilityIndex =
+                                                values.facilities.findIndex(
+                                                    (f) =>
+                                                        f.facilityId ===
+                                                        item.id,
+                                                )
+
+                                            const newFacilities = [
+                                                ...values.facilities,
+                                            ]
+
+                                            newFacilities[facilityIndex] = {
+                                                ...newFacilities[
+                                                    facilityIndex
+                                                ]!,
+                                                isFeatured: false,
+                                            }
+
+                                            setFieldValue(
+                                                'facilities',
+                                                newFacilities,
                                             )
-
-                                        const newFacilities = [
-                                            ...values.facilities,
-                                        ]
-
-                                        newFacilities[facilityIndex] = {
-                                            ...newFacilities[facilityIndex]!,
-                                            isFeatured: false,
-                                        }
-
-                                        setFieldValue(
-                                            'facilities',
-                                            newFacilities,
-                                        )
-                                    }}
-                                />
-                            ))}
+                                        }}
+                                    />
+                                ))}
                             {Array.from({
                                 length:
                                     MAX_FEATURED_FACILITIES -
@@ -162,42 +171,48 @@ export const HousingUnitTypeFacilitiesField = () => {
                             Demais comodidades
                         </Typography>
                         <Stack spacing={2}>
-                            {nonFeaturedFacilities.map((facility) => (
-                                <HousintUnitTypeFacilityItem
-                                    key={facility.id}
-                                    facility={facility}
-                                    onClick={(item) => {
-                                        if (
-                                            featuredFacilities.length >=
-                                            MAX_FEATURED_FACILITIES
-                                        ) {
-                                            return enqueueSnackbar(
-                                                `Você pode selecionar no máximo ${MAX_FEATURED_FACILITIES} comodidades destacadas`,
-                                                { variant: 'warning' },
+                            {nonFeaturedFacilities
+                                .sort((a, b) => a.name.localeCompare(b.name))
+                                .map((facility) => (
+                                    <HousintUnitTypeFacilityItem
+                                        key={facility.id}
+                                        facility={facility}
+                                        onClick={(item) => {
+                                            if (
+                                                featuredFacilities.length >=
+                                                MAX_FEATURED_FACILITIES
+                                            ) {
+                                                return enqueueSnackbar(
+                                                    `Você pode selecionar no máximo ${MAX_FEATURED_FACILITIES} comodidades destacadas`,
+                                                    { variant: 'warning' },
+                                                )
+                                            }
+
+                                            const facilityIndex =
+                                                values.facilities.findIndex(
+                                                    (f) =>
+                                                        f.facilityId ===
+                                                        item.id,
+                                                )
+
+                                            const newFacilities = [
+                                                ...values.facilities,
+                                            ]
+
+                                            newFacilities[facilityIndex] = {
+                                                ...newFacilities[
+                                                    facilityIndex
+                                                ]!,
+                                                isFeatured: true,
+                                            }
+
+                                            setFieldValue(
+                                                'facilities',
+                                                newFacilities,
                                             )
-                                        }
-
-                                        const facilityIndex =
-                                            values.facilities.findIndex(
-                                                (f) => f.facilityId === item.id,
-                                            )
-
-                                        const newFacilities = [
-                                            ...values.facilities,
-                                        ]
-
-                                        newFacilities[facilityIndex] = {
-                                            ...newFacilities[facilityIndex]!,
-                                            isFeatured: true,
-                                        }
-
-                                        setFieldValue(
-                                            'facilities',
-                                            newFacilities,
-                                        )
-                                    }}
-                                />
-                            ))}
+                                        }}
+                                    />
+                                ))}
                             {nonFeaturedFacilities.length === 0 && (
                                 <Box
                                     display="flex"

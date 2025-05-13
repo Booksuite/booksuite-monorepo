@@ -40,7 +40,7 @@ import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { MediaGallery } from '@/components/organisms/MediaGallery'
-import { SortableMediaItem } from '../../rooms/components/SortableMediaItem'
+import { SortableMediaItem } from './SortableMediaItem'
 import type { ServiceFormData } from '../utils/config'
 import { VALID_NIGHTS } from '../utils/constants'
 

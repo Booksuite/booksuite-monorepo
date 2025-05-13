@@ -49,12 +49,10 @@ const MediaContainer = styled(Box, {
                     outline: `3px solid ${theme.palette.primary.main}`,
                     backgroundColor: `${theme.palette.blueGrey[900]}30`,
                 },
-                '& .checkbox': {
-                    opacity: 1,
-                },
                 '& .menu-button': {
                     opacity: 1,
                 },
+                // ⛔️ Não aplica hover na checkbox
             },
         }),
     }),
@@ -67,10 +65,10 @@ export const MediaItem: React.FC<PropsWithChildren<MediaItemProps>> = ({
     actions,
     selectable,
     children,
+    hoverable,
     ...props
 }) => {
     const theme = useTheme()
-    const hoverable = !!actions || selectable
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
     const open = Boolean(anchorEl)
 
@@ -122,9 +120,12 @@ export const MediaItem: React.FC<PropsWithChildren<MediaItemProps>> = ({
                         className="checkbox"
                         variant="contained"
                         color={isSelected ? 'primary' : 'inherit'}
-                        onClick={handleClick}
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            handleClick()
+                        }}
                         sx={{
-                            opacity: 0,
+                            opacity: isSelected ? 1 : 0,
                             position: 'absolute',
                             top: 8,
                             left: 8,
@@ -133,6 +134,7 @@ export const MediaItem: React.FC<PropsWithChildren<MediaItemProps>> = ({
                             p: 0,
                             minWidth: '20px',
                             height: '20px',
+                            pointerEvents: 'auto',
                         }}
                     >
                         {isSelected && <Check size={12} />}
