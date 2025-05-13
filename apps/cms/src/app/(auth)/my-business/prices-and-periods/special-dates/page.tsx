@@ -147,6 +147,31 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<SpecialDateFull>[] = [
         ),
     },
     {
+        id: 'minStay',
+        header: 'Mínimo de Diárias',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography
+                sx={{
+                    fontSize: '14px',
+                    marginLeft: '10px',
+                }}
+            >
+                {row.original.minStay
+                    ? `Mínimo ${row.original.minStay} ${
+                          row.original.minStay === 1 ? 'dia' : 'dias'
+                      }`
+                    : '-'}
+            </Typography>
+        ),
+    },
+    {
         id: 'status',
         header: 'Status',
         accessorKey: 'status',
@@ -255,6 +280,7 @@ export default function SpecialDates() {
         data: specialDates,
         isLoading,
         error,
+        refetch,
     } = useSearchSpecialDates(
         { companyId },
         {
@@ -270,7 +296,17 @@ export default function SpecialDates() {
         { query: searchQuery.length > 0 ? searchQuery : undefined },
     )
 
-    const { mutate: updateSpecialDate } = useUpdateSpecialDate()
+    useEffect(() => {
+        refetch()
+    }, [refetch])
+
+    const { mutate: updateSpecialDate } = useUpdateSpecialDate({
+        mutation: {
+            onSuccess: () => {
+                refetch()
+            },
+        },
+    })
 
     const handleRowClick = (row: SpecialDateFull) => {
         push(`/my-business/prices-and-periods/special-dates/${row.id}` as Route)
