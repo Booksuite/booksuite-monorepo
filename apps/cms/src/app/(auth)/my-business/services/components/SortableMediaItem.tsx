@@ -2,7 +2,7 @@ import { ServiceMedia } from '@booksuite/sdk'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { Stack, useTheme } from '@mui/material'
-import { GripIcon } from 'lucide-react'
+import { GripIcon, TrashIcon } from 'lucide-react'
 
 import { MediaItem } from '@/components/molecules/MediaItem'
 

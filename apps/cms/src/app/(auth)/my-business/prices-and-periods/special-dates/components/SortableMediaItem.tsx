@@ -34,7 +34,11 @@ export const SortableMediaItem: React.FC<SortableMediaItemProps> = ({
 
     return (
         <div ref={setNodeRef} style={style} {...attributes}>
-            <MediaItem key={mediaItem.media.id} item={mediaItem.media}>
+            <MediaItem
+                key={mediaItem.media.id}
+                item={mediaItem.media}
+                hoverable
+            >
                 <Stack
                     position="absolute"
                     top="50%"
