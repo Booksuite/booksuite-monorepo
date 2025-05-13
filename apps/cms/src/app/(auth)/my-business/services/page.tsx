@@ -122,7 +122,7 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<ServiceFull>[] = [
     },
     {
         id: 'published',
-        header: 'Status',
+        header: 'Visibilidade',
         accessorKey: 'published',
         muiTableHeadCellProps: {
             sx: {
@@ -141,7 +141,7 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<ServiceFull>[] = [
                         : theme.palette.blueGrey[700],
                 }}
             >
-                {row.original.published ? 'Ativo' : 'Inativo'}
+                {row.original.published ? 'Publicado' : 'Não publicado'}
             </Typography>
         ),
     },

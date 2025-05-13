@@ -11,14 +11,12 @@ export type SpecialDateFormData = Omit<
     SpecialDateFull,
     | 'medias'
     | 'housingUnitTypePrices'
-    | 'includedServices'
     | 'validWeekDays'
     | 'description'
     | 'generalDescription'
 > & {
     medias: SpecialDateMedia[]
     housingUnitTypePrices: HousingUnitTypePricingChangeInput[]
-    services: string[]
     validWeekDays: number[]
     description?: string
     generalDescription?: string
@@ -27,13 +25,8 @@ export type SpecialDateFormData = Omit<
 export const transformSpecialDateFormDataForSubmit = (
     formData: SpecialDateFormData,
 ) => {
-    const {
-        medias,
-        housingUnitTypePrices,
-        services,
-        description,
-        generalDescription,
-    } = formData
+    const { medias, housingUnitTypePrices, description, generalDescription } =
+        formData
 
     const startDate = dayjs(formData.startDate).startOf('day')
     const endDate = dayjs(formData.endDate).endOf('day')
@@ -59,9 +52,6 @@ export const transformSpecialDateFormDataForSubmit = (
             finalWeekPrice: item.finalWeekPrice,
             baseWeekendPrice: item.baseWeekendPrice,
             finalWeekendPrice: item.finalWeekendPrice,
-        })),
-        includedServices: services.map((serviceId) => ({
-            serviceId,
         })),
     }
 
@@ -89,7 +79,6 @@ export const createSpecialDateFormInitialValues = (
         | undefined,
     medias: data?.medias || [],
     housingUnitTypePrices: data?.housingUnitTypePrices || [],
-    services: data?.includedServices?.map((s) => s.service.id) || [],
 })
 
 export const specialDateFormSchema = yup.object({
@@ -141,7 +130,6 @@ export const specialDateFormSchema = yup.object({
             1,
             'É necessário definir ao menos um tipo de unidade habitacional',
         ),
-    services: yup.array(),
     description: yup.string().optional(),
     generalDescription: yup.string().optional(),
 })
