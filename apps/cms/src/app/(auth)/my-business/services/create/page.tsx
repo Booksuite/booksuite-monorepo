@@ -44,7 +44,7 @@ export default function CreateServicePage() {
             })
 
             await queryClient.invalidateQueries({
-                queryKey: ['searchService'],
+                queryKey: ['searchServices'],
                 refetchType: 'all',
             })
 
