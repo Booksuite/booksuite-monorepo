@@ -6,6 +6,7 @@ export interface MediaItemProps {
     isSelected?: boolean
     onSelect?: (item: Media) => void
     actions?: MediaItemAction[]
+    hoverable?: boolean
 }
 
 export interface MediaItemAction {

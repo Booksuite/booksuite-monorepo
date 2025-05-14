@@ -19,10 +19,6 @@ export type ServiceUpdateInput = {
   /**
    * @type number | undefined
    */
-  adults?: number
-  /**
-   * @type number | undefined
-   */
   minDaily?: number
   /**
    * @type number | undefined

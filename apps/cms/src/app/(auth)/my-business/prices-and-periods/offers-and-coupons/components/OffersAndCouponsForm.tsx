@@ -25,6 +25,8 @@ import {
     VALID_NIGHTS,
 } from '../utils/constants'
 
+import { MultiSelectList } from './MultiSelectList'
+
 export const OffersAndCouponsForm = () => {
     const { values, errors, touched, getFieldProps, setFieldValue } =
         useFormikContext<OfferFormData>()
@@ -98,6 +100,36 @@ export const OffersAndCouponsForm = () => {
                     fullWidth
                     {...getFieldProps('description')}
                 />
+
+                <FormSection>
+                    <FormControlLabel
+                        control={<Switch checked={values.isExclusive} />}
+                        label="Oferta exclusiva com cupom?"
+                        onChange={(e) =>
+                            setFieldValue(
+                                'isExclusive',
+                                (e.target as HTMLInputElement).checked,
+                            )
+                        }
+                    />
+
+                    <TextField
+                        label="Código do Cupom"
+                        error={touched.couponCode && Boolean(errors.couponCode)}
+                        helperText={touched.couponCode && errors.couponCode}
+                        {...getFieldProps('couponCode')}
+                        inputProps={{
+                            style: { textTransform: 'uppercase' },
+                        }}
+                        onChange={(e) => {
+                            const raw = e.target.value
+                            const cleaned = raw
+                                .replace(/[^a-zA-Z0-9]/g, '')
+                                .toUpperCase()
+                            setFieldValue('couponCode', cleaned)
+                        }}
+                    />
+                </FormSection>
             </FormSection>
 
             <FormSection title="Períodos Válidos">
@@ -158,115 +190,7 @@ export const OffersAndCouponsForm = () => {
                 </FormSection>
             </FormSection>
 
-            <FormSection title="Condições de Aplicabilidade">
-                <Grid container spacing={2}>
-                    <Grid size={6}>
-                        <Stack width={'100%'}>
-                            <NumberInput
-                                label="Estadia Mínima (opcional)"
-                                error={
-                                    touched.minStay && Boolean(errors.minStay)
-                                }
-                                helperText={errors.minStay}
-                                min={1}
-                                max={values.maxStay}
-                                {...getFieldProps('minStay')}
-                                onChange={(e) =>
-                                    setFieldValue(
-                                        'minStay',
-                                        Number(e.target.value),
-                                    )
-                                }
-                            />
-                        </Stack>
-                    </Grid>
-                    <Grid size={6}>
-                        <Stack width={'100%'}>
-                            <NumberInput
-                                label="Estadia Máxima (opcional)"
-                                error={
-                                    touched.maxStay && Boolean(errors.maxStay)
-                                }
-                                helperText={errors.maxStay}
-                                min={values.minStay}
-                                {...getFieldProps('maxStay')}
-                                onChange={(e) =>
-                                    setFieldValue(
-                                        'maxStay',
-                                        Number(e.target.value),
-                                    )
-                                }
-                            />
-                        </Stack>
-                    </Grid>
-                    <Grid size={6}>
-                        <Stack width={'100%'}>
-                            <NumberInput
-                                label="Antecedência Mínima (opcional)"
-                                error={
-                                    touched.minAdvanceDays &&
-                                    Boolean(errors.minAdvanceDays)
-                                }
-                                helperText={errors.minAdvanceDays}
-                                min={1}
-                                max={values.maxAdvanceDays}
-                                {...getFieldProps('minAdvanceDays')}
-                                onChange={(e) =>
-                                    setFieldValue(
-                                        'minAdvanceDays',
-                                        Number(e.target.value),
-                                    )
-                                }
-                            />
-                        </Stack>
-                    </Grid>
-                    <Grid size={6}>
-                        <Stack width={'100%'}>
-                            <NumberInput
-                                label="Antecedência Máxima (opcional)"
-                                error={
-                                    touched.maxAdvanceDays &&
-                                    Boolean(errors.maxAdvanceDays)
-                                }
-                                helperText={errors.maxAdvanceDays}
-                                min={values.minAdvanceDays}
-                                {...getFieldProps('maxAdvanceDays')}
-                                onChange={(e) =>
-                                    setFieldValue(
-                                        'maxAdvanceDays',
-                                        Number(e.target.value),
-                                    )
-                                }
-                            />
-                        </Stack>
-                    </Grid>
-                </Grid>
-            </FormSection>
-
-            <FormSection>
-                <FormControlLabel
-                    control={<Switch checked={values.validForAbandoned} />}
-                    label="Válido para reservas abandonadas"
-                    onChange={(e) =>
-                        setFieldValue(
-                            'validForAbandoned',
-                            (e.target as HTMLInputElement).checked,
-                        )
-                    }
-                />
-                <FormControlLabel
-                    control={<Switch checked={values.validForPackages} />}
-                    label="Válido para Pacotes e Feriados"
-                    onChange={(e) =>
-                        setFieldValue(
-                            'validForPackages',
-                            (e.target as HTMLInputElement).checked,
-                        )
-                    }
-                />
-            </FormSection>
-
-            <FormSection title="Ajuste de Preço por Diária">
+            <FormSection title="Ajuste de Preço">
                 <FormControl fullWidth>
                     <TextField
                         select
@@ -336,183 +260,30 @@ export const OffersAndCouponsForm = () => {
             </FormSection>
 
             {values.type === 'HOUSING_UNIT_TYPE' && (
-                <FormSection title="Acomodações Válidas">
-                    <FormControl component="fieldset">
-                        <Grid container spacing={2}>
-                            <Grid size={3}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            checked={
-                                                housingUnitTypes?.items
-                                                    .length ===
-                                                values.validHousingUnitTypes
-                                                    ?.length
-                                            }
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    const getAll =
-                                                        housingUnitTypes?.items.map(
-                                                            (type) => type.id,
-                                                        )
-
-                                                    setFieldValue(
-                                                        'validHousingUnitTypes',
-                                                        getAll,
-                                                    )
-                                                } else {
-                                                    setFieldValue(
-                                                        'validHousingUnitTypes',
-                                                        [],
-                                                    )
-                                                }
-                                            }}
-                                        />
-                                    }
-                                    label="Selecionar Todos"
-                                />
-                            </Grid>
-
-                            {housingUnitTypes?.items
-                                ? housingUnitTypes?.items.map((housing) => {
-                                      const exists =
-                                          values.validHousingUnitTypes?.some(
-                                              (h) => h === housing.id,
-                                          )
-
-                                      return (
-                                          <Grid size={3} key={housing.id}>
-                                              <FormControlLabel
-                                                  control={
-                                                      <Checkbox
-                                                          checked={exists}
-                                                          onChange={() => {
-                                                              if (!exists) {
-                                                                  const updatedHousingUnitTypes =
-                                                                      [
-                                                                          ...(values.validHousingUnitTypes ||
-                                                                              []),
-                                                                          housing.id,
-                                                                      ]
-                                                                  setFieldValue(
-                                                                      'validHousingUnitTypes',
-                                                                      updatedHousingUnitTypes,
-                                                                  )
-                                                              } else {
-                                                                  const updatedHousingUnitTypes =
-                                                                      values.validHousingUnitTypes?.filter(
-                                                                          (
-                                                                              type,
-                                                                          ) =>
-                                                                              type !==
-                                                                              housing.id,
-                                                                      )
-                                                                  setFieldValue(
-                                                                      'validHousingUnitTypes',
-                                                                      updatedHousingUnitTypes,
-                                                                  )
-                                                              }
-                                                          }}
-                                                      />
-                                                  }
-                                                  label={housing.name}
-                                              />
-                                          </Grid>
-                                      )
-                                  })
-                                : undefined}
-                        </Grid>
-                    </FormControl>
-                </FormSection>
+                <MultiSelectList
+                    title="Acomodações Válidas"
+                    items={housingUnitTypes?.items ?? []}
+                    selected={values.validHousingUnitTypes ?? []}
+                    onChange={(newSelected) =>
+                        setFieldValue('validHousingUnitTypes', newSelected)
+                    }
+                />
             )}
 
             {values.type === 'SERVICE' && (
-                <FormSection title="Itens Válidos">
-                    <FormControl component="fieldset">
-                        <Grid container spacing={2}>
-                            <Grid size={3}>
-                                <FormControlLabel
-                                    control={
-                                        <Checkbox
-                                            checked={
-                                                values.validServices
-                                                    ? values.validServices
-                                                          .length ===
-                                                      serviceItems.length
-                                                    : false
-                                            }
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    setFieldValue(
-                                                        'validServices',
-                                                        serviceItems.map(
-                                                            (s) => s.id,
-                                                        ),
-                                                    )
-                                                } else {
-                                                    setFieldValue(
-                                                        'validServices',
-                                                        [],
-                                                    )
-                                                }
-                                            }}
-                                        />
-                                    }
-                                    label="Selecionar Todos"
-                                />
-                            </Grid>
-
-                            {serviceItems?.map((service) => {
-                                const exists =
-                                    values.validServices?.some(
-                                        (s) => s === service.id,
-                                    ) || false
-
-                                return (
-                                    <Grid size={3} key={service.id}>
-                                        <FormControlLabel
-                                            control={
-                                                <Checkbox
-                                                    checked={exists}
-                                                    onChange={() => {
-                                                        if (!exists) {
-                                                            const updatedValidServices =
-                                                                [
-                                                                    ...(values.validServices ||
-                                                                        []),
-                                                                    service.id,
-                                                                ]
-                                                            setFieldValue(
-                                                                'validServices',
-                                                                updatedValidServices,
-                                                            )
-                                                        } else {
-                                                            const updatedValidServices =
-                                                                values.validServices?.filter(
-                                                                    (id) =>
-                                                                        id !==
-                                                                        service.id,
-                                                                )
-                                                            setFieldValue(
-                                                                'validServices',
-                                                                updatedValidServices,
-                                                            )
-                                                        }
-                                                    }}
-                                                />
-                                            }
-                                            label={service.name}
-                                        />
-                                    </Grid>
-                                )
-                            })}
-                        </Grid>
-                    </FormControl>
-                </FormSection>
+                <MultiSelectList
+                    title="Itens Válidos"
+                    items={serviceItems}
+                    selected={values.validServices ?? []}
+                    onChange={(newSelected) =>
+                        setFieldValue('validServices', newSelected)
+                    }
+                />
             )}
 
-            {/* TODO - FORMAS DE PAGAMENTO */}
-            {/* <FormSection title="Formas de pagamento">
+            <FormSection title="Filtros de aplicação">
+                {/* TODO - FORMAS DE PAGAMENTO */}
+                {/* <FormSection title="Formas de pagamento">
                 <FormControl>
                     <FormGroup>
                         <Grid container>
@@ -529,12 +300,11 @@ export const OffersAndCouponsForm = () => {
                 </FormControl>
             </FormSection> */}
 
-            <FormSection title="Noites válidas">
-                <FormControl>
-                    <FormGroup>
-                        <Grid container justifyContent={'space-between'}>
-                            {VALID_NIGHTS.map((night) => (
-                                <Grid key={night.name}>
+                <FormSection title="Noites válidas">
+                    <FormControl>
+                        <FormGroup>
+                            <Grid container justifyContent={'space-between'}>
+                                <Grid size={2.5}>
                                     <FormControlLabel
                                         control={
                                             <Checkbox
@@ -542,30 +312,20 @@ export const OffersAndCouponsForm = () => {
                                                     Array.isArray(
                                                         values.validWeekDays,
                                                     ) &&
-                                                    values.validWeekDays.includes(
-                                                        Number(night.value),
-                                                    )
+                                                    values.validWeekDays
+                                                        .length ===
+                                                        VALID_NIGHTS.length
                                                 }
                                                 onChange={(e) => {
                                                     const newValue = e.target
                                                         .checked
-                                                        ? [
-                                                              ...(values.validWeekDays ||
-                                                                  []),
-                                                              Number(
-                                                                  night.value,
-                                                              ),
-                                                          ]
-                                                        : (
-                                                              values.validWeekDays ||
-                                                              []
-                                                          ).filter(
-                                                              (v) =>
-                                                                  v !==
+                                                        ? VALID_NIGHTS.map(
+                                                              (night) =>
                                                                   Number(
                                                                       night.value,
                                                                   ),
                                                           )
+                                                        : []
                                                     setFieldValue(
                                                         'validWeekDays',
                                                         newValue,
@@ -573,13 +333,280 @@ export const OffersAndCouponsForm = () => {
                                                 }}
                                             />
                                         }
-                                        label={night.name}
+                                        label="Selecionar todas"
                                     />
                                 </Grid>
-                            ))}
-                        </Grid>
-                    </FormGroup>
-                </FormControl>
+                                {VALID_NIGHTS.map((night) => (
+                                    <Grid size={2.5} key={night.name}>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={
+                                                        Array.isArray(
+                                                            values.validWeekDays,
+                                                        ) &&
+                                                        values.validWeekDays.includes(
+                                                            Number(night.value),
+                                                        )
+                                                    }
+                                                    onChange={(e) => {
+                                                        const newValue = e
+                                                            .target.checked
+                                                            ? [
+                                                                  ...(values.validWeekDays ||
+                                                                      []),
+                                                                  Number(
+                                                                      night.value,
+                                                                  ),
+                                                              ]
+                                                            : (
+                                                                  values.validWeekDays ||
+                                                                  []
+                                                              ).filter(
+                                                                  (v) =>
+                                                                      v !==
+                                                                      Number(
+                                                                          night.value,
+                                                                      ),
+                                                              )
+                                                        setFieldValue(
+                                                            'validWeekDays',
+                                                            newValue,
+                                                        )
+                                                    }}
+                                                />
+                                            }
+                                            label={night.name}
+                                        />
+                                    </Grid>
+                                ))}
+                            </Grid>
+                        </FormGroup>
+                    </FormControl>
+                </FormSection>
+            </FormSection>
+
+            <FormSection title="Condições de Aplicabilidade">
+                <Stack spacing={2}>
+                    <Stack width={'100%'}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={values.hasMinStay}
+                                    onChange={(e) => {
+                                        setFieldValue(
+                                            'hasMinStay',
+                                            e.target.checked,
+                                        )
+                                        if (e.target.checked) {
+                                            setFieldValue('minStay', 1)
+                                        } else {
+                                            setFieldValue('minStay', undefined)
+                                        }
+                                    }}
+                                />
+                            }
+                            label="Restringir estadia mínima"
+                        />
+                        {values.hasMinStay && (
+                            <NumberInput
+                                label="Estadia Mínima (opcional)"
+                                error={
+                                    touched.minStay && Boolean(errors.minStay)
+                                }
+                                helperText={errors.minStay}
+                                min={1}
+                                max={values.maxStay}
+                                {...getFieldProps('minStay')}
+                                onChange={(e) => {
+                                    const newValue = e.target.value
+                                    if (newValue === '') {
+                                        setFieldValue('minStay', undefined)
+                                    } else {
+                                        setFieldValue(
+                                            'minStay',
+                                            Number(newValue),
+                                        )
+                                    }
+                                }}
+                            />
+                        )}
+                    </Stack>
+                    <Stack width={'100%'}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={values.hasMaxStay}
+                                    onChange={(e) => {
+                                        setFieldValue(
+                                            'hasMaxStay',
+                                            e.target.checked,
+                                        )
+                                        if (e.target.checked) {
+                                            setFieldValue(
+                                                'maxStay',
+                                                values.minStay || 1,
+                                            )
+                                        } else {
+                                            setFieldValue('maxStay', undefined)
+                                        }
+                                    }}
+                                />
+                            }
+                            label="Restringir estadia máxima"
+                        />
+                        {values.hasMaxStay && (
+                            <NumberInput
+                                label="Estadia Máxima (opcional)"
+                                error={
+                                    touched.maxStay && Boolean(errors.maxStay)
+                                }
+                                helperText={errors.maxStay}
+                                min={values.minStay || 1}
+                                {...getFieldProps('maxStay')}
+                                onChange={(e) => {
+                                    const newValue = e.target.value
+                                    if (newValue === '') {
+                                        setFieldValue('maxStay', undefined)
+                                    } else {
+                                        setFieldValue(
+                                            'maxStay',
+                                            Number(newValue),
+                                        )
+                                    }
+                                }}
+                            />
+                        )}
+                    </Stack>
+                </Stack>
+                <Stack spacing={2}>
+                    <Stack width={'100%'}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={values.hasMinAdvanceDays}
+                                    onChange={(e) => {
+                                        setFieldValue(
+                                            'hasMinAdvanceDays',
+                                            e.target.checked,
+                                        )
+                                        if (e.target.checked) {
+                                            setFieldValue('minAdvanceDays', 1)
+                                        } else {
+                                            setFieldValue(
+                                                'minAdvanceDays',
+                                                undefined,
+                                            )
+                                        }
+                                    }}
+                                />
+                            }
+                            label="Restringir antecedência mínima"
+                        />
+                        {values.hasMinAdvanceDays && (
+                            <NumberInput
+                                label="Antecedência Mínima (opcional)"
+                                error={
+                                    touched.minAdvanceDays &&
+                                    Boolean(errors.minAdvanceDays)
+                                }
+                                helperText={errors.minAdvanceDays}
+                                min={1}
+                                max={values.maxAdvanceDays}
+                                {...getFieldProps('minAdvanceDays')}
+                                onChange={(e) => {
+                                    const newValue = e.target.value
+                                    if (newValue === '') {
+                                        setFieldValue(
+                                            'minAdvanceDays',
+                                            undefined,
+                                        )
+                                    } else {
+                                        setFieldValue(
+                                            'minAdvanceDays',
+                                            Number(newValue),
+                                        )
+                                    }
+                                }}
+                            />
+                        )}
+                    </Stack>
+                    <Stack width={'100%'}>
+                        <FormControlLabel
+                            control={
+                                <Switch
+                                    checked={values.hasMaxAdvanceDays}
+                                    onChange={(e) => {
+                                        setFieldValue(
+                                            'hasMaxAdvanceDays',
+                                            e.target.checked,
+                                        )
+                                        if (e.target.checked) {
+                                            setFieldValue(
+                                                'maxAdvanceDays',
+                                                values.minAdvanceDays || 1,
+                                            )
+                                        } else {
+                                            setFieldValue(
+                                                'maxAdvanceDays',
+                                                undefined,
+                                            )
+                                        }
+                                    }}
+                                />
+                            }
+                            label="Restringir antecedência máxima"
+                        />
+                        {values.hasMaxAdvanceDays && (
+                            <NumberInput
+                                label="Antecedência Máxima (opcional)"
+                                error={
+                                    touched.maxAdvanceDays &&
+                                    Boolean(errors.maxAdvanceDays)
+                                }
+                                helperText={errors.maxAdvanceDays}
+                                min={values.minAdvanceDays || 1}
+                                {...getFieldProps('maxAdvanceDays')}
+                                onChange={(e) => {
+                                    const newValue = e.target.value
+                                    if (newValue === '') {
+                                        setFieldValue(
+                                            'maxAdvanceDays',
+                                            undefined,
+                                        )
+                                    } else {
+                                        setFieldValue(
+                                            'maxAdvanceDays',
+                                            Number(newValue),
+                                        )
+                                    }
+                                }}
+                            />
+                        )}
+                    </Stack>
+                </Stack>
+                <FormSection>
+                    <FormControlLabel
+                        control={<Switch checked={values.validForAbandoned} />}
+                        label="Válido para reservas abandonadas"
+                        onChange={(e) =>
+                            setFieldValue(
+                                'validForAbandoned',
+                                (e.target as HTMLInputElement).checked,
+                            )
+                        }
+                    />
+                    <FormControlLabel
+                        control={<Switch checked={values.validForPackages} />}
+                        label="Válido para Pacotes e Feriados"
+                        onChange={(e) =>
+                            setFieldValue(
+                                'validForPackages',
+                                (e.target as HTMLInputElement).checked,
+                            )
+                        }
+                    />
+                </FormSection>
             </FormSection>
 
             <FormSection title="Regras de exibição">
@@ -602,23 +629,6 @@ export const OffersAndCouponsForm = () => {
                             (e.target as HTMLInputElement).checked,
                         )
                     }
-                />
-                <FormControlLabel
-                    control={<Switch checked={values.isExclusive} />}
-                    label="Exclusivo para reservas"
-                    onChange={(e) =>
-                        setFieldValue(
-                            'isExclusive',
-                            (e.target as HTMLInputElement).checked,
-                        )
-                    }
-                />
-
-                <TextField
-                    label="Código do Cupom"
-                    error={touched.couponCode && Boolean(errors.couponCode)}
-                    helperText={touched.couponCode && errors.couponCode}
-                    {...getFieldProps('couponCode')}
                 />
             </FormSection>
         </FormContainer>

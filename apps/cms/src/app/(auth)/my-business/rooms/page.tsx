@@ -106,7 +106,7 @@ export default function Rooms() {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleDuplicate = (item: HousingUnitTypeFull) => {
+    const handleDuplicate = () => {
         // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
     }
 
@@ -249,7 +249,7 @@ export default function Rooms() {
                             label="Duplicar"
                             Icon={Copy}
                             onClick={() => {
-                                handleDuplicate(row.original)
+                                handleDuplicate()
                                 closeMenu()
                             }}
                         />,

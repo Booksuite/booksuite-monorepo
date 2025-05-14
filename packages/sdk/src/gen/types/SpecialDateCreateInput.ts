@@ -1,7 +1,6 @@
 import type { HousingUnitTypePricingChangeInput } from './HousingUnitTypePricingChangeInput.ts'
 import type { PriceVariationType } from './PriceVariationType.ts'
 import type { SpecialDateMediaInput } from './SpecialDateMediaInput.ts'
-import type { SpecialDateServiceInput } from './SpecialDateServiceInput.ts'
 
 export type SpecialDateCreateInput = {
   /**
@@ -49,10 +48,6 @@ export type SpecialDateCreateInput = {
    * @type array
    */
   housingUnitTypePrices: HousingUnitTypePricingChangeInput[]
-  /**
-   * @type array
-   */
-  includedServices: SpecialDateServiceInput[]
   /**
    * @type array
    */

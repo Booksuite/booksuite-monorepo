@@ -13,6 +13,15 @@ export type FacilitiesFormData = {
     facilities: FacilityInput[]
 }
 
+export function normalizeHousingUnitTypeFacilityInput(
+    facility: CompanyFacility[],
+): FacilityInput[] {
+    return facility.map((f) => ({
+        facilityId: f.facility.id,
+        isFeatured: f.order === 0,
+    }))
+}
+
 export const createFacilitiesInitialValues = (
     data: { facilities?: CompanyFacility[] } | undefined,
 ): FacilitiesFormData => ({

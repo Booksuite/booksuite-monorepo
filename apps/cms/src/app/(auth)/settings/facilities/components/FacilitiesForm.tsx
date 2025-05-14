@@ -1,8 +1,4 @@
-import {
-    Facility,
-    HousingUnitTypeFacilityInput,
-    useSearchFacilities,
-} from '@booksuite/sdk'
+import { Facility, useSearchFacilities } from '@booksuite/sdk'
 import { Box, Button, Stack, Typography, useTheme } from '@mui/material'
 import { useFormikContext } from 'formik'
 import { useSnackbar } from 'notistack'
@@ -14,6 +10,7 @@ import { SelectModal } from '@/components/organisms/SelectModal'
 import {
     COMODITIES_TAB_FILTER,
     FacilitiesFormData,
+    FacilityInput,
     MAX_FEATURED_FACILITIES,
 } from '../utils/config'
 
@@ -33,7 +30,7 @@ export const FacilitiesForm = () => {
     })
 
     const getFacilities = useCallback(
-        (facilityInputs: HousingUnitTypeFacilityInput[]): Facility[] => {
+        (facilityInputs: FacilityInput[]): Facility[] => {
             if (!facilities?.items) return []
 
             const facilityIds = new Set(
@@ -75,7 +72,9 @@ export const FacilitiesForm = () => {
                 <Stack>
                     {!!facilities && (
                         <SelectModal
-                            items={facilities.items}
+                            items={facilities.items.sort((a, b) =>
+                                a.name.localeCompare(b.name),
+                            )}
                             initialSelectedItems={allFacilities}
                             open={isOpen}
                             onClose={() => setIsOpen(false)}
@@ -88,15 +87,12 @@ export const FacilitiesForm = () => {
                                 )
                                 setFieldValue(
                                     'facilities',
-                                    items.map<HousingUnitTypeFacilityInput>(
-                                        (facility) => ({
-                                            facilityId: facility.id,
-                                            isFeatured:
-                                                existingFeatured.get(
-                                                    facility.id,
-                                                ) ?? false,
-                                        }),
-                                    ),
+                                    items.map<FacilityInput>((facility) => ({
+                                        facilityId: facility.id,
+                                        isFeatured:
+                                            existingFeatured.get(facility.id) ??
+                                            false,
+                                    })),
                                 )
                             }}
                             tabFilter={COMODITIES_TAB_FILTER}
@@ -113,6 +109,9 @@ export const FacilitiesForm = () => {
                             </Typography>
                             <Stack spacing={2}>
                                 {featuredFacilities
+                                    .sort((a, b) =>
+                                        a.name.localeCompare(b.name),
+                                    )
                                     .slice(0, MAX_FEATURED_FACILITIES)
                                     .map((facility) => (
                                         <FacilityItem
@@ -176,45 +175,49 @@ export const FacilitiesForm = () => {
                                 Demais comodidades
                             </Typography>
                             <Stack spacing={2}>
-                                {nonFeaturedFacilities.map((facility) => (
-                                    <FacilityItem
-                                        key={facility.id}
-                                        facility={facility}
-                                        onClick={(item) => {
-                                            if (
-                                                featuredFacilities.length >=
-                                                MAX_FEATURED_FACILITIES
-                                            ) {
-                                                return enqueueSnackbar(
-                                                    `Você pode selecionar no máximo ${MAX_FEATURED_FACILITIES} comodidades destacadas`,
-                                                    { variant: 'warning' },
+                                {nonFeaturedFacilities
+                                    .sort((a, b) =>
+                                        a.name.localeCompare(b.name),
+                                    )
+                                    .map((facility) => (
+                                        <FacilityItem
+                                            key={facility.id}
+                                            facility={facility}
+                                            onClick={(item) => {
+                                                if (
+                                                    featuredFacilities.length >=
+                                                    MAX_FEATURED_FACILITIES
+                                                ) {
+                                                    return enqueueSnackbar(
+                                                        `Você pode selecionar no máximo ${MAX_FEATURED_FACILITIES} comodidades destacadas`,
+                                                        { variant: 'warning' },
+                                                    )
+                                                }
+
+                                                const facilityIndex =
+                                                    values.facilities.findIndex(
+                                                        (f) =>
+                                                            f.facilityId ===
+                                                            item.id,
+                                                    )
+
+                                                const newFacilities = [
+                                                    ...values.facilities,
+                                                ]
+                                                newFacilities[facilityIndex] = {
+                                                    ...newFacilities[
+                                                        facilityIndex
+                                                    ]!,
+                                                    isFeatured: true,
+                                                }
+
+                                                setFieldValue(
+                                                    'facilities',
+                                                    newFacilities,
                                                 )
-                                            }
-
-                                            const facilityIndex =
-                                                values.facilities.findIndex(
-                                                    (f) =>
-                                                        f.facilityId ===
-                                                        item.id,
-                                                )
-
-                                            const newFacilities = [
-                                                ...values.facilities,
-                                            ]
-                                            newFacilities[facilityIndex] = {
-                                                ...newFacilities[
-                                                    facilityIndex
-                                                ]!,
-                                                isFeatured: true,
-                                            }
-
-                                            setFieldValue(
-                                                'facilities',
-                                                newFacilities,
-                                            )
-                                        }}
-                                    />
-                                ))}
+                                            }}
+                                        />
+                                    ))}
                                 {nonFeaturedFacilities.length === 0 && (
                                     <Box
                                         display="flex"

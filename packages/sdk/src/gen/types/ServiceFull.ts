@@ -24,10 +24,6 @@ export type ServiceFull = {
   /**
    * @type number
    */
-  adults: number
-  /**
-   * @type number
-   */
   minStay: number
   /**
    * @type number

@@ -74,9 +74,9 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
         ),
     },
     {
-        id: 'purchaseStartDate',
-        header: 'Início da Compra',
-        accessorKey: 'purchaseStartDate',
+        id: 'startDate',
+        header: 'Início da Oferta',
+        accessorKey: 'startDate',
         muiTableHeadCellProps: {
             sx: {
                 textAlign: 'left',
@@ -91,10 +91,26 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<Offer>[] = [
                     marginLeft: '10px',
                 }}
             >
-                {row.original.visibilityStartDate
-                    ? dayjs(row.original.visibilityStartDate).format(
-                          'DD/MM/YYYY',
-                      )
+                {row.original.startDate
+                    ? dayjs(row.original.startDate).format('DD/MM/YYYY')
+                    : '-'}
+            </Typography>
+        ),
+    },
+    {
+        header: 'Fim da Oferta',
+        accessorKey: 'endDate',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => (
+            <Typography sx={{ fontSize: '14px', marginLeft: '10px' }}>
+                {row.original.endDate
+                    ? dayjs(row.original.endDate).format('DD/MM/YYYY')
                     : '-'}
             </Typography>
         ),

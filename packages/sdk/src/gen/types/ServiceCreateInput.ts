@@ -19,10 +19,6 @@ export type ServiceCreateInput = {
   /**
    * @type number
    */
-  adults: number
-  /**
-   * @type number
-   */
   minStay: number
   /**
    * @type number

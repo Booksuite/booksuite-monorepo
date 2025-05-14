@@ -27,13 +27,22 @@ export const transformFormDataForSubmit = (
         order: media.order ?? null,
     }))
 
+    const defaultStartDate = dayjs().startOf('day').toISOString()
+    const defaultEndDate = dayjs().add(1, 'year').endOf('day').toISOString()
+
     return {
         ...rest,
         coverMediaId: medias[0]?.media.id,
         medias: transformedMedias,
         availableWeekDays: formData.availableWeekDays.map(Number),
-        seasonStart: dayjs(formData.seasonStart).toISOString(),
-        seasonEnd: dayjs(formData.seasonEnd).toISOString(),
+        seasonStart:
+            formData.seasonalSale && formData.seasonStart
+                ? dayjs(formData.seasonStart).toISOString()
+                : defaultStartDate,
+        seasonEnd:
+            formData.seasonalSale && formData.seasonEnd
+                ? dayjs(formData.seasonEnd).toISOString()
+                : defaultEndDate,
         availableHousingUnitTypes: formData.availableHousingUnitTypes.map(
             (item) => ({ housingUnitTypeId: item.housingUnitTypeId }),
         ),
@@ -45,13 +54,12 @@ export const createFormInitialValues = (
 ): ServiceFormData => ({
     name: data?.name || '',
     published: false,
-    adults: data?.adults || 0,
     billingType: data?.billingType || 'DAILY',
     availableWeekDays: Array.isArray(data?.availableWeekDays)
         ? data.availableWeekDays.map(String)
         : [],
     medias: data?.medias || [],
-    description: data?.name || '',
+    description: data?.description || '',
     minStay: data?.minStay || 1,
     minNotice: data?.minNotice || 1,
     included: data?.included || '',
@@ -60,8 +68,8 @@ export const createFormInitialValues = (
     panelSale: data?.panelSale || false,
     seasonalSale: data?.seasonalSale || false,
     price: data?.price || 0,
-    seasonStart: data?.seasonStart ? dayjs(data.seasonStart).toISOString() : '',
-    seasonEnd: data?.seasonEnd ? dayjs(data.seasonEnd).toISOString() : '',
+    seasonStart: data?.seasonStart?.split('T').at(0) || '',
+    seasonEnd: data?.seasonEnd?.split('T').at(0) || '',
     coverMediaId: data?.coverMedia?.id || '',
     availableHousingUnitTypes:
         data?.availableHousingUnitTypes?.map((h) => ({
@@ -72,7 +80,6 @@ export const createFormInitialValues = (
 export const serviceFormSchema = yup.object({
     name: yup.string().required('Nome é obrigatório'),
     published: yup.boolean().required('Status é obrigatório'),
-    adults: yup.number().min(0),
     billingType: yup.string().required('Tipo de cobrança é obrigatório'),
     availableHousingUnitTypes: yup.array().min(1),
     medias: yup.array().min(1),
@@ -85,7 +92,6 @@ export const serviceFormSchema = yup.object({
         .number()
         .min(1, 'Mínimo de aviso deve ser pelo menos 1')
         .required('Mínimo de aviso é obrigatório'),
-
     availableWeekDays: yup.array().required('Noites são obrigatórias'),
     included: yup.string().optional(),
     notes: yup.string().optional(),
@@ -97,7 +103,15 @@ export const serviceFormSchema = yup.object({
         .boolean()
         .required('Status da Venda sazonal é obrigatória'),
     price: yup.number().min(0).required('Preço é obrigatório'),
-    seasonStart: yup.string().optional(),
-    seasonEnd: yup.string().optional(),
+    seasonStart: yup.string().when('seasonalSale', {
+        is: true,
+        then: (schema) => schema.required('Data de início é obrigatória'),
+        otherwise: (schema) => schema.optional(),
+    }),
+    seasonEnd: yup.string().when('seasonalSale', {
+        is: true,
+        then: (schema) => schema.required('Data de fim é obrigatória'),
+        otherwise: (schema) => schema.optional(),
+    }),
     coverMediaId: yup.string().optional(),
 })

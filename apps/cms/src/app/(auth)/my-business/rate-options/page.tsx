@@ -130,7 +130,7 @@ export default function RateOptions() {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleDuplicate = (item: RateOptionFull) => {
+    const handleDuplicate = () => {
         // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
     }
 
@@ -249,7 +249,7 @@ export default function RateOptions() {
                             label="Duplicar"
                             Icon={Copy}
                             onClick={() => {
-                                handleDuplicate(row.original)
+                                handleDuplicate()
                                 closeMenu()
                             }}
                         />,

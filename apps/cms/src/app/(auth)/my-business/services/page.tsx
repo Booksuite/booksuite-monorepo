@@ -14,6 +14,7 @@ import {
     Typography,
 } from '@mui/material'
 import { Box } from '@mui/system'
+import dayjs from 'dayjs'
 import {
     Check,
     CheckCheck,
@@ -121,8 +122,60 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<ServiceFull>[] = [
         ),
     },
     {
-        id: 'published',
         header: 'Status',
+        accessorKey: 'status',
+        muiTableHeadCellProps: {
+            sx: {
+                textAlign: 'left',
+                border: 'none',
+                fontWeight: 'medium',
+            },
+        },
+        Cell: ({ row }) => {
+            const { published, seasonalSale, seasonStart, seasonEnd } =
+                row.original
+
+            const now = dayjs()
+            const start = seasonStart ? dayjs(seasonStart) : null
+            const end = seasonEnd ? dayjs(seasonEnd) : null
+
+            let text = 'Inativa'
+            let color = 'inherit'
+
+            if (published) {
+                if (!seasonalSale) {
+                    text = 'Em Andamento'
+                    color = theme.palette.success.main
+                } else if (start && end) {
+                    if (now.isBefore(start)) {
+                        text = 'Programada'
+                        color = theme.palette.warning.main
+                    } else if (now.isAfter(end)) {
+                        text = 'Finalizada'
+                        color = theme.palette.error.main
+                    } else {
+                        text = 'Em Andamento'
+                        color = theme.palette.success.main
+                    }
+                }
+            }
+
+            return (
+                <Typography
+                    sx={{
+                        fontSize: '14px',
+                        marginLeft: '10px',
+                        color,
+                    }}
+                >
+                    {text}
+                </Typography>
+            )
+        },
+    },
+    {
+        id: 'published',
+        header: 'Visibilidade',
         accessorKey: 'published',
         muiTableHeadCellProps: {
             sx: {
@@ -141,7 +194,7 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<ServiceFull>[] = [
                         : theme.palette.blueGrey[700],
                 }}
             >
-                {row.original.published ? 'Ativo' : 'Inativo'}
+                {row.original.published ? 'Publicado' : 'Não publicado'}
             </Typography>
         ),
     },
@@ -150,7 +203,6 @@ const COLUMNS_DEFINITION: MRT_ColumnDef<ServiceFull>[] = [
 export default function Services() {
     const { push } = useRouter()
     const { showDialog } = useConfirmationDialog()
-    const { mutate: updateService } = useUpdateService()
 
     const [selectedFilters, setSelectedFilters] = useState<string[]>([
         'published',
@@ -184,6 +236,7 @@ export default function Services() {
         data: services,
         isLoading,
         error,
+        refetch,
     } = useSearchServices(
         { companyId },
         {
@@ -201,6 +254,18 @@ export default function Services() {
         },
         { query: searchQuery.length > 0 ? searchQuery : undefined },
     )
+
+    useEffect(() => {
+        refetch()
+    }, [refetch])
+
+    const { mutate: updateService } = useUpdateService({
+        mutation: {
+            onSuccess: () => {
+                refetch()
+            },
+        },
+    })
 
     const handleRowClick = (row: ServiceFull) => {
         push(`/my-business/services/${row.id}`)

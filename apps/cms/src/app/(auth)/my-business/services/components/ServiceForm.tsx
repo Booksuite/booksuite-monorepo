@@ -40,9 +40,10 @@ import { FormContainer } from '@/components/atoms/FormContainer'
 import { FormSection } from '@/components/atoms/FormSection'
 import { NumberInput } from '@/components/atoms/NumberInput'
 import { MediaGallery } from '@/components/organisms/MediaGallery'
-import { SortableMediaItem } from '../../rooms/components/SortableMediaItem'
 import type { ServiceFormData } from '../utils/config'
 import { VALID_NIGHTS } from '../utils/constants'
+
+import { SortableMediaItem } from './SortableMediaItem'
 
 export const ServiceForm: React.FC = () => {
     const { getFieldProps, touched, errors, values, setFieldValue } =
@@ -108,7 +109,9 @@ export const ServiceForm: React.FC = () => {
             },
         )
 
-    const availableHousingUnitTypes = housingUnitTypes?.items
+    const availableHousingUnitTypes = housingUnitTypes?.items?.filter(
+        (housing) => housing.published,
+    )
 
     return (
         <FormContainer>
@@ -308,66 +311,96 @@ export const ServiceForm: React.FC = () => {
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
+                                inputProps={{
+                                    min: values.seasonStart || undefined,
+                                }}
                             />
                         </Grid>
                     </Grid>
                 </FormSection>
             )}
 
-            <FormSection title="Adultos">
-                <NumberInput
-                    label="Número de adultos"
-                    min={1}
-                    error={!!errors.adults}
-                    helperText={errors.adults}
-                    {...getFieldProps('adults')}
-                    onChange={(e) => {
-                        const newValueNumber = Number(e.target.value)
-                        if (Number.isNaN(newValueNumber)) return
-                        setFieldValue('adults', Math.round(newValueNumber))
-                    }}
-                />
-            </FormSection>
-
             {!isLoadingHousingUnitTypes && !!housingUnitTypes && (
                 <FormSection title="Acomodações Válidas">
                     <FormControl component="fieldset">
                         <FormGroup>
-                            {availableHousingUnitTypes?.map((housing) => (
-                                <FormControlLabel
-                                    key={housing.id}
-                                    control={
-                                        <Checkbox
-                                            checked={values.availableHousingUnitTypes.some(
-                                                (h) =>
-                                                    h.housingUnitTypeId ===
-                                                    housing.id,
-                                            )}
-                                            onChange={(e) => {
-                                                const newValue = e.target
-                                                    .checked
-                                                    ? [
-                                                          ...values.availableHousingUnitTypes,
-                                                          {
-                                                              housingUnitTypeId:
-                                                                  housing.id,
-                                                          },
-                                                      ]
-                                                    : values.availableHousingUnitTypes.filter(
-                                                          (h) =>
-                                                              h.housingUnitTypeId !==
-                                                              housing.id,
-                                                      )
-                                                setFieldValue(
-                                                    'availableHousingUnitTypes',
-                                                    newValue,
-                                                )
-                                            }}
+                            <Grid container spacing={2}>
+                                <Grid size={3}>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={
+                                                    values
+                                                        .availableHousingUnitTypes
+                                                        .length ===
+                                                        availableHousingUnitTypes?.length &&
+                                                    availableHousingUnitTypes.every(
+                                                        (housing) =>
+                                                            values.availableHousingUnitTypes.some(
+                                                                (h) =>
+                                                                    h.housingUnitTypeId ===
+                                                                    housing.id,
+                                                            ),
+                                                    )
+                                                }
+                                                onChange={(e) => {
+                                                    const newValue = e.target
+                                                        .checked
+                                                        ? availableHousingUnitTypes?.map(
+                                                              (housing) => ({
+                                                                  housingUnitTypeId:
+                                                                      housing.id,
+                                                              }),
+                                                          )
+                                                        : []
+                                                    setFieldValue(
+                                                        'availableHousingUnitTypes',
+                                                        newValue,
+                                                    )
+                                                }}
+                                            />
+                                        }
+                                        label="Selecionar todas"
+                                    />
+                                </Grid>
+
+                                {availableHousingUnitTypes?.map((housing) => (
+                                    <Grid size={3} key={housing.id}>
+                                        <FormControlLabel
+                                            control={
+                                                <Checkbox
+                                                    checked={values.availableHousingUnitTypes.some(
+                                                        (h) =>
+                                                            h.housingUnitTypeId ===
+                                                            housing.id,
+                                                    )}
+                                                    onChange={(e) => {
+                                                        const newValue = e
+                                                            .target.checked
+                                                            ? [
+                                                                  ...values.availableHousingUnitTypes,
+                                                                  {
+                                                                      housingUnitTypeId:
+                                                                          housing.id,
+                                                                  },
+                                                              ]
+                                                            : values.availableHousingUnitTypes.filter(
+                                                                  (h) =>
+                                                                      h.housingUnitTypeId !==
+                                                                      housing.id,
+                                                              )
+                                                        setFieldValue(
+                                                            'availableHousingUnitTypes',
+                                                            newValue,
+                                                        )
+                                                    }}
+                                                />
+                                            }
+                                            label={housing.name}
                                         />
-                                    }
-                                    label={housing.name}
-                                />
-                            ))}
+                                    </Grid>
+                                ))}
+                            </Grid>
                         </FormGroup>
                     </FormControl>
                 </FormSection>
@@ -377,8 +410,40 @@ export const ServiceForm: React.FC = () => {
                 <FormControl component="fieldset">
                     <FormGroup>
                         <Grid container justifyContent={'space-between'}>
+                            <Grid size={2.5}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={
+                                                values.availableWeekDays
+                                                    .length ===
+                                                    VALID_NIGHTS.length &&
+                                                VALID_NIGHTS.every((night) =>
+                                                    values.availableWeekDays.includes(
+                                                        night.value,
+                                                    ),
+                                                )
+                                            }
+                                            onChange={(e) => {
+                                                const newValue = e.target
+                                                    .checked
+                                                    ? VALID_NIGHTS.map(
+                                                          (night) =>
+                                                              night.value,
+                                                      )
+                                                    : []
+                                                setFieldValue(
+                                                    'availableWeekDays',
+                                                    newValue,
+                                                )
+                                            }}
+                                        />
+                                    }
+                                    label="Selecionar todas"
+                                />
+                            </Grid>
                             {VALID_NIGHTS.map((night) => (
-                                <Grid key={night.name}>
+                                <Grid size={2.5} key={night.name}>
                                     <FormControlLabel
                                         control={
                                             <Checkbox

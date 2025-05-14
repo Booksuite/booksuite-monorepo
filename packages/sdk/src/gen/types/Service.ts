@@ -22,10 +22,6 @@ export type Service = {
   /**
    * @type number
    */
-  adults: number
-  /**
-   * @type number
-   */
   minStay: number
   /**
    * @type number
