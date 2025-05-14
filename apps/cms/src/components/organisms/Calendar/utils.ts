@@ -1,79 +1,53 @@
 import {
-    HousingUnitTypeFull,
-    ReservationFull,
+    AvailAndPricingSummaryInput,
+    Reservation,
     ReservationResponseFullDTOStatus,
 } from '@booksuite/sdk'
-import { green, red, yellow } from '@mui/material/colors'
-import moment from 'moment'
+import dayjs, { Dayjs } from 'dayjs'
 
-import { VALID_OCCUPANCY_STATUS } from './constants'
+import { RESERVATION_STATUS_COLORS, VALID_OCCUPANCY_STATUS } from './constants'
+
+export const isWeekendMultiple = (index: number) => {
+    const dayOfWeek = index % 7
+    return dayOfWeek === 0 || dayOfWeek === 6
+}
 
 export const getDaysArray = (
-    start: Date | string | moment.Moment,
-    end: Date | string | moment.Moment,
+    start: Date | string | Dayjs,
+    end: Date | string | Dayjs,
 ) => {
-    const days: moment.Moment[] = []
-    const current = moment(start)
-    const endMoment = moment(end)
+    const days: Dayjs[] = []
+    const startDayjs = dayjs.utc(start)
+    const endDayjs = dayjs.utc(end)
 
-    while (current.isSameOrBefore(endMoment)) {
-        days.push(current.clone())
-        current.add(1, 'day')
+    const diff = endDayjs.diff(startDayjs, 'day')
+
+    for (let i = 0; i <= diff; i++) {
+        days.push(startDayjs.add(i, 'day').clone())
     }
     return days
 }
 
-export const getDayPrice = (
-    day: moment.Moment,
-    housingType: HousingUnitTypeFull,
-) => {
-    const dayOfWeek = moment(day).day()
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
-    const price = isWeekend
-        ? housingType.weekendPrice
-        : housingType.weekdaysPrice
-
-    return price || 0
-}
-
-export const getCellBgColor = (day: moment.Moment) => {
-    const dayOfWeek = moment(day).day()
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
-    const bgColor = isWeekend ? 'blueGrey.50' : 'white'
-
-    return bgColor
+export const getDayPrice = (calendarDay: AvailAndPricingSummaryInput) => {
+    return calendarDay.finalPrice
 }
 
 export const getReservationColorFromStatus = (
     status: ReservationResponseFullDTOStatus,
 ): string => {
-    switch (status) {
-        case 'WAITING_PAYMENT':
-            return yellow[800]
-        case 'CONFIRMED':
-            return green[500]
-        case 'CHECKED_IN':
-            return green[900]
-        case 'CHECKED_OUT':
-            return 'blueGrey.400'
-        case 'ABANDONED':
-        case 'CANCELLED':
-            return red[800]
-        default:
-            return 'blueGrey.500'
-    }
+    return RESERVATION_STATUS_COLORS[status]
 }
 
 export const getTotalOccupancyPercentage = (
-    day: moment.Moment,
+    day: Dayjs,
     totalUnits: number,
-    reservations: (ReservationFull & { id: string })[],
+    reservations: Reservation[],
 ): number => {
     if (totalUnits === 0) return 0
 
     const occupiedUnits = reservations.filter((reservation) => {
-        const startDate = moment(reservation.startDate).startOf('day')
-        const endDate = moment(reservation.endDate).endOf('day')
+        const startDate = dayjs.utc(reservation.startDate).startOf('day')
+        const endDate = dayjs.utc(reservation.endDate).endOf('day')
         return (
             day.isBetween(startDate, endDate, 'day', '[]') &&
             VALID_OCCUPANCY_STATUS.includes(reservation.status)

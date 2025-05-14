@@ -1,14 +1,14 @@
-import { ReservationFull } from '@booksuite/sdk'
+import { AvailAndPricingReservationInput, Reservation } from '@booksuite/sdk'
 import { Stack, Tooltip, Typography } from '@mui/material'
+import dayjs, { Dayjs } from 'dayjs'
 import { NotepadText } from 'lucide-react'
-import moment from 'moment'
 
 import { CELL_HEIGHT, CELL_WIDTH, RESERVATION_ITEM_PADDING } from './constants'
 import { getReservationColorFromStatus } from './utils'
 
 interface ReservationItemProps {
-    reservation: ReservationFull
-    startOfCalendar: moment.Moment
+    reservation: Reservation
+    startOfCalendar: Dayjs
 }
 
 export const ReservationItem: React.FC<ReservationItemProps> = ({
@@ -16,15 +16,21 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({
     startOfCalendar,
 }) => {
     const reservationKey = reservation.guestUser?.firstName || 'Reservation'
-    const reservationStartDate = moment(reservation.startDate).startOf('day')
+    const reservationStartDate = dayjs.utc(reservation.startDate).startOf('day')
 
-    const totalDays = moment(reservation.endDate)
+    const totalDays = dayjs
+        .utc(reservation.endDate)
         .endOf('day')
         .diff(reservationStartDate, 'days')
 
     const daysDiff = reservationStartDate.diff(startOfCalendar, 'days')
 
-    const reservationTitle = `${reservation.guestUser?.firstName} ${reservation.guestUser?.lastName}`
+    const reservationTitle = [
+        reservation.guestUser?.firstName,
+        reservation.guestUser?.lastName,
+    ]
+        .filter((i) => i)
+        .join(' ')
 
     const transformX =
         daysDiff * CELL_WIDTH + CELL_WIDTH / 2 + RESERVATION_ITEM_PADDING / 2

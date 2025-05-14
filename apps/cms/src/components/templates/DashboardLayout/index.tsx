@@ -6,6 +6,7 @@ import type React from 'react'
 import { DashboardHeader } from './components/DashboardHeader'
 import { DashboardSidebar } from './components/DashboardSidebar'
 import { useDashboardSidebarStore } from './stores/dashboardSidebar'
+import { useDashboardLayoutStore } from './stores'
 import type { DashboardLayoutProps } from './types'
 
 const avatarUrl = '/profile-pic.png'
@@ -15,8 +16,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 }) => {
     const { drawerWidth } = useDashboardSidebarStore()
 
+    const { fullWidth, bgcolor } = useDashboardLayoutStore()
+
     return (
         <Box
+            bgcolor={bgcolor}
             sx={{
                 display: 'flex',
                 height: '100vh',
@@ -50,7 +54,13 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         overflow: 'auto',
                     }}
                 >
-                    <Container maxWidth="lg">{children}</Container>
+                    <Container
+                        disableGutters
+                        maxWidth={fullWidth ? false : 'lg'}
+                        fixed={!fullWidth}
+                    >
+                        {children}
+                    </Container>
                 </Box>
             </Box>
         </Box>
