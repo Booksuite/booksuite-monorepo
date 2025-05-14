@@ -3,7 +3,7 @@ import { NavigationLink } from './types'
 export const NAVIGATION_LINKS: NavigationLink[] = [
     { name: 'Início', href: '/' },
     { name: 'Acomodações', href: '/housing-unit' },
-    { name: 'Experiências', href: '/' },
+    { name: 'Serviços', href: '/services' },
     { name: 'Pacotes', href: '/' },
     { name: 'Promoções', href: '/' },
     { name: 'Galeria', href: '/' },
