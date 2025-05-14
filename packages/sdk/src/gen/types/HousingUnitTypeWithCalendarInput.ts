@@ -1,5 +1,5 @@
+import type { AvailAndPricingSummaryInput } from './AvailAndPricingSummaryInput.ts'
 import type { HousingUnit } from './HousingUnit.ts'
-import type { PricingSummaryInput } from './PricingSummaryInput.ts'
 
 export type HousingUnitTypeWithCalendarInput = {
   /**
@@ -87,6 +87,6 @@ export type HousingUnitTypeWithCalendarInput = {
    * @type object
    */
   calendar: {
-    [key: string]: PricingSummaryInput
+    [key: string]: AvailAndPricingSummaryInput
   }
 }

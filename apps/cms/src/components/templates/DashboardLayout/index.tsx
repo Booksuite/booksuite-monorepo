@@ -6,6 +6,7 @@ import type React from 'react'
 import { DashboardHeader } from './components/DashboardHeader'
 import { DashboardSidebar } from './components/DashboardSidebar'
 import { useDashboardSidebarStore } from './stores/dashboardSidebar'
+import { useDashboardLayoutStore } from './stores'
 import type { DashboardLayoutProps } from './types'
 
 const avatarUrl = '/profile-pic.png'
@@ -14,6 +15,8 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
     children,
 }) => {
     const { drawerWidth } = useDashboardSidebarStore()
+
+    const { fullWidth, bgcolor } = useDashboardLayoutStore()
 
     return (
         <Box

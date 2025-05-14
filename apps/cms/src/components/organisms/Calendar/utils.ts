@@ -1,6 +1,6 @@
 import {
-    AvailAndPricingReservationInput,
-    CalendarDay,
+    AvailAndPricingSummaryInput,
+    Reservation,
     ReservationResponseFullDTOStatus,
 } from '@booksuite/sdk'
 import dayjs, { Dayjs } from 'dayjs'
@@ -28,7 +28,7 @@ export const getDaysArray = (
     return days
 }
 
-export const getDayPrice = (calendarDay: CalendarDay) => {
+export const getDayPrice = (calendarDay: AvailAndPricingSummaryInput) => {
     return calendarDay.finalPrice
 }
 
@@ -41,7 +41,7 @@ export const getReservationColorFromStatus = (
 export const getTotalOccupancyPercentage = (
     day: Dayjs,
     totalUnits: number,
-    reservations: AvailAndPricingReservationInput[],
+    reservations: Reservation[],
 ): number => {
     if (totalUnits === 0) return 0
 

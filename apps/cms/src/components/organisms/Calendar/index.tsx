@@ -1,12 +1,6 @@
 'use client'
 
-import 'moment/locale/pt-br'
-
-import {
-    AvailabilityAndPricing,
-    AvailAndPricingReservationInput,
-    Reservation,
-} from '@booksuite/sdk'
+import { HousingUnitTypeWithCalendarInput, Reservation } from '@booksuite/sdk'
 import { Box, Paper, Stack, Tooltip, Typography } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import { CalendarIcon } from 'lucide-react'
@@ -23,14 +17,14 @@ import { getDayPrice, getDaysArray, getTotalOccupancyPercentage } from './utils'
 interface CalendarProps {
     startDate: Date | string | Dayjs
     endDate: Date | string | Dayjs
-    availabilityAndPricing?: AvailabilityAndPricing[]
+    availabilityAndPricing?: HousingUnitTypeWithCalendarInput[]
     weekendDays?: number[]
     reservations?: Reservation[]
     isLoading?: boolean
 }
 
 type ReservationsByUnitByDay = {
-    [unitId: string]: AvailAndPricingReservationInput[]
+    [unitId: string]: Reservation[]
 }
 
 export const Calendar: React.FC<CalendarProps> = ({
@@ -154,11 +148,11 @@ export const Calendar: React.FC<CalendarProps> = ({
                                 reservations,
                             )
 
-                            const isSpecialDates = availabilityAndPricing.some(
+                            const isSpecialDate = availabilityAndPricing.some(
                                 (housingType) =>
                                     !!housingType.calendar[
                                         day.format('YYYY-MM-DD')
-                                    ]?.specialDates,
+                                    ]?.specialDates?.length,
                             )
 
                             return (
@@ -168,7 +162,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                                 >
                                     <HeaderCell
                                         gap={0.5}
-                                        isSpecialDate={isSpecialDates!}
+                                        isSpecialDate={isSpecialDate}
                                     >
                                         <Typography
                                             variant="caption"
@@ -213,7 +207,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                                         isSpecialDate={
                                             !!housingType.calendar[
                                                 day.format('YYYY-MM-DD')
-                                            ]?.specialDates
+                                            ]?.specialDates.length
                                         }
                                         isWeekend={weekendDays.includes(
                                             day.day(),
@@ -270,7 +264,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                                             isSpecialDate={
                                                 !!housingType.calendar[
                                                     day.format('YYYY-MM-DD')
-                                                ]?.specialDates
+                                                ]?.specialDates.length
                                             }
                                             isWeekend={weekendDays.includes(
                                                 day.day(),

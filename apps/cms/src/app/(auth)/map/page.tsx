@@ -4,10 +4,19 @@ import { ReservationStatus } from '@booksuite/sdk'
 import { useGetCalendar } from '@booksuite/sdk/src/gen/hooks/Availability and PricingHooks/useGetCalendar'
 import { useSearchReservations } from '@booksuite/sdk/src/gen/hooks/ReservationHooks/useSearchReservations'
 import { RefreshRounded } from '@mui/icons-material'
-import { Box, Button, IconButton, Stack, Tooltip } from '@mui/material'
+import {
+    Box,
+    Button,
+    IconButton,
+    Menu,
+    MenuItem,
+    Stack,
+    Tooltip,
+    Typography,
+} from '@mui/material'
 import dayjs from 'dayjs'
 import { ChevronDown } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import {
@@ -21,9 +30,12 @@ import {
 } from '@/components/organisms/Calendar/constants'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { useDashboardLayoutStore } from '@/components/templates/DashboardLayout/stores'
+import Link from 'next/link'
 
 const MapPage: React.FC = () => {
     const companyId = useCurrentCompanyId()
+    const menuAnchorElem = useRef<HTMLButtonElement>(null)
+    const [menuOpen, setMenuOpen] = useState(false)
 
     const { setFullWidth, setBgcolor } = useDashboardLayoutStore()
     const [range, setRange] = useState<DatePickerRange>({
@@ -111,7 +123,32 @@ const MapPage: React.FC = () => {
                 >
                     <DateRangePicker range={range} onChange={setRange} />
                 </Stack>
-                <Button endIcon={<ChevronDown />}>Adicionar</Button>
+                <Button
+                    onClick={() => setMenuOpen(true)}
+                    ref={menuAnchorElem}
+                    endIcon={<ChevronDown />}
+                >
+                    Opções
+                </Button>
+                <Menu
+                    open={menuOpen}
+                    anchorEl={menuAnchorElem.current}
+                    onClose={() => setMenuOpen(false)}
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                    transformOrigin={{
+                        vertical: -5,
+                        horizontal: 'right',
+                    }}
+                    sx={{
+                        '& .MuiPaper-root': {
+                            minWidth: 200,
+                        },
+                    }}
+                >
+                    <MenuItem dense component={Link} href="/reservation">
+                        <Typography fontSize={13}>Adicionar reserva</Typography>
+                    </MenuItem>
+                </Menu>
             </Stack>
 
             <Box>

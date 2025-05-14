@@ -1,4 +1,4 @@
-import { AvailAndPricingReservationInput } from '@booksuite/sdk'
+import { AvailAndPricingReservationInput, Reservation } from '@booksuite/sdk'
 import { Stack, Tooltip, Typography } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import { NotepadText } from 'lucide-react'
@@ -7,7 +7,7 @@ import { CELL_HEIGHT, CELL_WIDTH, RESERVATION_ITEM_PADDING } from './constants'
 import { getReservationColorFromStatus } from './utils'
 
 interface ReservationItemProps {
-    reservation: AvailAndPricingReservationInput
+    reservation: Reservation
     startOfCalendar: Dayjs
 }
 
