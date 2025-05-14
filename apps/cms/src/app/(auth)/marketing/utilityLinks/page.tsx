@@ -94,7 +94,7 @@ export default function UtilityLinksPage() {
     )
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleDuplicate = (item: UtilityLinks) => {
+    const handleDuplicate = () => {
         // TODO: push(`/my-business/rooms/${item.id}/duplicate`)
     }
 
@@ -239,7 +239,7 @@ export default function UtilityLinksPage() {
                             label="Duplicar"
                             Icon={Copy}
                             onClick={() => {
-                                handleDuplicate(row.original)
+                                handleDuplicate()
                                 closeMenu()
                             }}
                         />,
