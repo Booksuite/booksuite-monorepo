@@ -203,15 +203,16 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
         const files = event.target.files
         if (!files || files.length === 0) return
 
-        const file = files[0]
-
         try {
-            await uploadMedia({
-                companyId,
-                data: {
-                    file,
-                },
-            })
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i]
+                await uploadMedia({
+                    companyId,
+                    data: {
+                        file,
+                    },
+                })
+            }
 
             if (fileInputRef.current) {
                 fileInputRef.current.value = ''
@@ -271,6 +272,7 @@ export const MediaGallery: React.FC<MediaGalleryProps> = ({
                             ref={fileInputRef}
                             type="file"
                             accept="image/*"
+                            multiple
                             style={{ display: 'none' }}
                             onChange={handleFileChange}
                         />
