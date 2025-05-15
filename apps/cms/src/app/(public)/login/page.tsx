@@ -8,18 +8,6 @@ export default async function Login() {
         <div className="Login">
             <DashboardLoginForm />
 
-            <Stack mt={4} alignItems={'center'}>
-                <Link
-                    component={NextLink}
-                    href="/forgot-my-password"
-                    display="block"
-                    color="blue.500"
-                    fontWeight="regular"
-                    fontSize={18}
-                >
-                    Esqueceu a senha?
-                </Link>
-            </Stack>
         </div>
     )
 }

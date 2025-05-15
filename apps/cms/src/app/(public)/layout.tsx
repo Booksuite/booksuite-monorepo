@@ -14,9 +14,6 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             px={4}
         >
             <Box>
-                <Box display="flex" justifyContent="center">
-                    <Logo.FullLogo />
-                </Box>
 
                 <Box mt={10}>{children}</Box>
             </Box>

@@ -88,8 +88,12 @@ export const themeOptions: ThemeOptions = {
     },
 
     typography: {
+      
         fontFamily: 'var(--font-inter)',
         fontSize: 14,
+        body2: {
+            color: '#888',
+        },
     },
 
     components: {
@@ -150,7 +154,12 @@ export const themeOptions: ThemeOptions = {
             defaultProps: {
                 variant: 'contained',
                 size: 'small',
+                
                 disableElevation: true,
+                style: {
+                    borderRadius: "8px",
+                },
+
             },
             styleOverrides: {
                 root: {
