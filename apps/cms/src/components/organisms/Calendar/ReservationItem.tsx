@@ -1,4 +1,4 @@
-import { AvailAndPricingReservationInput, Reservation } from '@booksuite/sdk'
+import { Reservation } from '@booksuite/sdk'
 import { Stack, Tooltip, Typography } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import { NotepadText } from 'lucide-react'
@@ -9,11 +9,13 @@ import { getReservationColorFromStatus } from './utils'
 interface ReservationItemProps {
     reservation: Reservation
     startOfCalendar: Dayjs
+    onReservationClick: (reservation: Reservation) => void
 }
 
 export const ReservationItem: React.FC<ReservationItemProps> = ({
     reservation,
     startOfCalendar,
+    onReservationClick,
 }) => {
     const reservationKey = reservation.guestUser?.firstName || 'Reservation'
     const reservationStartDate = dayjs.utc(reservation.startDate).startOf('day')
@@ -52,6 +54,10 @@ export const ReservationItem: React.FC<ReservationItemProps> = ({
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: 0.5,
+                    cursor: 'pointer',
+                }}
+                onClick={() => {
+                    onReservationClick(reservation)
                 }}
             >
                 <Stack

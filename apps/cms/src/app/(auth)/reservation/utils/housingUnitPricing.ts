@@ -28,7 +28,7 @@ export const useHousingUnitPricing = (
                 adults: adults || 0,
                 ageGroups:
                     ageGroups?.map((group) => ({
-                        ageGroupId: Number(group.ageGroupId),
+                        ageGroupId: group.ageGroupId,
                         quantity: group.quantity,
                     })) || [],
             },

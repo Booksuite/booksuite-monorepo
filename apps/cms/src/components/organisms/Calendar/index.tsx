@@ -1,14 +1,19 @@
 'use client'
 
-import { HousingUnitTypeWithCalendarInput, Reservation } from '@booksuite/sdk'
+import {
+    HousingUnitTypeWithCalendarInput,
+    Reservation,
+    ReservationFull,
+} from '@booksuite/sdk'
 import { Box, Paper, Stack, Tooltip, Typography } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import { CalendarIcon } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { formatCurrency } from '@/common/utils/currency'
 
 import { CalendarSkeleton } from './CalendarSkeleton'
+import { ReservationDetailsPopover } from './components/ReservationDetailsPopover'
 import { CalendarCell, HeaderCell, RoomCell } from './components/table'
 import { HEADER_CELL_HEIGHT, ROOMS_COLUMN_WIDTH } from './constants'
 import { ReservationItem } from './ReservationItem'
@@ -35,6 +40,9 @@ export const Calendar: React.FC<CalendarProps> = ({
     reservations = [],
     isLoading = false,
 }) => {
+    const [selectedReservation, setSelectedReservation] =
+        useState<ReservationFull | null>(null)
+
     const days = useMemo(
         () => getDaysArray(startDate, endDate),
         [startDate, endDate],
@@ -255,6 +263,11 @@ export const Calendar: React.FC<CalendarProps> = ({
                                                 startOfCalendar={
                                                     startOfCalendar
                                                 }
+                                                onReservationClick={() => {
+                                                    setSelectedReservation(
+                                                        reservation as ReservationFull,
+                                                    )
+                                                }}
                                             />
                                         ),
                                     )}
@@ -277,6 +290,12 @@ export const Calendar: React.FC<CalendarProps> = ({
                     ))}
                 </Box>
             </Stack>
+            <ReservationDetailsPopover
+                open={!!selectedReservation}
+                reservation={selectedReservation as ReservationFull}
+                onClose={() => setSelectedReservation(null)}
+                anchorEl={null}
+            />
         </Paper>
     )
 }
