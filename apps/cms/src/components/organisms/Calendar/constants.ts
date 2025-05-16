@@ -8,7 +8,9 @@ export const RESERVATION_ITEM_PADDING = 10
 export const HEADER_CELL_HEIGHT = 65
 export const VALID_OCCUPANCY_STATUS: ReservationCreateDTOStatus[] = [
     'CONFIRMED',
+    'WAITING_PAYMENT',
     'CHECKED_IN',
+    'CHECKED_OUT',
 ]
 
 export const RESERVATION_STATUS_COLORS: Record<
