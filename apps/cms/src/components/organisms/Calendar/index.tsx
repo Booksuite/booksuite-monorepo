@@ -292,7 +292,7 @@ export const Calendar: React.FC<CalendarProps> = ({
             </Stack>
             <ReservationDetailsPopover
                 open={!!selectedReservation}
-                reservation={selectedReservation as ReservationFull}
+                reservationId={selectedReservation?.id ?? ''}
                 onClose={() => setSelectedReservation(null)}
                 anchorEl={null}
             />

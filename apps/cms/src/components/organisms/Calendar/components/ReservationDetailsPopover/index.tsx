@@ -1,4 +1,4 @@
-import { ReservationFull } from '@booksuite/sdk'
+import { useGetReservationById } from '@booksuite/sdk'
 import {
     Box,
     Button,
@@ -23,6 +23,7 @@ import {
 import { useRef, useState } from 'react'
 
 import { ReservationDetailsModal } from '@/app/(auth)/map/components/ReservationDetailsModal'
+import { useCurrentCompanyId } from '@/common/contexts/user'
 import { theme } from '@/common/theme'
 import { Logo } from '@/components/atoms/Logo'
 
@@ -30,12 +31,12 @@ interface ReservationDetailsPopoverProps {
     open: boolean
     anchorEl: HTMLElement | null
     onClose: () => void
-    reservation?: ReservationFull
+    reservationId: string
 }
 
 export const ReservationDetailsPopover: React.FC<
     ReservationDetailsPopoverProps
-> = ({ open, anchorEl, onClose, reservation }) => {
+> = ({ open, anchorEl, onClose, reservationId }) => {
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
     const [collapse, setCollapse] = useState({
         info: false,
@@ -46,6 +47,20 @@ export const ReservationDetailsPopover: React.FC<
     })
     const [openModal, setOpenModal] = useState(false)
     const popoverRef = useRef<HTMLDivElement>(null)
+
+    const companyId = useCurrentCompanyId()
+
+    const { data: reservation } = useGetReservationById(
+        {
+            id: reservationId,
+            companyId,
+        },
+        {
+            query: {
+                enabled: !!reservationId,
+            },
+        },
+    )
 
     if (!reservation) return null
 
@@ -720,7 +735,7 @@ export const ReservationDetailsPopover: React.FC<
             <ReservationDetailsModal
                 open={openModal}
                 onClose={() => setOpenModal(false)}
-                reservation={reservation}
+                reservationId={reservation.id}
             />
         </>
     )

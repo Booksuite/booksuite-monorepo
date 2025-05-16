@@ -1,62 +1,84 @@
 import {
+    useGetHousingUnitTypeById,
+    useGetReservationById,
+} from '@booksuite/sdk'
+import {
+    Avatar,
+    Box,
+    Button,
     Dialog,
     DialogContent,
-    Box,
-    Stack,
-    Typography,
-    Button,
-    Tabs,
-    Tab,
-    IconButton,
     Divider,
-    Tooltip,
+    IconButton,
     Link,
-    Avatar,
+    Stack,
+    Tab,
+    Tabs,
     TextField,
+    Tooltip,
+    Typography,
 } from '@mui/material'
 import dayjs from 'dayjs'
 import {
+    CalendarCheckIcon,
+    CalendarIcon,
+    CalendarPlus2Icon,
     ChevronDownIcon,
-    X as XIcon,
+    ChevronUpIcon,
     Edit2Icon,
     MessageCircleMoreIcon,
-    ChevronUpIcon,
-    CalendarIcon,
+    X as XIcon,
 } from 'lucide-react'
 import { useState } from 'react'
-import { ReservationFull } from '@booksuite/sdk'
+
+import { useCurrentCompanyId } from '@/common/contexts/user'
 import { theme } from '@/common/theme'
 import { Image } from '@/components/atoms/Image'
-import { useGetHousingUnitTypeById } from '@booksuite/sdk'
+import { SERVICE_BILLING_TYPE_MAP } from '../utils/constants'
 
 interface ReservationDetailsModalProps {
     open: boolean
     onClose: () => void
-    reservation: ReservationFull
-}
-
-function getHousingUnitTypeImage(housingUnitType: any): string {
-    if (
-        housingUnitType &&
-        'medias' in housingUnitType &&
-        Array.isArray(housingUnitType.medias) &&
-        housingUnitType.medias[0] &&
-        housingUnitType.medias[0].media &&
-        housingUnitType.medias[0].media.url
-    ) {
-        return housingUnitType.medias[0].media.url
-    }
-    return '/placeholder.png'
+    reservationId: string
 }
 
 export const ReservationDetailsModal: React.FC<
     ReservationDetailsModalProps
-> = ({ open, onClose, reservation }) => {
+> = ({ open, onClose, reservationId }) => {
     const [tab, setTab] = useState(0)
     const [collapse, setCollapse] = useState({
         prices: false,
         subTotal: false,
+        subTotalServices: false,
     })
+    const companyId = useCurrentCompanyId()
+
+    const { data: reservation } = useGetReservationById(
+        {
+            id: reservationId,
+            companyId: companyId,
+        },
+        {
+            query: {
+                enabled: !!reservationId,
+            },
+        },
+    )
+
+    const { data: housingUnitTypeFull } = useGetHousingUnitTypeById(
+        {
+            id: reservation?.housingUnitTypeId ?? '',
+            companyId: reservation?.companyId ?? '',
+        },
+        {
+            query: {
+                enabled:
+                    !!reservation?.housingUnitTypeId &&
+                    !!reservation?.companyId,
+            },
+        },
+    )
+
     if (!reservation) return null
 
     const totalNights = dayjs(reservation.endDate).diff(
@@ -75,10 +97,6 @@ export const ReservationDetailsModal: React.FC<
             ? ' ' + reservation.guestUser.lastName
             : '')
 
-    const { data: housingUnitTypeFull } = useGetHousingUnitTypeById({
-        id: reservation.housingUnitTypeId!,
-        companyId: reservation.companyId,
-    })
     const housingImage =
         housingUnitTypeFull?.medias?.[0]?.media?.url || '/placeholder.png'
 
@@ -383,7 +401,6 @@ export const ReservationDetailsModal: React.FC<
                                         height={100}
                                         alt="Acomodação"
                                         borderRadius={1}
-                                        border="1px solid"
                                     />
                                     <Stack
                                         display="flex"
@@ -690,7 +707,7 @@ export const ReservationDetailsModal: React.FC<
                             {reservation.services &&
                             reservation.services.length > 0 ? (
                                 <>
-                                    {reservation.services.map((item, idx) => {
+                                    {reservation.services.map((item, index) => {
                                         let serviceImage =
                                             item.service.coverMedia?.url
                                         if (
@@ -707,10 +724,9 @@ export const ReservationDetailsModal: React.FC<
                                         }
                                         return (
                                             <Box
-                                                key={idx}
+                                                key={index}
                                                 mb={2}
                                                 sx={{
-                                                    bgcolor: 'grey.50',
                                                     borderRadius: 2,
                                                     p: 2,
                                                 }}
@@ -727,13 +743,14 @@ export const ReservationDetailsModal: React.FC<
                                                             '/placeholder.png'
                                                         }
                                                         sx={{
-                                                            width: 56,
-                                                            height: 56,
+                                                            width: 75,
+                                                            height: 75,
                                                         }}
                                                     />
                                                     <Stack flex={1}>
                                                         <Typography
                                                             fontWeight={600}
+                                                            color="blueGrey.800"
                                                         >
                                                             {item.service &&
                                                             item.service.name
@@ -741,62 +758,251 @@ export const ReservationDetailsModal: React.FC<
                                                                       .name
                                                                 : '-'}
                                                         </Typography>
-                                                        <Typography variant="body2">
-                                                            Quantidade:{' '}
-                                                            {item.quantity}
-                                                        </Typography>
-                                                        <Typography variant="body2">
-                                                            Valor unitário: R${' '}
-                                                            {item.service &&
-                                                            item.service
-                                                                .price !==
+                                                        <Stack
+                                                            direction="row"
+                                                            justifyContent="space-between"
+                                                        >
+                                                            <Typography
+                                                                variant="body2"
+                                                                color="blueGrey.600"
+                                                            >
+                                                                Quantidade:{' '}
+                                                            </Typography>
+                                                            <Typography
+                                                                variant="body2"
+                                                                color="blueGrey.800"
+                                                                fontWeight={500}
+                                                            >
+                                                                {item.quantity}
+                                                            </Typography>
+                                                        </Stack>
+                                                        <Stack
+                                                            direction="row"
+                                                            justifyContent="space-between"
+                                                        >
+                                                            <Typography
+                                                                variant="body2"
+                                                                color="blueGrey.600"
+                                                            >
+                                                                Valor{' '}
+                                                                {
+                                                                    SERVICE_BILLING_TYPE_MAP[
+                                                                        item
+                                                                            .service
+                                                                            .billingType
+                                                                    ]
+                                                                }
+                                                                :
+                                                            </Typography>
+                                                            <Typography
+                                                                variant="body2"
+                                                                color="blueGrey.800"
+                                                                fontWeight={500}
+                                                            >
+                                                                R${' '}
+                                                                {item.service &&
+                                                                item.service
+                                                                    .price !==
+                                                                    undefined
+                                                                    ? item.service.price.toLocaleString(
+                                                                          'pt-BR',
+                                                                          {
+                                                                              minimumFractionDigits: 2,
+                                                                          },
+                                                                      )
+                                                                    : '-'}
+                                                            </Typography>
+                                                        </Stack>
+                                                        <Stack
+                                                            direction="row"
+                                                            justifyContent="space-between"
+                                                        >
+                                                            <Typography
+                                                                variant="body2"
+                                                                color="blueGrey.600"
+                                                            >
+                                                                Total:
+                                                            </Typography>
+                                                            <Typography
+                                                                variant="body2"
+                                                                color="blueGrey.800"
+                                                                fontWeight={500}
+                                                            >
+                                                                R${' '}
+                                                                {item.totalPrice !==
                                                                 undefined
-                                                                ? item.service.price.toLocaleString(
-                                                                      'pt-BR',
-                                                                      {
-                                                                          minimumFractionDigits: 2,
-                                                                      },
-                                                                  )
-                                                                : '-'}
-                                                        </Typography>
-                                                        <Typography variant="body2">
-                                                            Total: R${' '}
-                                                            {item.totalPrice !==
-                                                            undefined
-                                                                ? item.totalPrice.toLocaleString(
-                                                                      'pt-BR',
-                                                                      {
-                                                                          minimumFractionDigits: 2,
-                                                                      },
-                                                                  )
-                                                                : '-'}
-                                                        </Typography>
+                                                                    ? item.totalPrice.toLocaleString(
+                                                                          'pt-BR',
+                                                                          {
+                                                                              minimumFractionDigits: 2,
+                                                                          },
+                                                                      )
+                                                                    : '-'}
+                                                            </Typography>
+                                                        </Stack>
+                                                        <Stack
+                                                            direction="row"
+                                                            justifyContent="space-between"
+                                                        >
+                                                            <Typography
+                                                                variant="body2"
+                                                                color="blueGrey.600"
+                                                            >
+                                                                Agendamento:
+                                                            </Typography>
+                                                            <Typography
+                                                                variant="body2"
+                                                                color="blue.500"
+                                                                fontWeight={500}
+                                                            >
+                                                                {/* TODO: Fazer a lógica para verificar se o serviço está agendado */}
+                                                                {item.service &&
+                                                                item.service
+                                                                    .seasonStart ? (
+                                                                    <Link
+                                                                        href={`/services/${item.service.id}`}
+                                                                        target="_blank"
+                                                                        display="flex"
+                                                                        gap={1}
+                                                                        alignItems="center"
+                                                                    >
+                                                                        <CalendarCheckIcon
+                                                                            size={
+                                                                                16
+                                                                            }
+                                                                        />
+                                                                        {dayjs(
+                                                                            item
+                                                                                .service
+                                                                                .seasonStart,
+                                                                        ).format(
+                                                                            'DD/MM/YYYY',
+                                                                        )}
+                                                                    </Link>
+                                                                ) : (
+                                                                    <Link
+                                                                        href={`/services/${item.service.id}`}
+                                                                        target="_blank"
+                                                                        display="flex"
+                                                                        gap={1}
+                                                                        alignItems="center"
+                                                                    >
+                                                                        <CalendarPlus2Icon
+                                                                            size={
+                                                                                16
+                                                                            }
+                                                                        />
+                                                                        Agendar
+                                                                    </Link>
+                                                                )}
+                                                            </Typography>
+                                                        </Stack>
                                                     </Stack>
                                                 </Stack>
                                             </Box>
                                         )
                                     })}
                                     <Stack
-                                        direction="row"
+                                        direction="column"
+                                        gap={2}
                                         justifyContent="space-between"
-                                        mt={2}
+                                        p={2}
+                                        onClick={() =>
+                                            setCollapse((c) => ({
+                                                ...c,
+                                                subTotalServices:
+                                                    !c.subTotalServices,
+                                            }))
+                                        }
                                     >
-                                        <Typography color="blueGrey.600">
-                                            Total base dos itens
-                                        </Typography>
-                                        <Typography color="blueGrey.600">
-                                            R${' '}
-                                            {(reservation.services || [])
-                                                .reduce(
-                                                    (acc, item) =>
-                                                        acc +
-                                                        (item.totalPrice || 0),
-                                                    0,
-                                                )
-                                                .toLocaleString('pt-BR', {
-                                                    minimumFractionDigits: 2,
-                                                })}
-                                        </Typography>
+                                        <Stack
+                                            direction="row"
+                                            gap={2}
+                                            alignItems="center"
+                                            justifyContent="space-between"
+                                            sx={{ cursor: 'pointer' }}
+                                        >
+                                            <Stack
+                                                direction="row"
+                                                gap={2}
+                                                alignItems="center"
+                                            >
+                                                <Typography
+                                                    fontWeight={500}
+                                                    color="blueGrey.800"
+                                                >
+                                                    Sub-total
+                                                </Typography>
+                                                {collapse.subTotalServices ? (
+                                                    <ChevronUpIcon
+                                                        size={20}
+                                                        color={
+                                                            theme.palette
+                                                                .blue[500]
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <ChevronDownIcon
+                                                        size={20}
+                                                        color={
+                                                            theme.palette
+                                                                .blue[500]
+                                                        }
+                                                    />
+                                                )}
+                                            </Stack>
+                                            <Typography
+                                                color="blueGrey.800"
+                                                fontWeight={500}
+                                            >
+                                                R${' '}
+                                                {reservation.servicesPrice?.toLocaleString(
+                                                    'pt-BR',
+                                                    {
+                                                        minimumFractionDigits: 2,
+                                                    },
+                                                )}
+                                            </Typography>
+                                        </Stack>
+
+                                        {collapse.subTotalServices && (
+                                            <Stack direction="column">
+                                                <Stack
+                                                    direction="row"
+                                                    justifyContent="space-between"
+                                                >
+                                                    <Typography color="blueGrey.600">
+                                                        Total base dos itens:
+                                                    </Typography>
+                                                    <Typography color="blueGrey.600">
+                                                        R${' '}
+                                                        {reservation.basePrice?.toLocaleString(
+                                                            'pt-BR',
+                                                            {
+                                                                minimumFractionDigits: 2,
+                                                            },
+                                                        )}
+                                                    </Typography>
+                                                </Stack>
+                                                <Stack
+                                                    direction="row"
+                                                    justifyContent="space-between"
+                                                >
+                                                    <Typography color="blueGrey.600">
+                                                        Ofertas:
+                                                    </Typography>
+                                                    {/* <Typography color="blueGrey.600">
+                                                        R${' '}
+                                                        {reservation?.toLocaleString(
+                                                            'pt-BR',
+                                                            {
+                                                                minimumFractionDigits: 2,
+                                                            },
+                                                        )}
+                                                    </Typography> */}
+                                                </Stack>
+                                            </Stack>
+                                        )}
                                     </Stack>
                                 </>
                             ) : (
