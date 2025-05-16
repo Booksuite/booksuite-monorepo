@@ -22,6 +22,11 @@ export type ReservationUpdateInput = {
    */
   basePrice?: number
   /**
+   * @description Offer amount for the day
+   * @type number | undefined
+   */
+  offerAmount?: number
+  /**
    * @description Services price for the day
    * @type number | undefined
    */

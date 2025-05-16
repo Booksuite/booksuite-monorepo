@@ -202,49 +202,48 @@ export const Calendar: React.FC<CalendarProps> = ({
                     {availabilityAndPricing.map((pricing, typeIndex) => (
                         <Box key={typeIndex}>
                             <Stack direction="row">
-                                {days.map((day, dayIndex) => (
-                                    <CalendarCell
-                                        key={dayIndex}
-                                        gap={0.5}
-                                        isSpecialDate={
-                                            !!pricing.calendar[
-                                                day.format('YYYY-MM-DD')
-                                            ]?.specialDates.length
-                                        }
-                                        isWeekend={weekendDays.includes(
-                                            day.day(),
-                                        )}
-                                    >
-                                        <Box
-                                            sx={{
-                                                border: '2px solid',
-                                                borderRadius: 0.6,
-                                                padding: 0.1,
-                                                fontWeight: 'bold',
-                                                minWidth: '18px',
-                                                fontSize: '9px',
-                                            }}
-                                        >
-                                            {
-                                                pricing.housingUnitType
-                                                    .housingUnits.length
+                                {days.map((day, dayIndex) => {
+                                    const calendarDay =
+                                        pricing.calendar[
+                                            day.format('YYYY-MM-DD')
+                                        ]!
+                                    return (
+                                        <CalendarCell
+                                            key={dayIndex}
+                                            gap={0.5}
+                                            isSpecialDate={
+                                                !!pricing.calendar[
+                                                    day.format('YYYY-MM-DD')
+                                                ]?.specialDates.length
                                             }
-                                        </Box>
-                                        <Typography
-                                            variant="body2"
-                                            fontWeight="bold"
-                                            fontSize="10px"
-                                        >
-                                            {formatCurrency(
-                                                getDayPrice(
-                                                    pricing.calendar[
-                                                        day.format('YYYY-MM-DD')
-                                                    ]!,
-                                                ),
+                                            isWeekend={weekendDays.includes(
+                                                day.day(),
                                             )}
-                                        </Typography>
-                                    </CalendarCell>
-                                ))}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    border: '2px solid',
+                                                    borderRadius: 0.6,
+                                                    padding: 0.1,
+                                                    fontWeight: 'bold',
+                                                    minWidth: '18px',
+                                                    fontSize: '9px',
+                                                }}
+                                            >
+                                                {calendarDay.finalMinStay}
+                                            </Box>
+                                            <Typography
+                                                variant="body2"
+                                                fontWeight="bold"
+                                                fontSize="10px"
+                                            >
+                                                {formatCurrency(
+                                                    getDayPrice(calendarDay),
+                                                )}
+                                            </Typography>
+                                        </CalendarCell>
+                                    )
+                                })}
                             </Stack>
                             {pricing.housingUnitType.housingUnits.map(
                                 (unit, unitIndex) => (

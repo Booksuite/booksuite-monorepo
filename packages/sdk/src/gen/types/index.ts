@@ -560,7 +560,6 @@ export type { UnavailabilityReason } from './UnavailabilityReason.ts'
 export type { UnavailableSource } from './UnavailableSource.ts'
 export type { UpdateOfferDtoType, UpdateOfferDto } from './UpdateOfferDto.ts'
 export type { User } from './User.ts'
-export type { UserCreateInput } from './UserCreateInput.ts'
 export type { UtilityLinks } from './UtilityLinks.ts'
 export type { GetUtilityLinkPathParams, GetUtilityLink200, GetUtilityLinkQueryResponse, GetUtilityLinkQuery } from './UtilityLinksController/GetUtilityLink.ts'
 export type {

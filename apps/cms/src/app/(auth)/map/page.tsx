@@ -83,7 +83,12 @@ const MapPage: React.FC = () => {
                     start: formattedStartDate,
                     end: formattedEndDate,
                 },
-                status: ['CHECKED_IN', 'CHECKED_OUT', 'CONFIRMED'],
+                status: [
+                    'CHECKED_IN',
+                    'CHECKED_OUT',
+                    'CONFIRMED',
+                    'WAITING_PAYMENT',
+                ],
             },
             pagination: { page: 1, itemsPerPage: 1000 },
         },

@@ -15,6 +15,11 @@ export type AvailAndPricingSummaryInput = {
    */
   basePrice: number
   /**
+   * @description Offer amount for the day
+   * @type number
+   */
+  offerAmount: number
+  /**
    * @description Services price for the day
    * @type number
    */

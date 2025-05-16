@@ -1,7 +1,6 @@
 import type { ReservationAgeGroupInput } from './ReservationAgeGroupInput.ts'
 import type { ReservationServiceInput } from './ReservationServiceInput.ts'
 import type { ReservationSummaryInput } from './ReservationSummaryInput.ts'
-import type { UserCreateInput } from './UserCreateInput.ts'
 
 export type ReservationCreateDTOStatus =
   | 'WAITING_PAYMENT'
@@ -26,9 +25,9 @@ export type ReservationCreateInput = {
    */
   summary: ReservationSummaryInput
   /**
-   * @type object
+   * @type string
    */
-  guestUser: UserCreateInput
+  guestUserId: string
   /**
    * @type string
    */
