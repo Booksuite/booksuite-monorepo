@@ -1,23 +1,37 @@
-import { useGetHousingUnitTypeById } from '@booksuite/sdk'
+import {
+    ReservationSummaryInput,
+    useGetHousingUnitTypeById,
+} from '@booksuite/sdk'
 import { Box, Button, Typography } from '@mui/material'
-import { useFormikContext } from 'formik'
-import moment from 'moment'
-import { omit, pick } from 'radash'
+import dayjs from 'dayjs'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { formatCurrency } from '@/common/utils/currency'
 import { FormSection } from '@/components/atoms/FormSection'
-import { ReservationFormData } from '../../utils/config'
-import { RateOptionsSelector } from '../RateOptionsSelector'
+import { RateOptionsSection } from '../RateOptionsSection'
 
 import { HousingUnitTypeModal } from './HousingUnitModal'
 
-export const HousingUnitTypeSection: React.FC = () => {
+interface HousingUnitTypeSectionProps {
+    onChange: (reservationSummary: ReservationSummaryInput) => void
+    reservationSummary: ReservationSummaryInput | null
+    adults: number
+    ageGroups: Record<string, number>
+    startDate: string
+    endDate: string
+}
+
+export const HousingUnitTypeSection: React.FC<HousingUnitTypeSectionProps> = ({
+    onChange,
+    reservationSummary,
+    adults = 0,
+    ageGroups = {},
+    startDate,
+    endDate,
+}) => {
     const [isHousingUnitModalOpen, setIsHousingUnitModalOpen] = useState(false)
     const companyId = useCurrentCompanyId()
-
-    const { values, setValues } = useFormikContext<ReservationFormData>()
 
     const handleOpenHousingUnitModal = () => {
         setIsHousingUnitModalOpen(true)
@@ -27,12 +41,11 @@ export const HousingUnitTypeSection: React.FC = () => {
         useGetHousingUnitTypeById(
             {
                 companyId,
-                id: values.housingUnitTypeId,
+                id: reservationSummary?.housingUnitType.id || '',
             },
             {
                 query: {
-                    enabled:
-                        !!values.housingUnitTypeId && !!values.housingUnitId,
+                    enabled: !!reservationSummary?.housingUnitType.id,
                 },
             },
         )
@@ -45,9 +58,9 @@ export const HousingUnitTypeSection: React.FC = () => {
                 rightAction={
                     <Button
                         onClick={handleOpenHousingUnitModal}
-                        disabled={!values.startDate || !values.endDate}
+                        disabled={!startDate || !endDate}
                     >
-                        {values.housingUnitId
+                        {reservationSummary?.housingUnit?.id
                             ? 'Alterar Acomodação'
                             : 'Adicionar'}
                     </Button>
@@ -108,10 +121,12 @@ export const HousingUnitTypeSection: React.FC = () => {
                                                 color: '#6B7280',
                                             }}
                                         >
-                                            {`${moment(values.endDate).diff(
-                                                moment(values.startDate),
-                                                'days',
-                                            )} Noites`}
+                                            {`${dayjs
+                                                .utc(endDate)
+                                                .diff(
+                                                    dayjs.utc(startDate),
+                                                    'days',
+                                                )} Noites`}
                                         </Typography>
                                     </Box>
                                 </Box>
@@ -136,13 +151,29 @@ export const HousingUnitTypeSection: React.FC = () => {
                                             fontWeight: 500,
                                         }}
                                     >
-                                        {formatCurrency(values.finalPrice)}
+                                        {formatCurrency(
+                                            reservationSummary?.summary
+                                                .basePrice ?? 0,
+                                        )}
                                     </Typography>
                                 </Box>
                             </Box>
                         </Box>
 
-                        <RateOptionsSelector />
+                        <RateOptionsSection
+                            onChange={(option) => {
+                                if (!reservationSummary) return
+
+                                onChange({
+                                    ...reservationSummary,
+                                    summary: {
+                                        ...reservationSummary.summary,
+                                        rateOption: option,
+                                    },
+                                })
+                            }}
+                            reservationSummary={reservationSummary}
+                        />
                     </Box>
                 )}
             </FormSection>
@@ -150,28 +181,16 @@ export const HousingUnitTypeSection: React.FC = () => {
             <HousingUnitTypeModal
                 open={isHousingUnitModalOpen}
                 onClose={() => setIsHousingUnitModalOpen(false)}
-                onSelect={(housingUnitType, housingUnit) => {
-                    setValues((curr) => ({
-                        ...curr,
-                        housingUnitTypeId: housingUnitType.id,
-                        housingUnitType: omit(housingUnitType, ['summary']),
-                        housingUnit: housingUnit,
-                        housingUnitId: housingUnit.id,
-
-                        ...pick(housingUnitType.summary, [
-                            'basePrice',
-                            'childrenPrice',
-                            'rateOptionPrice',
-                            'servicesPrice',
-                            'finalPrice',
-                        ]),
-                    }))
+                onSelect={(newReservationSummary, housingUnit) => {
+                    onChange({ ...newReservationSummary, housingUnit })
                 }}
-                initialSelectedHousingUnitId={values.housingUnit?.id}
-                adults={values.adults ? values.adults : 0}
-                ageGroups={values.ageGroups}
-                startDate={values.startDate}
-                endDate={values.endDate}
+                initialSelectedHousingUnitId={
+                    reservationSummary?.housingUnit?.id || null
+                }
+                adults={adults}
+                ageGroups={ageGroups}
+                startDate={startDate}
+                endDate={endDate}
             />
         </>
     )

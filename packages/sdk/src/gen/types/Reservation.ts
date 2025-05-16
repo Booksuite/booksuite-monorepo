@@ -1,4 +1,5 @@
 import type { HousingUnit } from './HousingUnit.ts'
+import type { ReservationSummaryInput } from './ReservationSummaryInput.ts'
 import type { User } from './User.ts'
 
 export type ReservationResponseDTOStatus =
@@ -16,31 +17,6 @@ export type ReservationResponseDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAP
 
 export type Reservation = {
   /**
-   * @description Base price for the day
-   * @type number
-   */
-  basePrice: number
-  /**
-   * @description Services price for the day
-   * @type number
-   */
-  servicesPrice: number
-  /**
-   * @description Children price for the day
-   * @type number
-   */
-  childrenPrice: number
-  /**
-   * @description Rate option price for the day
-   * @type number
-   */
-  rateOptionPrice: number
-  /**
-   * @description Final price for the day
-   * @type number
-   */
-  finalPrice: number
-  /**
    * @type string
    */
   id: string
@@ -48,6 +24,10 @@ export type Reservation = {
    * @type string
    */
   status: ReservationResponseDTOStatus
+  /**
+   * @type object
+   */
+  summary: ReservationSummaryInput
   /**
    * @type string
    */

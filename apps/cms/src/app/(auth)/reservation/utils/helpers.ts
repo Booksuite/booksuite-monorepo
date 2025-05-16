@@ -6,7 +6,7 @@ import {
     Service,
     ServiceFull,
 } from '@booksuite/sdk'
-import moment from 'moment'
+import dayjs from 'dayjs'
 
 export function getNewReservationServicesArray(
     currentServices: ReservationService[],
@@ -56,8 +56,8 @@ export function getNewReservationServicesArray(
 }
 
 export function calculateTotalStay(start: string, end: string): number {
-    const startDate = moment.utc(start)
-    const endDate = moment.utc(end)
+    const startDate = dayjs.utc(start)
+    const endDate = dayjs.utc(end)
     return endDate.diff(startDate, 'day') - 1
 }
 

@@ -1,6 +1,6 @@
 import {
     HousingUnit,
-    HousingUnitTypeAvailAndPriceInput,
+    ReservationSummaryInput,
     useCalculatePrice,
 } from '@booksuite/sdk'
 import SearchIcon from '@mui/icons-material/Search'
@@ -31,12 +31,12 @@ interface HousingUnitModalProps {
     open: boolean
     onClose: () => void
     onSelect: (
-        housingUnitType: HousingUnitTypeAvailAndPriceInput,
+        housingUnitType: ReservationSummaryInput,
         HousingUnit: HousingUnit,
     ) => void
     adults: number
     ageGroups: Record<string, number>
-    initialSelectedHousingUnitId?: string
+    initialSelectedHousingUnitId?: string | null
     numberOfNights?: number
     startDate: string
     endDate: string
@@ -123,16 +123,17 @@ export const HousingUnitTypeModal: React.FC<HousingUnitModalProps> = ({
     const selectedHousingUnitTypePrice = useMemo(
         () =>
             availAndPricing?.find((avail) =>
-                avail.housingUnits.find(
+                avail.housingUnitType.housingUnits.find(
                     (unit) => unit.id === selectedHousingUnitId,
                 ),
             ),
         [availAndPricing, selectedHousingUnitId],
     )
     const handleSelect = () => {
-        const housingUnit = selectedHousingUnitTypePrice?.housingUnits.find(
-            (unit) => unit.id === selectedHousingUnitId,
-        )
+        const housingUnit =
+            selectedHousingUnitTypePrice?.housingUnitType.housingUnits.find(
+                (unit) => unit.id === selectedHousingUnitId,
+            )
 
         if (!selectedHousingUnitTypePrice || !housingUnit) return
 
@@ -145,9 +146,11 @@ export const HousingUnitTypeModal: React.FC<HousingUnitModalProps> = ({
 
     const filteredHousingUnitsTypes = useMemo(() => {
         return availableHousingUnitTypes.filter(
-            (type) =>
-                type.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                type.housingUnits.some((unit) =>
+            (pricing) =>
+                pricing.housingUnitType.name
+                    .toLowerCase()
+                    .includes(searchQuery.toLowerCase()) ||
+                pricing.housingUnitType.housingUnits.some((unit) =>
                     unit.name.toLowerCase().includes(searchQuery.toLowerCase()),
                 ),
         )
@@ -237,27 +240,32 @@ export const HousingUnitTypeModal: React.FC<HousingUnitModalProps> = ({
                 ) : (
                     <>
                         <Stack gap={2}>
-                            {filteredHousingUnitsTypes.map((type) => {
-                                const isDisabled =
-                                    childrens > (type?.maxChildren ?? 0) ||
-                                    adults + childrens > (type?.maxGuests ?? 0)
+                            {filteredHousingUnitsTypes.map(
+                                ({ housingUnitType: type }) => {
+                                    const isDisabled =
+                                        childrens > (type?.maxChildren ?? 0) ||
+                                        adults + childrens >
+                                            (type?.maxGuests ?? 0)
 
-                                return type.housingUnits.map((unit) => {
-                                    const isUnitSelected =
-                                        selectedHousingUnitId === unit.id
+                                    return type.housingUnits.map((unit) => {
+                                        const isUnitSelected =
+                                            selectedHousingUnitId === unit.id
 
-                                    return (
-                                        <HousingUnitItem
-                                            key={unit.id}
-                                            housingUnitType={type}
-                                            housingUnit={unit}
-                                            selected={isUnitSelected}
-                                            disabled={isDisabled}
-                                            onClick={setSelectedHousingUnitId}
-                                        />
-                                    )
-                                })
-                            })}
+                                        return (
+                                            <HousingUnitItem
+                                                key={unit.id}
+                                                housingUnitType={type}
+                                                housingUnit={unit}
+                                                selected={isUnitSelected}
+                                                disabled={isDisabled}
+                                                onClick={
+                                                    setSelectedHousingUnitId
+                                                }
+                                            />
+                                        )
+                                    })
+                                },
+                            )}
                         </Stack>
 
                         <Box

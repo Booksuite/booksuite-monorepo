@@ -21,13 +21,13 @@ export const RateOptionItem: React.FC<RateOptionItemProps> = ({
             sx={{
                 border: '1px solid',
                 borderColor: selected ? 'blue.900' : 'grey.300',
-                borderRadius: 2,
-                p: 2,
+                borderRadius: 1,
+                px: 3,
+                py: 2,
                 cursor: 'pointer',
-                bgcolor: selected ? 'primary.lighter' : 'transparent',
+                bgcolor: selected ? 'blueGrey.50' : 'transparent',
                 '&:hover': {
                     borderColor: 'blue.900',
-                    bgcolor: 'primary.lighter',
                 },
                 transition: 'all 0.2s ease-in-out',
                 display: 'flex',
@@ -84,24 +84,13 @@ export const RateOptionItem: React.FC<RateOptionItemProps> = ({
                         width: 20,
                         height: 20,
                         borderRadius: '50%',
-                        border: '2px solid',
+                        border: selected ? '6px solid' : '1px solid',
                         borderColor: selected ? 'blue.900' : 'grey.400',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                     }}
-                >
-                    {selected && (
-                        <Box
-                            sx={{
-                                width: 10,
-                                height: 10,
-                                borderRadius: '50%',
-                                bgcolor: 'blue.900',
-                            }}
-                        />
-                    )}
-                </Box>
+                />
             </Box>
         </Box>
     )

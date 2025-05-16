@@ -30,6 +30,7 @@ export const DashboardHeader = ({ userImageSrc }: DashboardHeaderProps) => {
             sx={{
                 bgcolor: 'background.paper',
                 color: 'blue.900',
+                boxShadow: '0 0 3px 0 rgba(0, 0, 0, .2)',
             }}
         >
             <Toolbar>

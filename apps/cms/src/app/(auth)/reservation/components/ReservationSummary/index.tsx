@@ -11,8 +11,8 @@ import {
     TableRow,
     Typography,
 } from '@mui/material'
+import dayjs from 'dayjs'
 import { useFormikContext } from 'formik'
-import moment from 'moment'
 import React from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
@@ -29,9 +29,12 @@ const ReservationSummary = () => {
 
     const { data: housingUnitType, isFetching } =
         useCalculatePriceFromHousingUnitTypeId(
-            { companyId, housingUnitTypeId: values.housingUnitTypeId },
             {
-                currentDate: moment.utc().format('YYYY-MM-DD'),
+                companyId,
+                housingUnitTypeId: values.summary?.housingUnitType.id || '',
+            },
+            {
+                currentDate: dayjs.utc().format('YYYY-MM-DD'),
                 search: {
                     dateRange: {
                         start: values.startDate,
@@ -39,7 +42,8 @@ const ReservationSummary = () => {
                     },
                     adults: values.adults,
                     ageGroups: transformAgeGroupObjToArray(values.ageGroups),
-                    rateOptionId: values.rateOptionId || undefined,
+                    rateOptionId:
+                        values.summary?.summary.rateOption?.id || undefined,
                     services: values.services.map((service) => ({
                         serviceId: service.service.id,
                         quantity: service.quantity,
@@ -48,30 +52,33 @@ const ReservationSummary = () => {
             },
             {
                 query: {
-                    enabled: !!values.housingUnitTypeId,
+                    enabled: !!values.summary?.housingUnitType.id,
                 },
             },
         )
-
-    const basePrice = housingUnitType?.summary.basePrice ?? 0
-    const finalPrice = housingUnitType?.summary.finalPrice ?? 0
 
     const rateOptionPrice = housingUnitType?.summary.rateOptionPrice ?? 0
     const servicesPrice = housingUnitType?.summary.servicesPrice ?? 0
     const childrenPrice = housingUnitType?.summary.childrenPrice ?? 0
 
-    const additionsTotal = rateOptionPrice + servicesPrice + childrenPrice
+    const additionsTotal = servicesPrice
 
-    const priceWithoutDiscounts = basePrice + additionsTotal
     const totalReceived = 0 // TODO: get total received
+
+    const offerAmount = housingUnitType?.summary.offerAmount ?? 0
+    const basePrice = housingUnitType?.summary.basePrice ?? 0
+    const finalPrice = housingUnitType?.summary.finalPrice ?? 0
+
+    const totalStay = basePrice + rateOptionPrice + childrenPrice
+
+    const discounts = 0
+
     const openAmount = finalPrice - totalReceived
 
-    const preDiscountsPrice = finalPrice - priceWithoutDiscounts
-    const discounts = preDiscountsPrice < 0 ? preDiscountsPrice : 0
-
     const rows = [
-        { label: 'Total das diárias', value: formatCurrency(basePrice) },
+        { label: 'Total das diárias', value: formatCurrency(totalStay) },
         { label: 'Total de adicionais', value: formatCurrency(additionsTotal) },
+        { label: 'Ofertas', value: formatCurrency(offerAmount) },
         { label: 'Descontos', value: formatCurrency(discounts) },
         { label: 'Devoluções', value: formatCurrency(0) },
         { label: 'Acréscimo', value: formatCurrency(0) },

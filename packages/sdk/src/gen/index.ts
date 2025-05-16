@@ -116,6 +116,7 @@ export type {
 } from './types/Availability and PricingController/GetCalendarFromHousingUnitTypeId.ts'
 export type { AvailabilityInput } from './types/AvailabilityInput.ts'
 export type { AvailAndPricingAgeGroupSearchInput } from './types/AvailAndPricingAgeGroupSearchInput.ts'
+export type { AvailAndPricingHousingUnitTypeInput } from './types/AvailAndPricingHousingUnitTypeInput.ts'
 export type { AvailAndPricingOffersInput } from './types/AvailAndPricingOffersInput.ts'
 export type { AvailAndPricingRateOptionInput } from './types/AvailAndPricingRateOptionInput.ts'
 export type {
@@ -297,7 +298,6 @@ export type { HostingRulesInput } from './types/HostingRulesInput.ts'
 export type { HousingUnit } from './types/HousingUnit.ts'
 export type { HousingUnitInput } from './types/HousingUnitInput.ts'
 export type { HousingUnitType } from './types/HousingUnitType.ts'
-export type { HousingUnitTypeAvailAndPriceInput } from './types/HousingUnitTypeAvailAndPriceInput.ts'
 export type {
   CreateHousingUnitTypePathParams,
   CreateHousingUnitType200,
@@ -523,6 +523,7 @@ export type { ReservationSearchFilterInput } from './types/ReservationSearchFilt
 export type { ReservationService } from './types/ReservationService.ts'
 export type { ReservationServiceInput } from './types/ReservationServiceInput.ts'
 export type { ReservationStatus } from './types/ReservationStatus.ts'
+export type { ReservationSummaryInput } from './types/ReservationSummaryInput.ts'
 export type { ReservationUpdateDTOStatus, ReservationUpdateDTOSaleChannel, ReservationUpdateInput } from './types/ReservationUpdateInput.ts'
 export type { SeasonRule } from './types/SeasonRule.ts'
 export type { SeasonRuleCreateInput } from './types/SeasonRuleCreateInput.ts'
@@ -648,7 +649,6 @@ export type { UnavailabilityReason } from './types/UnavailabilityReason.ts'
 export type { UnavailableSource } from './types/UnavailableSource.ts'
 export type { UpdateOfferDtoType, UpdateOfferDto } from './types/UpdateOfferDto.ts'
 export type { User } from './types/User.ts'
-export type { UserCreateInput } from './types/UserCreateInput.ts'
 export type { UtilityLinks } from './types/UtilityLinks.ts'
 export type {
   GetUtilityLinkPathParams,
