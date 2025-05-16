@@ -11,12 +11,15 @@ export const VALID_OCCUPANCY_STATUS: ReservationCreateDTOStatus[] = [
     'WAITING_PAYMENT',
     'CHECKED_IN',
     'CHECKED_OUT',
+    'PRE_ORDER',
 ]
 
 export const RESERVATION_STATUS_COLORS: Record<
     ReservationCreateDTOStatus,
     string
 > = {
+    ESTIMATE: yellow[800],
+    PRE_ORDER: yellow[800],
     WAITING_PAYMENT: yellow[800],
     CONFIRMED: green[500],
     CHECKED_IN: green[900],
@@ -30,6 +33,8 @@ export const RESERVATION_STATUS_COLORS: Record<
 
 export const RESERVATION_LABEL_MAP: Record<ReservationCreateDTOStatus, string> =
     {
+        ESTIMATE: 'Orçamento',
+        PRE_ORDER: 'Pré-reserva',
         WAITING_PAYMENT: 'Aguardando pagamento',
         CONFIRMED: 'Confirmado',
         CHECKED_IN: 'Check-in',

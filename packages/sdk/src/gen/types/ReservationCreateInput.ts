@@ -3,10 +3,12 @@ import type { ReservationServiceInput } from './ReservationServiceInput.ts'
 import type { ReservationSummaryInput } from './ReservationSummaryInput.ts'
 
 export type ReservationCreateDTOStatus =
+  | 'PRE_ORDER'
   | 'WAITING_PAYMENT'
   | 'CONFIRMED'
   | 'CHECKED_IN'
   | 'CHECKED_OUT'
+  | 'ESTIMATE'
   | 'ABANDONED'
   | 'CANCELLED'
   | 'PAYMENT_FAILED'
@@ -28,6 +30,10 @@ export type ReservationCreateInput = {
    * @type string
    */
   guestUserId: string
+  /**
+   * @type string, date
+   */
+  preOrderExpiraiton: string | null
   /**
    * @type string
    */

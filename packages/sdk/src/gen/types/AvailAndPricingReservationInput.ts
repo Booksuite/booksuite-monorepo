@@ -3,10 +3,12 @@ import type { HousingUnitType } from './HousingUnitType.ts'
 import type { User } from './User.ts'
 
 export type AvailAndPricingReservationDTOStatus =
+  | 'PRE_ORDER'
   | 'WAITING_PAYMENT'
   | 'CONFIRMED'
   | 'CHECKED_IN'
   | 'CHECKED_OUT'
+  | 'ESTIMATE'
   | 'ABANDONED'
   | 'CANCELLED'
   | 'PAYMENT_FAILED'
@@ -24,6 +26,10 @@ export type AvailAndPricingReservationInput = {
    * @type string
    */
   status: AvailAndPricingReservationDTOStatus
+  /**
+   * @type string, date
+   */
+  preOrderExpiraiton: string | null
   /**
    * @type string
    */
