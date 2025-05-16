@@ -1,5 +1,6 @@
 import type { ReservationAgeGroupInput } from './ReservationAgeGroupInput.ts'
 import type { ReservationServiceInput } from './ReservationServiceInput.ts'
+import type { ReservationSummaryInput } from './ReservationSummaryInput.ts'
 
 export type ReservationUpdateDTOStatus =
   | 'WAITING_PAYMENT'
@@ -44,6 +45,10 @@ export type ReservationUpdateInput = {
    * @type string | undefined
    */
   status?: ReservationUpdateDTOStatus
+  /**
+   * @type object | undefined
+   */
+  summary?: ReservationSummaryInput
   /**
    * @type string | undefined
    */

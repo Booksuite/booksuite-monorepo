@@ -61,9 +61,9 @@ export type ServiceCreateInput = {
    */
   notes: string
   /**
-   * @type string | undefined
+   * @type string
    */
-  coverMediaId?: string
+  coverMediaId: string | null
   /**
    * @type array
    */

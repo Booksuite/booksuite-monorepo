@@ -3,6 +3,7 @@ import type { HousingUnitType } from './HousingUnitType.ts'
 import type { RateOptionFull } from './RateOptionFull.ts'
 import type { ReservationAgeGroup } from './ReservationAgeGroup.ts'
 import type { ReservationService } from './ReservationService.ts'
+import type { ReservationSummaryInput } from './ReservationSummaryInput.ts'
 import type { User } from './User.ts'
 
 export type ReservationResponseFullDTOStatus =
@@ -20,31 +21,6 @@ export type ReservationResponseFullDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHA
 
 export type ReservationFull = {
   /**
-   * @description Base price for the day
-   * @type number
-   */
-  basePrice: number
-  /**
-   * @description Services price for the day
-   * @type number
-   */
-  servicesPrice: number
-  /**
-   * @description Children price for the day
-   * @type number
-   */
-  childrenPrice: number
-  /**
-   * @description Rate option price for the day
-   * @type number
-   */
-  rateOptionPrice: number
-  /**
-   * @description Final price for the day
-   * @type number
-   */
-  finalPrice: number
-  /**
    * @type string
    */
   id: string
@@ -52,6 +28,10 @@ export type ReservationFull = {
    * @type string
    */
   status: ReservationResponseFullDTOStatus
+  /**
+   * @type object
+   */
+  summary: ReservationSummaryInput
   /**
    * @type string
    */

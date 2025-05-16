@@ -47,6 +47,7 @@ export type {
 } from './Availability and PricingController/GetCalendarFromHousingUnitTypeId.ts'
 export type { AvailabilityInput } from './AvailabilityInput.ts'
 export type { AvailAndPricingAgeGroupSearchInput } from './AvailAndPricingAgeGroupSearchInput.ts'
+export type { AvailAndPricingHousingUnitTypeInput } from './AvailAndPricingHousingUnitTypeInput.ts'
 export type { AvailAndPricingOffersInput } from './AvailAndPricingOffersInput.ts'
 export type { AvailAndPricingRateOptionInput } from './AvailAndPricingRateOptionInput.ts'
 export type {
@@ -213,7 +214,6 @@ export type { HostingRulesInput } from './HostingRulesInput.ts'
 export type { HousingUnit } from './HousingUnit.ts'
 export type { HousingUnitInput } from './HousingUnitInput.ts'
 export type { HousingUnitType } from './HousingUnitType.ts'
-export type { HousingUnitTypeAvailAndPriceInput } from './HousingUnitTypeAvailAndPriceInput.ts'
 export type {
   CreateHousingUnitTypePathParams,
   CreateHousingUnitType200,
@@ -439,6 +439,7 @@ export type { ReservationSearchFilterInput } from './ReservationSearchFilterInpu
 export type { ReservationService } from './ReservationService.ts'
 export type { ReservationServiceInput } from './ReservationServiceInput.ts'
 export type { ReservationStatus } from './ReservationStatus.ts'
+export type { ReservationSummaryInput } from './ReservationSummaryInput.ts'
 export type { ReservationUpdateDTOStatus, ReservationUpdateDTOSaleChannel, ReservationUpdateInput } from './ReservationUpdateInput.ts'
 export type { SeasonRule } from './SeasonRule.ts'
 export type { SeasonRuleCreateInput } from './SeasonRuleCreateInput.ts'

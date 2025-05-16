@@ -1,5 +1,6 @@
 import type { ReservationAgeGroupInput } from './ReservationAgeGroupInput.ts'
 import type { ReservationServiceInput } from './ReservationServiceInput.ts'
+import type { ReservationSummaryInput } from './ReservationSummaryInput.ts'
 import type { UserCreateInput } from './UserCreateInput.ts'
 
 export type ReservationCreateDTOStatus =
@@ -17,34 +18,13 @@ export type ReservationCreateDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAPP'
 
 export type ReservationCreateInput = {
   /**
-   * @description Base price for the day
-   * @type number
-   */
-  basePrice: number
-  /**
-   * @description Services price for the day
-   * @type number
-   */
-  servicesPrice: number
-  /**
-   * @description Children price for the day
-   * @type number
-   */
-  childrenPrice: number
-  /**
-   * @description Rate option price for the day
-   * @type number
-   */
-  rateOptionPrice: number
-  /**
-   * @description Final price for the day
-   * @type number
-   */
-  finalPrice: number
-  /**
    * @type string
    */
   status: ReservationCreateDTOStatus
+  /**
+   * @type object
+   */
+  summary: ReservationSummaryInput
   /**
    * @type object
    */
