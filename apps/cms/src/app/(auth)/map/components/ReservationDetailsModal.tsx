@@ -27,11 +27,26 @@ import { useState } from 'react'
 import { ReservationFull } from '@booksuite/sdk'
 import { theme } from '@/common/theme'
 import { Image } from '@/components/atoms/Image'
+import { useGetHousingUnitTypeById } from '@booksuite/sdk'
 
 interface ReservationDetailsModalProps {
     open: boolean
     onClose: () => void
     reservation: ReservationFull
+}
+
+function getHousingUnitTypeImage(housingUnitType: any): string {
+    if (
+        housingUnitType &&
+        'medias' in housingUnitType &&
+        Array.isArray(housingUnitType.medias) &&
+        housingUnitType.medias[0] &&
+        housingUnitType.medias[0].media &&
+        housingUnitType.medias[0].media.url
+    ) {
+        return housingUnitType.medias[0].media.url
+    }
+    return '/placeholder.png'
 }
 
 export const ReservationDetailsModal: React.FC<
@@ -42,7 +57,6 @@ export const ReservationDetailsModal: React.FC<
         prices: false,
         subTotal: false,
     })
-
     if (!reservation) return null
 
     const totalNights = dayjs(reservation.endDate).diff(
@@ -60,6 +74,13 @@ export const ReservationDetailsModal: React.FC<
         (reservation.guestUser?.lastName
             ? ' ' + reservation.guestUser.lastName
             : '')
+
+    const { data: housingUnitTypeFull } = useGetHousingUnitTypeById({
+        id: reservation.housingUnitTypeId!,
+        companyId: reservation.companyId,
+    })
+    const housingImage =
+        housingUnitTypeFull?.medias?.[0]?.media?.url || '/placeholder.png'
 
     return (
         <Dialog
@@ -158,473 +179,489 @@ export const ReservationDetailsModal: React.FC<
                         minHeight: 600,
                     }}
                 >
-                    <Box
-                        sx={{
-                            flex: 1,
-                            minWidth: 420,
-                            bgcolor: 'white',
-                            p: 4,
-                            borderRadius: 2,
-                        }}
-                    >
-                        <Stack
-                            direction="row"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            mb={2}
+                    <Stack direction="column" gap={4} mb={8}>
+                        <Box
+                            sx={{
+                                flex: 1,
+                                minWidth: 420,
+                                bgcolor: 'white',
+                                p: 4,
+                                borderRadius: 2,
+                            }}
                         >
-                            <Typography
-                                fontWeight={600}
-                                fontSize={20}
-                                color="blueGrey.800"
+                            <Stack
+                                direction="row"
+                                justifyContent="space-between"
+                                alignItems="center"
+                                mb={2}
                             >
-                                Reserva{' '}
-                                {reservation.reservationCode || reservation.id}
-                            </Typography>
-                            <Stack direction="row" gap={2}>
-                                <Button
-                                    variant="text"
-                                    color="primary"
-                                    sx={{
-                                        bgcolor: 'grey.100',
-                                        p: 2,
-                                        gap: 2,
-                                        borderRadius: 1,
-                                        height: 35,
-                                        fontWeight: 600,
-                                        fontSize: 15,
-                                        '&:hover': { bgcolor: 'grey.200' },
-                                    }}
-                                    endIcon={<ChevronDownIcon size={16} />}
+                                <Typography
+                                    fontWeight={600}
+                                    fontSize={20}
+                                    color="blueGrey.800"
                                 >
-                                    {reservation.status}
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    sx={{
-                                        p: 2,
-                                        borderRadius: 1,
-                                        width: 100,
-                                        height: 35,
-                                        fontWeight: 600,
-                                    }}
-                                >
-                                    Alterar
-                                </Button>
-                            </Stack>
-                        </Stack>
-                        <Divider
-                            sx={{ mb: 2, mt: 2, borderBottomWidth: '2px' }}
-                        />
-                        <Box
-                            sx={{
-                                gap: 4,
-                                display: 'flex',
-                                flexDirection: 'column',
-                                p: 2,
-                            }}
-                        >
-                            <Typography fontWeight={500} color="blueGrey.800">
-                                Período da hospedagem
-                            </Typography>
-                            <Stack direction="row" gap={4}>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 1,
-                                        bgcolor: 'blueGrey.50',
-                                        p: 4,
-                                        borderRadius: 1,
-                                        width: 350,
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Stack direction="row" gap={2}>
-                                        <CalendarIcon
-                                            size={22}
-                                            color={theme.palette.blueGrey[500]}
-                                        />
-                                        <Typography
-                                            variant="body2"
-                                            color="blueGrey.500"
-                                            fontWeight={500}
-                                            fontSize={16}
-                                        >
-                                            Data de chegada:
-                                        </Typography>
-                                    </Stack>
-                                    <Typography
-                                        color="blueGrey.700"
-                                        fontWeight={600}
-                                        fontSize={16}
-                                    >
-                                        {dayjs(reservation.startDate).format(
-                                            'DD/MM/YYYY',
-                                        )}
-                                    </Typography>
-                                </Box>
-                                <Box
-                                    sx={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: 1,
-                                        bgcolor: 'blueGrey.50',
-                                        p: 4,
-                                        borderRadius: 1,
-                                        width: 350,
-                                        justifyContent: 'space-between',
-                                    }}
-                                >
-                                    <Stack
-                                        direction="row"
-                                        gap={2}
-                                        alignItems="center"
-                                    >
-                                        <CalendarIcon
-                                            size={22}
-                                            color={theme.palette.blueGrey[500]}
-                                        />
-                                        <Typography
-                                            variant="body2"
-                                            color="blueGrey.500"
-                                            fontWeight={500}
-                                            fontSize={16}
-                                        >
-                                            Data de saída:
-                                        </Typography>
-                                    </Stack>
-                                    <Typography
-                                        color="blueGrey.700"
-                                        fontWeight={600}
-                                        fontSize={16}
-                                    >
-                                        {dayjs(reservation.endDate).format(
-                                            'DD/MM/YYYY',
-                                        )}
-                                    </Typography>
-                                </Box>
-                            </Stack>
-                        </Box>
-
-                        <Box
-                            mb={2}
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                alignItems: 'center',
-                                p: 2,
-                            }}
-                        >
-                            <Typography fontWeight={500} color="blueGrey.800">
-                                Status do check-in
-                            </Typography>
-                            <Typography color="success.main" fontWeight={600}>
-                                Efetuado
-                            </Typography>
-                        </Box>
-
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                alignItems: 'start',
-                                flexDirection: 'column',
-                                p: 2,
-                                gap: 2,
-                            }}
-                        >
-                            <Typography fontWeight={500} color="blueGrey.800">
-                                Acomodação
-                            </Typography>
-                            <Stack direction="row" gap={2}>
-                                <Image
-                                    src={
-                                        // reservation.housingUnitType?.coverMedia
-                                        //     ?.url ||
-                                        '/placeholder.png'
-                                    }
-                                    width={100}
-                                    height={100}
-                                    alt="Acomodação"
-                                    borderRadius={1}
-                                    border="1px solid"
-                                />
-                                <Stack
-                                    display="flex"
-                                    flexDirection="column"
-                                    width={'42vw'}
-                                >
-                                    <Stack
+                                    Reserva{' '}
+                                    {reservation.reservationCode ||
+                                        reservation.id}
+                                </Typography>
+                                <Stack direction="row" gap={2}>
+                                    <Button
+                                        variant="text"
+                                        color="primary"
                                         sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
+                                            bgcolor: 'grey.100',
+                                            p: 2,
+                                            gap: 2,
+                                            borderRadius: 1,
+                                            height: 35,
+                                            fontWeight: 600,
+                                            fontSize: 15,
+                                            '&:hover': { bgcolor: 'grey.200' },
+                                        }}
+                                        endIcon={<ChevronDownIcon size={16} />}
+                                    >
+                                        {reservation.status}
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        sx={{
+                                            p: 2,
+                                            borderRadius: 1,
+                                            width: 100,
+                                            height: 35,
+                                            fontWeight: 600,
                                         }}
                                     >
-                                        <Typography color="blueGrey.500">
-                                            Categoria:
-                                        </Typography>
-                                        <Typography
-                                            color="blueGrey.800"
-                                            fontWeight={500}
-                                        >
-                                            {reservation.housingUnitType
-                                                ?.name || 'Nenhuma categoria'}
-                                        </Typography>
-                                    </Stack>
-                                    <Stack
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                        }}
-                                    >
-                                        <Typography color="blueGrey.500">
-                                            Unidade:
-                                        </Typography>
-                                        <Typography
-                                            color="blueGrey.800"
-                                            fontWeight={500}
-                                        >
-                                            {reservation.housingUnit?.name ||
-                                                'Nenhuma unidade'}
-                                        </Typography>
-                                    </Stack>
-                                    <Stack
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                        }}
-                                    >
-                                        <Typography color="blueGrey.500">
-                                            Total de noites:
-                                        </Typography>
-                                        <Typography
-                                            color="blueGrey.800"
-                                            fontWeight={500}
-                                        >
-                                            {totalNights} noites
-                                        </Typography>
-                                    </Stack>
-                                    <Stack
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            flexDirection: 'row',
-                                        }}
-                                    >
-                                        <Typography color="blueGrey.500">
-                                            Opções de tarifa:
-                                        </Typography>
-                                        <Typography
-                                            color="blueGrey.800"
-                                            fontWeight={500}
-                                        >
-                                            {reservation.rateOption?.name ||
-                                                'Nenhuma opção de tarifa'}
-                                        </Typography>
-                                    </Stack>
+                                        Alterar
+                                    </Button>
                                 </Stack>
                             </Stack>
-                        </Box>
-
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                p: 2,
-                            }}
-                        >
-                            <Stack
-                                direction="row"
-                                justifyContent="space-between"
+                            <Divider
+                                sx={{ mb: 2, mt: 2, borderBottomWidth: '2px' }}
+                            />
+                            <Box
+                                sx={{
+                                    gap: 4,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    p: 2,
+                                }}
                             >
                                 <Typography
                                     fontWeight={500}
                                     color="blueGrey.800"
                                 >
-                                    Hóspedes
+                                    Período da hospedagem
                                 </Typography>
-                                <Typography
-                                    color="blueGrey.800"
-                                    fontWeight={500}
-                                >
-                                    {totalGuests} hóspedes
-                                </Typography>
-                            </Stack>
-                            <Stack
-                                mt={2}
-                                direction="row"
-                                justifyContent="space-between"
-                            >
-                                <Typography color="blueGrey.600">
-                                    Adultos:
-                                </Typography>
-                                <Typography color="blueGrey.600">
-                                    {reservation.adults || 0} adultos
-                                </Typography>
-                            </Stack>
-                            <Stack
-                                direction="row"
-                                justifyContent="space-between"
-                            >
-                                {reservation.ageGroups?.map((group) => (
-                                    <Stack
-                                        key={group.ageGroup.id}
-                                        direction="row"
-                                        justifyContent="space-between"
+                                <Stack direction="row" gap={4}>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 1,
+                                            bgcolor: 'blueGrey.50',
+                                            p: 4,
+                                            borderRadius: 1,
+                                            width: 350,
+                                            justifyContent: 'space-between',
+                                        }}
                                     >
-                                        <Typography color="blueGrey.600">
-                                            {group.ageGroup.initialAge} -{' '}
-                                            {group.ageGroup.finalAge}:{' '}
-                                            {group.ageGroup.value}
+                                        <Stack direction="row" gap={2}>
+                                            <CalendarIcon
+                                                size={22}
+                                                color={
+                                                    theme.palette.blueGrey[500]
+                                                }
+                                            />
+                                            <Typography
+                                                variant="body2"
+                                                color="blueGrey.500"
+                                                fontWeight={500}
+                                                fontSize={16}
+                                            >
+                                                Data de chegada:
+                                            </Typography>
+                                        </Stack>
+                                        <Typography
+                                            color="blueGrey.700"
+                                            fontWeight={600}
+                                            fontSize={16}
+                                        >
+                                            {dayjs(
+                                                reservation.startDate,
+                                            ).format('DD/MM/YYYY')}
                                         </Typography>
+                                    </Box>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            gap: 1,
+                                            bgcolor: 'blueGrey.50',
+                                            p: 4,
+                                            borderRadius: 1,
+                                            width: 350,
+                                            justifyContent: 'space-between',
+                                        }}
+                                    >
+                                        <Stack
+                                            direction="row"
+                                            gap={2}
+                                            alignItems="center"
+                                        >
+                                            <CalendarIcon
+                                                size={22}
+                                                color={
+                                                    theme.palette.blueGrey[500]
+                                                }
+                                            />
+                                            <Typography
+                                                variant="body2"
+                                                color="blueGrey.500"
+                                                fontWeight={500}
+                                                fontSize={16}
+                                            >
+                                                Data de saída:
+                                            </Typography>
+                                        </Stack>
+                                        <Typography
+                                            color="blueGrey.700"
+                                            fontWeight={600}
+                                            fontSize={16}
+                                        >
+                                            {dayjs(reservation.endDate).format(
+                                                'DD/MM/YYYY',
+                                            )}
+                                        </Typography>
+                                    </Box>
+                                </Stack>
+                            </Box>
+
+                            <Box
+                                mb={2}
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
+                                    p: 2,
+                                }}
+                            >
+                                <Typography
+                                    fontWeight={500}
+                                    color="blueGrey.800"
+                                >
+                                    Status do check-in
+                                </Typography>
+                                <Typography
+                                    color="success.main"
+                                    fontWeight={600}
+                                >
+                                    Efetuado
+                                </Typography>
+                            </Box>
+
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    alignItems: 'start',
+                                    flexDirection: 'column',
+                                    p: 2,
+                                    gap: 2,
+                                }}
+                            >
+                                <Typography
+                                    fontWeight={500}
+                                    color="blueGrey.800"
+                                >
+                                    Acomodação
+                                </Typography>
+                                <Stack direction="row" gap={2}>
+                                    <Image
+                                        src={housingImage}
+                                        width={100}
+                                        height={100}
+                                        alt="Acomodação"
+                                        borderRadius={1}
+                                        border="1px solid"
+                                    />
+                                    <Stack
+                                        display="flex"
+                                        flexDirection="column"
+                                        width={'42vw'}
+                                    >
+                                        <Stack
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                flexDirection: 'row',
+                                            }}
+                                        >
+                                            <Typography color="blueGrey.500">
+                                                Categoria:
+                                            </Typography>
+                                            <Typography
+                                                color="blueGrey.800"
+                                                fontWeight={500}
+                                            >
+                                                {reservation.housingUnitType
+                                                    ?.name ||
+                                                    'Nenhuma categoria'}
+                                            </Typography>
+                                        </Stack>
+                                        <Stack
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                flexDirection: 'row',
+                                            }}
+                                        >
+                                            <Typography color="blueGrey.500">
+                                                Unidade:
+                                            </Typography>
+                                            <Typography
+                                                color="blueGrey.800"
+                                                fontWeight={500}
+                                            >
+                                                {reservation.housingUnit
+                                                    ?.name || 'Nenhuma unidade'}
+                                            </Typography>
+                                        </Stack>
+                                        <Stack
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                flexDirection: 'row',
+                                            }}
+                                        >
+                                            <Typography color="blueGrey.500">
+                                                Total de noites:
+                                            </Typography>
+                                            <Typography
+                                                color="blueGrey.800"
+                                                fontWeight={500}
+                                            >
+                                                {totalNights} noites
+                                            </Typography>
+                                        </Stack>
+                                        <Stack
+                                            sx={{
+                                                display: 'flex',
+                                                justifyContent: 'space-between',
+                                                alignItems: 'center',
+                                                flexDirection: 'row',
+                                            }}
+                                        >
+                                            <Typography color="blueGrey.500">
+                                                Opções de tarifa:
+                                            </Typography>
+                                            <Stack>
+                                                <Typography
+                                                    color="blueGrey.800"
+                                                    fontWeight={500}
+                                                >
+                                                    {reservation.rateOption
+                                                        ?.name ||
+                                                        'Nenhuma opção de tarifa'}
+                                                </Typography>
+                                            </Stack>
+                                        </Stack>
                                     </Stack>
-                                ))}
-                            </Stack>
-                        </Box>
-                        <Box
-                            sx={{
-                                p: 2,
-                                gap: 1,
-                                display: 'flex',
-                                flexDirection: 'column',
-                            }}
-                        >
-                            <Stack
-                                direction="row"
-                                justifyContent="space-between"
-                                onClick={() =>
-                                    setCollapse((c) => ({
-                                        ...c,
-                                        subTotal: !c.subTotal,
-                                    }))
-                                }
+                                </Stack>
+                            </Box>
+
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    p: 2,
+                                }}
                             >
                                 <Stack
                                     direction="row"
-                                    gap={2}
-                                    alignItems="center"
-                                    sx={{ cursor: 'pointer' }}
+                                    justifyContent="space-between"
                                 >
                                     <Typography
                                         fontWeight={500}
                                         color="blueGrey.800"
                                     >
-                                        Sub-total
+                                        Hóspedes
                                     </Typography>
-                                    {collapse.subTotal ? (
-                                        <ChevronUpIcon
-                                            size={20}
-                                            color={theme.palette.blue[500]}
-                                        />
-                                    ) : (
-                                        <ChevronDownIcon
-                                            size={20}
-                                            color={theme.palette.blue[500]}
-                                        />
-                                    )}
+                                    <Typography
+                                        color="blueGrey.800"
+                                        fontWeight={500}
+                                    >
+                                        {totalGuests} hóspedes
+                                    </Typography>
                                 </Stack>
-                                <Typography
-                                    color="blueGrey.800"
-                                    fontWeight={500}
+                                <Stack
+                                    mt={2}
+                                    direction="row"
+                                    justifyContent="space-between"
                                 >
-                                    R${' '}
-                                    {reservation.finalPrice?.toLocaleString(
-                                        'pt-BR',
-                                        {
-                                            minimumFractionDigits: 2,
-                                        },
-                                    )}
-                                </Typography>
-                            </Stack>
-                            {collapse.subTotal && (
-                                <>
-                                    <Stack
-                                        direction="row"
-                                        justifyContent="space-between"
-                                    >
-                                        <Typography color="blueGrey.600">
-                                            Total base das diárias
-                                        </Typography>
-                                        <Typography color="blueGrey.600">
-                                            R${' '}
-                                            {reservation.basePrice?.toLocaleString(
-                                                'pt-BR',
-                                                {
-                                                    minimumFractionDigits: 2,
-                                                },
-                                            )}
-                                        </Typography>
-                                    </Stack>
-                                    <Stack
-                                        direction="row"
-                                        justifyContent="space-between"
-                                    >
-                                        <Typography color="blueGrey.600">
-                                            Opções de tarifa
-                                        </Typography>
-                                        <Typography color="blueGrey.600">
-                                            R${' '}
-                                            {reservation.rateOptionPrice?.toLocaleString(
-                                                'pt-BR',
-                                                {
-                                                    minimumFractionDigits: 2,
-                                                },
-                                            )}
-                                        </Typography>
-                                    </Stack>
-                                    <Stack
-                                        direction="row"
-                                        justifyContent="space-between"
-                                    >
-                                        <Typography color="blueGrey.600">
-                                            Hóspedes adicionais
-                                        </Typography>
-                                        <Typography color="blueGrey.600">
-                                            R${' '}
-                                            {reservation.childrenPrice?.toLocaleString(
-                                                'pt-BR',
-                                                {
-                                                    minimumFractionDigits: 2,
-                                                },
-                                            )}
-                                        </Typography>
-                                    </Stack>
-                                    <Stack
-                                        direction="row"
-                                        justifyContent="space-between"
-                                    >
-                                        <Typography color="blueGrey.600">
-                                            Serviços:
-                                        </Typography>
-                                        <Typography color="blueGrey.600">
-                                            R${' '}
-                                            {reservation.servicesPrice?.toLocaleString(
-                                                'pt-BR',
-                                                {
-                                                    minimumFractionDigits: 2,
-                                                },
-                                            )}
-                                        </Typography>
-                                    </Stack>
-                                </>
-                            )}
-                        </Box>
-
-                        {reservation.services?.length > 0 && (
-                            <Box mb={2}>
+                                    <Typography color="blueGrey.600">
+                                        Adultos:
+                                    </Typography>
+                                    <Typography color="blueGrey.600">
+                                        {reservation.adults || 0} adultos
+                                    </Typography>
+                                </Stack>
                                 <Stack
                                     direction="row"
                                     justifyContent="space-between"
+                                >
+                                    {reservation.ageGroups?.map((group) => (
+                                        <Stack
+                                            key={group.ageGroup.id}
+                                            direction="row"
+                                            justifyContent="space-between"
+                                        >
+                                            <Typography color="blueGrey.600">
+                                                {group.ageGroup.initialAge} -{' '}
+                                                {group.ageGroup.finalAge}:{' '}
+                                                {group.ageGroup.value}
+                                            </Typography>
+                                        </Stack>
+                                    ))}
+                                </Stack>
+                            </Box>
+                            <Box
+                                sx={{
+                                    p: 2,
+                                    gap: 1,
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                }}
+                            >
+                                <Stack
+                                    direction="row"
+                                    justifyContent="space-between"
+                                    onClick={() =>
+                                        setCollapse((c) => ({
+                                            ...c,
+                                            subTotal: !c.subTotal,
+                                        }))
+                                    }
+                                >
+                                    <Stack
+                                        direction="row"
+                                        gap={2}
+                                        alignItems="center"
+                                        sx={{ cursor: 'pointer' }}
+                                    >
+                                        <Typography
+                                            fontWeight={500}
+                                            color="blueGrey.800"
+                                        >
+                                            Sub-total
+                                        </Typography>
+                                        {collapse.subTotal ? (
+                                            <ChevronUpIcon
+                                                size={20}
+                                                color={theme.palette.blue[500]}
+                                            />
+                                        ) : (
+                                            <ChevronDownIcon
+                                                size={20}
+                                                color={theme.palette.blue[500]}
+                                            />
+                                        )}
+                                    </Stack>
+                                    <Typography
+                                        color="blueGrey.800"
+                                        fontWeight={500}
+                                    >
+                                        R${' '}
+                                        {reservation.finalPrice?.toLocaleString(
+                                            'pt-BR',
+                                            {
+                                                minimumFractionDigits: 2,
+                                            },
+                                        )}
+                                    </Typography>
+                                </Stack>
+                                {collapse.subTotal && (
+                                    <>
+                                        <Stack
+                                            direction="row"
+                                            justifyContent="space-between"
+                                        >
+                                            <Typography color="blueGrey.600">
+                                                Total base das diárias
+                                            </Typography>
+                                            <Typography color="blueGrey.600">
+                                                R${' '}
+                                                {reservation.basePrice?.toLocaleString(
+                                                    'pt-BR',
+                                                    {
+                                                        minimumFractionDigits: 2,
+                                                    },
+                                                )}
+                                            </Typography>
+                                        </Stack>
+                                        <Stack
+                                            direction="row"
+                                            justifyContent="space-between"
+                                        >
+                                            <Typography color="blueGrey.600">
+                                                Opções de tarifa
+                                            </Typography>
+                                            <Typography color="blueGrey.600">
+                                                R${' '}
+                                                {reservation.rateOptionPrice?.toLocaleString(
+                                                    'pt-BR',
+                                                    {
+                                                        minimumFractionDigits: 2,
+                                                    },
+                                                )}
+                                            </Typography>
+                                        </Stack>
+                                        <Stack
+                                            direction="row"
+                                            justifyContent="space-between"
+                                        >
+                                            <Typography color="blueGrey.600">
+                                                Hóspedes adicionais
+                                            </Typography>
+                                            <Typography color="blueGrey.600">
+                                                R${' '}
+                                                {reservation.childrenPrice?.toLocaleString(
+                                                    'pt-BR',
+                                                    {
+                                                        minimumFractionDigits: 2,
+                                                    },
+                                                )}
+                                            </Typography>
+                                        </Stack>
+                                    </>
+                                )}
+                            </Box>
+                        </Box>
+
+                        <Box
+                            sx={{
+                                flex: 1,
+                                minWidth: 420,
+                                bgcolor: 'white',
+                                p: 4,
+                                borderRadius: 2,
+                            }}
+                        >
+                            <Box
+                                sx={{
+                                    bgcolor: 'white',
+                                    p: 3,
+                                    borderRadius: 1,
+                                }}
+                            >
+                                <Stack
+                                    display="flex"
+                                    direction="row"
+                                    justifyContent="space-between"
                                     alignItems="center"
-                                    mb={1}
                                 >
                                     <Typography fontWeight={500}>
                                         Itens adicionais
@@ -637,99 +674,146 @@ export const ReservationDetailsModal: React.FC<
                                             borderRadius: 1,
                                             fontWeight: 600,
                                             fontSize: 14,
+                                            width: 100,
                                         }}
                                     >
                                         Alterar
                                     </Button>
                                 </Stack>
-                                {reservation.services.map((item, idx) => (
-                                    <Box
-                                        key={idx}
-                                        mb={2}
-                                        sx={{
-                                            bgcolor: 'grey.50',
-                                            borderRadius: 2,
-                                            p: 2,
-                                        }}
-                                    >
-                                        <Stack
-                                            direction="row"
-                                            gap={2}
-                                            alignItems="center"
-                                        >
-                                            <Avatar
-                                                variant="rounded"
-                                                src={
-                                                    item.service.coverMedia
-                                                        ?.url || ''
-                                                }
-                                                sx={{ width: 56, height: 56 }}
-                                            />
-                                            <Stack flex={1}>
-                                                <Typography fontWeight={600}>
-                                                    {item.service.name}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    Quantidade: {item.quantity}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    Valor unitário: R${' '}
-                                                    {item.service.price?.toLocaleString(
-                                                        'pt-BR',
-                                                        {
-                                                            minimumFractionDigits: 2,
-                                                        },
-                                                    )}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    Total: R${' '}
-                                                    {item.totalPrice?.toLocaleString(
-                                                        'pt-BR',
-                                                        {
-                                                            minimumFractionDigits: 2,
-                                                        },
-                                                    )}
-                                                </Typography>
-                                            </Stack>
-                                        </Stack>
-                                    </Box>
-                                ))}
-                                <Stack
-                                    direction="row"
-                                    justifyContent="space-between"
-                                    mt={2}
-                                >
-                                    <Typography color="blueGrey.600">
-                                        Total base dos itens
-                                    </Typography>
-                                    <Typography color="blueGrey.600">
-                                        R${' '}
-                                        {reservation.services
-                                            .reduce(
-                                                (acc, item) =>
-                                                    acc +
-                                                    (item.totalPrice || 0),
-                                                0,
-                                            )
-                                            .toLocaleString('pt-BR', {
-                                                minimumFractionDigits: 2,
-                                            })}
-                                    </Typography>
-                                </Stack>
-                                <Stack
-                                    direction="row"
-                                    justifyContent="space-between"
-                                >
-                                    <Typography color="blueGrey.600">
-                                        Ofertas:
-                                    </Typography>
-                                    <Typography color="blueGrey.600">
-                                        R$ -107,00
-                                    </Typography>
-                                </Stack>
+                                <Divider
+                                    sx={{
+                                        borderBottomWidth: '2px',
+                                        my: 4,
+                                    }}
+                                />
                             </Box>
-                        )}
-                    </Box>
+                            {reservation.services &&
+                            reservation.services.length > 0 ? (
+                                <>
+                                    {reservation.services.map((item, idx) => {
+                                        let serviceImage =
+                                            item.service.coverMedia?.url
+                                        if (
+                                            !serviceImage &&
+                                            Array.isArray(
+                                                item.service.medias,
+                                            ) &&
+                                            item.service.medias.length > 0 &&
+                                            item.service.medias[0] &&
+                                            item.service.medias[0].media
+                                        ) {
+                                            serviceImage =
+                                                item.service.medias[0].media.url
+                                        }
+                                        return (
+                                            <Box
+                                                key={idx}
+                                                mb={2}
+                                                sx={{
+                                                    bgcolor: 'grey.50',
+                                                    borderRadius: 2,
+                                                    p: 2,
+                                                }}
+                                            >
+                                                <Stack
+                                                    direction="row"
+                                                    gap={2}
+                                                    alignItems="center"
+                                                >
+                                                    <Avatar
+                                                        variant="rounded"
+                                                        src={
+                                                            serviceImage ||
+                                                            '/placeholder.png'
+                                                        }
+                                                        sx={{
+                                                            width: 56,
+                                                            height: 56,
+                                                        }}
+                                                    />
+                                                    <Stack flex={1}>
+                                                        <Typography
+                                                            fontWeight={600}
+                                                        >
+                                                            {item.service &&
+                                                            item.service.name
+                                                                ? item.service
+                                                                      .name
+                                                                : '-'}
+                                                        </Typography>
+                                                        <Typography variant="body2">
+                                                            Quantidade:{' '}
+                                                            {item.quantity}
+                                                        </Typography>
+                                                        <Typography variant="body2">
+                                                            Valor unitário: R${' '}
+                                                            {item.service &&
+                                                            item.service
+                                                                .price !==
+                                                                undefined
+                                                                ? item.service.price.toLocaleString(
+                                                                      'pt-BR',
+                                                                      {
+                                                                          minimumFractionDigits: 2,
+                                                                      },
+                                                                  )
+                                                                : '-'}
+                                                        </Typography>
+                                                        <Typography variant="body2">
+                                                            Total: R${' '}
+                                                            {item.totalPrice !==
+                                                            undefined
+                                                                ? item.totalPrice.toLocaleString(
+                                                                      'pt-BR',
+                                                                      {
+                                                                          minimumFractionDigits: 2,
+                                                                      },
+                                                                  )
+                                                                : '-'}
+                                                        </Typography>
+                                                    </Stack>
+                                                </Stack>
+                                            </Box>
+                                        )
+                                    })}
+                                    <Stack
+                                        direction="row"
+                                        justifyContent="space-between"
+                                        mt={2}
+                                    >
+                                        <Typography color="blueGrey.600">
+                                            Total base dos itens
+                                        </Typography>
+                                        <Typography color="blueGrey.600">
+                                            R${' '}
+                                            {(reservation.services || [])
+                                                .reduce(
+                                                    (acc, item) =>
+                                                        acc +
+                                                        (item.totalPrice || 0),
+                                                    0,
+                                                )
+                                                .toLocaleString('pt-BR', {
+                                                    minimumFractionDigits: 2,
+                                                })}
+                                        </Typography>
+                                    </Stack>
+                                </>
+                            ) : (
+                                <Stack
+                                    bgcolor="blueGrey.50"
+                                    p={3}
+                                    borderRadius={1}
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <Typography color="blueGrey.500">
+                                        Nenhum serviço adicionado.
+                                    </Typography>
+                                </Stack>
+                            )}
+                        </Box>
+                    </Stack>
 
                     <Box
                         sx={{
