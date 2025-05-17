@@ -2,7 +2,6 @@ import { useGetReservationById } from '@booksuite/sdk'
 import {
     Box,
     Button,
-    Collapse,
     IconButton,
     Menu,
     MenuItem,
@@ -14,7 +13,6 @@ import {
 import dayjs from 'dayjs'
 import {
     ChevronDownIcon,
-    ChevronUpIcon,
     ExpandIcon,
     MailIcon,
     MessageCircleMoreIcon,
@@ -38,13 +36,6 @@ export const ReservationDetailsPopover: React.FC<
     ReservationDetailsPopoverProps
 > = ({ open, anchorEl, onClose, reservationId }) => {
     const [menuAnchor, setMenuAnchor] = useState<null | HTMLElement>(null)
-    const [collapse, setCollapse] = useState({
-        info: false,
-        guests: false,
-        items: false,
-        payments: false,
-        notes: false,
-    })
     const [openModal, setOpenModal] = useState(false)
     const popoverRef = useRef<HTMLDivElement>(null)
 
@@ -195,7 +186,15 @@ export const ReservationDetailsPopover: React.FC<
                     </Stack>
                 </Stack>
 
-                <Box sx={{ height: 324, overflowY: 'auto', bgcolor: '#fff' }}>
+                <Box
+                    sx={{
+                        height: 324,
+                        overflowY: 'auto',
+                        bgcolor: '#fff',
+                        px: 5,
+                        py: 3,
+                    }}
+                >
                     <Stack
                         direction="row"
                         alignItems="center"
@@ -205,7 +204,6 @@ export const ReservationDetailsPopover: React.FC<
                             bgcolor: 'blueGrey.50',
                             borderRadius: 1,
                             m: 2,
-                            mb: 0,
                         }}
                     >
                         <Stack
@@ -304,10 +302,6 @@ export const ReservationDetailsPopover: React.FC<
                             direction="row"
                             alignItems="center"
                             justifyContent="space-between"
-                            sx={{ cursor: 'pointer' }}
-                            onClick={() =>
-                                setCollapse((c) => ({ ...c, info: !c.info }))
-                            }
                         >
                             <Typography
                                 fontWeight={600}
@@ -316,13 +310,8 @@ export const ReservationDetailsPopover: React.FC<
                             >
                                 Informações da reserva
                             </Typography>
-                            {collapse.info ? (
-                                <ChevronUpIcon size={20} />
-                            ) : (
-                                <ChevronDownIcon size={20} />
-                            )}
                         </Stack>
-                        <Collapse in={collapse.info}>
+                        <Box>
                             <Stack spacing={0.5} mt={1}>
                                 <Stack
                                     direction="row"
@@ -451,7 +440,7 @@ export const ReservationDetailsPopover: React.FC<
                                     </Typography>
                                 </Stack>
                             </Stack>
-                        </Collapse>
+                        </Box>
                     </Box>
 
                     <Box px={2} pt={2}>
@@ -459,13 +448,6 @@ export const ReservationDetailsPopover: React.FC<
                             direction="row"
                             alignItems="center"
                             justifyContent="space-between"
-                            sx={{ cursor: 'pointer' }}
-                            onClick={() =>
-                                setCollapse((c) => ({
-                                    ...c,
-                                    guests: !c.guests,
-                                }))
-                            }
                         >
                             <Typography
                                 fontWeight={600}
@@ -474,13 +456,8 @@ export const ReservationDetailsPopover: React.FC<
                             >
                                 Hóspedes
                             </Typography>
-                            {collapse.guests ? (
-                                <ChevronUpIcon size={20} />
-                            ) : (
-                                <ChevronDownIcon size={20} />
-                            )}
                         </Stack>
-                        <Collapse in={collapse.guests}>
+                        <Box>
                             <Stack spacing={0.5} mt={1}>
                                 <Stack
                                     direction="row"
@@ -521,7 +498,7 @@ export const ReservationDetailsPopover: React.FC<
                                     ))}
                                 </Stack>
                             </Stack>
-                        </Collapse>
+                        </Box>
                     </Box>
 
                     {reservation.services?.length > 0 && (
@@ -530,13 +507,6 @@ export const ReservationDetailsPopover: React.FC<
                                 direction="row"
                                 alignItems="center"
                                 justifyContent="space-between"
-                                sx={{ cursor: 'pointer' }}
-                                onClick={() =>
-                                    setCollapse((c) => ({
-                                        ...c,
-                                        items: !c.items,
-                                    }))
-                                }
                             >
                                 <Typography
                                     fontWeight={600}
@@ -545,13 +515,8 @@ export const ReservationDetailsPopover: React.FC<
                                 >
                                     Itens adicionais
                                 </Typography>
-                                {collapse.items ? (
-                                    <ChevronUpIcon size={20} />
-                                ) : (
-                                    <ChevronDownIcon size={20} />
-                                )}
                             </Stack>
-                            <Collapse in={collapse.items}>
+                            <Box>
                                 <Stack spacing={0.5} mt={1}>
                                     {reservation.services?.map((item, idx) => (
                                         <Stack
@@ -577,7 +542,7 @@ export const ReservationDetailsPopover: React.FC<
                                         </Stack>
                                     ))}
                                 </Stack>
-                            </Collapse>
+                            </Box>
                         </Box>
                     )}
 
@@ -586,13 +551,6 @@ export const ReservationDetailsPopover: React.FC<
                             direction="row"
                             alignItems="center"
                             justifyContent="space-between"
-                            sx={{ cursor: 'pointer' }}
-                            onClick={() =>
-                                setCollapse((c) => ({
-                                    ...c,
-                                    payments: !c.payments,
-                                }))
-                            }
                         >
                             <Typography
                                 fontWeight={600}
@@ -601,13 +559,8 @@ export const ReservationDetailsPopover: React.FC<
                             >
                                 Resumo de pagamentos
                             </Typography>
-                            {collapse.payments ? (
-                                <ChevronUpIcon size={20} />
-                            ) : (
-                                <ChevronDownIcon size={20} />
-                            )}
                         </Stack>
-                        <Collapse in={collapse.payments}>
+                        <Box>
                             <Stack spacing={0.5} mt={1}>
                                 <Stack
                                     direction="row"
@@ -670,7 +623,7 @@ export const ReservationDetailsPopover: React.FC<
                                 </Typography>
                             </Stack> */}
                             </Stack>
-                        </Collapse>
+                        </Box>
                     </Box>
 
                     {reservation.notes && (
@@ -679,13 +632,6 @@ export const ReservationDetailsPopover: React.FC<
                                 direction="row"
                                 alignItems="center"
                                 justifyContent="space-between"
-                                sx={{ cursor: 'pointer' }}
-                                onClick={() =>
-                                    setCollapse((c) => ({
-                                        ...c,
-                                        notes: !c.notes,
-                                    }))
-                                }
                             >
                                 <Typography
                                     fontWeight={600}
@@ -694,13 +640,8 @@ export const ReservationDetailsPopover: React.FC<
                                 >
                                     Observações do hóspede
                                 </Typography>
-                                {collapse.notes ? (
-                                    <ChevronUpIcon size={20} />
-                                ) : (
-                                    <ChevronDownIcon size={20} />
-                                )}
                             </Stack>
-                            <Collapse in={collapse.notes}>
+                            <Box>
                                 <Typography
                                     color="blueGrey.500"
                                     fontSize={15}
@@ -708,7 +649,7 @@ export const ReservationDetailsPopover: React.FC<
                                 >
                                     {reservation.notes}
                                 </Typography>
-                            </Collapse>
+                            </Box>
                         </Box>
                     )}
                 </Box>

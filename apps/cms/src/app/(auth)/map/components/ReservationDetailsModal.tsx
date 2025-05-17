@@ -153,6 +153,11 @@ export const ReservationDetailsModal: React.FC<
                         <ServiceDetails
                             reservationId={reservationId}
                             companyId={companyId}
+                            formValues={{
+                                adults: reservation.adults,
+                                startDate: reservation.startDate,
+                                endDate: reservation.endDate,
+                            }}
                         />
                     </Stack>
                     <Box
