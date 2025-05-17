@@ -4,7 +4,7 @@ import { HousingUnitTypeWithCalendarInput, Reservation } from '@booksuite/sdk'
 import { Box, Paper, Stack, Tooltip, Typography } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import { CalendarIcon } from 'lucide-react'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { formatCurrency } from '@/common/utils/currency'
 
@@ -35,6 +35,9 @@ export const Calendar: React.FC<CalendarProps> = ({
     reservations = [],
     isLoading = false,
 }) => {
+    const [selectedReservation, setSelectedReservation] =
+        useState<Reservation | null>(null)
+
     const days = useMemo(
         () => getDaysArray(startDate, endDate),
         [startDate, endDate],
@@ -255,6 +258,11 @@ export const Calendar: React.FC<CalendarProps> = ({
                                         {reservationsByUnitByDay[unit.id]?.map(
                                             (reservation) => (
                                                 <ReservationItem
+                                                    onReservationClick={() => {
+                                                        setSelectedReservation(
+                                                            reservation,
+                                                        )
+                                                    }}
                                                     key={reservation.id}
                                                     reservation={reservation}
                                                     startOfCalendar={
