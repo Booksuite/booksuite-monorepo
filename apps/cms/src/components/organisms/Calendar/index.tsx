@@ -1,10 +1,6 @@
 'use client'
 
-import {
-    HousingUnitTypeWithCalendarInput,
-    Reservation,
-    ReservationFull,
-} from '@booksuite/sdk'
+import { HousingUnitTypeWithCalendarInput, Reservation } from '@booksuite/sdk'
 import { Box, Paper, Stack, Tooltip, Typography } from '@mui/material'
 import dayjs, { Dayjs } from 'dayjs'
 import { CalendarIcon } from 'lucide-react'
@@ -13,7 +9,6 @@ import { useMemo, useState } from 'react'
 import { formatCurrency } from '@/common/utils/currency'
 
 import { CalendarSkeleton } from './CalendarSkeleton'
-import { ReservationDetailsPopover } from './components/ReservationDetailsPopover'
 import { CalendarCell, HeaderCell, RoomCell } from './components/table'
 import { HEADER_CELL_HEIGHT, ROOMS_COLUMN_WIDTH } from './constants'
 import { ReservationItem } from './ReservationItem'
@@ -41,7 +36,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     isLoading = false,
 }) => {
     const [selectedReservation, setSelectedReservation] =
-        useState<ReservationFull | null>(null)
+        useState<Reservation | null>(null)
 
     const days = useMemo(
         () => getDaysArray(startDate, endDate),
@@ -210,76 +205,12 @@ export const Calendar: React.FC<CalendarProps> = ({
                     {availabilityAndPricing.map((pricing, typeIndex) => (
                         <Box key={typeIndex}>
                             <Stack direction="row">
-
-                                 {days.map((day, dayIndex) => {
+                                {days.map((day, dayIndex) => {
                                     const calendarDay =
                                         pricing.calendar[
                                             day.format('YYYY-MM-DD')
                                         ]!
                                     return (
-                                    <CalendarCell
-                                        key={dayIndex}
-                                        gap={0.5}
-                                        isSpecialDate={
-                                            !!housingType.calendar[
-                                                day.format('YYYY-MM-DD')
-                                            ]?.specialDates.length
-                                        }
-                                        isWeekend={weekendDays.includes(
-                                            day.day(),
-                                        )}
-                                    >
-                                        <Box
-                                            sx={{
-                                                border: '2px solid',
-                                                borderRadius: 0.6,
-                                                padding: 0.1,
-                                                fontWeight: 'bold',
-                                                minWidth: '18px',
-                                                fontSize: '9px',
-                                            }}
-                                        >
-                                            {housingType.housingUnits.length}
-                                        </Box>
-                                        <Typography
-                                            variant="body2"
-                                            fontWeight="bold"
-                                            fontSize="10px"
-                                        >
-                                            {formatCurrency(
-                                                getDayPrice(
-                                                    housingType.calendar[
-                                                        day.format('YYYY-MM-DD')
-                                                    ]!,
-                                                ),
-                                            )}
-                                        </Typography>
-                                    </CalendarCell>
-                                ))}
-                            </Stack>
-                            {housingType.housingUnits.map((unit, unitIndex) => (
-                                <Stack
-                                    key={unitIndex}
-                                    direction="row"
-                                    position="relative"
-                                >
-                                    {reservationsByUnitByDay[unit.id]?.map(
-                                        (reservation) => (
-                                            <ReservationItem
-                                                key={reservation.id}
-                                                reservation={reservation}
-                                                startOfCalendar={
-                                                    startOfCalendar
-                                                }
-                                                onReservationClick={() => {
-                                                    setSelectedReservation(
-                                                        reservation as ReservationFull,
-                                                    )
-                                                }}
-                                            />
-                                        ),
-                                    )}
-                                    {days.map((day, dayIndex) => (
                                         <CalendarCell
                                             key={dayIndex}
                                             gap={0.5}
@@ -327,6 +258,11 @@ export const Calendar: React.FC<CalendarProps> = ({
                                         {reservationsByUnitByDay[unit.id]?.map(
                                             (reservation) => (
                                                 <ReservationItem
+                                                    onReservationClick={() => {
+                                                        setSelectedReservation(
+                                                            reservation,
+                                                        )
+                                                    }}
                                                     key={reservation.id}
                                                     reservation={reservation}
                                                     startOfCalendar={
@@ -355,12 +291,6 @@ export const Calendar: React.FC<CalendarProps> = ({
                     ))}
                 </Box>
             </Stack>
-            <ReservationDetailsPopover
-                open={!!selectedReservation}
-                reservationId={selectedReservation?.id ?? ''}
-                onClose={() => setSelectedReservation(null)}
-                anchorEl={null}
-            />
         </Paper>
     )
 }
