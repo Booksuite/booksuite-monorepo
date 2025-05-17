@@ -1,12 +1,15 @@
-import { ServiceFull, useSearchServices } from '@booksuite/sdk'
+import {
+    ReservationService,
+    ReservationSummaryInput,
+    ServiceFull,
+    useSearchServices,
+} from '@booksuite/sdk'
 import { Box, Button, Typography } from '@mui/material'
-import { useFormikContext } from 'formik'
 import { useState } from 'react'
 
 import { useCurrentCompanyId } from '@/common/contexts/user'
 import { formatCurrency } from '@/common/utils/currency'
 import { FormSection } from '@/components/atoms/FormSection'
-import { ReservationFormData } from '../../utils/config'
 import {
     calculateTotalStay,
     getNewReservationServicesArray,
@@ -15,10 +18,25 @@ import {
 import { ServiceItem } from './ServiceItem'
 import { ServicesModal } from './ServiceModal'
 
-export const ServicesSection: React.FC = () => {
-    const [isServicesModalOpen, setIsServicesModalOpen] = useState(false)
+interface ServicesSectionProps {
+    reservationSummary: ReservationSummaryInput | null
+    currentServices: ReservationService[]
+    services: ReservationService[]
+    adults: number
+    startDate: string
+    endDate: string
+    onChange: (services: ReservationService[]) => void
+}
 
-    const { values, setFieldValue } = useFormikContext<ReservationFormData>()
+export const ServicesSection: React.FC<ServicesSectionProps> = ({
+    reservationSummary,
+    currentServices,
+    adults,
+    startDate,
+    endDate,
+    onChange,
+}) => {
+    const [isServicesModalOpen, setIsServicesModalOpen] = useState(false)
 
     const companyId = useCurrentCompanyId()
 
@@ -28,7 +46,9 @@ export const ServicesSection: React.FC = () => {
             pagination: { page: 1, itemsPerPage: 100 },
             filter: {
                 published: true,
-                housingUnitTypeIds: [values.housingUnitType?.id || ''],
+                housingUnitTypeIds: [
+                    reservationSummary?.housingUnitType.id || '',
+                ],
             },
         },
         undefined,
@@ -37,7 +57,7 @@ export const ServicesSection: React.FC = () => {
                 enabled:
                     !!companyId &&
                     isServicesModalOpen &&
-                    !!values.housingUnitType?.id,
+                    !!reservationSummary?.housingUnitType.id,
             },
         },
     )
@@ -47,17 +67,17 @@ export const ServicesSection: React.FC = () => {
         newQuantity: number,
     ) => {
         const updatedServices = getNewReservationServicesArray(
-            values.services || [],
+            currentServices || [],
             service,
             newQuantity,
-            values.adults,
-            calculateTotalStay(values.startDate, values.endDate),
+            adults,
+            calculateTotalStay(startDate, endDate),
         )
 
-        setFieldValue('services', updatedServices)
+        onChange(updatedServices)
     }
 
-    const totalServicesPrice = values.services?.reduce(
+    const totalServicesPrice = currentServices?.reduce(
         (acc, service) => acc + service.totalPrice,
         0,
     )
@@ -71,9 +91,7 @@ export const ServicesSection: React.FC = () => {
                         onClick={() => setIsServicesModalOpen(true)}
                         variant="contained"
                         color="primary"
-                        disabled={
-                            values.startDate && values.endDate ? false : true
-                        }
+                        disabled={!startDate || !endDate}
                     >
                         Adicionar
                     </Button>
@@ -81,7 +99,7 @@ export const ServicesSection: React.FC = () => {
                 variant="outlined"
             >
                 <Box>
-                    {values.services?.length === 0 && (
+                    {currentServices?.length === 0 && (
                         <Box
                             sx={{
                                 borderRadius: 1,
@@ -99,7 +117,7 @@ export const ServicesSection: React.FC = () => {
                         </Box>
                     )}
 
-                    {values.services?.map((service) => {
+                    {currentServices?.map((service) => {
                         const serviceFull = services?.items.find(
                             (s) => s.id === service.id,
                         )
@@ -110,10 +128,10 @@ export const ServicesSection: React.FC = () => {
                             <ServiceItem
                                 key={service.id}
                                 service={serviceFull}
-                                totalAdults={values.adults}
+                                totalAdults={adults}
                                 totalStay={calculateTotalStay(
-                                    values.startDate,
-                                    values.endDate,
+                                    startDate,
+                                    endDate,
                                 )}
                                 quantity={service.quantity}
                                 handleUpdateServices={handleUpdateServices}
@@ -158,9 +176,9 @@ export const ServicesSection: React.FC = () => {
                 open={isServicesModalOpen}
                 services={services?.items || []}
                 onClose={() => setIsServicesModalOpen(false)}
-                initialServices={values.services || []}
+                initialServices={currentServices || []}
                 onUpdateServices={(newReservationServices) =>
-                    setFieldValue('services', newReservationServices)
+                    onChange(newReservationServices)
                 }
             />
         </>

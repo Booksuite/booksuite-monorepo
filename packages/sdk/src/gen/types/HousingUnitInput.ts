@@ -4,9 +4,9 @@ export type HousingUnitInput = {
    */
   id: string
   /**
-   * @type number | undefined
+   * @type number
    */
-  order?: number
+  order: number
   /**
    * @type string
    */

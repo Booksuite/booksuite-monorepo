@@ -1,4 +1,4 @@
-import { ServiceFull } from '@booksuite/sdk'
+import { BillingType, ServiceFull } from '@booksuite/sdk'
 import { Box, Stack, Typography } from '@mui/material'
 
 import { BILLING_TYPE_MAPPING } from '@/common/constants/billingType'
@@ -14,6 +14,8 @@ type ServiceItemProps = {
     quantity: number
     handleUpdateServices: (service: ServiceFull, quantity: number) => void
 }
+
+const VALID_QUANTITY_MAPPING: BillingType[] = ['PER_HOUSING_UNIT', 'PER_GUEST']
 
 export const ServiceItem: React.FC<ServiceItemProps> = ({
     service,
@@ -66,6 +68,12 @@ export const ServiceItem: React.FC<ServiceItemProps> = ({
                 >
                     <NumberInputBase
                         value={quantity}
+                        max={
+                            VALID_QUANTITY_MAPPING.includes(service.billingType)
+                                ? undefined
+                                : 1
+                        }
+                        min={0}
                         onChange={(e) =>
                             handleUpdateServices(
                                 service,

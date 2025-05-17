@@ -1,16 +1,14 @@
-import type { HousingUnitInput } from './HousingUnitInput.ts'
-import type { HousingUnitTypeFacilityInput } from './HousingUnitTypeFacilityInput.ts'
-import type { HousingUnitTypeMediaInput } from './HousingUnitTypeMediaInput.ts'
+import type { HousingUnit } from './HousingUnit.ts'
 
-export type HousingUnitTypeCreateInput = {
+export type AvailAndPricingHousingUnitTypeInput = {
+  /**
+   * @type string
+   */
+  id: string
   /**
    * @type string
    */
   name: string
-  /**
-   * @type boolean
-   */
-  published: boolean
   /**
    * @type string
    */
@@ -19,6 +17,14 @@ export type HousingUnitTypeCreateInput = {
    * @type string
    */
   shortDescription: string | null
+  /**
+   * @type boolean
+   */
+  published: boolean
+  /**
+   * @type string
+   */
+  companyId: string
   /**
    * @type string
    */
@@ -60,15 +66,19 @@ export type HousingUnitTypeCreateInput = {
    */
   chargeExtraAdultHigherThan: number
   /**
-   * @type array
+   * @type string, date-time
    */
-  housingUnits: HousingUnitInput[]
+  createdAt: string
+  /**
+   * @type string, date-time
+   */
+  updatedAt: string
+  /**
+   * @type object
+   */
+  deletedAt: object | null
   /**
    * @type array
    */
-  facilities: HousingUnitTypeFacilityInput[]
-  /**
-   * @type array
-   */
-  medias: HousingUnitTypeMediaInput[]
+  housingUnits: HousingUnit[]
 }

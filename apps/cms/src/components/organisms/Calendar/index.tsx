@@ -65,7 +65,7 @@ export const Calendar: React.FC<CalendarProps> = ({
     const totalUnits = useMemo(
         () =>
             availabilityAndPricing.reduce(
-                (acc, type) => acc + type.housingUnits.length,
+                (acc, type) => acc + type.housingUnitType.housingUnits?.length,
                 0,
             ),
         [availabilityAndPricing],
@@ -108,7 +108,7 @@ export const Calendar: React.FC<CalendarProps> = ({
                             {formattedRange}
                         </Typography>
                     </RoomCell>
-                    {availabilityAndPricing.map((housingType, typeIndex) => (
+                    {availabilityAndPricing.map((pricing, typeIndex) => (
                         <Box key={typeIndex} sx={{ width: '100%' }}>
                             <RoomCell>
                                 <Typography
@@ -123,27 +123,29 @@ export const Calendar: React.FC<CalendarProps> = ({
                                         maxWidth: '100%',
                                     }}
                                 >
-                                    {housingType.name}
+                                    {pricing.housingUnitType.name}
                                 </Typography>
                             </RoomCell>
 
-                            {housingType.housingUnits.map((unit) => (
-                                <RoomCell key={unit.id}>
-                                    <Typography
-                                        variant="body2"
-                                        color="blueGrey.600"
-                                        fontSize="14px"
-                                        sx={{
-                                            textOverflow: 'ellipsis',
-                                            overflow: 'hidden',
-                                            whiteSpace: 'nowrap',
-                                            maxWidth: '100%',
-                                        }}
-                                    >
-                                        {unit.name}
-                                    </Typography>
-                                </RoomCell>
-                            ))}
+                            {pricing.housingUnitType.housingUnits.map(
+                                (unit) => (
+                                    <RoomCell key={unit.id}>
+                                        <Typography
+                                            variant="body2"
+                                            color="blueGrey.600"
+                                            fontSize="14px"
+                                            sx={{
+                                                textOverflow: 'ellipsis',
+                                                overflow: 'hidden',
+                                                whiteSpace: 'nowrap',
+                                                maxWidth: '100%',
+                                            }}
+                                        >
+                                            {unit.name}
+                                        </Typography>
+                                    </RoomCell>
+                                ),
+                            )}
                         </Box>
                     ))}
                 </Stack>
@@ -205,10 +207,16 @@ export const Calendar: React.FC<CalendarProps> = ({
                         })}
                     </Stack>
 
-                    {availabilityAndPricing.map((housingType, typeIndex) => (
+                    {availabilityAndPricing.map((pricing, typeIndex) => (
                         <Box key={typeIndex}>
                             <Stack direction="row">
-                                {days.map((day, dayIndex) => (
+
+                                 {days.map((day, dayIndex) => {
+                                    const calendarDay =
+                                        pricing.calendar[
+                                            day.format('YYYY-MM-DD')
+                                        ]!
+                                    return (
                                     <CalendarCell
                                         key={dayIndex}
                                         gap={0.5}
@@ -274,18 +282,75 @@ export const Calendar: React.FC<CalendarProps> = ({
                                     {days.map((day, dayIndex) => (
                                         <CalendarCell
                                             key={dayIndex}
+                                            gap={0.5}
                                             isSpecialDate={
-                                                !!housingType.calendar[
+                                                !!pricing.calendar[
                                                     day.format('YYYY-MM-DD')
                                                 ]?.specialDates.length
                                             }
                                             isWeekend={weekendDays.includes(
                                                 day.day(),
                                             )}
-                                        ></CalendarCell>
-                                    ))}
-                                </Stack>
-                            ))}
+                                        >
+                                            <Box
+                                                sx={{
+                                                    border: '2px solid',
+                                                    borderRadius: 0.6,
+                                                    padding: 0.1,
+                                                    fontWeight: 'bold',
+                                                    minWidth: '18px',
+                                                    fontSize: '9px',
+                                                }}
+                                            >
+                                                {calendarDay.finalMinStay}
+                                            </Box>
+                                            <Typography
+                                                variant="body2"
+                                                fontWeight="bold"
+                                                fontSize="10px"
+                                            >
+                                                {formatCurrency(
+                                                    getDayPrice(calendarDay),
+                                                )}
+                                            </Typography>
+                                        </CalendarCell>
+                                    )
+                                })}
+                            </Stack>
+                            {pricing.housingUnitType.housingUnits.map(
+                                (unit, unitIndex) => (
+                                    <Stack
+                                        key={unitIndex}
+                                        direction="row"
+                                        position="relative"
+                                    >
+                                        {reservationsByUnitByDay[unit.id]?.map(
+                                            (reservation) => (
+                                                <ReservationItem
+                                                    key={reservation.id}
+                                                    reservation={reservation}
+                                                    startOfCalendar={
+                                                        startOfCalendar
+                                                    }
+                                                />
+                                            ),
+                                        )}
+                                        {days.map((day, dayIndex) => (
+                                            <CalendarCell
+                                                key={dayIndex}
+                                                isSpecialDate={
+                                                    !!pricing.calendar[
+                                                        day.format('YYYY-MM-DD')
+                                                    ]?.specialDates.length
+                                                }
+                                                isWeekend={weekendDays.includes(
+                                                    day.day(),
+                                                )}
+                                            ></CalendarCell>
+                                        ))}
+                                    </Stack>
+                                ),
+                            )}
                         </Box>
                     ))}
                 </Box>

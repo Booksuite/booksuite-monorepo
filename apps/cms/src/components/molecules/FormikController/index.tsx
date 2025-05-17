@@ -1,6 +1,17 @@
-import { Alert, AlertTitle, Button, Stack, Typography } from '@mui/material'
+import {
+    Alert,
+    AlertTitle,
+    Button,
+    Stack,
+    Tooltip,
+    Typography,
+} from '@mui/material'
+import { Box } from '@mui/system'
 import { Form, FormikErrors, useFormikContext } from 'formik'
 import { PropsWithChildren, useEffect, useState } from 'react'
+
+import { DashboardContainer } from '@/components/templates/DashboardLayout/components/DashboardContainer'
+import { useDashboardSidebarStore } from '@/components/templates/DashboardLayout/stores/dashboardSidebar'
 
 export const extractErrorMessages = (
     errors: FormikErrors<unknown>,
@@ -48,6 +59,8 @@ export const FormikController: React.FC<
             ? `${errorMessages.length} problemas encontrados`
             : errorMessages.join(', ')
 
+    const { drawerWidth } = useDashboardSidebarStore()
+
     const { values, setFieldValue, handleSubmit } = useFormikContext<{
         published?: boolean
     }>()
@@ -71,92 +84,115 @@ export const FormikController: React.FC<
 
     return (
         <Form>
-            <Stack gap={6}>
+            <Stack mb={8}>
                 {children}
                 <Stack
-                    position="sticky"
+                    position="absolute"
                     zIndex={1000}
                     bottom={0}
-                    left={0}
+                    left={drawerWidth}
                     right={0}
-                    pb={4}
                 >
                     <Stack
-                        direction="row"
-                        marginBottom={2}
-                        bgcolor="blueGrey.100"
-                        gap={4}
-                        borderRadius={1}
-                        boxShadow="0 0 3px 0 rgba(0, 0, 0, .2)"
-                        justifyContent={
-                            errorMessages.length ? 'space-between' : 'flex-end'
-                        }
+                        bgcolor="white"
+                        borderTop={1}
+                        borderColor="divider"
                         alignItems="center"
                         p={4}
                     >
-                        {errorMessages.length > 0 && (
-                            <Alert
-                                variant="outlined"
-                                severity="error"
-                                sx={{
-                                    bgcolor: 'transparent',
-                                    border: 'none',
-                                }}
+                        <DashboardContainer>
+                            <Stack
+                                gap={4}
+                                direction="row"
+                                justifyContent={
+                                    errorMessages.length
+                                        ? 'space-between'
+                                        : 'flex-end'
+                                }
                             >
-                                <Stack
-                                    direction="row"
-                                    alignItems="center"
-                                    gap={3}
-                                >
-                                    <AlertTitle m={0}>
-                                        Confira o formulário
-                                    </AlertTitle>
-                                    <Typography fontSize={12}>
-                                        {alertMessage}
-                                    </Typography>
+                                {errorMessages.length > 0 && (
+                                    <Tooltip
+                                        open={false}
+                                        placement="top"
+                                        title={errorMessages.map((error) => (
+                                            <Box key={error}>
+                                                <Typography variant="caption">
+                                                    {error}
+                                                </Typography>
+                                            </Box>
+                                        ))}
+                                    >
+                                        <Alert
+                                            variant="outlined"
+                                            severity="error"
+                                            sx={{
+                                                bgcolor: 'transparent',
+                                                border: 'none',
+                                            }}
+                                        >
+                                            <Stack
+                                                direction="row"
+                                                alignItems="center"
+                                                gap={3}
+                                            >
+                                                <AlertTitle m={0}>
+                                                    Confira o formulário
+                                                </AlertTitle>
+                                                <Typography fontSize={12}>
+                                                    {alertMessage}
+                                                </Typography>
+                                            </Stack>
+                                        </Alert>
+                                    </Tooltip>
+                                )}
+                                <Stack direction="row" gap={3}>
+                                    {!!onCancel && (
+                                        <Button
+                                            disabled={buttonsDisabled}
+                                            type="button"
+                                            color="secondary"
+                                            onClick={onCancel}
+                                            variant="outlined"
+                                            size="medium"
+                                        >
+                                            {cancelText}
+                                        </Button>
+                                    )}
+
+                                    <Button
+                                        type={onSubmit ? 'button' : 'submit'}
+                                        disabled={buttonsDisabled}
+                                        loading={
+                                            isSubmitting &&
+                                            !isSavingAndPublishing
+                                        }
+                                        color="secondary"
+                                        onClick={onSubmit}
+                                        size="medium"
+                                    >
+                                        {submitText}
+                                    </Button>
+
+                                    {hasPublishedField && !values.published && (
+                                        <Button
+                                            disabled={buttonsDisabled}
+                                            type={
+                                                onSubmit ? 'button' : 'submit'
+                                            }
+                                            loading={
+                                                isSubmitting &&
+                                                isSavingAndPublishing
+                                            }
+                                            color="primary"
+                                            onClick={handleSaveAndPublish}
+                                            size="medium"
+                                        >
+                                            {publishedAndSubmitText}
+                                        </Button>
+                                    )}
                                 </Stack>
-                            </Alert>
-                        )}
-                        <Stack direction="row" gap={3}>
-                            {!!onCancel && (
-                                <Button
-                                    disabled={buttonsDisabled}
-                                    type="button"
-                                    color="secondary"
-                                    onClick={onCancel}
-                                    variant="outlined"
-                                    size="medium"
-                                >
-                                    {cancelText}
-                                </Button>
-                            )}
-
-                            <Button
-                                type={onSubmit ? 'button' : 'submit'}
-                                disabled={buttonsDisabled}
-                                loading={isSubmitting && !isSavingAndPublishing}
-                                color="secondary"
-                                onClick={onSubmit}
-                                size="medium"
-                            >
-                                {submitText}
-                            </Button>
-
-                            {hasPublishedField && !values.published && (
-                                <Button
-                                    disabled={buttonsDisabled}
-                                    type={onSubmit ? 'button' : 'submit'}
-                                    loading={
-                                        isSubmitting && isSavingAndPublishing
-                                    }
-                                    color="primary"
-                                    onClick={handleSaveAndPublish}
-                                    size="medium"
-                                >
-                                    {publishedAndSubmitText}
-                                </Button>
-                            )}
-                        </Stack>
+                            </Stack>
+                        </DashboardContainer>
                     </Stack>
                 </Stack>
             </Stack>

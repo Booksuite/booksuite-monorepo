@@ -1,5 +1,5 @@
 import type { CalculatePriceBody } from '../CalculatePriceBody.ts'
-import type { HousingUnitTypeAvailAndPriceInput } from '../HousingUnitTypeAvailAndPriceInput.ts'
+import type { ReservationSummaryInput } from '../ReservationSummaryInput.ts'
 
 export type CalculatePriceFromHousingUnitTypeIdPathParams = {
   /**
@@ -15,7 +15,7 @@ export type CalculatePriceFromHousingUnitTypeIdPathParams = {
 /**
  * @description Summary of price data for a housing unit type
  */
-export type CalculatePriceFromHousingUnitTypeId200 = HousingUnitTypeAvailAndPriceInput
+export type CalculatePriceFromHousingUnitTypeId200 = ReservationSummaryInput
 
 export type CalculatePriceFromHousingUnitTypeIdMutationRequest = CalculatePriceBody
 

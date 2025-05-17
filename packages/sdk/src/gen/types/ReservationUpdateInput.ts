@@ -1,11 +1,14 @@
 import type { ReservationAgeGroupInput } from './ReservationAgeGroupInput.ts'
 import type { ReservationServiceInput } from './ReservationServiceInput.ts'
+import type { ReservationSummaryInput } from './ReservationSummaryInput.ts'
 
 export type ReservationUpdateDTOStatus =
+  | 'PRE_ORDER'
   | 'WAITING_PAYMENT'
   | 'CONFIRMED'
   | 'CHECKED_IN'
   | 'CHECKED_OUT'
+  | 'ESTIMATE'
   | 'ABANDONED'
   | 'CANCELLED'
   | 'PAYMENT_FAILED'
@@ -20,6 +23,11 @@ export type ReservationUpdateInput = {
    * @type number | undefined
    */
   basePrice?: number
+  /**
+   * @description Offer amount for the day
+   * @type number | undefined
+   */
+  offerAmount?: number
   /**
    * @description Services price for the day
    * @type number | undefined
@@ -44,6 +52,14 @@ export type ReservationUpdateInput = {
    * @type string | undefined
    */
   status?: ReservationUpdateDTOStatus
+  /**
+   * @type string, date
+   */
+  preOrderExpiraiton?: string | null
+  /**
+   * @type object | undefined
+   */
+  summary?: ReservationSummaryInput
   /**
    * @type string | undefined
    */

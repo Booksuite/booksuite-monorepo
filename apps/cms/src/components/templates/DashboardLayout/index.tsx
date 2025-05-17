@@ -1,8 +1,9 @@
 'use client'
 
-import { Box, Container } from '@mui/material'
+import { Box } from '@mui/material'
 import type React from 'react'
 
+import { DashboardContainer } from './components/DashboardContainer'
 import { DashboardHeader } from './components/DashboardHeader'
 import { DashboardSidebar } from './components/DashboardSidebar'
 import { useDashboardLayoutStore } from './stores'
@@ -16,7 +17,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 }) => {
     const { drawerWidth } = useDashboardSidebarStore()
 
-    const { fullWidth, bgcolor } = useDashboardLayoutStore()
+    const { bgcolor } = useDashboardLayoutStore()
 
     return (
         <Box
@@ -54,13 +55,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
                         overflow: 'auto',
                     }}
                 >
-                    <Container
-                        disableGutters
-                        maxWidth={fullWidth ? false : 'lg'}
-                        fixed={!fullWidth}
-                    >
-                        {children}
-                    </Container>
+                    <DashboardContainer>{children}</DashboardContainer>
                 </Box>
             </Box>
         </Box>

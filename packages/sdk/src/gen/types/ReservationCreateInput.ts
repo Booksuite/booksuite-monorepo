@@ -1,12 +1,14 @@
 import type { ReservationAgeGroupInput } from './ReservationAgeGroupInput.ts'
 import type { ReservationServiceInput } from './ReservationServiceInput.ts'
-import type { UserCreateInput } from './UserCreateInput.ts'
+import type { ReservationSummaryInput } from './ReservationSummaryInput.ts'
 
 export type ReservationCreateDTOStatus =
+  | 'PRE_ORDER'
   | 'WAITING_PAYMENT'
   | 'CONFIRMED'
   | 'CHECKED_IN'
   | 'CHECKED_OUT'
+  | 'ESTIMATE'
   | 'ABANDONED'
   | 'CANCELLED'
   | 'PAYMENT_FAILED'
@@ -17,38 +19,21 @@ export type ReservationCreateDTOSaleChannel = 'RECEPTION' | 'PHONE' | 'WHATSAPP'
 
 export type ReservationCreateInput = {
   /**
-   * @description Base price for the day
-   * @type number
-   */
-  basePrice: number
-  /**
-   * @description Services price for the day
-   * @type number
-   */
-  servicesPrice: number
-  /**
-   * @description Children price for the day
-   * @type number
-   */
-  childrenPrice: number
-  /**
-   * @description Rate option price for the day
-   * @type number
-   */
-  rateOptionPrice: number
-  /**
-   * @description Final price for the day
-   * @type number
-   */
-  finalPrice: number
-  /**
    * @type string
    */
   status: ReservationCreateDTOStatus
   /**
    * @type object
    */
-  guestUser: UserCreateInput
+  summary: ReservationSummaryInput
+  /**
+   * @type string
+   */
+  guestUserId: string
+  /**
+   * @type string, date
+   */
+  preOrderExpiraiton: string | null
   /**
    * @type string
    */

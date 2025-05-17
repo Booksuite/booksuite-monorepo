@@ -28,6 +28,7 @@ import { Calendar } from '@/components/organisms/Calendar'
 import {
     RESERVATION_LABEL_MAP,
     RESERVATION_STATUS_COLORS,
+    VALID_OCCUPANCY_STATUS,
 } from '@/components/organisms/Calendar/constants'
 import { PageHeader } from '@/components/organisms/PageHeader'
 import { useDashboardLayoutStore } from '@/components/templates/DashboardLayout/stores'
@@ -83,7 +84,7 @@ const MapPage: React.FC = () => {
                     start: formattedStartDate,
                     end: formattedEndDate,
                 },
-                status: ['CHECKED_IN', 'CHECKED_OUT', 'CONFIRMED'],
+                status: VALID_OCCUPANCY_STATUS,
             },
             pagination: { page: 1, itemsPerPage: 1000 },
         },

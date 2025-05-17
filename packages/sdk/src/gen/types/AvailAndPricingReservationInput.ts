@@ -3,10 +3,12 @@ import type { HousingUnitType } from './HousingUnitType.ts'
 import type { User } from './User.ts'
 
 export type AvailAndPricingReservationDTOStatus =
+  | 'PRE_ORDER'
   | 'WAITING_PAYMENT'
   | 'CONFIRMED'
   | 'CHECKED_IN'
   | 'CHECKED_OUT'
+  | 'ESTIMATE'
   | 'ABANDONED'
   | 'CANCELLED'
   | 'PAYMENT_FAILED'
@@ -17,31 +19,6 @@ export type AvailAndPricingReservationDTOSaleChannel = 'RECEPTION' | 'PHONE' | '
 
 export type AvailAndPricingReservationInput = {
   /**
-   * @description Base price for the day
-   * @type number
-   */
-  basePrice: number
-  /**
-   * @description Services price for the day
-   * @type number
-   */
-  servicesPrice: number
-  /**
-   * @description Children price for the day
-   * @type number
-   */
-  childrenPrice: number
-  /**
-   * @description Rate option price for the day
-   * @type number
-   */
-  rateOptionPrice: number
-  /**
-   * @description Final price for the day
-   * @type number
-   */
-  finalPrice: number
-  /**
    * @type string
    */
   id: string
@@ -49,6 +26,10 @@ export type AvailAndPricingReservationInput = {
    * @type string
    */
   status: AvailAndPricingReservationDTOStatus
+  /**
+   * @type string, date
+   */
+  preOrderExpiraiton: string | null
   /**
    * @type string
    */

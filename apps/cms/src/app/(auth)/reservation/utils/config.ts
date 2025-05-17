@@ -1,13 +1,9 @@
 import {
-    HousingUnit,
-    HousingUnitType,
-    RateOptionFull,
     ReservationAgeGroupInput,
     ReservationCreateInput,
-    ReservationFull,
     ReservationService,
+    ReservationSummaryInput,
 } from '@booksuite/sdk'
-import { omit } from 'radash'
 import * as yup from 'yup'
 
 export type ReservationServiceFormItem = {
@@ -16,17 +12,27 @@ export type ReservationServiceFormItem = {
     totalPrice: number
 }
 
-export type ReservationFormData = Omit<
+export type ReservationMainFormData = Pick<
     ReservationCreateInput,
-    'ageGroups' | 'services'
+    'startDate' | 'endDate' | 'adults'
 > & {
     ageGroups: Record<string, number>
-    rateOption: RateOptionFull | null
-    housingUnitType: HousingUnitType | null
-    availableHousingUnits: HousingUnit[]
-    housingUnit: HousingUnit | null
-    services: ReservationService[]
+    summary: ReservationSummaryInput | null
 }
+
+export type ReservationFormData = Omit<
+    ReservationCreateInput,
+    | 'ageGroups'
+    | 'services'
+    | 'summary'
+    | 'startDate'
+    | 'endDate'
+    | 'adults'
+    | 'summary'
+> &
+    ReservationMainFormData & {
+        services: ReservationService[]
+    }
 
 export const transformAgeGroupObjToArray = (
     ageGroups: Record<string, number>,
@@ -61,64 +67,41 @@ export const transformAgeGroupArrayToObj = (
 export const normalizeReservationFormData = (
     data: ReservationFormData,
 ): ReservationCreateInput => {
+    if (!data.summary) {
+        throw new Error('Summary is required')
+    }
     return {
-        ...omit(data, ['availableHousingUnits']),
+        ...data,
+        summary: data.summary,
         ageGroups: transformAgeGroupObjToArray(data.ageGroups),
-        housingUnitTypeId: data.housingUnitType?.id || '',
-        rateOptionId: data.rateOption?.id || '',
+        housingUnitTypeId: data.summary.housingUnitType.id || '',
+        housingUnitId: data.summary.housingUnit?.id || '',
+        rateOptionId: data.summary.summary.rateOption?.id || '',
         services: data.services.map((s) => ({
             serviceId: s.service.id,
             quantity: s.quantity,
             totalPrice: s.totalPrice,
         })),
+        guestUserId: '22240a70-24fa-467f-8f0c-cb6bab891ec8',
+        sellerUserId: '22240a70-24fa-467f-8f0c-cb6bab891ec8',
     }
 }
 
-export const createReservationFormInitialValues = (
-    data?: ReservationFull,
-): ReservationFormData => ({
-    ...data,
-    basePrice: data?.basePrice || 0,
-    servicesPrice: data?.servicesPrice || 0,
-    childrenPrice: data?.childrenPrice || 0,
-    rateOptionPrice: data?.rateOptionPrice || 0,
-    finalPrice: data?.finalPrice || 0,
-
-    status: data?.status || 'WAITING_PAYMENT',
-    saleChannel: data?.saleChannel || 'RECEPTION',
-    startDate: data?.startDate || '2025-05-19',
-    endDate: data?.endDate || '2025-05-21',
-
-    adults: data?.adults ?? 2,
-    ageGroups: data?.ageGroups
-        ? transformAgeGroupArrayToObj(data.ageGroups)
-        : {},
-    notes: data?.notes || '',
-    services:
-        data?.services?.map<ReservationService>((s) => ({
-            id: s.id,
-            serviceId: s.service.id,
-            quantity: s.quantity || 0,
-            totalPrice: s.totalPrice || 0,
-            service: s.service,
-        })) || [],
-    guestUser: {
-        email: '',
-        firstName: '',
-        password: '',
-        lastName: '',
-        metaData: {},
-        phone: '',
-    },
-
-    housingUnit: data?.housingUnit || null,
-    availableHousingUnits: [],
-    rateOption: data?.rateOption || null,
-    housingUnitType: data?.housingUnitType || null,
-    housingUnitTypeId: data?.housingUnitTypeId || '',
-    sellerUserId: data?.sellerUserId || '',
-    rateOptionId: data?.rateOptionId || '',
-    housingUnitId: data?.housingUnit?.id || '',
+export const createReservationFormInitialValues = (): ReservationFormData => ({
+    summary: null,
+    status: 'WAITING_PAYMENT',
+    saleChannel: 'RECEPTION',
+    startDate: '2025-05-19',
+    endDate: '2025-05-21',
+    adults: 2,
+    ageGroups: {},
+    notes: '',
+    services: [],
+    guestUserId: '',
+    sellerUserId: '',
+    rateOptionId: '',
+    housingUnitId: '',
+    housingUnitTypeId: '',
 })
 
 export const reservationFormSchema = yup.object({
@@ -130,9 +113,17 @@ export const reservationFormSchema = yup.object({
     adults: yup.number().nullable(),
     children: yup.array(),
     notes: yup.string().optional(),
-    housingUnitId: yup.string().required('Unidade habitacional é obrigatória'),
-    services: yup.array().min(0),
-    guestUser: yup.object().nullable(),
-    sellerUser: yup.object().nullable(),
-    reservationOptions: yup.array().min(0),
+    summary: yup.object({
+        housingUnit: yup.object().required('Acomodação é obrigatória'),
+        housingUnitType: yup
+            .object()
+            .required('Tipo de acomodação é obrigatório'),
+        summary: yup
+            .object({
+                rateOption: yup
+                    .object()
+                    .required('Opção de tarifa é obrigatória'),
+            })
+            .required('Resumo é obrigatório'),
+    }),
 })
